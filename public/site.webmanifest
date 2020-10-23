@@ -1,0 +1,20 @@
+{
+    "name": "PDPHero",
+    "short_name": "PDPHero",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#26130c",
+    "background_color": "#26130c",
+    "start_url": "https://www.pdphero.com/",
+    "display": "standalone"
+}
