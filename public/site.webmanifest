@@ -13,8 +13,8 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#26130c",
-    "background_color": "#26130c",
+    "theme_color": "#3b3b3b",
+    "background_color": "#3b3b3b",
     "start_url": "https://www.pdphero.com/",
     "display": "standalone"
 }
