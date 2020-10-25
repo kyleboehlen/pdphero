@@ -144,3 +144,5 @@ Optimize route loading
 - Mailgun (email)
 - Papertrail (logging)
 - Nexmo (sms)
+- Jira Cloud (issue tracking)
+- Bitbucket (code repo host)
