@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44471dece3cc81a8a76c351f53370406",
+    "content-hash": "68787ed1afd6cf9a7b3155a2b6f9bc2a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7542,6 +7542,67 @@
             "time": "2020-09-28T06:39:44+00:00"
         },
         {
+            "name": "stefanzweifel/laravel-stats-phploc",
+            "version": "7.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefanzweifel/phploc.git",
+                "reference": "9c96c5528c294c4ac7620b6ec9d6cee6de1477b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefanzweifel/phploc/zipball/9c96c5528c294c4ac7620b6ec9d6cee6de1477b1",
+                "reference": "9c96c5528c294c4ac7620b6ec9d6cee6de1477b1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "php": ">=7.3",
+                "phpunit/php-file-iterator": "^3.0",
+                "sebastian/cli-parser": "^1.0",
+                "sebastian/version": "^2.0 || ^3.0"
+            },
+            "bin": [
+                "phploc"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "A tool for quickly measuring the size of a PHP project. (Don't use this fork in your production apps)",
+            "homepage": "https://github.com/stefanzweifel/phploc",
+            "support": {
+                "issues": "https://github.com/stefanzweifel/phploc/issues",
+                "source": "https://github.com/stefanzweifel/phploc/tree/7.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-28T17:57:06+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.2.0",
             "source": {
@@ -7643,6 +7704,87 @@
                 "source": "https://github.com/webmozart/assert/tree/master"
             },
             "time": "2020-07-08T17:02:28+00:00"
+        },
+        {
+            "name": "wnx/laravel-stats",
+            "version": "v2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefanzweifel/laravel-stats.git",
+                "reference": "d248bc1fb3f0e004f397c92c596a83bd511f32a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefanzweifel/laravel-stats/zipball/d248bc1fb3f0e004f397c92c596a83bd511f32a0",
+                "reference": "d248bc1fb3f0e004f397c92c596a83bd511f32a0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^6.0 || ^7.0 || ^8.0",
+                "illuminate/support": "^6.0 || ^7.0 || ^8.0",
+                "php": ">=7.3.0",
+                "stefanzweifel/laravel-stats-phploc": "^6.1 || ^7.1",
+                "symfony/finder": "^4.3 || ^5.0",
+                "symfony/process": "^4.3 || ^5.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "laravel/browser-kit-testing": "~5.0 || ~6.0 || ~7.0",
+                "laravel/dusk": "~5.0 || ~6.0",
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
+                "phpunit/phpunit": "8.* || 9.*",
+                "vimeo/psalm": "^3.12"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Wnx\\LaravelStats\\StatsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wnx\\LaravelStats\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Zweifel",
+                    "email": "hello@stefanzweifel.io",
+                    "homepage": "https://stefanzweifel.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Get insights about your Laravel Project",
+            "homepage": "https://github.com/stefanzweifel/laravel-stats",
+            "keywords": [
+                "laravel",
+                "statistics",
+                "stats",
+                "wnx"
+            ],
+            "support": {
+                "issues": "https://github.com/stefanzweifel/laravel-stats/issues",
+                "source": "https://github.com/stefanzweifel/laravel-stats/tree/v2.4.1"
+            },
+            "funding": [
+                {
+                    "url": "https://buymeacoff.ee/3oQ64YW",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/stefanzweifel",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-29T18:09:12+00:00"
         }
     ],
     "aliases": [],
