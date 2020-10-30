@@ -68,6 +68,8 @@
 
                 <p>Also includes YNAB integration for financial goals, and access to submit and vote on new features. Guaranteed to include any additional features.</p>
             </div>
-        </table>
+        </div>
     </div>
+
+    <x-main-footer />
 @endsection
