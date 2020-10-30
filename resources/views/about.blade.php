@@ -71,5 +71,7 @@
         </div>
     </div>
 
-    <x-main-footer />
+    @if(config('about.show_social_footer'))
+        <x-main-footer />
+    @endif
 @endsection
