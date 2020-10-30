@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Controllers
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -18,4 +19,10 @@ use App\Http\Controllers\HomeController;
 
 // Auth
 Auth::routes();
+
+// Root route, controls whether or not user gets sent to about or home
+Route::get('/', [HomeController::class, 'index'])->name('root');
+
+// Main about page
+Route::get('about', [AboutController::class, 'index'])->name('about');
 

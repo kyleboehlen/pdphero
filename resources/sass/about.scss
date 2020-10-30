@@ -1,0 +1,139 @@
+@import 'app';
+
+div.about-card
+{
+    @extend %card;
+
+    margin-bottom: 2.5%;
+    width: 55%;
+
+    div.anchor
+    {
+        display: block;
+        position: relative;
+        top: -12vh;
+        visibility: hidden;
+    }
+
+    &.left
+    {
+        float: left;
+        margin-left: 22.5%;
+
+        img
+        {
+            float: left;
+        }
+    }
+
+    &.top
+    {
+        margin-top: 7.5%;
+    }
+
+    &.right
+    {
+        float: right;
+        margin-right: 2.5%;
+
+        img
+        {
+            float: right;
+        }
+    }
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        font-size: 3.25em;
+        line-height: 0%;
+        text-align: center;
+        text-decoration: underline;
+    }
+
+    img
+    {
+        border-radius: 50%;
+        height: auto;
+        margin: 2.5%;
+        margin-top: 0;
+        width: 25%;
+    }
+
+    p
+    {
+        color: $white;
+        font-family: $body-font;
+        font-size: 2em;
+        margin: 2.5%;
+    }
+
+    ul li
+    {
+        color: $white;
+        font-family: $body-font;
+        font-size: 2em;
+        margin: 2.5%;
+    }
+
+    div.pricing-container
+    {
+        @extend %flex-container;
+
+        h3
+        {
+            color: $red;
+            font-family: $header-font;
+            font-size: 1.3em;
+            font-style: italic;
+        }
+
+        div.pricing-item
+        {
+            @extend %flex-item;
+                        
+            height: 100%;
+            width: 45%;
+
+            img.pricing
+            {
+                display: block;
+                margin-left: 40%;
+                margin-right: 40%;
+                width: 30%;
+            }
+
+            h4
+            {
+                border-bottom: $thin-border solid $white;
+                color: $white;
+                font-family: $header-font;
+                font-size: 2.25em;
+                margin-bottom: 0;
+                text-align: center;
+            }
+
+            span.pricing-label
+            {
+                color: $white;
+                font-family: $body-font;
+                text-align: center;
+            }
+
+            p
+            {
+                font-size: 1.9em;
+                text-align: center;
+
+                &.pricing-label
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 2.1em;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

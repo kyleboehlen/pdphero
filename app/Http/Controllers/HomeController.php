@@ -7,13 +7,20 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Handles redirecting to the proper about splash page if user is unauthenticated
+     * or redirecting to the home route if user is authenticated
      *
-     * @return void
+     * @return \Illuminate\Support\Facades\Redirect
      */
-    public function __construct()
+    public function index()
     {
-        $this->middleware('auth');
+        if(\Auth::check()) // Check if the user is authenticated
+        {
+            return redirect()->route('home'); // And redirect to the home route if authenticated
+        }
+
+        // If the user is not authenticated, send them to the root about route
+        return redirect()->route('about');
     }
 
     /**

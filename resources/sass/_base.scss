@@ -3,3 +3,23 @@
 
 // Variables
 @import 'variables';
+
+%card
+{
+    background-color: $dark-grey;
+    border-radius: 25px 25px 25px 25px;
+}
+
+%flex-container
+{
+    align-items: stretch;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+%flex-item
+{
+    flex-grow: 0;
+    padding: 25px;
+}
