@@ -54,7 +54,7 @@
 
                 <h4>Basic Membership</h4>
 
-                <p class="pricing-label">${{ config('membership.price') }} monthly</p>
+                <p class="pricing-label">${{ config('membership.basic_price') }} monthly</p>
 
                 <p>Comes with all the features you need for creating smart goals, managing action plans, building habits, and personal development planning.</p>
             </div>
