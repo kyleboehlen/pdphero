@@ -141,7 +141,8 @@ Optimize route loading
 <br/><br/>
 ### Current External Service List:
 - Cloudflare (streaming and CDN)
-- Mailgun (email)
+- Postmark (email)
+- Mailgun (backup email)
 - Papertrail (logging)
 - Nexmo (sms)
 - Jira Cloud (issue tracking)
