@@ -18,7 +18,7 @@ use App\Http\Controllers\HomeController;
 */
 
 // Auth
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 // Root route, controls whether or not user gets sent to about or home
 Route::get('/', [HomeController::class, 'index'])->name('root');
@@ -26,3 +26,5 @@ Route::get('/', [HomeController::class, 'index'])->name('root');
 // Main about page
 Route::get('about', [AboutController::class, 'index'])->name('about');
 
+// Home route
+Route::get('home', [HomeController::class, 'home'])->middleware('auth')->middleware('verified')->name('home');

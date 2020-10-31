@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('template')
 
     <h1>{{ __('Confirm Password') }}</h1>
     <p>{{ __('Please confirm your password before continuing.') }}</p>

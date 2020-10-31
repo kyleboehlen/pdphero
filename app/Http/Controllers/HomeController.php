@@ -24,12 +24,16 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Sends the user to the default landing to-do page if redirected from root
+     * or returns the home view if directed from anywhere else
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Support\Facades\Redirect
+     * @return Response
      */
-    public function index()
+    public function home(Request $request)
     {
-        return view('home');
+        // Later on this may get changed to check what URL the request was sent from
+        // and show a home view if they requested it, otherwise send to to-do
+        return redirect()->route('todo');
     }
 }
