@@ -710,7 +710,7 @@ div.about-card
                 width: 100%;
             }
 
-            @media only screen and (min-width: 800px) and (max-height: 1000px)
+            @media only screen and (min-width: 800px) and (max-width: 1000px) and (max-height: 1000px)
             {
                 height: auto;
                 width: 100%;
