@@ -6,14 +6,16 @@ use Illuminate\View\Component;
 
 class MainHeader extends Component
 {
+    public $hide_profile_link;
+    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($hide_profile_link = false)
     {
-        //
+        $this->hide_profile_link = $hide_profile_link;
     }
 
     /**

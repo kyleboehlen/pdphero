@@ -2,7 +2,7 @@
 
 @section('template')
     {{-- Main Header --}}
-    <x-main-header />
+    <x-main-header hide_profile_link="true" />
 
     {{-- Side Nav --}}
     <x-main-nav page="about" />

@@ -7,18 +7,69 @@ div.about-card
     margin-bottom: 2.5%;
     width: 55%;
 
+    @media only screen and (max-width: 1850px)
+    {
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 800px)
+    {
+        display: inline-block;
+        padding: 1%;
+        width: 70%;
+    }
+
+    @media only screen and (max-width: 665px)
+    {
+        padding: 1%;
+        width: 90%;
+    }
+
     div.anchor
     {
         display: block;
         position: relative;
         top: -12vh;
         visibility: hidden;
+
+        @media only screen and (max-height: 800px)
+        {
+            top: -20vh;
+        }
+
+        @media only screen and (max-width: 1000px)
+        {
+            top: -15vh;
+        }
+
+        @media only screen and (max-width: 875px)
+        {
+            top: -22.5vh;
+        }
+
+        @media only screen and (max-width: 400px)
+        {
+            top: -21vh;
+        }
     }
 
     &.left
     {
         float: left;
         margin-left: 22.5%;
+
+        @media only screen and (max-width: 800px)
+        {
+            float: none;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+
+        @media only screen and (max-width: 665px)
+        {
+            margin-left: 5%;
+            margin-right: 5%;
+        }
 
         img
         {
@@ -29,12 +80,75 @@ div.about-card
     &.top
     {
         margin-top: 7.5%;
+
+        @media only screen and (max-height: 800px)
+        {
+            margin-top: 15%;
+        }
+
+        @media only screen and (max-height: 600px)
+        {
+            margin-top: 12.5%;
+        }
+
+        @media only screen and (max-width: 1000px)
+        {
+            margin-top: 10%;
+        }
+
+        @media only screen and (max-width: 875px)
+        {
+            margin-top: 20%;
+        }
+
+        @media only screen and (max-width: 735px)
+        {
+            margin-top: 27.5%;
+        }
+
+        @media only screen and (max-width: 700px)
+        {
+            margin-top: 30%;
+        }
+
+        @media only screen and (max-width: 665px)
+        {
+            margin-top: 32.5%;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            margin-top: 35%;
+        }
+
+        @media only screen and (max-width: 400px)
+        {
+            margin-top: 42.5%;
+        }
+
+        @media only screen and (max-height: 812px)
+        {
+            margin-top: 45%;
+        }
     }
 
     &.right
     {
         float: right;
         margin-right: 2.5%;
+
+        @media only screen and (max-width: 800px)
+        {
+            float: none;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+
+        @media only screen and (max-width: 665px)
+        {
+            margin-left: 5%;
+            margin-right: 5%;
+        }
 
         img
         {
@@ -50,6 +164,36 @@ div.about-card
         line-height: 0%;
         text-align: center;
         text-decoration: underline;
+
+        @media only screen and (max-width: 1555px)
+        {
+            font-size: 3em;
+        }
+
+        @media only screen and (max-width: 1200px)
+        {
+            font-size: 2.5em;
+        }
+
+        @media only screen and (max-width: 1150px)
+        {
+            font-size: 2.25em;
+        }
+
+        @media only screen and (max-width: 1000px)
+        {
+            font-size: 2em;
+        }
+
+        @media only screen and (max-width: 875px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 800px)
+        {
+            font-size: 2em;
+        }
     }
 
     img
@@ -67,6 +211,36 @@ div.about-card
         font-family: $body-font;
         font-size: 2em;
         margin: 2.5%;
+
+        @media only screen and (max-width: 1555px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 1025px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 875px)
+        {
+            font-size: 1.35em;
+        }
+
+        @media only screen and (max-width: 735px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 350px)
+        {
+            font-size: 1.35em;
+        }
     }
 
     ul li
@@ -75,6 +249,41 @@ div.about-card
         font-family: $body-font;
         font-size: 2em;
         margin: 2.5%;
+
+        @media only screen and (max-width: 1555px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 1025px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 875px)
+        {
+            font-size: 1.25em;
+        }
+
+        @media only screen and (max-width: 800px)
+        {
+            font-size: 1.35em;
+        }
+
+        @media only screen and (max-width: 735px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 350px)
+        {
+            font-size: 1.35em;
+        }
     }
 
     div.pricing-container
@@ -87,6 +296,18 @@ div.about-card
             font-family: $header-font;
             font-size: 1.3em;
             font-style: italic;
+            text-align: center;
+
+            @media only screen and (max-width: 1555px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 1025px)
+            {
+                padding-left: 2.5%;
+                padding-right: 2.5%;
+            }
         }
 
         div.pricing-item
@@ -96,6 +317,17 @@ div.about-card
             height: 100%;
             width: 45%;
 
+            @media only screen and (max-width: 1555px)
+            {
+                width: 40%;
+            }
+
+            @media only screen and (max-width: 735px)
+            {
+                height: auto;
+                width: 100%;
+            }
+
             img.pricing
             {
                 border-radius: 0;
@@ -103,6 +335,12 @@ div.about-card
                 margin-left: 40%;
                 margin-right: 40%;
                 width: 30%;
+
+                @media only screen and (max-width: 735px)
+                {
+                    margin-left: 35%;
+                    margin-right: 35%;
+                }
             }
 
             h4
@@ -113,13 +351,46 @@ div.about-card
                 font-size: 2.25em;
                 margin-bottom: 0;
                 text-align: center;
-            }
 
-            span.pricing-label
-            {
-                color: $white;
-                font-family: $body-font;
-                text-align: center;
+                @media only screen and (max-width: 1555px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 1325px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 1150px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 1025px)
+                {
+                    font-size: 1.25em;
+                }
+
+                @media only screen and (max-width: 950px)
+                {
+                    font-size: 1.15em;
+                }
+
+                @media only screen and (max-width: 875px)
+                {
+                    font-size: 1em;
+                }
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.05em;
+                }
+
+                @media only screen and (max-width: 735px)
+                {
+                    font-size: 2em;
+                }
             }
 
             p
@@ -127,12 +398,62 @@ div.about-card
                 font-size: 1.9em;
                 text-align: center;
 
+                @media only screen and (max-width: 1555px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 950px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 875px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 735px)
+                {
+                    font-size: 1.85em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.65em;
+                }
+
+                @media only screen and (max-width: 350px)
+                {
+                    font-size: 1.45em;
+                }
+
                 &.pricing-label
                 {
                     color: $white;
                     font-family: $body-font;
                     font-size: 2.1em;
                     width: 100%;
+
+                    @media only screen and (max-width: 1555px)
+                    {
+                        font-size: 2em;
+                    }
+
+                    @media only screen and (max-width: 950px)
+                    {
+                        font-size: 1.75em;
+                    }
+
+                    @media only screen and (max-width: 875px)
+                    {
+                        font-size: 1.55em;
+                    }
+
+                    @media only screen and (max-width: 735px)
+                    {
+                        font-size: 2.5em;
+                    }
                 }
             }
         }
