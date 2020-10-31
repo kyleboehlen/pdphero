@@ -31,6 +31,17 @@ header
         width: 90;
     }
 
+    // iPad media queries
+    @media only screen and (min-width: 700px) and (max-width: 800px) and (min-height: 1000px) and (max-width: 1100px)
+    {
+        height: 13.5%;
+    }
+
+    @media only screen and (min-width: 1000px) and (max-width: 1100px) and (min-height: 1300px) and (max-width: 1400px)
+    {
+        height: 10%;
+    }
+
     img.hamburger
     {
         display: none;
@@ -510,6 +521,12 @@ div.about-card
         @media only screen and (max-height: 812px)
         {
             margin-top: 45%;
+        }
+
+        // iPad media queries
+        @media only screen and (min-width: 1000px) and (max-width: 1100px) and (min-height: 1300px) and (max-width: 1400px)
+        {
+            margin-top: 15%;
         }
     }
 
