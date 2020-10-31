@@ -1,4 +1,4 @@
-<nav>
+<nav class="about">
     {{-- Logo --}}
     <img id="close-nav" class="close" src="{{ asset('icons/close.png') }}" />
     <img class="logo" src="{{ asset('logos/logo-white.png') }}" />

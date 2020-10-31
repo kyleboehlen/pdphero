@@ -1,4 +1,4 @@
-<footer>
+<footer class="social">
     <div class="links-container">
         @foreach(config('socials') as $social)
             <a href="{{ \buildSocialUrl($social) }}">
