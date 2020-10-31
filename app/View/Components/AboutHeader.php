@@ -4,8 +4,8 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class MainFooter extends Component
-{
+class AboutHeader extends Component
+{   
     /**
      * Create a new component instance.
      *
@@ -13,7 +13,7 @@ class MainFooter extends Component
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -23,6 +23,6 @@ class MainFooter extends Component
      */
     public function render()
     {
-        return view('components.main-footer');
+        return view('components.about-header');
     }
 }

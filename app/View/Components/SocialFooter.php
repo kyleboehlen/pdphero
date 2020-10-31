@@ -4,18 +4,16 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class MainHeader extends Component
+class SocialFooter extends Component
 {
-    public $hide_profile_link;
-    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($hide_profile_link = false)
+    public function __construct()
     {
-        $this->hide_profile_link = $hide_profile_link;
+        //
     }
 
     /**
@@ -25,6 +23,6 @@ class MainHeader extends Component
      */
     public function render()
     {
-        return view('components.main-header');
+        return view('components.social-footer');
     }
 }

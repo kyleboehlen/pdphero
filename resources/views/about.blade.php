@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('template')
-    {{-- Main Header --}}
-    <x-main-header hide_profile_link="true" />
+    {{-- About Header --}}
+    <x-about-header />
 
     {{-- Side Nav --}}
-    <x-main-nav page="about" />
+    <x-about-nav />
 
     {{-- About --}}
     <div class="about-card left top">
@@ -72,6 +72,6 @@
     </div>
 
     @if(config('about.show_social_footer'))
-        <x-main-footer />
+        <x-social-footer />
     @endif
 @endsection

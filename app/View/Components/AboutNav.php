@@ -4,23 +4,16 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class MainNav extends Component
+class AboutNav extends Component
 {
-    /**
-     * Determines which nav menu options to show
-     *
-     * @var string
-     */
-    public $page;
-
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($page)
+    public function __construct()
     {
-        $this->page = $page;
+
     }
 
     /**
@@ -30,6 +23,6 @@ class MainNav extends Component
      */
     public function render()
     {
-        return view('components.main-nav');
+        return view('components.about-nav');
     }
 }
