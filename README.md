@@ -160,3 +160,4 @@ Optimize route loading
 - Papertrail (logging)
 - Jira Cloud (issue tracking)
 - Bitbucket (code repo host)
+- Stripe (payment processing)
