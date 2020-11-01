@@ -26,5 +26,8 @@ class ViewServiceProvider extends ServiceProvider
     {
         // About
         View::composer('about', 'App\View\Composers\AboutComposer');
+
+        // Auth
+        View::composer('auth.*', 'App\View\Composers\AuthComposer');
     }
 }

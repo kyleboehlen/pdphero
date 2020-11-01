@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('template')
-    <h1>{{ __('Login') }}</h1>
+    <div class="card">
+        <h1>{{ __('Login') }}</h1>
 
-    <div>
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -14,52 +14,43 @@
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                     @error('email')
-                        <span>
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <p class="error">{{ $message }}</p>
                     @enderror
                 </div>
-            </div>
-
+            </div><br/>
+            
             <div>
                 <label for="password">{{ __('Password') }}</label>
 
-                <div class="col-md-6">
+                <div>
                     <input id="password" type="password" name="password" required autocomplete="current-password">
 
                     @error('password')
-                        <span>
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <p class="error">{{ $message }}</p>
                     @enderror
                 </div>
-            </div>
-
+            </div><br/>
+            
             <div>
-                <div>
-                    <div>
-                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                &nbsp;
+                <label class="checkbox" for="remember">
+                    {{ __('Remember Me') }}
+                </label>
+            </div><br/>
+            
 
-                        <label for="remember">
-                            {{ __('Remember Me') }}
-                        </label>
-                    </div>
-                </div>
-            </div>
+            <button type="submit">
+                {{ __('Login') }}
+            </button><br/><br/>
 
-            <div>
-                <div>
-                    <button type="submit">
-                        {{ __('Login') }}
-                    </button>
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}">Forgot Password?</a><br/><br/>
+            @endif
 
-                    @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
-                    @endif
-                </div>
-            </div>
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}">No Account? Sign Up.</a><br/><br/><br/>
+            @endif
         </form>
     </div>
 @endsection
