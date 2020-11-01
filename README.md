@@ -105,6 +105,12 @@ Add the AWS Simple Email Service api details
 - SES_REGION=
 
 <br/>
+Add credentials for mailtrap if email testing is required
+
+- MAILTRAP_USERNAME=
+- MAILTRAP_PASSWORD=
+
+<br/>
 Set the super admin details
 
 - SUPER_ADMIN_EMAIL="admin_email@domain.com"
@@ -150,7 +156,7 @@ Optimize route loading
 - Cloudflare (CDN)
 - Mailgun (primary email)
 - SES (backup email)
+- Mailtrap (email testing)
 - Papertrail (logging)
-- Nexmo (sms)
 - Jira Cloud (issue tracking)
 - Bitbucket (code repo host)

@@ -34,13 +34,13 @@ return [
     */
 
     'mailers' => [
-        'smtp' => [
+        'mailtrap' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => env('MAILTRAP_HOST', 'smtp.mailtrap.io'),
+            'port' => env('MAILTRAP_PORT', 2525),
+            'encryption' => env('MAILTRAP_ENCRYPTION', 'tls'),
+            'username' => env('MAILTRAP_USERNAME'),
+            'password' => env('MAILTRAP_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -57,15 +57,6 @@ return [
             'transport' => 'mailgun',
             'domain' => env('MAILGUN_DOMAIN', 'pdphero.com'),
             'secret' => env('MAILGUN_SECRET'),
-        ],
-
-        'postmark' => [
-            'transport' => 'postmark',
-        ],
-
-        'sendmail' => [
-            'transport' => 'sendmail',
-            'path' => '/usr/sbin/sendmail -bs',
         ],
 
         'log' => [
