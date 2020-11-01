@@ -92,7 +92,7 @@ Create a nysql database and create a new user to grant all privliages to the dat
 - DB_PASSWORD=
 
 <br/>
-Add the mail api details (add secondary email service provider)
+Add the mailgun api details
 
 - MAILGUN_DOMAIN=
 - MAILGUN_SECRET=
@@ -140,9 +140,8 @@ Optimize route loading
 
 <br/><br/>
 ### Current External Service List:
-- Cloudflare (streaming and CDN)
-- Postmark (email)
-- Mailgun (backup email)
+- Mailgun (primary email)
+- SES (backup email)
 - Papertrail (logging)
 - Nexmo (sms)
 - Jira Cloud (issue tracking)
