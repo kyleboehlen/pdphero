@@ -47,6 +47,10 @@ return [
 
         'ses' => [
             'transport' => 'ses',
+            'key' => env('SES_ACCESS_KEY_ID'),
+            'secret' => env('SES_ACCESS_KEY_SECRET'),
+            'region' => env('SES_REGION', 'us-east-2'),
+            'version' => 'latest',
         ],
 
         'mailgun' => [

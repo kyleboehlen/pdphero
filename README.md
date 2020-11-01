@@ -98,6 +98,13 @@ Add the mailgun api details
 - MAILGUN_SECRET=
 
 <br/>
+Add the AWS Simple Email Service api details
+
+- SES_ACCESS_KEY_ID=
+- SES_ACCESS_KEY_SECRET=
+- SES_REGION=
+
+<br/>
 Set the super admin details
 
 - SUPER_ADMIN_EMAIL="admin_email@domain.com"
@@ -140,6 +147,7 @@ Optimize route loading
 
 <br/><br/>
 ### Current External Service List:
+- Cloudflare (CDN)
 - Mailgun (primary email)
 - SES (backup email)
 - Papertrail (logging)

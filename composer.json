@@ -8,6 +8,7 @@
     ],
     "license": "MIT",
     "require": {
+        "aws/aws-sdk-php": "~3.0",
         "php": "^7.3",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
