@@ -135,8 +135,9 @@ div.card
 
         &:hover
         {
+            border-color: $black;
+            color: $black;
             cursor: pointer;
-            font-style: italic;
         }
     }
 
@@ -205,8 +206,9 @@ div.big-card
 
         &:hover
         {
+            border-color: $black;
+            color: $black;
             cursor: pointer;
-            font-style: italic;
         }
     }
 }
