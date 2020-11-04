@@ -21,3 +21,18 @@ body
 {
     color: $green !important;
 }
+
+header.app
+{
+    @extend %app-header;
+}
+
+nav.app
+{
+    @extend %app-nav;
+}
+
+footer.app
+{
+    @extend %app-footer;
+}

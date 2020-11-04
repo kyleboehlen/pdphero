@@ -202,22 +202,6 @@ header.about
                 width: 60%;
             }
         }
-
-        img.profile
-        {
-            float: right;
-            height: 90%;
-            margin-right: 2.5%;
-            margin-top: .25%;
-
-            &:hover
-            {
-                height: 99%;
-                margin-right: 2.25%;
-                margin-top: 0;
-                padding: 0;
-            }
-        }
     }
 }
 
