@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // Seed ToDoPriority
+        $this->call(ToDoPrioritySeed::class);
+
+        // Seed ToDoTypes
+        $this->call(ToDoTypesSeed::class);
     }
 }

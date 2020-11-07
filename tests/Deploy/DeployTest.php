@@ -10,7 +10,8 @@ use Hash;
 use DB;
 
 // Models
-use App\Models\Admin\AdminUsers;
+use App\Models\ToDoPriority;
+use App\Models\ToDoTypes;
 
 class DeployTest extends TestCase
 {
@@ -40,5 +41,11 @@ class DeployTest extends TestCase
     {
         // Seed the database
         Artisan::call('db:seed');
+
+        // Verify ToDo Priorities seeded
+        $this->assertEquals(configArrayFromSeededCollection(ToDoPriority::all()), config('todo.priorities'));
+
+        // Verify ToDo Types seeded
+        $this->assertEquals(configArrayFromSeededCollection(ToDoTypes::all()), config('todo.types'));
     }
 }

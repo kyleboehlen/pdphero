@@ -47,3 +47,23 @@ if(!function_exists('urlIsRoot'))
         return $url === config('app.url');
     }
 }
+
+if(!function_exists('configArrayFromSeededCollection'))
+{
+    /**
+     * Unsets the ID from an array of arrays
+     *
+     * @return bool
+     */
+    function configArrayFromSeededCollection($collection)
+    {
+        return
+        array_map(
+            function($array){
+                unset($array['id']);
+                return $array;
+            },
+            $collection->keyBy('id')->forget('id')->toArray()
+        );
+    }
+}
