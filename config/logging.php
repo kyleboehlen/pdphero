@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily', 'discord', 'papertrail'],
             'ignore_exceptions' => false,
         ],
 
@@ -54,6 +54,13 @@ return [
             'days' => 14,
         ],
 
+        'discord' => [
+            'driver' => 'custom',
+            'via'    => MarvinLabs\DiscordLogger\Logger::class,
+            'level'  => env('LOG_DISCORD_LEVEL', 'critical'),
+            'url'    => env('LOG_DISCORD_WEBHOOK_URL'),
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
@@ -64,11 +71,11 @@ return [
 
         'papertrail' => [
             'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => env('LOG_PAPERTRAIL_LEVEL', 'info'),
             'handler' => SyslogUdpHandler::class,
             'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
+                'host' => env('LOG_PAPERTRAIL_URL'),
+                'port' => env('LOG_PAPERTRAIL_PORT'),
             ],
         ],
 

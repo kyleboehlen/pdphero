@@ -105,6 +105,11 @@ Add the AWS Simple Email Service api details
 - SES_REGION=
 
 <br/>
+Add the discord web hook url for logging
+
+- LOG_DISCORD_WEBHOOK_URL=
+
+<br/>
 Add credentials for mailtrap if email testing is required
 
 - MAILTRAP_USERNAME=
