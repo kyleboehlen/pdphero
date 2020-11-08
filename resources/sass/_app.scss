@@ -36,3 +36,8 @@ footer.app
 {
     @extend %app-footer;
 }
+
+div.app-container
+{
+    @extend %app-container;
+}
