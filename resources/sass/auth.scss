@@ -85,13 +85,7 @@ div.card
 
         input[type="checkbox"]
         {
-            -webkit-appearance: none;
-            border-radius: 5px;
-            background: $dark-grey;
-            border: $thin-border solid $white;
-            height: 40px;
-            vertical-align: middle;
-            width: 40px;
+            @extend %checkbox;
 
             &:checked
             {

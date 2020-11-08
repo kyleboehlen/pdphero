@@ -230,6 +230,22 @@
     border-radius: 25px 25px 25px 25px;
 }
 
+%checkbox
+{
+    -webkit-appearance: none;
+    border-radius: 5px;
+    background: $dark-grey;
+    border: $thin-border solid $white;
+    height: 40px;
+    vertical-align: middle;
+    width: 40px;
+
+    &:checked
+    {
+        background: $black;
+    }
+}
+
 %flex-container
 {
     align-items: stretch;
