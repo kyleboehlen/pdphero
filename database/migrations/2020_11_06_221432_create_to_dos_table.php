@@ -22,6 +22,7 @@ class CreateToDosTable extends Migration
             $table->softDeletes();
 
             // More columns
+            $table->bigInteger('user_id')->unsigned();
             $table->uuid('uuid')->unique();
             $table->string('title');
             $table->tinyInteger('priority_id')->unsigned();
