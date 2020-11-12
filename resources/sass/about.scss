@@ -134,6 +134,8 @@ nav.about
 {
     @extend %app-nav;
 
+    justify-content: space-evenly;
+
     img.logo
     {
         max-width: 50%;
