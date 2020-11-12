@@ -161,17 +161,6 @@
             font-size: 2em;
             line-height: 200%;
             text-decoration: none;
-
-            &:hover
-            {
-                font-weight: bolder;
-                text-decoration: underline;
-            }
-
-            &.active
-            {
-                color: $black;
-            }
         }
     }
 }

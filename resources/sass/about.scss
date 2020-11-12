@@ -145,6 +145,18 @@ nav.about
             max-width: 20%
         }
     }
+
+    ul
+    {
+        a
+        {
+            &:hover
+            {
+                font-weight: bolder;
+                text-decoration: underline;
+            }
+        }
+    }
 }
 
 div.container
