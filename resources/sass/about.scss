@@ -136,17 +136,11 @@ nav.about
 
     img.logo
     {
-        height: auto;
-        margin-left: 25%;
-        margin-right: auto;
-        margin-top: 30%;
-        width: 50%;
+        max-width: 50%;
 
         @media only screen and (max-width: 800px)
         {
-            margin-left: 40%;
-            margin-top: 10%;
-            width: 20%
+            max-width: 20%
         }
     }
 }
