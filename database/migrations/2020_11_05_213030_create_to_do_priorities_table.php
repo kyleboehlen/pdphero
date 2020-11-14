@@ -19,7 +19,6 @@ class CreateToDoPrioritiesTable extends Migration
 
             // Other columns
             $table->string('name');
-            $table->string('style_class');
         });
     }
 

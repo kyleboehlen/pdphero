@@ -7,19 +7,15 @@ return [
     'priorities' => [
         Priority::DEFAULT => [
             'name' => 'Default',
-            'style_class' => 'default-pri',
         ],
         Priority::LOW => [
             'name' => 'Low',
-            'style_class' => 'low-pri',
         ],
         Priority::MEDIUM => [
             'name' => 'Medium',
-            'style_class' => 'medium-pri',
         ],
         Priority::HIGH => [
             'name' => 'High',
-            'style_class' => 'high-pri',
         ],
     ],
 
