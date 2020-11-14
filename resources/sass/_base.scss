@@ -272,21 +272,21 @@
             margin: auto;
             max-height: 90%;
             max-width: 90%;
+        }
 
-            &.hover-black
+        &.hover-black
+        {
+            &:hover > img
             {
-                &:hover
-                {
-                    border: $thin-border solid $black;
-                }
+                border: $thin-border solid $black;
             }
+        }
 
-            &.hover-white
+        &.hover-white
+        {
+            &:hover > img
             {
-                &:hover
-                {
-                    border: $thin-border solid $white;
-                }
+                border: $thin-border solid $white;
             }
         }
     }

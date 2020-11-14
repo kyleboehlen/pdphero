@@ -29,5 +29,8 @@ class ViewServiceProvider extends ServiceProvider
 
         // Auth
         View::composer('auth.*', 'App\View\Composers\AuthComposer');
+
+        // ToDo
+        View::composer('todo.*', 'App\View\Composers\ToDoComposer');
     }
 }

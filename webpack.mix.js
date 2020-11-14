@@ -15,4 +15,5 @@ mix.js('resources/js/app.js', 'public/assets/js')
     .sass('resources/sass/about.scss', 'public/assets/css')
     .sass('resources/sass/auth.scss', 'public/assets/css')
     .sass('resources/sass/app.scss', 'public/assets/css')
+    .sass('resources/sass/todo.scss', 'public/assets/css')
     .sass('resources/sass/email/default.scss', '../resources/views/vendor/mail/html/themes/default.css');

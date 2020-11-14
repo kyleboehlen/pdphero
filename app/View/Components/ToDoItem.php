@@ -4,18 +4,18 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class AppFooter extends Component
+class ToDoItem extends Component
 {
-    public $highlight;
+    public $item;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($highlight)
+    public function __construct($item)
     {
-        $this->highlight = $highlight;
+        $this->item = $item;
     }
 
     /**
@@ -25,6 +25,6 @@ class AppFooter extends Component
      */
     public function render()
     {
-        return view('components.app-footer');
+        return view('components.to-do-item');
     }
 }
