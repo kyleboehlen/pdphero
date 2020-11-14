@@ -10,8 +10,8 @@ use Hash;
 use DB;
 
 // Models
-use App\Models\ToDoPriority;
-use App\Models\ToDoTypes;
+use App\Models\ToDo\ToDoPriority;
+use App\Models\ToDo\ToDoTypes;
 
 class DeployTest extends TestCase
 {

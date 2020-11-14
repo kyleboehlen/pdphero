@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\ToDo;
 
-use App\Models\ToDo;
+use App\Models\ToDo\ToDo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 // Models
@@ -30,7 +30,7 @@ class ToDoFactory extends Factory
             'priority_id' => array_rand(config('todo.priorities')),
             'type_id' => array_rand(config('todo.types')),
             'notes' => (rand() % 2 == 0 ? $this->faker->paragraph() : null),
-            'completed' => (bool) rand() % 2 == 0,
+            'completed' => (bool) rand(0, 1),
         ];
     }
 }

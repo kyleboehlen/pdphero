@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Todo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
+
+// Models
+use App\Models\ToDo\ToDoPriority;
 
 class ToDo extends Model
 {
@@ -30,5 +33,10 @@ class ToDo extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function priority()
+    {
+        return $this->hasOne(ToDoPriority::class, 'id', 'priority_id');
     }
 }
