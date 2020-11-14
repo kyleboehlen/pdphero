@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // Models
-use App\Models\ToDoPriority;
+use App\Models\ToDo\ToDoPriority;
 
 class ToDoPrioritySeed extends AbstractSeeder
 {

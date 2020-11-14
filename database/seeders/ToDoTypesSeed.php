@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // Models
-use App\Models\ToDoTypes;
+use App\Models\ToDo\ToDoTypes;
 
 class ToDoTypesSeed extends AbstractSeeder
 {
