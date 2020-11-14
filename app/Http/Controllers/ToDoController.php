@@ -37,7 +37,7 @@ class ToDoController extends Controller
 
         // Load user's to-do items
         $to_do_items =
-            Todo::where('user_id', $user->id)->with('priority')->orderBy('completed')->orderBy('priority_id', 'desc')->get(); // This is going to need to be rewritten with constrained eager loads: https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
+            Todo::where('user_id', $user->id)->with('priority')->orderBy('completed')->orderBy('priority_id', 'desc')->orderBy('title')->get(); // This is going to need to be rewritten with constrained eager loads: https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
 
         // Return to-do view
         return view('todo.list')->with([
