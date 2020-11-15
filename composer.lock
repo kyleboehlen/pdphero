@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fd26e1eca72a1bcd19c856ac9803c91",
+    "content-hash": "f5670f8260f4447078a1279031ca9121",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1035,6 +1035,53 @@
                 "source": "https://github.com/guzzle/psr7/tree/1.7.0"
             },
             "time": "2020-09-30T07:37:11+00:00"
+        },
+        {
+            "name": "jamesmills/eloquent-uuid",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jamesmills/eloquent-uuid.git",
+                "reference": "f39fe5b8e57c20e0653c81059d9ec81e461acd8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jamesmills/eloquent-uuid/zipball/f39fe5b8e57c20e0653c81059d9ec81e461acd8d",
+                "reference": "f39fe5b8e57c20e0653c81059d9ec81e461acd8d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.4.* || 5.5.* || 5.6.*|| 5.7.*|| 5.8.*|| ^6 || ^7 || ^8",
+                "php": ">=7.2.0",
+                "ramsey/uuid": "^4.1"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "JamesMills\\Uuid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Mills",
+                    "email": "james@jamesmills.co.uk"
+                }
+            ],
+            "description": "A Laravel Eloquent Model trait for adding and using a uuid with models",
+            "keywords": [
+                "eloquent",
+                "laravel",
+                "uuid"
+            ],
+            "support": {
+                "issues": "https://github.com/jamesmills/eloquent-uuid/issues",
+                "source": "https://github.com/jamesmills/eloquent-uuid/tree/1.6.1"
+            },
+            "time": "2020-09-23T15:33:26+00:00"
         },
         {
             "name": "jenssegers/model",
@@ -5161,64 +5208,6 @@
                 }
             ],
             "time": "2020-07-22T23:32:04+00:00"
-        },
-        {
-            "name": "webpatser/laravel-uuid",
-            "version": "3.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webpatser/laravel-uuid.git",
-                "reference": "a7ce65cdabbc9970fc2a87fdf67b48e0b1641d23"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webpatser/laravel-uuid/zipball/a7ce65cdabbc9970fc2a87fdf67b48e0b1641d23",
-                "reference": "a7ce65cdabbc9970fc2a87fdf67b48e0b1641d23",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0"
-            },
-            "require-dev": {
-                "fzaninotto/faker": "~1.4",
-                "phpunit/phpunit": "~6.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Webpatser\\Uuid\\UuidServiceProvider"
-                    ],
-                    "aliases": {
-                        "Uuid": "Webpatser\\Uuid\\Uuid"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Webpatser\\Uuid": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christoph Kempen",
-                    "email": "christoph@downsized.nl"
-                }
-            ],
-            "description": "Laravel package to generate and to validate a universally unique identifier (UUID) according to the RFC 4122 standard. Support for version 1, 3, 4 and 5 UUIDs are built-in.",
-            "homepage": "https://github.com/webpatser/uuid",
-            "keywords": [
-                "UUID RFC4122"
-            ],
-            "support": {
-                "issues": "https://github.com/webpatser/uuid/issues",
-                "source": "https://github.com/webpatser/uuid"
-            },
-            "time": "2017-10-04T07:47:40+00:00"
         }
     ],
     "packages-dev": [

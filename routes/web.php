@@ -62,7 +62,7 @@ Route::prefix('profile')->group(function(){
 // To-Do routes
 Route::prefix('todo')->group(function(){
     // Root
-    Route::get('/', [ToDoController::class, 'index'])->name('todo');
+    Route::get('/', [ToDoController::class, 'index'])->name('todo.list');
 
     // Show the create to do item form
     Route::get('create', [ToDoController::class, 'create'])->name('todo.create');
@@ -71,14 +71,14 @@ Route::prefix('todo')->group(function(){
     Route::post('store', [ToDoController::class, 'store'])->name('todo.store');
 
     // Show the edit to do item form
-    Route::get('edit/{uuid}', [ToDoController::class, 'edit'])->name('todo.edit');
+    Route::get('edit/{todo}', [ToDoController::class, 'edit'])->name('todo.edit');
 
     // Submit the edit to do item form
-    Route::post('update/{uuid}', [ToDoController::class, 'update'])->name('todo.update');
+    Route::post('update/{todo}', [ToDoController::class, 'update'])->name('todo.update');
 
     // Delete a to do item
-    Route::post('destroy/{uuid}', [ToDoController::class, 'destroy'])->name('todo.destroy');
+    Route::post('destroy/{todo}', [ToDoController::class, 'destroy'])->name('todo.destroy');
 
     // Toggle a to do item's completed status
-    Route::post('toggle-completed/{uuid}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
+    Route::post('toggle-completed/{todo}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
 });

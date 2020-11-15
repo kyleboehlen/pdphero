@@ -15,7 +15,7 @@
     </a>
 
     {{-- To-Do --}}
-    <a @if($highlight == 'todo') class="hover-black" @else class="hover-white" @endif href="{{ route('todo') }}">
+    <a @if($highlight == 'todo') class="hover-black" @else class="hover-white" @endif href="{{ route('todo.list') }}">
         <img @if($highlight == 'todo') src="{{ asset('icons/todo-black.png') }}" @else src="{{ asset('icons/todo-white.png') }}" @endif />
     </a>
 </footer>

@@ -13,3 +13,8 @@ $('.close-nav').click(function(){
         $('nav').toggle('slide');
     }
 });
+
+// Handles submitting the toggle checkbox forms
+$('.submit-completed').change(function(){
+    event.target.closest('form').submit();
+})

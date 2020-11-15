@@ -34,6 +34,6 @@ class HomeController extends Controller
     {
         // Later on this may get changed to check what URL the request was sent from
         // and show a home view if they requested it, otherwise send to to-do
-        return redirect()->route('todo');
+        return redirect()->route('todo.list');
     }
 }

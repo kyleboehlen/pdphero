@@ -14,11 +14,11 @@
         "fruitcake/laravel-cors": "^2.0",
         "genealabs/laravel-caffeine": "^8.0",
         "guzzlehttp/guzzle": "^7.2",
+        "jamesmills/eloquent-uuid": "^1.6",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "marvinlabs/laravel-discord-logger": "^1.1",
-        "webpatser/laravel-uuid": "^3.0"
+        "marvinlabs/laravel-discord-logger": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
