@@ -158,6 +158,7 @@ div.app-container
 
             &.completed
             {
+                color: $light-grey;
                 text-decoration: line-through;
             }
 
