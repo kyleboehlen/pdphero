@@ -25,6 +25,8 @@ body
 header.app
 {
     @extend %app-header;
+
+    border-bottom: none;
 }
 
 nav.app
@@ -35,9 +37,14 @@ nav.app
 footer.app
 {
     @extend %app-footer;
+
+    border-top: none;
 }
 
 div.app-container
 {
     @extend %app-container;
+
+    margin-bottom: 0;
+    margin-top: 1%;
 }

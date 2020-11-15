@@ -112,6 +112,11 @@ div.app-container
             width: 95%;
         }
 
+        &:first-of-type
+        {
+            margin-top: .5%;
+        }
+
         form
         {
             flex-grow: 0;
