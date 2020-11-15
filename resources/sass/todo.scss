@@ -92,6 +92,7 @@ div.app-container
     {
         align-items: center;
         border: $thin-border solid $light-grey;
+        border-radius: 10px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -176,6 +177,7 @@ div.app-container
         div.priority
         {
             border-left: $thin-border solid $light-grey;
+            border-radius: 0 7.5px 7.5px 0;
             flex-basis: 25px;
             flex-grow: 0;
             height: 100%;
