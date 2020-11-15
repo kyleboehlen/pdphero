@@ -169,6 +169,7 @@ div.app-container
 
         div.priority
         {
+            border-left: $thin-border solid $light-grey;
             flex-basis: 25px;
             flex-grow: 0;
             height: 100%;
