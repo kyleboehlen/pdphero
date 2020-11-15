@@ -7,5 +7,5 @@
         {{ $item->title }}
     </a>
     &nbsp;
-    <div class="priority {{ strtolower($item->priority->name) }}"></div>
+    <div class="priority {{ strtolower($item->priority->name) }}" title="Priority: {{ $item->priority->name }}"></div>
 </div>
