@@ -2,15 +2,15 @@
 
 @section('template')
     {{-- Header --}}
-    <x-app-header title="To-Do" />
+    <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-to-do-nav />
+    <x-todo.nav />
 
     <div class="app-container">
 
     </div>
 
     {{-- Navigation Footer --}}
-    <x-app-footer />
+    <x-app.footer />
 @endsection

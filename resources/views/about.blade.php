@@ -2,10 +2,10 @@
 
 @section('template')
     {{-- About Header --}}
-    <x-about-header />
+    <x-about.header />
 
     {{-- Side Nav --}}
-    <x-about-nav />
+    <x-about.nav />
 
     <div class="container">
         {{-- About --}}
@@ -74,6 +74,6 @@
     </div>
 
     @if(config('about.show_social_footer'))
-        <x-social-footer />
+        <x-about.footer />
     @endif
 @endsection

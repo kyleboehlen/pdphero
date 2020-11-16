@@ -1,21 +1,19 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\About;
 
 use Illuminate\View\Component;
 
-class AppFooter extends Component
-{
-    public $highlight;
-
+class Header extends Component
+{   
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($highlight)
+    public function __construct()
     {
-        $this->highlight = $highlight;
+
     }
 
     /**
@@ -25,6 +23,6 @@ class AppFooter extends Component
      */
     public function render()
     {
-        return view('components.app-footer');
+        return view('components.about.header');
     }
 }

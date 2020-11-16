@@ -1,21 +1,19 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\About;
 
 use Illuminate\View\Component;
 
-class ToDoItem extends Component
+class Nav extends Component
 {
-    public $item;
-
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($item)
+    public function __construct()
     {
-        $this->item = $item;
+
     }
 
     /**
@@ -25,6 +23,6 @@ class ToDoItem extends Component
      */
     public function render()
     {
-        return view('components.to-do-item');
+        return view('components.about.nav');
     }
 }
