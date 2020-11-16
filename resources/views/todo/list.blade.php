@@ -9,7 +9,7 @@
 
     <div class="app-container">
         @if($to_do_items->count() == 0)
-            {{-- Add message about 'no todo items would you like to create one' --}}
+            <x-todo.empty-list-item />
         @else
             @foreach($to_do_items as $item)
                 <x-todo.item :item="$item" />

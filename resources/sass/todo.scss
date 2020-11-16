@@ -207,5 +207,27 @@ div.app-container
                 background-color: $red;
             }
         }
+
+        &.empty
+        {
+            border: $thin-border dashed $light-grey;
+
+            form
+            {
+                flex-grow: 0;
+
+                input[type="checkbox"]
+                {
+                    @extend %checkbox;
+
+                    border: $thin-border dashed $white;
+                }
+            }
+
+            div.priority
+            {
+                border-left: $thin-border dashed $light-grey;
+            }
+        }
     }
 }
