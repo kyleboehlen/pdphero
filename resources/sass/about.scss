@@ -79,12 +79,9 @@ header.about
 
         button.login-register
         {
-            background-color: $dark-grey;
-            border-radius: 25px;
-            color: $white;
+            @extend %button;
+
             float: right;
-            font-family: $header-font;
-            font-size: 1.7em;
             height: 75%;
             margin-right: 2.5%;
             margin-top: .75%;
@@ -122,9 +119,7 @@ header.about
 
             &:hover
             {
-                border-color: $black;
-                color: $black;
-                cursor: pointer;
+                @extend %button-hover;
             }
         }
     }

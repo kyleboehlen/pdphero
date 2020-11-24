@@ -292,6 +292,22 @@
     }
 }
 
+%button
+{
+    background-color: $dark-grey;
+    border-radius: 25px;
+    color: $white;
+    font-family: $header-font;
+    font-size: 1.7em;
+}
+
+%button-hover
+{
+    border-color: $black;
+    color: $black;
+    cursor: pointer;
+}
+
 %card
 {
     background-color: $dark-grey;

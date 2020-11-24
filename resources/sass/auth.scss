@@ -103,13 +103,10 @@ div.card
 
     button[type="submit"]
     {
-        background-color: $dark-grey;
-        border-radius: 25px;
-        color: $white;
+        @extend %button;
+        
         display: block;
         line-height: 200%;
-        font-family: $header-font;
-        font-size: 1.75em;
         height: auto;
         margin-left: 25%;
         margin-right: auto;
@@ -129,9 +126,7 @@ div.card
 
         &:hover
         {
-            border-color: $black;
-            color: $black;
-            cursor: pointer;
+            @extend %button-hover;
         }
     }
 
@@ -200,9 +195,7 @@ div.big-card
 
         &:hover
         {
-            border-color: $black;
-            color: $black;
-            cursor: pointer;
+            @extend %button-hover;
         }
     }
 }
