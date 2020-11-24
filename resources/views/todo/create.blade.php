@@ -8,9 +8,18 @@
     <x-todo.nav />
 
     <div class="app-container">
-
+        @switch($from)
+            @case('habit')
+                
+                @break
+            @case('goal')
+                
+                @break
+            @default
+                <x-todo.form action="todo.store" title="Create New Item" />
+        @endswitch
     </div>
 
     {{-- Navigation Footer --}}
-    <x-app.footer />
+    <x-app.footer highlight="todo" />
 @endsection

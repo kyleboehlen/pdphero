@@ -9,11 +9,9 @@
             <ul class="list">
                 <a href="{{ route('todo.create') }}"><li class="top">Create New To-Do Item</li></a>
 
-                {{-- Todo: Change route to import todo from habit route --}}
-                <a href="{{ route('todo.create') }}"><li>Create From Habit</li></a>
+                <a href="{{ route('todo.create', ['from' => 'habit']) }}"><li>Create From Habit</li></a>
 
-                {{-- Todo: Change route to import todo from action item route --}}
-                <a href="{{ route('todo.create') }}"><li>Create From Goal</li></a>
+                <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
             </ul>
             @break
         @case('edit')

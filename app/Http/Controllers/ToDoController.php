@@ -9,7 +9,7 @@ use Log;
 use App\Models\ToDo\ToDo;
 
 // Requests
-
+use App\Http\Requests\ToDo\CreateRequest;
 
 class ToDoController extends Controller
 {
@@ -57,7 +57,9 @@ class ToDoController extends Controller
 
     public function create(CreateRequest $request)
     {
-
+        return view('todo.create')->with([
+            'from' => $request->get('from')
+        ]);
     }
 
     public function store(StoreRequest $request)
