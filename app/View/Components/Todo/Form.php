@@ -20,11 +20,11 @@ class Form extends Component
      *
      * @return void
      */
-    public function __construct($action, $item = null)
+    public function __construct($action, $item = null, $title)
     {
         $this->action = $action;
         $this->item = $item;
-        $this->title = $title;
+        $this->title = str_replace('-', ' ', $title);
     }
 
     /**

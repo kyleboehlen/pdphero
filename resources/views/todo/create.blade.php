@@ -5,7 +5,7 @@
     <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-todo.nav />
+    <x-todo.nav page="create" />
 
     <div class="app-container">
         @switch($from)
@@ -16,7 +16,7 @@
                 
                 @break
             @default
-                <x-todo.form action="todo.store" title="Create New Item" />
+                <x-todo.form action="todo.store" title="Create-New-Item" />
         @endswitch
     </div>
 
