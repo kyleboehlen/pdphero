@@ -1,4 +1,4 @@
-<form class="to-do" action="{{ route($action) }}" method="POST">
+<form class="to-do" @isset($item) action="{{ route($action, ['todo' => $item->uuid]) }}" @else action="{{ route($action) }}" @endisset method="POST">
     @csrf
 
     <h2>{{ $title }}</h2>
@@ -6,7 +6,7 @@
     <input type="text" name="title" placeholder="Title" maxlength="255" @isset($item) value="{{ $item->title }}" @else value="{{ old('title') }}" @endisset required/><br/><br/>
 
     @isset($item)
-        <x-todo.priority-selector :selected="$item->priority" />
+        <x-todo.priority-selector :selected="$item->priority->id" />
     @else
         <x-todo.priority-selector />
     @endisset

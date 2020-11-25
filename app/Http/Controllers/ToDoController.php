@@ -116,7 +116,18 @@ class ToDoController extends Controller
 
     public function edit(ToDo $todo)
     {
-        // Make sure you can't edit to-dos that are completed, not quite sure how to handle this yet
+        // Return the completed view if to-do item is completed
+        if($todo->completed)
+        {
+            // To-Do: return completed view
+            return redirect()->back();
+        }
+
+        // Return view to edit title, pri, notes with the todo item
+        return view('todo.edit')->with([
+            'item' => $todo,
+            'type' => Type::class,
+        ]);
     }
 
     public function update(UpdateRequest $request, ToDo $todo)
