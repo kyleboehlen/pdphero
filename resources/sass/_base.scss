@@ -398,8 +398,15 @@
     p
     {
         color: $white;
+        margin: 1%;
         font-family: $body-font;
         font-size: 2em;
+
+        @media screen and (max-width: 600px)
+        {
+            margin: 2.5%;
+            font-size: 1.75em;
+        }
     }
 
     button.close-box
