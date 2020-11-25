@@ -14,6 +14,7 @@ use App\Models\ToDo\ToDo;
 // Requests
 use App\Http\Requests\ToDo\CreateRequest;
 use App\Http\Requests\ToDo\StoreRequest;
+use App\Http\Requests\ToDo\UpdateRequest;
 
 class ToDoController extends Controller
 {
@@ -97,7 +98,6 @@ class ToDoController extends Controller
         if(!$todo->save())
         {
             // Log error
-            $user = \Auth::user();
             Log::error('Failed to store new To-Do item.', [
                 'user_id' => $user->id,
                 'todo' => $todo->toArray(),
@@ -133,7 +133,37 @@ class ToDoController extends Controller
 
     public function update(UpdateRequest $request, ToDo $todo)
     {
+        // Set title
+        $todo->title = $request->get('title');
 
+        // Set priority
+        foreach(config('todo.priorities') as $id => $priority)
+        {
+            if($request->has("priority-$id"))
+            {
+                $todo->priority_id = $id;
+            }
+        }
+
+        // Set notes
+        $todo->notes = $request->get('notes');
+
+        if(!$todo->save())
+        {
+            // Log error
+            $user = \Auth::user();
+            Log::error('Failed to update new To-Do item.', [
+                'user_id' => $user->id,
+                'todo' => $todo->toArray(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong updating To-Do item, please try again.'
+            ]);
+        }
+
+        return redirect()->route('todo.list');
     }
 
     public function destroy(ToDo $todo)

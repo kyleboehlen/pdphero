@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use JamesMills\Uuid\HasUuidTrait;
+use Carbon\Carbon;
 use Log;
 
 // Models
@@ -14,12 +15,6 @@ use App\Models\ToDo\ToDoPriority;
 class ToDo extends Model
 {
     use HasFactory, HasUuidTrait, SoftDeletes;
-
-    // Casts to Carbon
-    protected $dates = [
-        'created_at',
-        'updated_at',
-    ];
 
     public function priority()
     {
@@ -56,7 +51,7 @@ class ToDo extends Model
      */
     public function relativeUpdatedAt()
     {
-        $updated_at = $this->updated_at;
+        $updated_at = Carbon::parse($this->updated_at);
 
         if($updated_at->isToday())
         {

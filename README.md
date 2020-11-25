@@ -2,7 +2,7 @@
 
 ## Installation
 Before installing the site the following tools need to be installed:
-- php7.4 or higher with the extensions
+- php7.4 or higher with the extensions (including php-memcached)
 - apache2
 - MySQL (MariaDB)
 - git

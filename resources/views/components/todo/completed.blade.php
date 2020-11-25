@@ -1,7 +1,7 @@
 <div class="completed">
     <h2>Completed Item</h2>
 
-    <h3 class="title">Good job completing {{ $item->title }} at {{ $item->updated_at->format('g:i A') }} {{ $item->relativeUpdatedAt() }}!</h3>
+    <h3 class="title">Good job completing {{ $item->title }} at @displayDate($item->updated_at, 'g:i A') {{ $item->relativeUpdatedAt() }}!</h3>
 
     @if(!is_null($item->notes))
         <p>

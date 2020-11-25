@@ -15,6 +15,7 @@
         "genealabs/laravel-caffeine": "^8.0",
         "guzzlehttp/guzzle": "^7.2",
         "jamesmills/eloquent-uuid": "^1.6",
+        "jamesmills/laravel-timezone": "^1.9",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
