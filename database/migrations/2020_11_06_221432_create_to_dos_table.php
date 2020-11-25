@@ -25,7 +25,7 @@ class CreateToDosTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->uuid('uuid')->unique();
             $table->string('title');
-            $table->tinyInteger('priority_id')->unsigned();
+            $table->tinyInteger('priority_id')->unsigned()->default(0);
             $table->tinyInteger('type_id')->unsigned();
             $table->text('notes')->nullable();
             $table->boolean('completed')->default(0);

@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Log;
 
+// Constants
+use App\Helpers\Constants\ToDo\Type;
+
 // Models
 use App\Models\ToDo\ToDo;
 
 // Requests
 use App\Http\Requests\ToDo\CreateRequest;
+use App\Http\Requests\ToDo\StoreRequest;
 
 class ToDoController extends Controller
 {
@@ -57,6 +61,7 @@ class ToDoController extends Controller
 
     public function create(CreateRequest $request)
     {
+        // Return the create to-do item form
         return view('todo.create')->with([
             'from' => $request->get('from')
         ]);
@@ -64,8 +69,50 @@ class ToDoController extends Controller
 
     public function store(StoreRequest $request)
     {
+        // Create new to-do
+        $todo = new Todo();
 
+        // Set type to normal to-do item
+        $todo->type_id = Type::TODO_ITEM;
+
+        // Set user
+        $user = \Auth::user();
+        $todo->user_id = $user->id;
+
+        // Set title
+        $todo->title = $request->get('title');
+
+        // Set priority
+        foreach(config('todo.priorities') as $id => $priority)
+        {
+            if($request->has("priority-$id"))
+            {
+                $todo->priority_id = $id;
+            }
+        }
+
+        // Set notes
+        $todo->notes = $request->get('notes');
+
+        if(!$todo->save())
+        {
+            // Log error
+            $user = \Auth::user();
+            Log::error('Failed to store new To-Do item.', [
+                'user_id' => $user->id,
+                'todo' => $todo->toArray(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to create To-Do item, please try again.'
+            ]);
+        }
+
+        return redirect()->route('todo.list');
     }
+
+    // To-Do: storeFromHabit() and storeFromGoal()
 
     public function edit(ToDo $todo)
     {
