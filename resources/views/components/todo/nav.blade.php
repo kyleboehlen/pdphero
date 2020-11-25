@@ -23,9 +23,6 @@
                 <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
             </ul>
             @break
-        @case('edit')
-            
-            @break
         @default
             <ul class="default">
                 <a href="{{ route('todo.list') }}"><li>Back To List</li></a>

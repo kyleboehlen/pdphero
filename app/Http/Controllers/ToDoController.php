@@ -119,8 +119,9 @@ class ToDoController extends Controller
         // Return the completed view if to-do item is completed
         if($todo->completed)
         {
-            // To-Do: return completed view
-            return redirect()->back();
+            return view('todo.completed')->with([
+                'item' => $todo,
+            ]);
         }
 
         // Return view to edit title, pri, notes with the todo item
