@@ -20,7 +20,7 @@ $('.submit-completed').change(function(){
 });
 
 // Handles making sure only one priority checkbox is selected
-$('.priority-checkbox').change(function() {
+$('.priority-checkbox').change(function(){
     // in the handler, 'this' refers to the box clicked on
     var $box = $(this);
     if($box.is(":checked"))
@@ -37,3 +37,8 @@ $('.priority-checkbox').change(function() {
         $box.prop("checked", false);
     }
 });
+
+// Close pop up boxes after 'okay' is hit
+$('.close-box').click(function(){
+    $(this).parent().hide();
+})

@@ -48,3 +48,62 @@ div.app-container
     margin-bottom: 0;
     margin-top: 1%;
 }
+
+div.info-box
+{
+    @extend %pop-up-box;
+}
+
+div.success-box
+{
+    @extend %pop-up-box;
+
+    border: $medium-border solid $green;
+
+    h1
+    {
+        border-bottom: $medium-border solid $green;
+    }
+
+    button.close-box:hover
+    {
+        border-color: $green;
+        color: $green;
+    }
+}
+
+div.warning-box
+{
+    @extend %pop-up-box;
+
+    border: $medium-border solid $yellow;
+
+    h1
+    {
+        border-bottom: $medium-border solid $yellow;
+    }
+
+    button.close-box:hover
+    {
+        border-color: $yellow;
+        color: $yellow;
+    }
+}
+
+div.error-box
+{
+    @extend %pop-up-box;
+
+    border: $medium-border solid $red;
+
+    h1
+    {
+        border-bottom: $medium-border solid $red;
+    }
+
+    button.close-box:hover
+    {
+        border-color: $red;
+        color: $red;
+    }
+}
