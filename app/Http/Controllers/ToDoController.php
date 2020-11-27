@@ -54,8 +54,10 @@ class ToDoController extends Controller
             });
         });
 
+        // Check if user wants completed to-do items to move to the bottom of the list
         if((bool) $user->getSettingValue(Setting::TODO_MOVE_COMPLETED))
         {
+            // If so, order by completed first
             $to_do_items = $to_do_items->orderBy('completed');
         }
         
