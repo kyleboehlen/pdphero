@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Helpers\Constants\ToDo\Type;
 
 // Models
-use App\Models\User;
+use App\Models\User\User;
 
 class ToDoFactory extends Factory
 {

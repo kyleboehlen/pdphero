@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 // Models
 use App\Models\ToDo\ToDo;
-use App\Models\User;
+use App\Models\User\User;
 
 class TestUserTest extends TestCase
 {

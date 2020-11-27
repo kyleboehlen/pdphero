@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 // Models
-use App\Models\User;
+use App\Models\User\User;
 use App\Models\ToDo\ToDo;
 
 class ToDoTest extends TestCase
@@ -86,5 +86,5 @@ class ToDoTest extends TestCase
         // Test toggle completed route
         $response = $this->actingAs($test_user)->post(route('todo.toggle-completed', ['todo' => $uuid]));
         $response->assertStatus(403);
-    }    
+    }
 }

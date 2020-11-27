@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,4 +41,17 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getSettingValue($setting_id)
+    {
+        $user_setting = UsersSettings::where('user_id', $this->id)->where('setting_id', $setting_id)->first();
+
+        if(is_null($user_setting))
+        {
+            $default = config('settings.default');
+            return $default[$setting_id];
+        }
+
+        return $user_setting->value;
+    }
 }

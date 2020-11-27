@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Carbon\Carbon;
 
 // Models
-use App\Models\User;
+use App\Models\User\User;
 
 class AuthTest extends TestCase
 {
