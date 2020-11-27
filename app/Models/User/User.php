@@ -44,14 +44,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getSettingValue($setting_id)
     {
+        // Check if user has the setting saved
         $user_setting = UsersSettings::where('user_id', $this->id)->where('setting_id', $setting_id)->first();
 
-        if(is_null($user_setting))
+        if(is_null($user_setting)) // If they don't have that setting
         {
+            // Return the default value for that setting
             $default = config('settings.default');
             return $default[$setting_id];
         }
 
+        // Return the value for that user's setting
         return $user_setting->value;
     }
 }

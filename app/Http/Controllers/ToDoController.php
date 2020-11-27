@@ -49,8 +49,8 @@ class ToDoController extends Controller
         // Constrain by how far back user wants to see completed to do items
         $completed_at = Carbon::now()->subHours($user->getSettingValue(Setting::TODO_SHOW_COMPLETED_FOR))->toDatetimeString();
         $to_do_items = $to_do_items->where(function($q) use ($completed_at){
-            $q->where('completed', 0)->orWhere(function($s_q) use ($completed_at){
-                $s_q->where('completed', 1)->where('updated_at', '>=', $completed_at);
+            $q->where('completed', 0)->orWhere(function($s_q) use ($completed_at){ // Is either incomplete
+                $s_q->where('completed', 1)->where('updated_at', '>=', $completed_at); // or is complete and within the hours to display completed for user
             });
         });
 
