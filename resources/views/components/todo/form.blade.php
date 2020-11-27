@@ -3,7 +3,7 @@
 
     <h2>{{ $title }}</h2>
 
-    <input type="text" name="title" placeholder="Title" maxlength="255" @isset($item) value="{{ $item->title }}" @else value="{{ old('title') }}" @endisset required/><br/><br/>
+    <input type="text" name="title" placeholder="Title" maxlength="255" @isset($item) value="{{ $item->title }}" @else value="{{ old('title') }}" @endisset required /><br/><br/>
 
     @isset($item)
         <x-todo.priority-selector :selected="$item->priority->id" />
