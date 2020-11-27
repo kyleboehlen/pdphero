@@ -38,50 +38,6 @@ header.app
     }
 }
 
-nav.app
-{
-    img.logo
-    {   
-        margin-bottom: 5%;
-        margin-left: 35%;
-        margin-right: auto;
-        margin-top: 10%;
-        max-width: 30%;
-    }
-
-    ul
-    {
-        a
-        {
-            font-size: 1.5em;
-
-            @media only screen and (max-width: 800px)
-            {
-                font-size: 1.25em;
-            }
-
-            li
-            {
-                border-bottom: $thin-border solid $light-grey;
-                border-top: $thin-border solid $light-grey;
-                margin-bottom: 7.5%;
-
-                @media only screen and (max-width: 800px)
-                {
-                    margin-bottom: 5%;
-                }
-            }
-
-            &:hover > li
-            {
-                background-color: $light-blue;
-                border-bottom: $thin-border solid $white;
-                border-top: $thin-border solid $white;
-            }
-        }
-    }
-}
-
 div.app-container
 {
     flex-direction: column;

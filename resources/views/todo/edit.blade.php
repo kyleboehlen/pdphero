@@ -4,21 +4,25 @@
     {{-- Header --}}
     <x-app.header title="To-Do" />
 
-    {{-- Side Nav --}}
-    <x-todo.nav />
+    @switch($item->type_id)
+        @case($type::HABIT_ITEM)
+            {{-- Side Nav --}}
+            <x-todo.nav show="list|create-from-habit|delete" />
 
-    <div class="app-container">
-        @switch($item->type_id)
-            @case($type::HABIT_ITEM)
-
-                @break
-            @case($type::ACTION_ITEM)
+            @break
+        @case($type::ACTION_ITEM)
+            {{-- Side Nav --}}
+            <x-todo.nav show="list|create-from-goal|delete" />
             
-                @break
-            @default
+            @break
+        @default
+            {{-- Side Nav --}}
+            <x-todo.nav show="list|create|delete" :item="$item"/>
+
+            <div class="app-container">
                 <x-todo.form action="todo.update" :item="$item" title="Edit-Item"/>
-        @endswitch
-    </div>
+            </div>
+    @endswitch
 
     {{-- Navigation Footer --}}
     <x-app.footer highlight="todo" />

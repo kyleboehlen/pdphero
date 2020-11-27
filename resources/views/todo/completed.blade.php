@@ -5,7 +5,7 @@
     <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-todo.nav />
+    <x-todo.nav show="list|create|delete" :item="$item" />
 
     <div class="app-container">
         <x-todo.completed :item="$item" />

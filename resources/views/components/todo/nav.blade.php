@@ -4,28 +4,31 @@
     {{-- Logo --}}
     <img class="logo" src="{{ asset('logos/logo-white.png') }}" />
 
-    @switch($page)
-        @case('create')
-            <ul class="list">
-                <a href="{{ route('todo.list') }}"><li>Back To List</li></a>
+    <ul class="list">
+        @if(in_array('list', $show))
+            <a href="{{ route('todo.list') }}"><li>Back To List</li></a>
+        @endif
 
-                <a href="{{ route('todo.create', ['from' => 'habit']) }}"><li>Create From Habit</li></a>
+        @if(in_array('create', $show))
+            <a href="{{ route('todo.create') }}"><li class="top">Create New To-Do Item</li></a>
+        @endif
 
-                <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
-            </ul>
-            @break
-        @case('list')
-            <ul class="list">
-                <a href="{{ route('todo.create') }}"><li class="top">Create New To-Do Item</li></a>
+        @if(in_array('create-from-habit', $show))
+            <a href="{{ route('todo.create', ['from' => 'habit']) }}"><li>Create From Habit</li></a>
+        @endif
 
-                <a href="{{ route('todo.create', ['from' => 'habit']) }}"><li>Create From Habit</li></a>
+        @if(in_array('create-from-goal', $show))
+            <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
+        @endif
 
-                <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
-            </ul>
-            @break
-        @default
-            <ul class="default">
-                <a href="{{ route('todo.list') }}"><li>Back To List</li></a>
-            </ul>
-    @endswitch
+        @if(in_array('delete', $show))
+            <form id="delete-item-form" action="{{ route('todo.destroy', ['todo' => $item->uuid]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('todo.destroy', ['todo' => $item->uuid]) }}" class="destructive-option"
+                onclick="event.preventDefault(); document.getElementById('delete-item-form').submit();">
+                <li>Delete Item</li>
+            </a>
+        @endif 
+    </ul>
 </nav>
