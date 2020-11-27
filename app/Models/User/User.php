@@ -42,6 +42,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+
+    /**
+     * Returns the value set for the user
+     * of the specified setting
+     *
+     * @return string
+     */
     public function getSettingValue($setting_id)
     {
         // Check if user has the setting saved
