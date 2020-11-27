@@ -12,6 +12,7 @@ use DB;
 // Models
 use App\Models\ToDo\ToDoPriority;
 use App\Models\ToDo\ToDoTypes;
+use App\Models\User\Settings;
 
 class DeployTest extends TestCase
 {
@@ -30,6 +31,8 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('migrations'));
         $this->assertTrue(Schema::hasTable('password_resets'));
         $this->assertTrue(Schema::hasTable('users'));
+        $this->assertTrue(Schema::hasTable('settings'));
+        $this->assertTrue(Schema::hasTable('users_settings'));
     }
 
     /**
@@ -47,5 +50,8 @@ class DeployTest extends TestCase
 
         // Verify ToDo Types seeded
         $this->assertEquals(configArrayFromSeededCollection(ToDoTypes::all()), config('todo.types'));
+
+        // Verify User Settings seeded
+        $this->assertEquals(configArrayFromSeededCollection(Settings::all()), config('settings.seed'));
     }
 }

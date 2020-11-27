@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Log;
 
 // Constants
 use App\Helpers\Constants\ToDo\Type;
+use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\ToDo\ToDo;
@@ -44,9 +46,15 @@ class ToDoController extends Controller
         // Load user's to-do items
         $to_do_items = Todo::where('user_id', $user->id)->with('priority'); // This is going to need to be rewritten with constrained eager loads (habits/goals): https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
 
-        // To-do: Add a setting to decide how long to show to-dos after completion, constrain updated_at by this
+        // Constrain by how far back user wants to see completed to do items
+        $completed_at = Carbon::now()->subHours($user->getSettingValue(Setting::TODO_SHOW_COMPLETED_FOR))->toDatetimeString();
+        $to_do_items = $to_do_items->where(function($q) use ($completed_at){
+            $q->where('completed', 0)->orWhere(function($s_q) use ($completed_at){
+                $s_q->where('completed', 1)->where('updated_at', '>=', $completed_at);
+            });
+        });
 
-        if(true) // To-Do: add setting for moving completed to-dos to the bottom or not
+        if((bool) $user->getSettingValue(Setting::TODO_MOVE_COMPLETED))
         {
             $to_do_items = $to_do_items->orderBy('completed');
         }

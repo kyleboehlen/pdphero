@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
 
         // Seed ToDoTypes
         $this->call(ToDoTypesSeed::class);
+
+        // Seed Settings
+        $this->call(SettingsSeed::class);
     }
 }
