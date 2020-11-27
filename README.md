@@ -10,9 +10,9 @@ Before installing the site the following tools need to be installed:
 - npm
 
 <br/>
-Start by cloning into the repository
+Create an ssh key (remember to copy it to root) and add it to bitbucket to clone the repo
 
-`cd /var/www/html && git clone https://github.com/kyleboehlen/pdphero`
+`cd /var/www/html && git clone git@bitbucket.org:pdphero/pdphero.git`
 
 <br/>
 Install the required depdendencies
@@ -126,7 +126,7 @@ Run the database migration, use the local phpunit
 
 `alias vendor_phpunit=vendor/phpunit/phpunit/phpunit`
 
-`phpunit --filter Deploy`
+`vendor_phpunit --filter Deploy`
 
 <br/>
 Change the php.ini file to let Laravel handle file upload sizes
