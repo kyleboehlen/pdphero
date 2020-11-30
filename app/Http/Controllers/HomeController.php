@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         if(\Auth::check()) // Check if the user is authenticated
         {
-            return redirect()->route('home'); // And redirect to the home route if authenticated
+            return redirect()->route('todo'); // And redirect to the to-do page if authenticated
         }
 
         // If the user is not authenticated, send them to the root about route
@@ -32,8 +32,8 @@ class HomeController extends Controller
      */
     public function home(Request $request)
     {
-        // Later on this may get changed to check what URL the request was sent from
-        // and show a home view if they requested it, otherwise send to to-do
-        return redirect()->route('todo.list');
+        // I've changed the RouteServiceProvider::HOME route to /todo
+        // This needs to return a home page with icons for tools, tutorials, etc
+        return view('home');
     }
 }
