@@ -43,10 +43,10 @@ class AuthTest extends TestCase
 
         // Call root and assert redirect to home
         $response = $this->actingAs($user)->get('/');
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/todo');
 
         // Test email verification redirect
-        $response = $this->actingAs($user)->get('/home');
+        $response = $this->actingAs($user)->get('/todo');
         $response->assertRedirect('/email/verify');
     }
 
@@ -68,10 +68,6 @@ class AuthTest extends TestCase
 
         // Test logged in redirect
         $response = $this->actingAs($user)->get('/');
-        $response->assertRedirect('/home');
-
-        // Test home redirect to todo
-        $response = $this->actingAs($user)->get('/home');
         $response->assertRedirect('/todo');
     }
 
