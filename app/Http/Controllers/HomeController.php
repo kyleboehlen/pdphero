@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         if(\Auth::check()) // Check if the user is authenticated
         {
-            return redirect()->route('todo'); // And redirect to the to-do page if authenticated
+            return redirect()->route('todo.list'); // And redirect to the to-do page if authenticated
         }
 
         // If the user is not authenticated, send them to the root about route
