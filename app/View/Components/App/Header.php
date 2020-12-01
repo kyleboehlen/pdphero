@@ -36,11 +36,11 @@ class Header extends Component
         }
         else
         {
-            // Set icon link properly
-            $this->icon = "icons/$this->icon.png";
-
             // To-Do: Set different icons based on black label membership
             $this->icon = "$this->icon-white";
+            
+            // Set icon link properly
+            $this->icon = "icons/$this->icon.png";
         }
     }
 
