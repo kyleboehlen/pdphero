@@ -30,6 +30,9 @@ class ViewServiceProvider extends ServiceProvider
         // Auth
         View::composer('auth.*', 'App\View\Composers\AuthComposer');
 
+        // Profile
+        View::composer('profile.*', 'App\View\Composers\ProfileComposer');
+
         // ToDo
         View::composer('todo.*', 'App\View\Composers\ToDoComposer');
     }
