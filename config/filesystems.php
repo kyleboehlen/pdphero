@@ -82,6 +82,7 @@ return [
         public_path('assets/icons') => storage_path('app/public/icons'),
         public_path('assets/images') => storage_path('app/public/images'),
         public_path('assets/logos') => storage_path('app/public/logos'),
+        public_path('assets/profile-pictures') => storage_path('app/public/profile-pictures'),
     ],
 
 ];
