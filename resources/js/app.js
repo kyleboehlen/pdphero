@@ -41,4 +41,14 @@ $('.priority-checkbox').change(function(){
 // Close pop up boxes after 'okay' is hit
 $('.close-box').click(function(){
     $(this).parent().hide();
-})
+});
+
+// Profile picture toggle input
+$('.profile-picture-link').click(function(){
+    $('#profile-picture-input').click();
+});
+
+// Profile picture submits form
+$('#profile-picture-input').change(function(){
+    $('#profile-picture-form').submit();
+});

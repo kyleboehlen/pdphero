@@ -5,8 +5,7 @@
         {{ $title }}
     </h1>
     
-    <a href="{{ route('profile') }}">
-        {{-- To-Do: Chnage to profile picture route --}}
-        <img class="profile" src={{ asset('icons/profile.png') }} />
+    <a href="{{ route($route) }}">
+        <img class="profile" src={{ asset($icon) }} />
     </a>
 </header>

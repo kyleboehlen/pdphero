@@ -57,6 +57,33 @@ Route::prefix('journal')->group(function(){
 Route::prefix('profile')->group(function(){
     // Root
     Route::get('/', [ProfileController::class, 'index'])->name('profile');
+
+    // Edit routes
+    Route::prefix('edit')->group(function(){
+        // Show edit settings page
+        Route::get('settings', [ProfileController::class, 'editSettings'])->name('profile.edit.settings');
+
+        // Show edit name page
+        Route::get('name', [ProfileController::class, 'editName'])->name('profile.edit.name');
+
+        // Show edit nutshell page
+        Route::get('nutshell', [ProfileController::class, 'editNutshell'])->name('profile.edit.nutshell');
+
+        // Show edit values page
+        Route::get('values', [ProfileController::class, 'editValues'])->name('profile.edit.values');
+
+        // Show manage memebership page
+        Route::get('membership', [ProfileController::class, 'editMembership'])->name('profile.edit.membership');
+    });
+
+    // Update routes
+    Route::prefix('update')->group(function(){
+        // Update settings route
+        Route::post('settings/{id}', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
+
+        // Update routes for profile-picture, name, values, nutshell
+        Route::post('picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.update.picture');
+    });
 });
 
 // To-Do routes

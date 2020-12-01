@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+// Models
+use App\Models\ToDo\ToDo;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes;
@@ -40,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'values' => 'array',
     ];
 
 
@@ -63,5 +67,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Return the value for that user's setting
         return $user_setting->value;
+    }
+
+    public function todos()
+    {
+        return $this->hasMany(ToDo::class, 'user_id', 'id');
     }
 }

@@ -1,21 +1,22 @@
 <?php
 
-namespace App\View\Components\App;
+namespace App\View\Components\Profile;
 
 use Illuminate\View\Component;
 
-class Footer extends Component
+class Nav extends Component
 {
-    public $highlight;
+    // And array of which profile menu options to show
+    public $show;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($highlight = 'none')
+    public function __construct($show = 'list')
     {
-        $this->highlight = $highlight;
+        $this->show = explode('|', $show);
     }
 
     /**
@@ -25,6 +26,6 @@ class Footer extends Component
      */
     public function render()
     {
-        return view('components.app.footer');
+        return view('components.profile.nav');
     }
 }
