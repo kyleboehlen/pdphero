@@ -46,6 +46,14 @@ div.app-container
             margin-top: .5%;
         }
 
+        &:last-of-type
+        {
+            @media only screen and (max-width: 800px)
+            {
+                margin-bottom: 2.5%;
+            }
+        }
+
         form
         {
             flex-grow: 0;
