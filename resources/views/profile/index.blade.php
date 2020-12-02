@@ -39,7 +39,16 @@
                     @endforeach
                 </ul>
             @else
-                {{-- Note to add values --}}
+                <ul>
+                    <a href="{{ route('profile.edit.values') }}">
+                        <li>Click to add!</li>
+                        <li>Such as:</li>
+                        <li>Honesty</li>
+                        <li>Friendship</li>
+                        <li>Compassion</li>
+                        <li>Etc...</li>
+                    </a>
+                </ul>
             @endisset
         </div>
 
@@ -51,7 +60,9 @@
                     <p>{{ $line }}</p>
                 @endforeach
             @else
-                {{-- Note to add nutshell --}}
+                <a href="{{ route('profile.edit.nutshell') }}">
+                    <p>Click here to add your nutshell; this is where you list the things that are important to you, that you love doing, and that make you who you are!</p>
+                </a>
             @endisset
         </div>
     </div>

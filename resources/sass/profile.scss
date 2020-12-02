@@ -296,6 +296,28 @@ div.app-container
                     font-size: 1.5em;
                 }
             }
+
+            a
+            {
+                border: $thin-border dashed $light-grey;
+                border-radius: 10px;
+                display: block;
+
+                li
+                {
+                    color: $light-grey;
+                }
+
+                &:hover
+                {
+                    border-color: $white;
+                }
+
+                &:hover > li
+                {
+                    color: $white;
+                }
+            }
         }
 
         p
@@ -320,6 +342,24 @@ div.app-container
             {
                 margin-left: 2.5%;
                 width: 95%;
+            }
+        }
+
+        a
+        {
+            text-decoration: none;
+
+            p
+            {
+                border: $thin-border dashed $light-grey;
+                border-radius: 10px;
+                color: $light-grey;
+            }
+
+            &:hover > p
+            {
+                border-color: $white;
+                color: $white;
             }
         }
     }
