@@ -6,6 +6,10 @@
     <img class="logo" src="{{ asset('logos/logo-white.png') }}" />
 
     <ul class="list">
+        @if(in_array('back', $show))
+            <a href="{{ route('profile') }}"><li>Back To Profile</li></a>
+        @endif
+
         @if(in_array('edit-name', $show))
             <a href="{{ route('profile.edit.name') }}"><li>Edit Name</li></a>
         @endif
