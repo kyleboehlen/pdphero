@@ -3,7 +3,11 @@
 
     <h2>{{ $title }}</h2>
 
-    <input type="text" name="title" placeholder="Title" maxlength="255" @isset($item) value="{{ $item->title }}" @else value="{{ old('title') }}" @endisset required /><br/><br/>
+    <input type="text" name="title" placeholder="Title" maxlength="255" @isset($item) value="{{ $item->title }}" @else value="{{ old('title') }}" @endisset required />
+    @error('title')
+        <p class="error">{{ $message }}</p>
+    @enderror
+    <br/><br/>
 
     @isset($item)
         <x-todo.priority-selector :selected="$item->priority->id" />
@@ -13,7 +17,11 @@
 
     <br/>
 
-    <textarea name="notes" placeholder="Any notes for your to-do item go here!">@isset($item){{ $item->notes }}@else{{ old('notes') }}@endisset</textarea><br/><br/>
+    <textarea name="notes" placeholder="Any notes for your to-do item go here!">@isset($item){{ $item->notes }}@else{{ old('notes') }}@endisset</textarea>
+    @error('notes')
+        <p class="error">{{ $message }}</p>
+    @enderror
+    <br/><br/>
 
     <a href="{{ route('todo.list') }}">
         <button type="button">Cancel</button>

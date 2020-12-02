@@ -12,6 +12,12 @@ body
     margin-top: 0;
 }
 
+p.error
+{
+    font-family: $body-font;
+    margin: 0;
+}
+
 .error
 {
     color: $red !important;
