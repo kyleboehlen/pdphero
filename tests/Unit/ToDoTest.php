@@ -187,7 +187,7 @@ class ToDoTest extends TestCase
         $response->assertSee('<form class="to-do"  action="' . route('todo.update', ['todo' => $item->uuid]) . '"  method="POST">', false);
         $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $item->title . '"  required />', false);
         $response->assertSee('<div class="priority-container">', false);
-        $response->assertSee('<textarea name="notes" placeholder="Any notes for your to-do item go here!">' . $item->notes . '</textarea><br/><br/>', false);
+        $response->assertSee('<textarea name="notes" placeholder="Any notes for your to-do item go here!">' . $item->notes . '</textarea>', false);
         $response->assertSee('<button type="submit">Submit</button>', false);
     }
 
