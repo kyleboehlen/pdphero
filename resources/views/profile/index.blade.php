@@ -12,7 +12,12 @@
 
         {{-- To-Do: display profile picture, name, # of items/goals/habits accomplished --}}
         <div class="profile-picture-container">
-            <img @isset($user->profile_picture) src="{{ asset("profile-pictures/$user->profile_picture") }}" @else src="{{ asset('icon/profile-white.png') }}" @endisset />
+            @isset($user->profile_picture)
+                <img src="{{ asset("profile-pictures/$user->profile_picture") }}" />
+            @else
+                {{-- To-Do: Change this icon based on black label membership --}}
+                <img class="profile-picture-link" src="{{ asset('icons/profile-white.png') }}" />
+            @endisset
         </div>
 
         <div class="stats-container">

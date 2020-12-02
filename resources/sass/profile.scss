@@ -90,6 +90,7 @@ div.app-container
 
         img
         {
+            border: $thin-border solid $dark-grey;
             border-radius: 50%;
             float: right;
             height: auto;
@@ -119,6 +120,12 @@ div.app-container
             {
                 top: 25%;
                 position: relative;
+            }
+
+            &.profile-picture-link:hover
+            {
+                border: $thin-border solid $white;
+                cursor: pointer;
             }
         }
     }
