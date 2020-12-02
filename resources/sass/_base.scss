@@ -69,7 +69,8 @@
 
     #title
     {
-        color: $white;
+        color: $light-blue;
+        text-shadow: 2px 2px $black;
         display: inline;
         font-family: $header-font;
         font-size: 5em;
