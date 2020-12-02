@@ -1,5 +1,5 @@
 <header class="app">
-    <img id="hamburger-nav" class="hamburger hover-white" src="{{ asset('icons/hamburger-white.png') }}" />
+    <img id="hamburger-nav" class="hamburger hover-white" src="{{ asset('icons/hamburger-black.png') }}" />
 
     <h1 id="title">
         {{ $title }}

@@ -134,15 +134,22 @@
 
     img.close
     {
-        display: none;
         align-self: flex-end;
+        border: $thin-border solid $dark-grey;
+        display: none;
         height: auto;
-        padding: 3.5%;
-        width: 15%;
+        margin: 3.5%;
+        width: 16.5%;
 
         @media only screen and (max-width: 800px)
         {
             display: initial;
+        }
+
+        &.hover-white:hover
+        {
+            border: $thin-border solid $white;
+            border-radius: 50%;
         }
     }
 

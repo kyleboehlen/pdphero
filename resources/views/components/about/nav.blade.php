@@ -1,6 +1,7 @@
 <nav class="about">
     {{-- Close icon --}}
-    <img id="close-nav" class="close" src="{{ asset('icons/close-white.png') }}" />
+    <img id="close-nav" class="close hover-white" src="{{ asset('icons/close-black.png') }}" />
+    
     {{-- Logo --}}
     <img class="logo" src="{{ asset('logos/logo-white.png') }}" />
 
