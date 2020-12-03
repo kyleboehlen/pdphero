@@ -21,4 +21,10 @@ class ProfileController extends Controller
     {
         return view('profile.index');
     }
+
+    // Edit views
+    public function editName()
+    {
+        return view('profile.edit.name');
+    }
 }

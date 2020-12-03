@@ -378,4 +378,55 @@ div.app-container
             margin-top: 2.55%;
         }
     }
+
+    form.edit
+    {
+        @extend %base-form;
+
+        h2
+        {
+            @include form-title;
+        }
+
+        input[type="text"]
+        {
+            font-size: 3em;
+            width: 60%;
+
+            @media only screen and (max-width: 850px)
+            {
+                font-size: 2em;
+                width: 95%;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+
+            min-height: 75px;
+
+            @media only screen and (max-width: 800px)
+            {
+                min-height: 50px;
+            }
+
+            @media only screen and (max-height: 750px)
+            {
+                min-height: 50px;
+            }
+        }
+
+        &.name
+        {
+            margin-top: 10%;
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-top: 25%;
+            }
+        }
+    }
 }
