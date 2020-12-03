@@ -170,92 +170,11 @@ div.app-container
 
     form.to-do
     {
-        @extend %card;
-
-        min-height: 85%;
-        margin-bottom: auto;
-        margin-left: 12.5%;
-        margin-right: auto;
-        margin-top: auto;
-        text-align: center;
-        width: 75%;
-
-        @media only screen and (max-width: 1100px)
-        {
-            margin-left: 2.5%;
-            width: 95%;
-        }
+        @extend %base-form;
 
         h2
         {
-            border-bottom: $thin-border solid $light-grey;
-            color: $white;
-            font-family: $header-font;
-            font-size: 2em;
-            margin-left: 12.5%;
-            width: 75%;
-
-            @media only screen and (max-height: 850px)
-            {
-                font-size: 1.75em;
-            }
-
-            @media only screen and (max-width: 900px)
-            {
-                font-size: 1.5em;
-                margin-left: 2.5%;
-                width: 95%;
-            }
-
-            @media only screen and (max-width: 350px)
-            {
-                font-size: 1.25em;
-            }
-        }
-
-        input, textarea
-        {
-            border-radius: 5px;
-            width: 75%;
-
-            @media only screen and (max-width: 850px)
-            {
-                width: 95%;
-            }
-        }
-
-        input[type="text"]
-        {
-            font-family: $body-font;
-            font-size: 1.75em;
-            text-align: center;
-
-            @media only screen and (max-height: 850px)
-            {
-                font-size: 1.5em;
-            }
-        }
-
-        textarea
-        {
-            font-family: $body-font;
-            font-size: 1.5em;
-            height: 35%;
-
-            @media only screen and (max-height: 850px)
-            {
-                font-size: 1.25em;
-            }
-
-            @media only screen and (max-height: 750px)
-            {
-                height: 30%;
-            }
-
-            @media only screen and (max-height: 675px)
-            {
-                height: 25%;
-            }
+            @include form-title;
         }
 
         div.priority-container
@@ -336,55 +255,7 @@ div.app-container
         {
             @extend %button;
 
-            font-size: 1.85em;
-            height: 12.5%;
-            width: 25%;
-
-            @media only screen and (max-width: 1200px)
-            {
-                width: 35%;
-            }
-
-            @media only screen and (max-height: 750px)
-            {
-                height: 10%;
-                font-size: 1.5em;
-            }
-
-            @media only screen and (max-width: 450px)
-            {
-                width: 45%;
-            }
-
-            @media only screen and (max-width: 350px)
-            {
-                font-size: 1.25em;
-            }
-
-            &:hover
-            {
-                @extend %button-hover;
-            }
-
-            &:first-of-type
-            {
-                margin-right: 5%;
-
-                @media only screen and (max-width: 450px)
-                {
-                    margin-right: 1%;
-                }
-            }
-
-            &:last-of-type
-            {
-                margin-left: 5%;
-
-                @media only screen and (max-width: 450px)
-                {
-                    margin-left: 1%;
-                }
-            }
+            @include cancel-submit-buttons;
         }
     }
 
@@ -408,29 +279,7 @@ div.app-container
 
         h2
         {
-            border-bottom: $thin-border solid $light-grey;
-            color: $white;
-            font-family: $header-font;
-            font-size: 2em;
-            margin-left: 12.5%;
-            width: 75%;
-
-            @media only screen and (max-height: 850px)
-            {
-                font-size: 1.75em;
-            }
-
-            @media only screen and (max-width: 900px)
-            {
-                font-size: 1.5em;
-                margin-left: 2.5%;
-                width: 95%;
-            }
-
-            @media only screen and (max-width: 350px)
-            {
-                font-size: 1.25em;
-            }
+            @include form-title;
         }
 
         h3.title
