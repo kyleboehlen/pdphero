@@ -131,6 +131,19 @@ nav.about
 
     justify-content: space-evenly;
 
+    img.close
+    {
+        @media only screen and (max-height: 600px)
+        {
+            margin-top: 25%
+        }
+
+        @media only screen and (max-height: 500px)
+        {
+            margin-top: 35%
+        }
+    }
+
     img.logo
     {
         max-width: 50%;

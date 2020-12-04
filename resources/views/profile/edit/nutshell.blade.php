@@ -8,7 +8,7 @@
     <x-profile.nav show="back|edit-name|edit-picture|edit-values|manage-membership|log-out" />
 
     <div class="app-container">
-        <form class="edit nutshell" action="{{ route('profile.update.nutshell') }}" method="POST">
+        <form class="edit" action="{{ route('profile.update.nutshell') }}" method="POST">
             @csrf
         
             <h2>Edit Nutshell</h2><br/><br/>
