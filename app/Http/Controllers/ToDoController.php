@@ -109,7 +109,7 @@ class ToDoController extends Controller
         {
             // Log error
             Log::error('Failed to store new To-Do item.', [
-                'user_id' => $user->id,
+                'user->id' => $user->id,
                 'todo' => $todo->toArray(),
             ]);
 
@@ -163,7 +163,7 @@ class ToDoController extends Controller
             // Log error
             $user = \Auth::user();
             Log::error('Failed to update new To-Do item.', [
-                'user_id' => $user->id,
+                'user->id' => $user->id,
                 'todo' => $todo->toArray(),
             ]);
 
