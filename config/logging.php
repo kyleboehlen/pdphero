@@ -4,6 +4,8 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
+use App\Logging\CustomizeFormatter;
+
 return [
 
     /*
@@ -52,13 +54,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
-            'permissions' => 660,
+            'tap' => [CustomizeFormatter::class],
         ],
 
         'discord' => [
             'driver' => 'custom',
             'via'    => MarvinLabs\DiscordLogger\Logger::class,
-            'level'  => env('LOG_DISCORD_LEVEL', 'critical'),
+            'level'  => env('LOG_DISCORD_LEVEL', 'error'),
             'url'    => env('LOG_DISCORD_WEBHOOK_URL'),
         ],
 
