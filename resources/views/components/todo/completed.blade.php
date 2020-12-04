@@ -17,5 +17,5 @@
 
     <a href="{{ route('todo.list') }}">
         <button type="button">Okay</button>
-    </a><br/><br/>
-</form>
+    </a>
+</div>

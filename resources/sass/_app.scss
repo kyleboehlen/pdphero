@@ -15,7 +15,13 @@ body
 p.error
 {
     font-family: $body-font;
+    font-size: 2em;
     margin: 0;
+
+    @media screen and (max-width: 550px)
+    {
+        font-size: 1.75em;
+    }
 }
 
 .error

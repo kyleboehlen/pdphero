@@ -21,12 +21,11 @@
     @error('notes')
         <p class="error">{{ $message }}</p>
     @enderror
-    <br/><br/>
 
     <a href="{{ route('todo.list') }}">
-        <button type="button">Cancel</button>
+        <button class="cancel" type="button">Cancel</button>
     </a>
 
-    <button type="submit">Submit</button>
+    <button class="submit" type="submit">Submit</button>
 </form>
     

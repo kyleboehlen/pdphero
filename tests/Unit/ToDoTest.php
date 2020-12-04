@@ -159,7 +159,7 @@ class ToDoTest extends TestCase
         $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value=""  required />', false);
         $response->assertSee('<div class="priority-container">', false);
         $response->assertSee('<textarea name="notes" placeholder="Any notes for your to-do item go here!"></textarea>', false);
-        $response->assertSee('<button type="submit">Submit</button>', false);
+        $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
     }
 
     /**
@@ -188,7 +188,7 @@ class ToDoTest extends TestCase
         $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $item->title . '"  required />', false);
         $response->assertSee('<div class="priority-container">', false);
         $response->assertSee('<textarea name="notes" placeholder="Any notes for your to-do item go here!">' . $item->notes . '</textarea>', false);
-        $response->assertSee('<button type="submit">Submit</button>', false);
+        $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
     }
 
     /**

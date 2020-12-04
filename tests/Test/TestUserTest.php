@@ -35,7 +35,7 @@ class TestUserTest extends TestCase
      */
     public function toDoTest(User $user)
     {
-        ToDo::factory(rand(5, 15))->create([
+        ToDo::factory(rand(10, 30))->create([
             'user_id' => $user->id,
         ]);
 

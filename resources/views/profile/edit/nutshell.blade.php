@@ -5,19 +5,20 @@
     <x-app.header title="Profile"  icon="settings" route="profile.edit.settings" />
 
     {{-- Side Nav --}}
-    <x-profile.nav show="back|edit-picture|edit-nutshell|edit-values|manage-membership|log-out" />
+    <x-profile.nav show="back|edit-name|edit-picture|edit-values|manage-membership|log-out" />
 
     <div class="app-container">
-        <form class="edit name" action="{{ route('profile.update.name') }}" method="POST">
+        <form class="edit nutshell" action="{{ route('profile.update.nutshell') }}" method="POST">
             @csrf
         
-            <h2>Edit Name</h2><br/><br/>
+            <h2>Edit Nutshell</h2><br/><br/>
         
-            <input type="text" name="name" maxlength="255" value="{{ $user->name }}" required />
-            @error('name')
+            <textarea name="nutshell" placeholder="This is your nutshell; It's a place to list the things you that are important to you, the things that make you YOU!">{{ $user->nutshell }}</textarea>
+            @error('nutshell')
                 <p class="error">{{ $message }}</p>
             @enderror
-                
+            <br/><br/>
+
             <a href="{{ route('profile') }}">
                 <button class="cancel" type="button">Cancel</button>
             </a>

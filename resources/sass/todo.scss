@@ -14,7 +14,6 @@ div.app-container
 {
     flex-direction: column;
     overflow-y: scroll;
-    padding-bottom: 2.5px;
 
     div.to-do-item
     {
@@ -263,11 +262,11 @@ div.app-container
     {
         @extend %card;
 
-        height: auto;
         margin-bottom: auto;
         margin-left: 12.5%;
         margin-right: auto;
         margin-top: auto;
+        min-height: 95%;
         text-align: center;
         width: 75%;
 
@@ -318,6 +317,8 @@ div.app-container
             font-family: $body-font;
             font-size: 1.75em;
             margin-left: 12.5%;
+            max-height: 40%;
+            overflow-y: scroll;
             padding: 5%;
             padding-bottom: 2%;
             padding-top: 2%;
@@ -333,6 +334,7 @@ div.app-container
             {
                 font-size: 1.5em;
                 margin-left: 2.5%;
+                max-height: 55%;
                 width: 83.5%;
             }
 
@@ -340,29 +342,18 @@ div.app-container
             {
                 font-size: 1.25em;
             }
+
+            @media only screen and (max-height: 725px)
+            {
+                max-height: 45%;
+            }
         }
 
         button
         {
             @extend %button;
     
-            height: 50px;
-            width: 75%;
-    
-            @media screen and (max-width: 600px)
-            {
-                font-size: 1.6em;
-            }
-    
-            @media screen and (max-width: 400px)
-            {
-                font-size: 1.5em;
-            }
-    
-            &:hover
-            {
-                @extend %button-hover;
-            }
+            @include okay-button;
         }
     }
 }
