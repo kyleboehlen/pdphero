@@ -19,6 +19,11 @@
             <form id="profile-picture-form" action="{{ route('profile.update.picture') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input id="profile-picture-input" type="file" name="profile-picture" accept=".png,.jpg,.jpeg" required />
+                @error('profile-picture')
+                    @push('pop-up-boxes')
+                        <x-app.pop-up-box title="Error" :message="$message" />
+                    @endpush
+                @enderror
             </form>
             <a href="{{ route('profile.update.picture') }}"
                 onclick="event.preventDefault(); document.getElementById('profile-picture-input').click();">

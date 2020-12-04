@@ -23,6 +23,9 @@
             <x-app.pop-up-box title="Error" :message="$message" />
         @enderror
 
+        {{-- Stack errors that bubble up --}}
+        @stack('pop-up-boxes')
+
         @yield('template')
 
     </body>
