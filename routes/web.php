@@ -82,7 +82,11 @@ Route::prefix('profile')->group(function(){
         Route::post('settings/{id}', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
 
         // Update routes for profile-picture, name, values, nutshell
-        Route::post('picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.update.picture');
+    });
+
+    // Delete route
+    Route::prefix('delete')->group(function(){
+        Route::post('value', [ProfileController::class, 'deleteValue'])->name('profile.delete.value');
     });
 });
 

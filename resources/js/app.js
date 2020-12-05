@@ -52,3 +52,21 @@ $('.profile-picture-link').click(function(){
 $('#profile-picture-input').change(function(){
     $('#profile-picture-form').submit();
 });
+
+// Toggles trashcan/delete button in values list
+$('.trash-can').click(function(){
+    // Start by hiding all delete buttons and show
+    // All the trashcans
+    $('.trash-can').show();
+    $('.delete').hide();
+
+    $(this).hide(); // Hide clicked trashcan
+    $(this).siblings('.delete').show(); // And show it's delete button
+
+    // Automatically hide the delete button after
+    // 2.5 seconds if user does nothing
+    setTimeout(function(){
+        $('.trash-can').show();
+        $('.delete').hide();
+    }, 2500);
+});

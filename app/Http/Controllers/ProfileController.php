@@ -35,6 +35,17 @@ class ProfileController extends Controller
     {
         return view('profile.edit.name');
     }
+
+    public function editValues()
+    {
+        return view('profile.edit.values');
+    }
+
+    public function editNutshell()
+    {
+        return view('profile.edit.nutshell');
+    }
+
     // Update functions
     public function updateName(UpdateNameRequest $request)
     {

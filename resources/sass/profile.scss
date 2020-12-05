@@ -442,4 +442,136 @@ div.app-container
             @include cancel-submit-buttons;
         }
     }
+
+    &.values-list
+    {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        h2
+        {
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+        }
+
+        div.value
+        {
+            border: $thin-border solid $light-grey;
+            border-radius: 10px;
+            flex-shrink: 0;
+            margin-top: 5px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            position: relative;
+            text-align: left;
+            width: 50%;
+            white-space: nowrap;
+    
+            form
+            {
+                vertical-align: middle;
+
+                p
+                {
+                    color: $white;
+                    display: inline-block;
+                    font-family: $body-font;
+                    font-size: 2.5em;
+                    margin: 0;
+                    margin-left: 2.5%;
+
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 2.25em;
+                    }
+                }
+
+                img
+                {
+                    background-color: $dark-grey;
+                    border-radius: 0 10px 10px 0;
+                    padding: .5%;
+                    position: absolute;
+                    max-height: 82.5%;
+                    right: 0;
+
+                    &:hover
+                    {
+                        background-color: $red;
+                        cursor: pointer;
+                    }
+                }
+
+                input[type="text"]
+                {
+                    float: left;
+                    font-family: $body-font;
+                    font-size: 1.75em;
+                    margin-bottom: .5%;
+                    margin-left: 2%;
+                    margin-top: .5%;
+                    width: 70%;
+                }
+
+                button
+                {
+                    border-radius: 0 10px 10px 0;
+                    color: $black;
+                    font-family: $body-font;
+                    font-size: 2.25em;
+                    height: 100%;
+                    padding-left: 2.5%;
+                    padding-right: 1.5%;
+                    position: absolute;
+                    right: 0;
+                    width: auto;
+
+                    &.add
+                    {
+                        background-color: $green;
+                    }
+
+                    &.delete
+                    {
+                        background-color: $red;
+                        display: none;
+                    }
+
+                    &:hover
+                    {
+                        cursor: pointer;
+                        font-weight: bold;
+                    }
+                }
+            }
+    
+            @media only screen and (max-width: 1300px)
+            {
+                width: 90%;
+            }
+    
+            @media only screen and (max-width: 800px)
+            {
+                width: 95%;
+            }
+    
+            &:last-of-type
+            {
+                margin-bottom: 2.5%;
+                margin-top: 2.5%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-top: 5%;
+                }
+
+                @media only screen and (max-width: 800px)
+                {
+                    margin-bottom: 2.5%;
+                    margin-top: 10%;
+                }
+            }
+        }
+    }
 }
