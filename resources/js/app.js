@@ -64,9 +64,7 @@ $('.trash-can').click(function(){
     $(this).siblings('.delete').show(); // And show it's delete button
 
     // Automatically hide the delete button after
-    // 2.5 seconds if user does nothing
-    setTimeout(function(){
-        $('.trash-can').show();
-        $('.delete').hide();
-    }, 2500);
+    // 2 seconds if user does nothing
+    $(this).delay(200).show(1);
+    $(this).siblings('.delete').delay(2000).hide(1);
 });

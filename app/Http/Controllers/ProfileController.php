@@ -8,9 +8,11 @@ use Log;
 use Storage;
 
 // Requests
+use App\Http\Requests\Profile\DeleteValueRequest;
 use App\Http\Requests\Profile\UpdateNameRequest;
 use App\Http\Requests\Profile\UpdateNutshellRequest;
 use App\Http\Requests\Profile\UpdatePictureRequest;
+use App\Http\Requests\Profile\UpdateValuesRequest;
 
 class ProfileController extends Controller
 {
@@ -68,6 +70,30 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile');
+    }
+
+    public function updateValues(UpdateValuesRequest $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Get user's current values
+        $array = $user->values ?? array();
+
+        // Add requested value
+        $value = $request->get('value');
+        array_push($array, $value);
+
+        // Set values and save user
+        $user->values = $array;
+        if(!$user->save())
+        {
+            Log::error("Failed to add $value to user's values", [
+                'user->id' => $user->id,
+            ]);
+        }
+
+        return redirect()->route('profile.edit.values');
     }
 
     public function updateNutshell(UpdateNutshellRequest $request)
@@ -143,5 +169,41 @@ class ProfileController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    // Delete functions
+    public function deleteValue(DeleteValueRequest $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Get user's current values
+        $array = $user->values ?? array();
+
+        // Delete requested value
+        $value = $request->get('value');
+        if(($key = array_search($value, $array)) !== false)
+        {
+            unset($array[$key]);
+        }
+
+        // If we're deleting the last vale
+        if(count($array) == 0)
+        {
+            // We want to set values to null in the db so that
+            // the empty values link still shows on profile index
+            $array = null;
+        }
+
+        // Set values and save user
+        $user->values = $array;
+        if(!$user->save())
+        {
+            Log::error("Failed to delete $value from user's values", [
+                'user->id' => $user->id,
+            ]);
+        }
+
+        return redirect()->route('profile.edit.values');
     }
 }

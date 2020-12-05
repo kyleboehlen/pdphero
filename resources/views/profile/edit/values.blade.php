@@ -10,12 +10,21 @@
     <div class="app-container values-list">
         <h2>Edit Values</h2>
         
-        @foreach($user->values as $value)
-            <x-profile.value :value="$value" />
-        @endforeach
+        @isset($user->values)
+            @foreach($user->values as $value)
+                <x-profile.value :value="$value" />
+            @endforeach
+        @endisset
 
         {{-- Add form --}}
         <x-profile.value />
+
+        {{-- Errors --}}
+        @error('value')
+            @push('pop-up-boxes')
+                <x-app.pop-up-box title="Error" :message="$message" />
+            @endpush
+        @enderror
     </div>
 
     {{-- Navigation Footer --}}

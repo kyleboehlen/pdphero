@@ -4,7 +4,7 @@
             @csrf
 
             {{-- Input/displayed value --}}
-            <input type="hidden" value="{{ $value }}" />
+            <input type="hidden" name="value" value="{{ $value }}" />
             <p>{{ $value }}</p>
 
             {{-- Trashcan icon/delete submit button --}}
