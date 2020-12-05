@@ -105,14 +105,14 @@ class ProfileController extends Controller
         // Save image
         $user->profile_picture = 
             str_replace(
-                'public/profile-pictures', '',
+                'public/profile-pictures/', '',
                 $request->file('profile-picture')->store('public/profile-pictures')
             );
 
         // Crop picture
         try
         {
-            Image::make(storage_path() . '/app/public/profile-pictures' . $user->profile_picture)->fit(600, 600)->save();
+            Image::make(storage_path() . '/app/public/profile-pictures/' . $user->profile_picture)->fit(600, 600)->save();
         }
         catch(\Exception $e)
         {
