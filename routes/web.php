@@ -82,11 +82,19 @@ Route::prefix('profile')->group(function(){
         Route::post('settings/{id}', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
 
         // Update routes for profile-picture, name, values, nutshell
+        Route::post('name', [ProfileController::class, 'updateName'])->name('profile.update.name');
+        Route::post('values', [ProfileController::class, 'updateValues'])->name('profile.update.values');
+        Route::post('nutshell', [ProfileController::class, 'updateNutshell'])->name('profile.update.nutshell');
+
+        // Profile picture upload throttled
+        Route::middleware(['throttle:profile-pictures'])->group(function(){
+            Route::post('picture', [ProfileController::class, 'updatePicture'])->name('profile.update.picture');
+        });
     });
 
     // Delete route
-    Route::prefix('delete')->group(function(){
-        Route::post('value', [ProfileController::class, 'deleteValue'])->name('profile.delete.value');
+    Route::prefix('destroy')->group(function(){
+        Route::post('value', [ProfileController::class, 'destroyValue'])->name('profile.destroy.value');
     });
 });
 
