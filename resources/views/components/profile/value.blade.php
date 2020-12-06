@@ -1,6 +1,6 @@
 <div class="value">
     @isset($value)
-        <form class="value" action="{{ route('profile.delete.value') }}" method="POST">
+        <form class="value" action="{{ route('profile.destroy.value') }}" method="POST">
             @csrf
 
             {{-- Input/displayed value --}}

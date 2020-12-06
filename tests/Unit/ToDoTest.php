@@ -117,6 +117,7 @@ class ToDoTest extends TestCase
 
         // Verify list has each of the to do items
         $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
         foreach($to_do_items as $item)
         {
             $response->assertSee($item->title);
@@ -136,6 +137,7 @@ class ToDoTest extends TestCase
 
         // Get response
         $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
         $response->assertSee('Create a new To-Do Item');
     }
 
@@ -152,6 +154,7 @@ class ToDoTest extends TestCase
 
         // Get response
         $response = $this->actingAs($user)->get(route('todo.create'));
+        $response->assertStatus(200);
 
         // Check for various important parts of the form
         $response->assertSee('<h2>Create New Item</h2>', false);
@@ -181,6 +184,7 @@ class ToDoTest extends TestCase
 
         // Get response
         $response = $this->actingAs($user)->get(route('todo.edit', ['todo' => $item->uuid]));
+        $response->assertStatus(200);
 
         // Check for various important parts of the form
         $response->assertSee('<h2>Edit Item</h2>', false);
@@ -210,6 +214,7 @@ class ToDoTest extends TestCase
 
         // Get response
         $response = $this->actingAs($user)->get(route('todo.edit', ['todo' => $item->uuid]));
+        $response->assertStatus(200);
 
         // Check for various important parts of the form
         $response->assertSee('<h2>Completed Item</h2>', false);

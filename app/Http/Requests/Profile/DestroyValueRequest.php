@@ -5,7 +5,7 @@ namespace App\Http\Requests\Profile;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class DeleteValueRequest extends FormRequest
+class DestroyValueRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

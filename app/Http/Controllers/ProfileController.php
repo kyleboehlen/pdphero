@@ -8,7 +8,7 @@ use Log;
 use Storage;
 
 // Requests
-use App\Http\Requests\Profile\DeleteValueRequest;
+use App\Http\Requests\Profile\DestroyValueRequest;
 use App\Http\Requests\Profile\UpdateNameRequest;
 use App\Http\Requests\Profile\UpdateNutshellRequest;
 use App\Http\Requests\Profile\UpdatePictureRequest;
@@ -172,7 +172,7 @@ class ProfileController extends Controller
     }
 
     // Delete functions
-    public function deleteValue(DeleteValueRequest $request)
+    public function destroyValue(DestroyValueRequest $request)
     {
         // Get user
         $user = $request->user();
