@@ -529,13 +529,18 @@ div.app-container
 
                 input[type="text"]
                 {
+                    background-color: $dark-grey;
+                    border-style: inset;
+                    border-radius: 7.5px 0 0 7.5px;
+                    border-width: 2px;
+                    color: $white;
+                    height: 100%;
                     float: left;
                     font-family: $body-font;
-                    font-size: 1.75em;
-                    margin-bottom: .5%;
-                    margin-left: 2%;
-                    margin-top: .5%;
-                    width: 70%;
+                    font-size: 2em;
+                    padding-bottom: 2.5px;
+                    padding-left: 1.5%;
+                    width: 75%;
 
                     @media only screen and (max-width: 1300px)
                     {
@@ -545,6 +550,11 @@ div.app-container
                     @media only screen and (max-width: 800px)
                     {
                         font-size: 1.35em;
+                    }
+
+                    &:focus
+                    {
+                        outline: none;
                     }
                 }
 

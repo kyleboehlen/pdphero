@@ -326,12 +326,21 @@
 
     input, textarea
     {
+        background-color: $dark-grey;
+        border-style: inset;
+        border-width: 2px;
+        color: $white;
         border-radius: 5px;
         width: 75%;
 
         @media only screen and (max-width: 850px)
         {
             width: 95%;
+        }
+
+        &:focus
+        {
+            outline: none;
         }
     }
 
@@ -352,6 +361,7 @@
         font-family: $body-font;
         font-size: 1.5em;
         height: 35%;
+        padding: 5px;
 
         @media only screen and (max-height: 850px)
         {
@@ -405,6 +415,11 @@
     &:checked
     {
         background: $black;
+    }
+
+    &:focus
+    {
+        outline: none;
     }
 }
 
