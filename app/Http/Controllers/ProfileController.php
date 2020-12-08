@@ -140,6 +140,7 @@ class ProfileController extends Controller
         // Get user
         $user = $request->user();
 
+        // Validate and get value depending on which setting
         switch($id)
         {
             case Setting::TODO_MOVE_COMPLETED:
@@ -167,21 +168,27 @@ class ProfileController extends Controller
             break;
         }
 
+        // Return back with errors if validation fails
         if(!$validated)
         {
             return redirect()->back()->withErrors($validator);
         }
 
+        // Update or insert into users_settings
         $saved = DB::table('users_settings')->updateOrInsert([
             'user_id' => $user->id,
             'setting_id' => $id,
         ], [
             'value' => $value,
         ]);
-        
+
         if(!$saved)
         {
-            // Log error
+            // Log failure
+            Log::error("Failed to update setting for user.", [
+                'user->id' => $user->id,
+                'setting_id' => $id,
+            ]);
         }
 
         return redirect()->route('profile.edit.settings', ["#$id"]);
