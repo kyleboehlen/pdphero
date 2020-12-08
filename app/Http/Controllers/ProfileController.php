@@ -7,6 +7,9 @@ use Image;
 use Log;
 use Storage;
 
+// Models
+use App\Models\User\UsersSettings;
+
 // Requests
 use App\Http\Requests\Profile\DestroyValueRequest;
 use App\Http\Requests\Profile\UpdateNameRequest;
@@ -211,5 +214,21 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile.edit.values');
+    }
+
+    public function destroySettings(Request $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Delete all user settings
+        if(!UsersSettings::where('user_id', $user->id)->delete())
+        {
+            Log::error("Failed to delete user's settings", [
+                'user->id' => $user->id,
+            ]);
+        }
+
+        return redirect()->route('profile.edit.settings');
     }
 }
