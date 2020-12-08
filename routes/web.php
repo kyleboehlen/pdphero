@@ -95,6 +95,9 @@ Route::prefix('profile')->group(function(){
     // Delete route
     Route::prefix('destroy')->group(function(){
         Route::post('value', [ProfileController::class, 'destroyValue'])->name('profile.destroy.value');
+
+        // Sets all settings to default
+        Route::post('settings', [ProfileController::class, 'destroySettings'])->name('profile.destroy.settings');
     });
 });
 

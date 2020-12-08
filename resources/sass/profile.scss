@@ -649,11 +649,32 @@ div.app-container
             text-align: center;
             width: 95%;
 
+            @media only screen and (max-width: 1200px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 1000px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1.25em;
+            }
+
             input[type="checkbox"]
             {
                 @extend %checkbox;
 
                 margin-right: 1%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    height: 30px;
+                    width: 30px;
+                }
 
                 &:checked
                 {
@@ -675,6 +696,11 @@ div.app-container
                 text-align: center;
                 padding: 0;
                 max-width: 10%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    max-width: 25%;
+                }
 
                 &:focus
                 {
