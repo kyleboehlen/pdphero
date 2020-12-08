@@ -387,6 +387,11 @@
     color: $white;
     font-family: $header-font;
     font-size: 1.7em;
+
+    &:focus
+    {
+        outline: none;
+    }
 }
 
 %button-hover
@@ -394,6 +399,11 @@
     border-color: $black;
     color: $black;
     cursor: pointer;
+
+    &:focus
+    {
+        outline: none;
+    }
 }
 
 %card
