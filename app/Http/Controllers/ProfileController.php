@@ -90,6 +90,7 @@ class ProfileController extends Controller
         array_push($array, $value);
 
         // Set values and save user
+        sort($array);
         $user->values = $array;
         if(!$user->save())
         {
