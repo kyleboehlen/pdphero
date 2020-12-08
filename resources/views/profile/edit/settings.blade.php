@@ -9,7 +9,7 @@
 
     <div class="app-container settings">
 
-        <h2 id="todo-settings-header" class="settings">To-Do Settings</h2>
+        <h2 id="todo-settings-header" class="settings">To-Do</h2>
 
         {{-- Setting that handles whether or not completed todo items get moved to the bottom of the todo list --}}
         <x-settings.todo-move-completed />

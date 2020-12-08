@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use DB;
 use Image;
 use Log;
 use Storage;
+
+// Constants
+use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\User\UsersSettings;
@@ -129,7 +134,57 @@ class ProfileController extends Controller
 
         return redirect()->route('profile');
     }
-        return redirect()->route('profile');
+
+    public function updateSettings(Request $request, $id)
+    {
+        // Get user
+        $user = $request->user();
+
+        switch($id)
+        {
+            case Setting::TODO_MOVE_COMPLETED:
+                $validated = true;
+                $value = $request->has('show');
+            break;
+
+            case Setting::TODO_SHOW_COMPLETED_FOR:
+                $validator = Validator::make($request->all(), [
+                    'hours' => 'required|numeric|min:0|max:100',
+                ]);
+                if(!$validator->fails())
+                {
+                    $validated = true;
+                    $value = $request->get('hours');
+                }
+                else
+                {
+                    $validated = false;
+                }
+            break;
+
+            default:
+                return redirect()->route('profile.edit.settings');
+            break;
+        }
+
+        if(!$validated)
+        {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $saved = DB::table('users_settings')->updateOrInsert([
+            'user_id' => $user->id,
+            'setting_id' => $id,
+        ], [
+            'value' => $value,
+        ]);
+        
+        if(!$saved)
+        {
+            // Log error
+        }
+
+        return redirect()->route('profile.edit.settings', ["#$id"]);
     }
 
     public function updatePicture(UpdatePictureRequest $request)
