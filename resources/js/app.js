@@ -68,3 +68,11 @@ $('.trash-can').click(function(){
     $(this).delay(200).show(1);
     $(this).siblings('.delete').delay(2000).hide(1);
 });
+
+// Handles submitting seettings
+$('.text-setting').focusout(function(){
+    if($(this).val() != null && $(this).val() != '')
+    {
+        $(this).parent().submit();
+    }
+});
