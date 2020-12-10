@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware\ToDo;
+namespace App\Http\Middleware\Affirmations;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UUID
 {
     /**
-     * Verifies that any To-Do item UUIDs in the URL
+     * Verifies that any affirmation UUIDs in the URL
      * string belong to the authenticated user
      *
      * @param  \Illuminate\Http\Request  $request
@@ -18,11 +18,11 @@ class UUID
     public function handle(Request $request, Closure $next)
     {
         // Check if UUID is being passed in url string
-        if(!is_null($todo = $request->route('todo')))
+        if(!is_null($affirmation = $request->route('affirmation')))
         {
-            if($todo->user_id != $request->user()->id) // Verify to do item belongs to user
+            if($affirmation->user_id != $request->user()->id) // Verify affirmation belongs to user
             {
-                return abort(403); // Return forbidden if different user's To-Do item
+                return abort(403); // Return forbidden if different user's affirmation
             }
         }
         return $next($request);

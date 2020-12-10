@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 // Models
+use App\Models\Affirmations\Affirmations;
 use App\Models\ToDo\ToDo;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -67,6 +68,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Return the value for that user's setting
         return $user_setting->value;
+    }
+
+    // Relationships
+    public function affirmations()
+    {
+        return $this->hasMany(Affirmations::class, 'user_id', 'id')->orderBy('created_at');
     }
 
     public function todos()

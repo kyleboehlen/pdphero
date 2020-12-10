@@ -8,5 +8,7 @@ class ToDoTypes extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['id', 'name', 'style_class', ];
+    protected $fillable = [
+        'id', 'name', 'style_class',
+    ];
 }

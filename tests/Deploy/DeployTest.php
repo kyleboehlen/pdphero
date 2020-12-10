@@ -33,6 +33,8 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('users'));
         $this->assertTrue(Schema::hasTable('settings'));
         $this->assertTrue(Schema::hasTable('users_settings'));
+        $this->assertTrue(Schema::hasTable('affirmations'));
+        $this->assertTrue(Schema::hasTable('affirmations_read_logs'));
     }
 
     /**
