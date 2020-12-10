@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 // Models
+use App\Models\Affirmations\Affirmations;
 use App\Models\ToDo\ToDo;
 use App\Models\User\User;
 
@@ -40,5 +41,20 @@ class TestUserTest extends TestCase
         ]);
 
         $this->assertTrue(ToDo::where('user_id', $user->id)->get()->count() >= 5);
+    }
+
+    /**
+     * Give test user Affirmations
+     * 
+     * @depends userTest
+     * @test
+     */
+    public function affirmationsTest(User $user)
+    {
+        Affirmations::factory(rand(3, 7))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(Affirmations::where('user_id', $user->id)->get()->count() >= 3);
     }
 }
