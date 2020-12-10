@@ -13,6 +13,7 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/assets/js')
     .sass('resources/sass/about.scss', 'public/assets/css')
+    .sass('resources/sass/affirmations.scss', 'public/assets/css')
     .sass('resources/sass/auth.scss', 'public/assets/css')
     .sass('resources/sass/app.scss', 'public/assets/css')
     .sass('resources/sass/profile.scss', 'public/assets/css')
