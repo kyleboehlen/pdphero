@@ -182,4 +182,15 @@ class AffirmationsController extends Controller
         
         return redirect()->route('affirmations.read.show');
     }
+
+    public function destroy(Affirmations $affirmation)
+    {
+        if(!$affirmation->delete())
+        {
+            Log::error('Failed to delete affirmation', $affirmation->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('affirmations');
+    }
 }
