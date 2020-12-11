@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Log;
 
+// Constants
+use App\Helpers\Constants\User\Setting;
+
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
@@ -180,7 +183,17 @@ class AffirmationsController extends Controller
         // Touch the first affirmation so they're now out of order for checkRead
         $user->affirmations->first()->touch();
         
-        return redirect()->route('affirmations.read.show');
+        if($user->getSettingValue(Setting::AFFIRMATIONS_SHOW_READ))
+        {
+            return redirect()->route('affirmations.read.show');
+        }
+
+        return redirect()->route('profile');
+    }
+
+    public function showRead()
+    {
+        return view('affirmations.read');
     }
 
     public function destroy(Affirmations $affirmation)

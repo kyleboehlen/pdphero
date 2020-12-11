@@ -634,6 +634,11 @@ div.app-container
     {
         align-content: flex-start;
 
+        h2
+        {
+            margin-bottom: .75%;
+        }
+
         div.setting
         {
             border: $thin-border solid $light-grey;
@@ -644,6 +649,7 @@ div.app-container
             margin-bottom: .5%;
             margin-left: 2.5%;
             margin-right: 2.5%;
+            margin-top: .25%;
             padding-bottom: .5%;
             padding-top: .5%;
             text-align: center;
@@ -708,10 +714,10 @@ div.app-container
                 }
             }
 
-            &:first-of-type
-            {
-                margin-top: 1%;
-            }
+            // &:first-of-type
+            // {
+            //     margin-top: 1%;
+            // }
         }
     }
 }

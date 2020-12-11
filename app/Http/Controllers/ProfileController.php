@@ -144,6 +144,7 @@ class ProfileController extends Controller
         switch($id)
         {
             case Setting::TODO_MOVE_COMPLETED:
+            case Setting::AFFIRMATIONS_SHOW_READ:
                 $validated = true;
                 $value = $request->has('show');
             break;

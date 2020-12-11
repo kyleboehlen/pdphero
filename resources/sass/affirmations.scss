@@ -22,7 +22,7 @@ header.app
 
 div.app-container
 {
-    div.show
+    div.show, div.read
     {
         @extend %card;
 
@@ -103,6 +103,26 @@ div.app-container
             @extend %button;
     
             @include okay-button;
+        }
+    }
+
+    div.read
+    {
+        h2
+        {
+            color: $green;
+
+            margin-top: 5%;
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-top: 25%;
+            }
+
+            @media only screen and (max-height: 400px)
+            {
+                margin-top: 15%;
+            }
         }
     }
 

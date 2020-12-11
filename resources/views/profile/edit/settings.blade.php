@@ -9,6 +9,11 @@
 
     <div class="app-container settings">
 
+        <h2 id="affirmations-settings-header" class="settings">Affirmations</h2>
+
+        {{-- Setting that handles whether or not the affirmations read page is shown --}}
+        <x-settings.affirmations-show-read />
+
         <h2 id="todo-settings-header" class="settings">To-Do</h2>
 
         {{-- Setting that handles whether or not completed todo items get moved to the bottom of the todo list --}}
