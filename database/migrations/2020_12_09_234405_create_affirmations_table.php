@@ -24,7 +24,7 @@ class CreateAffirmationsTable extends Migration
             // More columns
             $table->bigInteger('user_id')->unsigned();
             $table->uuid('uuid')->unique();
-            $table->text('value');
+            $table->string('value');
 
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AffirmationsController;
 use App\Http\Controllers\GoalsController;
 use App\Http\Controllers\HabitsController;
 use App\Http\Controllers\HomeController;
@@ -46,10 +47,25 @@ Route::prefix('habits')->group(function(){
     Route::get('/', [ProfileController::class, 'index'])->name('habits');
 });
 
-// Journal
-Route::prefix('journal')->group(function(){
-    // Root
-    Route::get('/', [ProfileController::class, 'index'])->name('journal');
+// Affirmations
+Route::prefix('affirmations')->group(function(){
+    // Index
+    Route::get('/', [AffirmationsController::class, 'index'])->name('affirmations');
+
+    // Add form/add route
+    Route::get('create', [AffirmationsController::class, 'create'])->name('affirmations.create');
+    Route::post('store', [AffirmationsController::class, 'store'])->name('affirmations.store');
+
+    // Show, edit, update, and destroy routes for
+    // individual affirmations
+    Route::get('show/{affirmation}', [AffirmationsController::class, 'show'])->name('affirmations.show');
+    Route::get('edit/{affirmation}', [AffirmationsController::class, 'edit'])->name('affirmations.edit');
+    Route::post('update/{affirmation}', [AffirmationsController::class, 'update'])->name('affirmations.update');
+    Route::post('destroy/{affirmation}', [AffirmationsController::class, 'destroy'])->name('affirmations.destroy');
+
+    // This route handles verifying and making note that the affirmations list was read
+    Route::post('read', [AffirmationsController::class, 'checkRead'])->name('affirmations.read.check');
+    Route::get('read', [AffirmationsController::class, 'showRead'])->name('affirmations.read.show');
 });
 
 
