@@ -180,7 +180,7 @@ class ToDoController extends Controller
     {
         if(!$todo->delete())
         {
-            Log::error('Failed to toggle completed on to-do item', ['uuid' => $todo->uuid]);
+            Log::error('Failed to delete to-do item', $todo->toArray());
             return redirect()->back();
         }
 
