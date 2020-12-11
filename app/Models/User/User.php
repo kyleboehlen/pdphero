@@ -76,6 +76,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Affirmations::class, 'user_id', 'id')->orderBy('created_at');
     }
 
+    public function affirmationsRead()
+    {
+        return $this->hasMany(Affirmations::class, 'user_id', 'id')->orderBy('updated_at');
+    }
+
     public function todos()
     {
         return $this->hasMany(ToDo::class, 'user_id', 'id');
