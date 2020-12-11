@@ -10,4 +10,13 @@ use JamesMills\Uuid\HasUuidTrait;
 class Affirmations extends Model
 {
     use HasFactory, HasUuidTrait, SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'value',
+    ];
 }

@@ -8,6 +8,9 @@ use Log;
 // Models
 use App\Models\Affirmations\Affirmations;
 
+// Requests
+use App\Http\Requests\Affirmations\AffirmationRequest;
+
 class AffirmationsController extends Controller
 {
     /**
@@ -79,10 +82,55 @@ class AffirmationsController extends Controller
         return view('affirmations.create');
     }
 
+    public function store(AffirmationRequest $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Instantiate affirmation
+        $affirmation = new Affirmations([
+            'user_id' => $user->id,
+            'value' => $request->get('affirmation'),
+        ]);
+
+        if(!$affirmation->save())
+        {
+            // Log Error
+            Log::error('Failed to store new affirmation', $affirmation->toArray());
+
+            // Redirect back with error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to add affirmation, please try again.'
+            ]);
+        }
+
+        return redirect()->route('affirmations');
+    }
+
     public function edit(Affirmations $affirmation)
     {
         return view('affirmations.edit')->with([
             'affirmation' => $affirmation,
         ]);
     }
+
+    public function update(AffirmationRequest $request, Affirmations $affirmation)
+    {
+        // Update value
+        $affirmation->value = $request->get('affirmation');
+
+        if(!$affirmation->save())
+        {
+            // Log Error
+            Log::error('Failed to update affirmation', $affirmation->toArray());
+
+            // Redirect back with error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to update affirmation, please try again.'
+            ]);
+        }
+
+        return redirect()->route('affirmations.show', ['affirmation' => $affirmation->uuid]);
+    }
+
 }

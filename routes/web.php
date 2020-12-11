@@ -68,7 +68,6 @@ Route::prefix('affirmations')->group(function(){
     Route::get('read', [AffirmationsController::class, 'showRead'])->name('affirmations.read.show');
 });
 
-
 // Profile
 Route::prefix('profile')->group(function(){
     // Root
