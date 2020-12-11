@@ -31,6 +31,10 @@
             </a>
         @endif
 
+        @if(in_array('add-affirmation', $show))
+            <a href="{{ route('affirmations.create') }}"><li>Add Affirmation</li></a>
+        @endif
+
         @if(in_array('edit-values', $show))
             <a href="{{ route('profile.edit.values') }}"><li>Edit Values</li></a>
         @endif

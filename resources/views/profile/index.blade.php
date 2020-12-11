@@ -5,7 +5,7 @@
     <x-app.header title="Profile"  icon="settings" route="profile.edit.settings" />
 
     {{-- Side Nav --}}
-    <x-profile.nav show="edit-name|edit-picture|edit-nutshell|edit-values|manage-membership|log-out" />
+    <x-profile.nav show="edit-name|edit-picture|add-affirmation|edit-nutshell|edit-values|manage-membership|log-out" />
 
     <div class="app-container">
         <h2>{{ $user->name }}</h2>
@@ -21,6 +21,9 @@
 
         <div class="stats-container">
             <ul>
+                {{-- Times read through affirmations --}}
+                <li>Read Affirmations: <span class="highlight">{{ $user->affirmationsReadLog->count() }}</span></li>
+
                 {{-- Items completed --}}
                 <li>To-Do Items Completed: <span class="highlight">{{ $user->todos->count() }}</span></li>
 

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\ToDo\ToDo;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -79,6 +80,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function affirmationsRead()
     {
         return $this->hasMany(Affirmations::class, 'user_id', 'id')->orderBy('updated_at');
+    }
+
+    public function affirmationsReadLog()
+    {
+        return $this->hasMany(AffirmationsReadLog::class, 'user_id', 'id');
     }
 
     public function todos()
