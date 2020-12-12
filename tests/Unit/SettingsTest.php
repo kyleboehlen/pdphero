@@ -11,12 +11,91 @@ use Carbon\Carbon;
 use App\Helpers\Constants\User\Setting;
 
 // Models
+use App\Models\Affirmations\Affirmations;
 use App\Models\User\User;
-use App\Models\Todo\ToDo;
+use App\Models\ToDo\ToDo;
 
 class SettingsTest extends TestCase
 {
     use WithFaker;
+
+    /**
+     * Tests changing the setting Affirmations show read setting
+     *
+     * @return void
+     * @test
+     */
+    public function testAffirmationsShowRead()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::AFFIRMATIONS_SHOW_READ;
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Generate fake affirmations for user
+        Affirmations::factory(rand(5, 15))->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Refresh model
+        $user->refresh();
+
+        // Go though all the affirmations and check that the good job page is shown
+        foreach($user->affirmations as $affirmation)
+        {
+            $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
+            $response->assertStatus(200);
+            usleep(100000);
+        }
+
+        // Refresh model
+        $user->refresh();
+
+        // Verify that calling the read function returns the read page redirect
+        $response = $this->actingAs($user)->post(route('affirmations.read.check'), [
+            '_token' => csrf_token(),
+        ]);
+        $response->assertRedirect('/affirmations/read');
+
+        // Call settings and verify it can be seen
+        $response = $this->actingAs($user)->get(route('profile.edit.settings'));
+        $response->assertStatus(200);
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => false,
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+
+        // Refresh model
+        $user->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertFalse((bool) $user->getSettingValue($setting_id));
+
+        // Go though all the affirmations and check that the good job page is not shown now
+        foreach($user->affirmations as $affirmation)
+        {
+            $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
+            $response->assertStatus(200);
+            usleep(100000);
+        }
+
+        // Refresh model
+        $user->refresh();
+
+        // Verify that calling the read function returns the read page redirect
+        $response = $this->actingAs($user)->post(route('affirmations.read.check'), [
+            '_token' => csrf_token(),
+        ]);
+        $response->assertRedirect('/profile');
+    }
 
     /**
      * Tests changing the setting To-Do move completed

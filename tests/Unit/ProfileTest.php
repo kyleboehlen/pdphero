@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 // Models
@@ -76,7 +77,7 @@ class ProfileTest extends TestCase
         // Check the edit form actually works to update it
         $response = $this->actingAs($user)->post(route('profile.update.picture'), [
             '_token' => csrf_token(),
-            'profile-picture' => $this->faker->image,
+            'profile-picture' => UploadedFile::fake()->image('avatar.jpg'),
         ]);
 
         // Verify redirected back properly

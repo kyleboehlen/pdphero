@@ -227,12 +227,12 @@ class ToDoTest extends TestCase
     }
 
     /**
-     * Tests that the to do store route works
+     * Tests that the to do update route works
      *
      * @return void
      * @test
      */
-    public function testStore()
+    public function testUpdate()
     {
         // Create test user
         $user = User::factory()->create();
@@ -262,12 +262,12 @@ class ToDoTest extends TestCase
     }
 
     /**
-     * Tests that the update route works
+     * Tests that the store route works
      *
      * @return void
      * @test
      */
-    public function testUpdate()
+    public function testStore()
     {
         // Create test user
         $user = User::factory()->create();
