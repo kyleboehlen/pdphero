@@ -22,7 +22,7 @@
         <div class="stats-container">
             <ul>
                 {{-- Times read through affirmations --}}
-                <li>Read Affirmations: <span class="highlight">{{ $user->affirmationsReadLog->count() }}</span></li>
+                <li>Affirmations Read: <span class="highlight">{{ $user->affirmationsReadLog->count() }}</span></li>
 
                 {{-- Items completed --}}
                 <li>To-Do Items Completed: <span class="highlight">{{ $user->todos->count() }}</span></li>
@@ -33,6 +33,15 @@
                 {{-- To-Do: Habits created --}}
                 <li>Habits Created: <span class="highlight">5</span></li>
             </ul>
+        </div>
+
+        <div class="affirmations-container">
+            <a href="{{ route('affirmations') }}">
+                <div class="read-affirmations">
+                    <img src="{{ asset('icons/affirmations-black.png') }}" />
+                    <p>Read Your Affirmations</p>
+                </div>
+            </a>
         </div>
 
         {{-- Values --}}
