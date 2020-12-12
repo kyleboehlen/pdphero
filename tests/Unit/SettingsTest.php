@@ -48,7 +48,7 @@ class SettingsTest extends TestCase
         {
             $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
             $response->assertStatus(200);
-            usleep(100000);
+            usleep(200000);
         }
 
         // Refresh model
@@ -84,7 +84,7 @@ class SettingsTest extends TestCase
         {
             $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
             $response->assertStatus(200);
-            usleep(100000);
+            usleep(200000);
         }
 
         // Refresh model
