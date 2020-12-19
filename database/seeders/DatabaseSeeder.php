@@ -21,5 +21,11 @@ class DatabaseSeeder extends Seeder
 
         // Seed Settings
         $this->call(SettingsSeed::class);
+
+        // Seed Habit Types
+        $this->call(HabitTypesSeed::class);
+
+        // Seed Habit History Types
+        $this->call(HabitHistoryTypesSeed::class);
     }
 }

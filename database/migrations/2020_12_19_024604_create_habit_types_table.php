@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateToDoTypesTable extends Migration
+class CreateHabitTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateToDoTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('to_do_types', function (Blueprint $table) {
+        Schema::create('habit_types', function (Blueprint $table) {
             $table->tinyIncrements('id'); // PK
             $table->string('name'); // Other column
         });
@@ -26,6 +26,6 @@ class CreateToDoTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('to_do_types');
+        Schema::dropIfExists('habit_types');
     }
 }

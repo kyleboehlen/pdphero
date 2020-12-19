@@ -10,6 +10,8 @@ use Hash;
 use DB;
 
 // Models
+use App\Models\Habits\HabitTypes;
+use App\Models\Habits\HabitHistoryTypes;
 use App\Models\ToDo\ToDoPriority;
 use App\Models\ToDo\ToDoTypes;
 use App\Models\User\Settings;
@@ -35,6 +37,11 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('users_settings'));
         $this->assertTrue(Schema::hasTable('affirmations'));
         $this->assertTrue(Schema::hasTable('affirmations_read_logs'));
+        $this->assertTrue(Schema::hasTable('habit_types'));
+        $this->assertTrue(Schema::hasTable('habits'));
+        $this->assertTrue(Schema::hasTable('habit_history_types'));
+        $this->assertTrue(Schema::hasTable('habit_histories'));
+        $this->assertTrue(Schema::hasTable('habits_to_dos'));
     }
 
     /**
@@ -55,5 +62,11 @@ class DeployTest extends TestCase
 
         // Verify User Settings seeded
         $this->assertEquals(configArrayFromSeededCollection(Settings::all()), config('settings.seed'));
+
+        // Verify Habit Types seeded
+        $this->assertEquals(configArrayFromSeededCollection(HabitTypes::all()), config('habits.types'));
+
+        // Verify Habit History Types seeded
+        $this->assertEquals(configArrayFromSeededCollection(HabitHistoryTypes::all()), config('habits.history_types'));
     }
 }
