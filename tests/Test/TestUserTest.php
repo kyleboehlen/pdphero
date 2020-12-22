@@ -7,6 +7,7 @@ use Tests\TestCase;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Habits\Habits;
 use App\Models\ToDo\ToDo;
 use App\Models\User\User;
 
@@ -56,5 +57,20 @@ class TestUserTest extends TestCase
         ]);
 
         $this->assertTrue(Affirmations::where('user_id', $user->id)->get()->count() >= 3);
+    }
+
+    /**
+     * Give test user Habits
+     * 
+     * @depends userTest
+     * @test
+     */
+    public function habitsTest(User $user)
+    {
+        Habits::factory(rand(3, 7))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(Habits::where('user_id', $user->id)->get()->count() >= 3);
     }
 }

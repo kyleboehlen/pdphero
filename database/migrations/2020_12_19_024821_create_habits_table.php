@@ -30,7 +30,7 @@ class CreateHabitsTable extends Migration
             $table->tinyInteger('strength')->default(0); // To store cached calculated habit strenth %
             $table->tinyInteger('times_daily')->default(1); // How many times daily habit should be completed
             $table->json('days_of_week')->nullable(); // Stores the days of the week the habit should be performed
-            $table->json('every_x_days')->nullable(); // Or it this will store how many days in between doing said habit
+            $table->tinyInteger('every_x_days')->nullable(); // Or it this will store how many days in between doing said habit
             $table->boolean('show_todo')->default(0); // Whether or not to automatically create to do items for habit
 
             // Constraints
