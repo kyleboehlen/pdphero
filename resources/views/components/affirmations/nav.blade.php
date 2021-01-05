@@ -19,7 +19,7 @@
                 <a href="{{ route('affirmations.edit', ['affirmation' => $affirmation->uuid]) }}"><li>Edit Affirmation</li></a>
             @endif
 
-            @if(!in_array('destroy', $hide))
+            @if(!in_array('delete', $hide))
                 <form id="delete-affirmation-form" action="{{ route('affirmations.destroy', ['affirmation' => $affirmation->uuid]) }}" method="POST">
                     @csrf
                 </form>
