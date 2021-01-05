@@ -4,6 +4,9 @@ namespace App\View\Components\Todo;
 
 use Illuminate\View\Component;
 
+// Models
+use App\Models\ToDo\ToDo;
+
 class Item extends Component
 {
     public $item;
@@ -13,7 +16,7 @@ class Item extends Component
      *
      * @return void
      */
-    public function __construct($item)
+    public function __construct(ToDo $item)
     {
         $this->item = $item;
     }
