@@ -38,10 +38,10 @@ class ToDoController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Get logged in user
-        $user = \Auth::user();
+        $user = $request->user();
 
         // Load user's to-do items
         $to_do_items = Todo::where('user_id', $user->id)->with('priority'); // This is going to need to be rewritten with constrained eager loads (habits/goals): https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
