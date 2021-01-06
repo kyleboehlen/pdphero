@@ -145,8 +145,9 @@ class ProfileController extends Controller
         {
             case Setting::TODO_MOVE_COMPLETED:
             case Setting::AFFIRMATIONS_SHOW_READ:
+            case Setting::HABITS_SHOW_AFFIRMATIONS_HABIT:
                 $validated = true;
-                $value = $request->has('show');
+                $value = $request->has('value');
             break;
 
             case Setting::TODO_SHOW_COMPLETED_FOR:

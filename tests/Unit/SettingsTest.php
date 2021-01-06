@@ -67,7 +67,6 @@ class SettingsTest extends TestCase
         // Check the edit form actually works to update it
         $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
             '_token' => csrf_token(),
-            'value' => false,
         ]);
 
         // Verify redirected back properly
@@ -120,7 +119,6 @@ class SettingsTest extends TestCase
         // Check the edit form actually works to update it
         $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
             '_token' => csrf_token(),
-            'value' => false,
         ]);
 
         // Verify redirected back properly
@@ -196,5 +194,44 @@ class SettingsTest extends TestCase
         {
             $response->assertDontSee($item->title);
         }
+    }
+
+    /**
+     * Tests changing whether or not the affirmations habit is shown
+     *
+     * @return void
+     * @test
+     */
+    public function testHabitsShowAffirmationsHabit()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::HABITS_SHOW_AFFIRMATIONS_HABIT;
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Call settings and verify it can be seen
+        $response = $this->actingAs($user)->get(route('profile.edit.settings'));
+        $response->assertStatus(200);
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => 'checked',
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+
+        // Refresh model
+        $user->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertTrue((bool) $user->getSettingValue($setting_id));
+
+        // Verify affirmation habit shows up on habits index now
+        // TO-DO
     }
 }
