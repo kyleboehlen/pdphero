@@ -7,10 +7,13 @@ use Illuminate\View\Component;
 // Constants
 use App\Helpers\Constants\User\Setting;
 
-class AffirmationsShowRead extends Component
+class CheckboxSetting extends Component
 {
     // Holds the ID of the corresponding setting
     public $settings_id;
+
+    // The text to be displayed next to the checkbox
+    public $text;
 
     // Determines whether the checkbox is checked or not
     public $checked;
@@ -20,9 +23,11 @@ class AffirmationsShowRead extends Component
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id, $text)
     {
-        $this->settings_id = Setting::AFFIRMATIONS_SHOW_READ;
+        $this->settings_id = $id;
+
+        $this->text = $text;
 
         // Get user and determine if this setting is checked or nah
         $user = \Auth::user();
@@ -36,6 +41,6 @@ class AffirmationsShowRead extends Component
      */
     public function render()
     {
-        return view('components.settings.affirmations-show-read');
+        return view('components.settings.checkbox-setting');
     }
 }
