@@ -32,16 +32,8 @@ class ToDo extends Model
         // Toggle completed status
         $this->completed = !$this->completed;
 
-        // Save model
-        if(!$this->save())
-        {
-            // Log error return failure
-            Log::error('Failed to toggle completed on to-do item', ['uuid' => $this->uuid]);
-            return false;
-        }
-
-        // Rerturn success
-        return true;
+        // return success/failure
+        return $this->save();
     }
 
     /**

@@ -191,6 +191,8 @@ class ToDoController extends Controller
     {
         if(!$todo->toggleCompleted())
         {
+            // Log error
+            Log::error('Failed to toggle completed on to-do item', ['uuid' => $todo->uuid]);
             return redirect()->back();
         }
 
