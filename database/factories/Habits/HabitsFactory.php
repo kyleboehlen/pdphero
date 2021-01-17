@@ -30,12 +30,12 @@ class HabitsFactory extends Factory
         $days_of_week = null;
         $every_x_days = null;
 
-        if(rand() % 2 == 0)
+        if(array_rand([true, false]))
         {
             $days_of_week = array();
-            for($day = 0; $day++; $day > 6) // For PHP datetime format 'w'
+            for($day = 0; $day <= 6; $day++) // For PHP datetime format 'w'
             {
-                if(rand() % 2 == 0)
+                if(array_rand([true, false]))
                 {
                     array_push($days_of_week, $day);
                 }
@@ -55,7 +55,6 @@ class HabitsFactory extends Factory
             'days_of_week' => $days_of_week,
             'every_x_days' => $every_x_days,
             'show_todo' => (bool) (rand() % 2 == 0),
-            'strength' => rand(0, 100), // this can be chagned once there is a way of generating HabitHistory
         ];
     }
 }

@@ -71,6 +71,18 @@ class TestUserTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this->assertTrue(Habits::where('user_id', $user->id)->get()->count() >= 3);
+        $habits = Habits::where('user_id', $user->id)->get();
+
+        $this->assertTrue($habits->count() >= 3);
+
+        // Populate some values for each habit
+        $test = $this;
+        $habits->each(function($habit) use ($test){
+            // Generate fake history
+            $test->assertTrue($habit->generateFakeHistory());
+
+            // Calculate strength based on fake
+            $test->assertTrue($habit->calculateStrength());
+        });
     }
 }

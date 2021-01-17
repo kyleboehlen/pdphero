@@ -32,6 +32,7 @@ class CreateHabitsTable extends Migration
             $table->json('days_of_week')->nullable(); // Stores the days of the week the habit should be performed
             $table->tinyInteger('every_x_days')->nullable(); // Or it this will store how many days in between doing said habit
             $table->boolean('show_todo')->default(0); // Whether or not to automatically create to do items for habit
+            $table->tinyInteger('custom_order')->unsigned()->default(0); // For putting items in a custom order
 
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');
