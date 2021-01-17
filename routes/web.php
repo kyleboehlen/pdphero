@@ -44,7 +44,24 @@ Route::prefix('goals')->group(function(){
 // Habits
 Route::prefix('habits')->group(function(){
     // Root
-    Route::get('/', [ProfileController::class, 'index'])->name('habits');
+    Route::get('/', [HabitsController::class, 'index'])->name('habits');
+
+    // View details/history
+    Route::get('view/{habit}', [HabitsController::class, 'view'])->name('habits.view');
+
+    // Add form/add routes
+    Route::get('create', [HabitsController::class, 'create'])->name('habits.create');
+    Route::post('store', [HabitsController::class, 'store'])->name('habits.store');
+
+    // Edit/Update routes
+    Route::get('edit/{habit}', [HabitsController::class, 'edit'])->name('habits.edit');
+    Route::post('update/{habit}', [HabitsController::class, 'update'])->name('habits.update');
+
+    // Delete
+    Route::post('destroy/{habit}', [HabitsController::class, 'destroy'])->name('habits.destroy');
+
+    // Update habit history
+    Route::post('history/{habit}', [HabitsController::class, 'history'])->name('habits.history');
 });
 
 // Affirmations
