@@ -1,0 +1,126 @@
+@import 'app';
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    overflow-y: scroll;
+
+    div.habit
+    {
+        border: $thin-border solid $light-grey;
+        border-radius: 10px;
+        flex-direction: row;
+        margin: .25%;
+        text-align: center;
+        width: 45%;
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin: 1%; 
+            width: 98%;
+        }
+
+        a
+        {
+            text-decoration: none;
+
+            h2
+            {
+                color: $white;
+                font-family: $header-font;
+                font-weight: normal;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.4em;
+                    margin-bottom: 1%;
+                    margin-top: 1%;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.15em;
+                    margin-bottom: 2%;
+                }
+            }
+
+            &:hover > h2
+            {
+                font-weight: bold;
+            }
+        }
+
+        div.progress-container
+        {
+            border-bottom: $thin-border solid $white;
+            border-radius: 10px;
+            border-top: $thin-border solid $white;
+            box-sizing: border-box;
+            margin-left: 1%;
+            margin-right: 1%;
+            min-height: 35px;
+            width: 98%;
+            
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 2%;
+                margin-right: 2%;
+                min-height: 30px;
+                width: 96%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.15em;
+                min-height: 25px;
+            }
+
+            div.progress-bar
+            {
+                border-left: $thin-border solid $white;
+                border-radius: 10px;
+                border-right: $thin-border solid $white;
+                box-sizing: border-box;
+                color: $white;
+                font-size: 2em;
+                min-height: 35px;
+                text-shadow: 2px 2px 3px $black;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.5em;
+                    min-height: 30px;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.15em;
+                    min-height: 25px;
+                }
+
+                span.low-percentage
+                {
+                    position: relative;
+                    right: -10px;
+                }
+            }
+
+            div.no-border
+            {
+                border: none;
+            }
+        }
+    }
+}
