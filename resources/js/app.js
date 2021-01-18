@@ -77,6 +77,23 @@ $('.text-setting').focusout(function(){
     }
 });
 
+// Replaces custom alert pop-up boxes
+window.sweetAlert = function (title, icon, color, message){
+    swal.fire({
+        title: `<span class="swal-title" style="color:#ffffff">${title}</span>`,
+        icon: icon,
+        iconColor: color,
+        text: message,
+        padding: '.5rem',
+        showCancelButton: false,
+        confirmButtonColor: '#155466',
+        confirmButtonText: 'Okay',
+        background: '#3b3b3b',
+    }).then((result) => {
+        // Don't do anything
+    });
+}
+
 // For verifying delete forms -- uses sweetalert2
 window.verifyDeleteForm = function (message, formID){
     swal.fire({

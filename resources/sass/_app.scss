@@ -205,6 +205,23 @@ span.swal-title
 {
     font-family: $header-font;
     font-size: 1.25em;
+
+    @media only screen and (max-height: 800px)
+    {
+        font-size: 1em;
+    }
+}
+
+div#swal2-content.swal2-html-container
+{
+    color: $white !important;
+    font-family: $body-font;
+    font-size: 1.75em;
+
+    @media only screen and (max-height: 800px)
+    {
+        font-size: 1.5em;
+    }
 }
 
 button.swal2-confirm.swal2-styled,
@@ -213,6 +230,11 @@ button.swal2-cancel.swal2-styled
     font-family: $body-font;
     font-size: 2em;
     padding: 5% !important;
+
+    @media only screen and (max-height: 800px)
+    {
+        font-size: 1.75em;
+    }
 }
 
 .swal2-popup .swal2-styled:focus

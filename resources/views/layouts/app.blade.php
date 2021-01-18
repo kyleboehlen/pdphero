@@ -5,26 +5,36 @@
 
         {{-- Info box --}}
         @error('info')
-            <x-app.pop-up-box title="Info" :message="$message" />
+            <script>
+                sweetAlert('Info', 'info', '#ffffff', '{{ $message }}');
+            </script>
         @enderror
 
         {{-- Green success box --}}
         @error('success')
-            <x-app.pop-up-box title="Success" :message="$message" />
+            <script>
+                sweetAlert('Success', 'success', '#28d13f', '{{ $message }}');
+            </script>
         @enderror
 
         {{-- Yellow warning box --}}
         @error('warning')
-            <x-app.pop-up-box title="Warning" :message="$message" />
+            <script>
+                sweetAlert('Warning', 'warning', '#e0dd24', '{{ $message }}');
+            </script>
         @enderror
 
         {{-- Red error box --}}
         @error('error')
-            <x-app.pop-up-box title="Error" :message="$message" />
+            <script>
+                sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+            </script>
         @enderror
 
-        {{-- Stack errors that bubble up --}}
-        @stack('pop-up-boxes')
+        {{-- Stack scripts that bubble up --}}
+        <script>
+            @stack('scripts')
+        </script>
 
         @yield('template')
 
