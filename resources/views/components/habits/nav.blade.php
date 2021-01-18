@@ -19,12 +19,12 @@
         @endif
 
         @if(in_array('delete', $show))
-            <form id="delete-habit-form" action="{{ route('habits.destroy', ['habit' => $habit->uuid]) }}" method="POST">
+            <form id="delete-habit-form" class="verify-delete" action="{{ route('habits.destroy', ['habit' => $habit->uuid]) }}" method="POST">
                 @csrf
             </form>
-            <a href="{{ route('todo.destroy', ['todo' => $item->uuid]) }}" class="destructive-option"
-                onclick="event.preventDefault(); document.getElementById('delete-item-form').submit();">
-                <li>Delete Item</li>
+            <a href="{{ route('habits.destroy', ['habit' => $habit->uuid]) }}" class="destructive-option"
+                onclick="event.preventDefault(); verifyDeleteForm('Delete Habit?', '#delete-habit-form')">
+                <li>Delete Habit</li>
             </a>
         @endif 
     </ul>

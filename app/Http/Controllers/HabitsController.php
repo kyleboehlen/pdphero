@@ -35,4 +35,22 @@ class HabitsController extends Controller
             'habits' => $habits,
         ]);
     }
+
+    public function view(Habits $habit)
+    {
+        // Return detail view
+        return view('habits.details')->with([
+            'habit' => $habit,
+        ]);
+    }
+    public function destroy(Habits $habit)
+    {
+        if(!$habit->delete())
+        {
+            Log::error('Failed to delete habit', $habit->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('habits');
+    }
 }

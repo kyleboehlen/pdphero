@@ -200,3 +200,22 @@ div.error-box
         color: $red;
     }
 }
+
+span.swal-title
+{
+    font-family: $header-font;
+    font-size: 1.25em;
+}
+
+button.swal2-confirm.swal2-styled,
+button.swal2-cancel.swal2-styled
+{
+    font-family: $body-font;
+    font-size: 2em;
+    padding: 5% !important;
+}
+
+.swal2-popup .swal2-styled:focus
+{
+    box-shadow: none !important;
+}

@@ -17,8 +17,15 @@ div.app-container
     justify-content: space-evenly;
     overflow-y: scroll;
 
+    @media only screen and (max-width: 800px)
+    {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
     div.habit
     {
+        align-self: flex-start;
         border: $thin-border solid $light-grey;
         border-radius: 10px;
         flex-direction: row;

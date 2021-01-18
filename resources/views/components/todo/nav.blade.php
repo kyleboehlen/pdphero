@@ -27,7 +27,7 @@
                 @csrf
             </form>
             <a href="{{ route('todo.destroy', ['todo' => $item->uuid]) }}" class="destructive-option"
-                onclick="event.preventDefault(); document.getElementById('delete-item-form').submit();">
+                onclick="event.preventDefault(); verifyDeleteForm('Delete To-Do Item?', '#delete-item-form')">
                 <li>Delete Item</li>
             </a>
         @endif 

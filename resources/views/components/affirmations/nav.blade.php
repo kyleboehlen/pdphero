@@ -24,7 +24,7 @@
                     @csrf
                 </form>
                 <a href="{{ route('affirmations.destroy', ['affirmation' => $affirmation->uuid]) }}" class="destructive-option"
-                    onclick="event.preventDefault(); document.getElementById('delete-affirmation-form').submit();">
+                    onclick="event.preventDefault(); verifyDeleteForm('Delete Affirmation?', '#delete-affirmation-form')">
                     <li>Delete Affirmation</li>
                 </a>
             @endif
