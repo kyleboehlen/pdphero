@@ -21,8 +21,10 @@
 
         {{-- Errors --}}
         @error('value')
-            @push('pop-up-boxes')
-                <x-app.pop-up-box title="Error" :message="$message" />
+            @push('scripts')
+                <script>
+                    sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                </script>
             @endpush
         @enderror
     </div>

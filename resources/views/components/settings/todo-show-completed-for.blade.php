@@ -4,8 +4,10 @@
         @csrf
         Show completed items on the list for <input class="text-setting" type="number" name="hours" min="0" max="100" value="{{ $hours }}" required /> hours
         @error('hours')
-            @push('pop-up-boxes')
-                <x-app.pop-up-box title="Error" :message="$message" />
+            @push('scripts')
+                <script>
+                    sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                </script>
             @endpush
         @enderror
     </form>

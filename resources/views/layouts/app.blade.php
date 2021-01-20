@@ -32,9 +32,7 @@
         @enderror
 
         {{-- Stack scripts that bubble up --}}
-        <script>
-            @stack('scripts')
-        </script>
+        @stack('scripts')
 
         @yield('template')
 

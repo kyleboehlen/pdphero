@@ -20,8 +20,10 @@
                 @csrf
                 <input id="profile-picture-input" type="file" name="profile-picture" accept=".png,.jpg,.jpeg" required />
                 @error('profile-picture')
-                    @push('pop-up-boxes')
-                        <x-app.pop-up-box title="Error" :message="$message" />
+                    @push('scripts')
+                        <script>
+                            sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                        </script>
                     @endpush
                 @enderror
             </form>
