@@ -6,9 +6,9 @@
     <img class="logo" src="{{ asset('logos/logo-white.png') }}" />
 
     <ul class="list settings">
-        <a href="#affirmations-settings-header"><li>Affirmations</li></a>
-        <a href="#habits-settings-header"><li>Habits</li></a>
-        <a href="#todo-settings-header"><li>To-Do</li></a>
+        <a class="close-nav" href="#affirmations-settings-header"><li>Affirmations</li></a>
+        <a class="close-nav" href="#habits-settings-header"><li>Habits</li></a>
+        <a class="close-nav" href="#todo-settings-header"><li>To-Do</li></a>
 
         <form id="default-settings-form" action="{{ route('profile.destroy.settings') }}" method="POST">
             @csrf
