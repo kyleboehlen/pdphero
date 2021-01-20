@@ -150,7 +150,7 @@ class ProfileController extends Controller
                 $value = $request->has('value');
             break;
 
-            case 'text':
+            case 'numeric':
                 $validator = Validator::make($request->all(), [
                     'value' => 'required|numeric|min:0|max:100',
                 ]);

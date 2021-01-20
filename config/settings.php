@@ -39,7 +39,7 @@ return [
 
     'types' => [
         Setting::TODO_MOVE_COMPLETED => 'toggle', // True or false
-        Setting::TODO_SHOW_COMPLETED_FOR => 'text', // Number or string
+        Setting::TODO_SHOW_COMPLETED_FOR => 'numeric', // Number, default min/max of 0/100
         Setting::AFFIRMATIONS_SHOW_READ => 'toggle', // True or false
         Setting::HABITS_SHOW_AFFIRMATIONS_HABIT => 'toggle', // True or false
         Setting::HABITS_DAYS_TO_DISPLAY => 'options', // Based on config('settings.options)

@@ -72,7 +72,7 @@ $(document).ready(function(){
     });
 
     // Handles submitting seettings
-    $('.text-setting').focusout(function(){
+    $('.numeric-setting').focusout(function(){
         if($(this).val() != null && $(this).val() != '')
         {
             $(this).parent().submit();
