@@ -738,13 +738,21 @@ div.app-container
             margin-right: 2.5%;
             margin-top: .25%;
             padding-bottom: .5%;
+            padding-left: 15%;
+            padding-right: 2.5%;
             padding-top: .5%;
-            text-align: center;
+            text-align: left;
             width: 95%;
+
+            @media only screen and (max-width: 1450px)
+            {
+                padding-left: 5%;
+            }
 
             @media only screen and (max-width: 1200px)
             {
                 font-size: 1.75em;
+                padding-left: 2.5%;
             }
 
             @media only screen and (max-width: 1000px)
