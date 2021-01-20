@@ -16,6 +16,7 @@ $(document).ready(function(){
     });
 
     // Handles submitting the toggle checkbox forms
+    // Also handles the toggles on the settings page
     $('.submit-completed').change(function(){
         event.target.closest('form').submit();
     });
@@ -72,6 +73,13 @@ $(document).ready(function(){
 
     // Handles submitting seettings
     $('.text-setting').focusout(function(){
+        if($(this).val() != null && $(this).val() != '')
+        {
+            $(this).parent().submit();
+        }
+    });
+
+    $('.options-setting').change(function(){
         if($(this).val() != null && $(this).val() != '')
         {
             $(this).parent().submit();
