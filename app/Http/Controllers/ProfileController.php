@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use DB;
 use Image;
 use Log;
@@ -140,24 +141,38 @@ class ProfileController extends Controller
         // Get user
         $user = $request->user();
 
-        // Validate and get value depending on which setting
-        switch($id)
+        // Validate and get value depending what setting type was submitted
+        $setting_type = config('settings.types')[$id];
+        switch($setting_type)
         {
-            case Setting::TODO_MOVE_COMPLETED:
-            case Setting::AFFIRMATIONS_SHOW_READ:
-            case Setting::HABITS_SHOW_AFFIRMATIONS_HABIT:
+            case 'toggle';
                 $validated = true;
                 $value = $request->has('value');
             break;
 
-            case Setting::TODO_SHOW_COMPLETED_FOR:
+            case 'text':
                 $validator = Validator::make($request->all(), [
-                    'hours' => 'required|numeric|min:0|max:100',
+                    'value' => 'required|numeric|min:0|max:100',
                 ]);
                 if(!$validator->fails())
                 {
                     $validated = true;
-                    $value = $request->get('hours');
+                    $value = $request->get('value');
+                }
+                else
+                {
+                    $validated = false;
+                }
+            break;
+
+            case 'options':
+                $validator = Validator::make($request->all(), [
+                    'value' => Rule::in(array_keys(config('settings.options')[$id])),
+                ]);
+                if(!$validator->fails())
+                {
+                    $validated = true;
+                    $value = $request->get('value');
                 }
                 else
                 {

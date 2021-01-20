@@ -809,10 +809,27 @@ div.app-container
                 }
             }
 
-            // &:first-of-type
-            // {
-            //     margin-top: 1%;
-            // }
+            select
+            {
+                background-color: $dark-grey;
+                color: $white;
+                font-family: $body-font;
+                font-size: 1em;
+                text-align: center;
+                
+                padding-left: .5%;
+                    padding-right: .5%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    max-width: 25%;
+                }
+
+                &:focus
+                {
+                    outline: none;
+                }
+            }
         }
     }
 }
