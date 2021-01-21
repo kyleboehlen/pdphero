@@ -156,7 +156,7 @@ class SettingsTest extends TestCase
         // Check the edit form actually works to update it
         $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
             '_token' => csrf_token(),
-            'hours' => $test_hours,
+            'value' => $test_hours,
         ]);
 
         // Verify redirected back properly
@@ -232,6 +232,10 @@ class SettingsTest extends TestCase
         $this->assertTrue((bool) $user->getSettingValue($setting_id));
 
         // Verify affirmation habit shows up on habits index now
-        // TO-DO
+        // TO-DO:
+        // Check what the habits UUID for the afirmations habit for the user is
+        // and check assertSee UUID on route('habits')
+        // Also check the order of the day labels to test for the setting
+        // rolling_seven_days vs current_week
     }
 }
