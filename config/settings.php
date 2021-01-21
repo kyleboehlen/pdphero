@@ -14,8 +14,8 @@ return [
     'options' => [
         Setting::HABITS_DAYS_TO_DISPLAY => [
             // Key => display name
-            'rolling_seven_days' => 'Rolling 7 Days', 
-            'current_week' => 'Current Week',
+            Setting::HABITS_ROLLING_SEVEN_DAYS => 'Rolling 7 Days', 
+            Setting::HABITS_CURRENT_WEEK => 'Current Week',
         ],
     ],
 

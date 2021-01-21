@@ -12,7 +12,28 @@
                     {{ $habit->strength }}%
                 </span>
         </div>
-    </div><br/><br/>
+    </div><br/>
 
     {{-- Habit history tracker/toggle --}}
+    <div class="history-toggle-container">
+        @foreach($habit->getHistoryArray() as $day_key => $history)
+            <div class="history-toggle-item">
+                <p>{{ $history['label'] }}</p>
+                <div class="toggle-history {{ $history['classes'] }}" 
+                    id="toggle-{{ $habit->uuid }}-{{ $day_key }}">
+                </div>
+            </div>
+
+            {{-- Pop up history tracker script? --}}
+            @push('scripts')
+                <script>
+                    $(document).ready(function(){
+                        $('#toggle-{{ $habit->uuid }}-{{ $history['label'] }}').click(function(){
+                            // Custom HTML swwet alert?
+                        });
+                    });
+                </script>
+            @endpush
+        @endforeach
+    </div>
 </div>

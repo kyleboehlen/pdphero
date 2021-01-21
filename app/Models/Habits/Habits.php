@@ -11,6 +11,8 @@ use Carbon\CarbonPeriod;
 
 // Constants
 use App\Helpers\Constants\Habits\HistoryType;
+use App\Helpers\Constants\Habits\Type;
+use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Habits\HabitHistory;
@@ -60,6 +62,197 @@ class Habits extends Model
     }
 
     /**
+     * For building the history toggle form stuff
+     * 
+     * @return array
+     */
+    public function getHistoryArray()
+    {
+        // Special case for afirmation habits
+        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        {
+            return $this->getAffirmationsHistoryArray();
+        }
+
+        // Get current user
+        $user = \Auth::user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $now = new Carbon('now', $timezone);
+
+        // Set the start and ends dates of the range to pull habit history for based on user's setting
+        switch($user->getSettingValue(Setting::HABITS_DAYS_TO_DISPLAY))
+        {
+            case Setting::HABITS_ROLLING_SEVEN_DAYS:
+                $start_date = (clone $now)->subDays(6);
+                $end_date = (clone $now);
+                break;
+
+            case Setting::HABITS_CURRENT_WEEK:
+                $start_date = (clone $now)->startOfWeek();
+                $end_date = (clone $now)->endOfWeek();
+                break;
+        }
+
+        // Populate the history to search
+        $history = $this->history;
+
+        // Create a carbon period to iterate through and build history array to return
+        $history_array = array();
+        $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
+        foreach($carbon_period as $carbon)
+        {
+            // Instantiate the variables we're determining
+            $required = null;
+            $status = null;
+
+            // Get carbon date in user's timezone
+            $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+
+            // Get day in UTC to search for history
+            $search_day = (clone $user_date)->setTimezone('UTC');
+
+            // Determine required based on how we calculate this habit
+            if(!is_null($this->days_of_week))
+            {
+                // Calculate by days of week
+                $required = in_array($user_date->format('w'), $this->days_of_week);
+            }
+            elseif(!is_null($this->every_x_days))
+            {
+                // Check if this habit has been completed before, and when
+                $last_completed = null;
+                $key = $history->search(function($h_e) use ($search_day){
+                    return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThanOrEqualTo($search_day);
+                });
+                if($key !== false)
+                {
+                    $last_completed = $history[$key];
+                }
+
+                // If it's never been completed...
+                if(is_null($last_completed))
+                {
+                    //  if date is today or a day in the future
+                    if($user_date->greaterThanOrEqualTo((clone $now)->startOfDay()))
+                    {
+                        $required = true;
+                    }
+                    else // if the day is already past
+                    {
+                        // It was indeed required that day, as the best day to start is always today
+                        $required = true;
+                    }
+                }
+                else
+                {
+                    // if the last time it was completed was today
+                    $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                    if((clone $last_completed_carbon)->setTimezone($timezone)->isSameDay($now))
+                    {
+                        // If the search day is also today, we need to go back again to determine
+                        if((clone $search_day)->setTimezone($timezone)->isSameDay($now))
+                        {
+                            // Check for the last time it was completed before that
+                            $last_completed = null;
+                            $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                            $key = $history->search(function($h_e) use ($last_completed_carbon){
+                                return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThan($last_completed_carbon);
+                            });
+                            if($key !== false)
+                            {
+                                $last_completed = $history[$key];
+                                $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                                $days_since_last_completed = $last_completed_carbon->diffInDays($search_day);
+                            }
+                            else
+                            {
+                                // Set days since last completed to the habits times daily in order to make it required
+                                $days_since_last_completed = $this->times_daily;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Determine days since it was last completed based on search date and last completed
+                        $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                        $days_since_last_completed = $last_completed_carbon->diffInDays($search_day);
+                    }
+
+                    // Determine required based on how many days since it's last been completed
+                    if($days_since_last_completed < $this->every_x_days) // if it hasn't been x days yet
+                    {
+                        // Then it's not required
+                        $required = false;
+                    }
+                    else // Otherwise it's required on this day
+                    {
+                        $required = true;
+                    }
+                }
+            }
+
+            // Get the history entry for the day we're checking
+            $history_entry = null;
+            $key = $history->search(function($h) use ($search_day){
+                return $h->day == $search_day->format('Y-m-d');
+            });
+            if($key !== false)
+            {
+                $history_entry = $history[$key];
+            }
+
+            // Figure out status
+            if(!is_null($history_entry)) // If we do have history for this habit and day...
+            {
+                $status = $history_entry->type_id; // Then we also already have the status
+
+                // If it was a completed day, but they didn't do it enough times that day
+                if($status == HistoryType::COMPLETED && $history_entry->times < $this->times_daily)
+                {
+                    // Then it's partial
+                    $status = HistoryType::PARTIAL;
+                }
+            }
+            else // If there is no history
+            {
+                // if this day is today or in the future
+                if($user_date->greaterThanOrEqualTo((clone $now)->startOfDay()))
+                {
+                    // The history status is to be determined!
+                    $status = HistoryType::TBD;
+                }
+                else // if the day is already past
+                {
+                    // status is base soley on whether or not it was a required day
+                    $status = $required ? HistoryType::MISSED : HistoryType::SKIPPED;
+                }
+            }
+
+            // Add to the array that we're returning
+            $history_array[$user_date->format('w')] = [
+                'classes' => config('habits.statuses')[$status]['style_class'] . ($required ? '' : ' not-required'),
+                'label' => $user_date->format('D'),
+                'required' => $required,
+                'status' => $status,
+            ];
+        }
+
+        return $history_array;
+    }
+
+    /**
+     * For building the history toggle form stuff for affirmations habit
+     * 
+     * @return array
+     */
+    private function getAffirmationsHistoryArray()
+    {
+        // To-do...
+    }
+
+    /**
      * Calculates the padding for the percent label
      * 
      * @return integer
@@ -93,7 +286,7 @@ class Habits extends Model
     // Habit history relationship
     public function history()
     {
-        return $this->hasMany(HabitHistory::class, 'habit_id', 'id');
+        return $this->hasMany(HabitHistory::class, 'habit_id', 'id')->orderBy('day', 'desc');
     }
 
     /**

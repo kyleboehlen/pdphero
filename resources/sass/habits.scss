@@ -20,7 +20,9 @@ div.app-container
     @media only screen and (max-width: 800px)
     {
         flex-direction: column;
+        flex-wrap: nowrap;
         justify-content: flex-start;
+        overflow-y: scroll;
     }
 
     div.habit
@@ -59,6 +61,12 @@ div.app-container
                 @media only screen and (max-width: 450px)
                 {
                     font-size: 1.15em;
+                    margin-bottom: 2%;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1em;
                     margin-bottom: 2%;
                 }
             }
@@ -103,6 +111,7 @@ div.app-container
                 color: $white;
                 font-size: 2em;
                 min-height: 35px;
+                margin-bottom: 0;
                 text-shadow: 2px 2px 3px $black;
 
                 @media only screen and (max-width: 800px)
@@ -127,6 +136,169 @@ div.app-container
             div.no-border
             {
                 border: none;
+            }
+        }
+
+        div.history-toggle-container
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            margin-bottom: 1%;
+            margin-left: 1%;
+            width: 98%;
+
+            div.history-toggle-item
+            {
+                &:hover
+                {
+                    cursor: pointer;
+                }
+                
+                &:hover > p
+                {
+                    font-weight: bold;
+                }
+
+                &:hover > div.toggle-history
+                {
+                    border: $medium-border solid $white;
+                }
+
+                p
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 1.5em;
+                    margin: 0;
+
+                    @media only screen and (max-width: 450px)
+                    {
+                        font-size: 1.25em;
+                    }
+
+                    @media only screen and (max-width: 375px)
+                    {
+                        font-size: 1em;
+                    }
+                }
+
+                div.toggle-history
+                {
+                    border: $thin-border solid $white;
+                    background: $dark-grey;
+                    border-radius: 5px;
+                    box-sizing: border-box;
+                    height: 75px;
+                    vertical-align: middle;
+                    width: 75px;
+
+                    @media only screen and (max-width: 1650px)
+                    {
+                        height: 70px;
+                        width: 70px;
+                    }
+
+                    @media only screen and (max-width: 1550px)
+                    {
+                        height: 65px;
+                        width: 65px;
+                    }
+
+                    @media only screen and (max-width: 1450px)
+                    {
+                        height: 60px;
+                        width: 60px;
+                    }
+
+                    @media only screen and (max-width: 1300px)
+                    {
+                        height: 65px;
+                        width: 65px;
+                    }
+
+                    @media only screen and (max-width: 625px)
+                    {
+                        height: 60px;
+                        width: 60px;
+                    }
+
+                    @media only screen and (max-width: 525px)
+                    {
+                        height: 55px;
+                        width: 55px;
+                    }
+
+                    @media only screen and (max-width: 450px)
+                    {
+                        height: 50px;
+                        width: 50px;
+                    }
+
+                    @media only screen and (max-width: 415px)
+                    {
+                        height: 45px;
+                        width: 45px;
+                    }
+
+                    @media only screen and (max-width: 375px)
+                    {
+                        height: 40px;
+                        width: 40px;
+                    }
+
+                    @media only screen and (max-width: 350px)
+                    {
+                        height: 35px;
+                        width: 35px;
+                    }
+
+                    &.not-required
+                    {
+                        background-image: linear-gradient(to bottom, $light-grey, $dark-grey);
+                    }
+
+                    &.skipped
+                    {
+                        background: $brown;
+
+                        &.not-required
+                        {
+                            background-image: linear-gradient(to bottom, $light-grey, $brown);
+                        }
+                    }
+
+                    &.completed
+                    {
+                        background: $green;
+
+                        &.not-required
+                        {
+                            background-image: linear-gradient(to bottom, $light-grey, $green);
+                        }
+                    }
+
+                    &.partial
+                    {
+                        background: $yellow;
+
+                        &.not-required
+                        {
+                            background-image: linear-gradient(to bottom, $light-grey, $yellow);
+                        }
+                    }
+
+                    &.missed
+                    {
+                        background: $red;
+
+                        &.not-required
+                        {
+                            background-image: linear-gradient(to bottom, $light-grey, $red);
+                        }
+                    }
+                }
             }
         }
     }

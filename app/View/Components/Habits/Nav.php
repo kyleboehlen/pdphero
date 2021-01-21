@@ -17,7 +17,7 @@ class Nav extends Component
      *
      * @return void
      */
-    public function __construct($show = 'create', $habit = null)
+    public function __construct($show, $habit = null)
     {
         $this->show = explode('|', $show);
         $this->habit = $habit;

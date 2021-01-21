@@ -11,7 +11,11 @@
         @endif
 
         @if(in_array('create', $show))
-            <a href="{{ route('habits.create') }}"><li class="top">Create New Habit</li></a>
+            <a href="{{ route('habits.create') }}"><li>Create New Habit</li></a>
+        @endif
+
+        @if(in_array('color-key', $show))
+            <a href="{{ route('habits.colors') }}"><li>Color Guide</li></a>
         @endif
 
         @if(in_array('edit', $show))

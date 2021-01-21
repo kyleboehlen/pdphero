@@ -16,6 +16,24 @@ return [
         ],
     ],
 
+    'statuses' => [
+        HistoryType::COMPLETED => [
+            'style_class' => 'completed',
+        ],
+        HistoryType::SKIPPED => [
+            'style_class' => 'skipped',
+        ],
+        HistoryType::MISSED => [
+            'style_class' => 'missed',
+        ],
+        HistoryType::PARTIAL => [
+            'style_class' => 'partial',
+        ],
+        HistoryType::TBD => [
+            'style_class' => '',
+        ],
+    ],
+
     'types' => [
         Type::AFFIRMATIONS_HABIT => [
             'name' => 'Affirmations Habit',

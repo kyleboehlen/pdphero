@@ -49,6 +49,9 @@ Route::prefix('habits')->group(function(){
     // View details/history
     Route::get('view/{habit}', [HabitsController::class, 'view'])->name('habits.view');
 
+    // View the habits color guide
+    Route::get('colors', [HabitsController::class, 'colorGuide'])->name('habits.colors');
+
     // Add form/add routes
     Route::get('create', [HabitsController::class, 'create'])->name('habits.create');
     Route::post('store', [HabitsController::class, 'store'])->name('habits.store');

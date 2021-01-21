@@ -5,7 +5,7 @@
     <x-app.header title="Habits" />
 
     {{-- Side Nav --}}
-    <x-habits.nav />
+    <x-habits.nav show="create|color-key" />
 
     <div class="app-container">
         @if($habits->count() == 0)
