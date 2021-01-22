@@ -8,10 +8,12 @@ use Tests\TestCase;
 use Carbon\Carbon;
 
 // Constants
+use App\Helpers\Constants\Habits\Type as HabitType;
 use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Habits\Habits;
 use App\Models\User\User;
 use App\Models\ToDo\ToDo;
 
@@ -231,11 +233,19 @@ class SettingsTest extends TestCase
         // And double check the user is returning the new value
         $this->assertTrue((bool) $user->getSettingValue($setting_id));
 
-        // Verify affirmation habit shows up on habits index now
+        // Call the habits index page
+        $response = $this->actingAs($user)->get(route('habits'));
+        $response->assertRedirect(route('habits')); // Building affirmation habit for first time
+
+        // Get the newly created affirmations habit and recall the habits route
+        $affirmations_habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::AFFIRMATIONS_HABIT)->first();
+        $response = $this->actingAs($user)->get(route('habits'));
+        $response->assertStatus(200);
+        $response->assertSee($affirmations_habit->uuid);
+        $response->assertSee($affirmations_habit->name);
+
         // TO-DO:
-        // Check what the habits UUID for the afirmations habit for the user is
-        // and check assertSee UUID on route('habits')
-        // Also check the order of the day labels to test for the setting
+        // Check the order of the day labels to test for the setting
         // rolling_seven_days vs current_week
     }
 }

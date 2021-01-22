@@ -4,6 +4,14 @@ use App\Helpers\Constants\Habits\HistoryType;
 use App\Helpers\Constants\Habits\Type;
 
 return [
+    'defaults' => [
+        Type::AFFIRMATIONS_HABIT => [
+            'name' => 'Affirmations Habit',
+            'times_daily' => 9,
+            'every_x_days' => 1,
+        ]
+    ],
+
     'history_types' => [
         HistoryType::COMPLETED => [
             'name' => 'Completed',

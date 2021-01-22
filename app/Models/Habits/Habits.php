@@ -15,6 +15,7 @@ use App\Helpers\Constants\Habits\Type;
 use App\Helpers\Constants\User\Setting;
 
 // Models
+use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Habits\HabitHistory;
 use App\Models\Habits\HabitHistoryTypes;
 
@@ -68,12 +69,6 @@ class Habits extends Model
      */
     public function getHistoryArray()
     {
-        // Special case for afirmation habits
-        if($this->type_id == Type::AFFIRMATIONS_HABIT)
-        {
-            return $this->getAffirmationsHistoryArray();
-        }
-
         // Get current user
         $user = \Auth::user();
 
@@ -95,8 +90,15 @@ class Habits extends Model
                 break;
         }
 
-        // Populate the history to search
-        $history = $this->history;
+        // Populate the history to search, affirmations habits are a special case
+        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        {
+            $history = $this->buildAffirmationsHistory();
+        }
+        else
+        {
+            $history = $this->history;
+        }
 
         // Create a carbon period to iterate through and build history array to return
         $history_array = array();
@@ -109,6 +111,8 @@ class Habits extends Model
 
             // Get carbon date in user's timezone
             $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+            $user_date->hour = $now->hour;
+            $user_date->minute = $now->minute;
 
             // Get day in UTC to search for history
             $search_day = (clone $user_date)->setTimezone('UTC');
@@ -134,54 +138,44 @@ class Habits extends Model
                 // If it's never been completed...
                 if(is_null($last_completed))
                 {
-                    //  if date is today or a day in the future
-                    if($user_date->greaterThanOrEqualTo((clone $now)->startOfDay()))
-                    {
-                        $required = true;
-                    }
-                    else // if the day is already past
-                    {
-                        // It was indeed required that day, as the best day to start is always today
-                        $required = true;
-                    }
+                    $required = true;
                 }
                 else
                 {
                     // if the last time it was completed was today
                     $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                    if((clone $last_completed_carbon)->setTimezone($timezone)->isSameDay($now))
+                    if(
+                        (clone $last_completed_carbon)->setTimezone($timezone)->isSameDay($now) &&
+                        // and the search day is also today, we need to go back again to determine
+                        (clone $search_day)->setTimezone($timezone)->isSameDay($now)
+                    )
                     {
-                        // If the search day is also today, we need to go back again to determine
-                        if((clone $search_day)->setTimezone($timezone)->isSameDay($now))
+                        // Check for the last time it was completed before that
+                        $last_completed = null;
+                        $key = $history->search(function($h_e) use ($last_completed_carbon){
+                            return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThan($last_completed_carbon);
+                        });
+                        if($key !== false)
                         {
-                            // Check for the last time it was completed before that
-                            $last_completed = null;
+                            $last_completed = $history[$key];
                             $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                            $key = $history->search(function($h_e) use ($last_completed_carbon){
-                                return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThan($last_completed_carbon);
-                            });
-                            if($key !== false)
-                            {
-                                $last_completed = $history[$key];
-                                $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                                $days_since_last_completed = $last_completed_carbon->diffInDays($search_day);
-                            }
-                            else
-                            {
-                                // Set days since last completed to the habits times daily in order to make it required
-                                $days_since_last_completed = $this->times_daily;
-                            }
+                            $days_since_last_completed = $last_completed_carbon->diffInDays($search_day) + 1;
+                        }
+                        else
+                        {
+                            // Set days since last completed to the habits times daily in order to make it required
+                            $days_since_last_completed = $this->every_x_days;
                         }
                     }
                     else
                     {
                         // Determine days since it was last completed based on search date and last completed
                         $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                        $days_since_last_completed = $last_completed_carbon->diffInDays($search_day);
+                        $days_since_last_completed = $last_completed_carbon->diffInDays($search_day) + 1;
                     }
 
                     // Determine required based on how many days since it's last been completed
-                    if($days_since_last_completed < $this->every_x_days) // if it hasn't been x days yet
+                    if($days_since_last_completed < $this->every_x_days || $days_since_last_completed % $this->every_x_days != 0) // if it hasn't been x days yet or if it's not a multiple of today
                     {
                         // Then it's not required
                         $required = false;
@@ -243,13 +237,40 @@ class Habits extends Model
     }
 
     /**
-     * For building the history toggle form stuff for affirmations habit
+     * For building the collection of history data for the affirmations habit that matches the habit histories
      * 
      * @return array
      */
-    private function getAffirmationsHistoryArray()
+    private function buildAffirmationsHistory()
     {
-        // To-do...
+        // Get all the user's affirmations logs
+        $affirmation_logs = AffirmationsReadLog::where('user_id', $this->user_id)->orderBy('read_at', 'desc')->get();
+
+        $history_log_array = array();
+        foreach($affirmation_logs as $affirmation_log)
+        {
+            if(array_key_exists($affirmation_log->read_at_key, $history_log_array))
+            {
+                $history_log_array[$affirmation_log->read_at_key]['times'] += 1; // Increment times that day
+            }
+            else // create an index in the entry and populate it
+            {
+                $history_log_array[$affirmation_log->read_at_key] = [
+                    'type_id' => HistoryType::COMPLETED,
+                    'day' => $affirmation_log->read_at_key,
+                    'times' => 1,
+                ];
+            }
+        }
+
+        // Cast to habit history
+        $history = collect();
+        foreach($history_log_array as $history_log)
+        {
+            $history->push(new HabitHistory($history_log));
+        }
+
+        return $history;
     }
 
     /**
