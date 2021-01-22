@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 // Constants
 use App\Helpers\Constants\Habits\Type as HabitType;
@@ -243,9 +244,86 @@ class SettingsTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($affirmations_habit->uuid);
         $response->assertSee($affirmations_habit->name);
+    }
 
-        // TO-DO:
-        // Check the order of the day labels to test for the setting
-        // rolling_seven_days vs current_week
+    /**
+     * Tests rolling 7 days vs current week
+     *
+     * @return void
+     * @test
+     */
+    public function testShowHabitHistoryFor()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::HABITS_DAYS_TO_DISPLAY;
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Call settings and verify it can be seen
+        $response = $this->actingAs($user)->get(route('profile.edit.settings'));
+        $response->assertStatus(200);
+        $response->assertSee(config('settings.options')[$setting_id][Setting::HABITS_ROLLING_SEVEN_DAYS]);
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::HABITS_CURRENT_WEEK,
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+
+        // Also, might as well update the timezone before we refresh the model
+        $user->timezone = 'America/Denver';
+        $user->save();
+
+        // Refresh model
+        $user->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertEquals(Setting::HABITS_CURRENT_WEEK, $user->getSettingValue($setting_id));
+
+        // Create habit and history
+        $habit = Habits::factory()->create();
+        while($habit->history()->count() === 0)
+        {
+            $habit->generateFakeHistory();
+        }
+
+        // Get the history array
+        $history_array = $habit->getHistoryArray();
+
+        // Test that it's returing rolling 7 days
+        $now = new Carbon('now', 'America/Denver');
+        foreach(CarbonPeriod::create((clone $now)->subDays(6)->format('Y-m-d'), (clone $now)->format('Y-m-d')) as $carbon)
+        {
+            $this->assertEquals($carbon->format('D'), $history_array[$carbon->format('w')]['label']);
+        }
+
+        // Change setting back, and test again
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::HABITS_ROLLING_SEVEN_DAYS,
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+
+        // Refresh models
+        $user->refresh();
+        $habit->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertEquals(Setting::HABITS_ROLLING_SEVEN_DAYS, $user->getSettingValue($setting_id));
+
+        // Check that it's returning current week in the array used to build the view
+        $history_array = $habit->getHistoryArray();
+        foreach(CarbonPeriod::create((clone $now)->startOfWeek()->format('Y-m-d'), (clone $now)->endOfWeek()->format('Y-m-d')) as $carbon)
+        {
+            $this->assertEquals($carbon->format('D'), $history_array[$carbon->format('w')]['label']);
+        }
     }
 }
