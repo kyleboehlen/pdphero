@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\Habits\Habits;
 use App\Models\ToDo\ToDo;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -90,5 +91,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function todos()
     {
         return $this->hasMany(ToDo::class, 'user_id', 'id');
+    }
+
+    public function completedTodos()
+    {
+        return $this->hasMany(ToDo::class, 'user_id', 'id')->where('completed', 1);
+    }
+
+    public function completedHabits()
+    {
+        return $this->hasMany(Habits::class, 'user_id', 'id')->where('strength', 100);
     }
 }

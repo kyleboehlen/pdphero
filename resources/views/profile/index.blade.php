@@ -25,13 +25,13 @@
                 <li>Affirmations Read: <span class="highlight">{{ $user->affirmationsReadLog->count() }}</span></li>
 
                 {{-- Items completed --}}
-                <li>To-Do Items Completed: <span class="highlight">{{ $user->todos->count() }}</span></li>
+                <li>To-Do Items Completed: <span class="highlight">{{ $user->completedTodos->count() }}</span></li>
 
                 {{-- To-Do: Goals accomplished --}}
                 <li>Goals Accomplished: <span class="highlight">15</span></li>
 
                 {{-- To-Do: Habits created --}}
-                <li>Habits Created: <span class="highlight">5</span></li>
+                <li>Habits Created: <span class="highlight">{{ $user->completedHabits->count() }}</span></li>
             </ul>
         </div>
 
