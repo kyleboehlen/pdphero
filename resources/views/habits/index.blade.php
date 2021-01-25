@@ -9,7 +9,7 @@
 
     <div class="app-container">
         @if($habits->count() == 0)
-            <x-todo.empty-list-item />
+            <x-habits.empty-habit />
         @else
             @foreach($habits as $habit)
                 <x-habits.habit :habit="$habit" />
