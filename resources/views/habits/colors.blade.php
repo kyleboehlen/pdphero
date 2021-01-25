@@ -35,7 +35,7 @@
             <div class="color-key">
                 <div class="toggle-history skipped not-required"></div>
                 <div class="toggle-history skipped"></div><br/>
-                Brown means that day was skipped. Either it wasn't required, or it was required that day and was explicitly skipped. Skipped days do not count against habit strength, but if you skip a required day you must explain why you did!
+                Brown means that day was skipped. Either it wasn't required, or it was required that day and was explicitly skipped. Skipped days do not count against habit strength, but if you skip a required day you must explain why you did! For example: your habit is to make your bed everyday but you're hammock camping and you don't have a bed to make. 
             </div>
 
             <div class="color-key">
