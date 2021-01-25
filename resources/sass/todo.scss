@@ -1,5 +1,63 @@
 @import 'app';
 
+@mixin priority-checkbox
+{
+    height: 75px;
+    width: 75px;
+
+    @media only screen and (max-width: 900px)
+    {
+        height: 65px;
+        width: 65px;
+    }
+
+    @media only screen and (max-height: 850px)
+    {
+        height: 50px;
+        width: 50px;
+    }
+
+    &.default
+    {
+        border-color: $brown;
+
+        &:checked
+        {
+            background: $brown;
+        }
+    }
+
+    &.low
+    {
+        border-color: $green;
+
+        &:checked
+        {
+            background: $green;
+        }
+    }
+
+    &.medium
+    {
+        border-color: $yellow;
+
+        &:checked
+        {
+            background: $yellow;
+        }
+    }
+
+    &.high
+    {
+        border-color: $red;
+
+        &:checked
+        {
+            background: $red;
+        }
+    }
+}
+
 header.app
 {
     @extend %app-header;
@@ -192,61 +250,7 @@ div.app-container
             .priority-checkbox
             {
                 @extend %checkbox;
-
-                height: 75px;
-                width: 75px;
-
-                @media only screen and (max-width: 900px)
-                {
-                    height: 65px;
-                    width: 65px;
-                }
-
-                @media only screen and (max-height: 850px)
-                {
-                    height: 50px;
-                    width: 50px;
-                }
-
-                &.default
-                {
-                    border-color: $brown;
-
-                    &:checked
-                    {
-                        background: $brown;
-                    }
-                }
-
-                &.low
-                {
-                    border-color: $green;
-
-                    &:checked
-                    {
-                        background: $green;
-                    }
-                }
-
-                &.medium
-                {
-                    border-color: $yellow;
-
-                    &:checked
-                    {
-                        background: $yellow;
-                    }
-                }
-
-                &.high
-                {
-                    border-color: $red;
-
-                    &:checked
-                    {
-                        background: $red;
-                    }
-                }
+                @include priority-checkbox;
             }
         }
 
@@ -354,6 +358,41 @@ div.app-container
             @extend %button;
     
             @include okay-button;
+        }
+    }
+
+    div.color-guide
+    {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 95%;
+        width: 100%;
+
+        div.color-key
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+            text-align: center;
+            width: auto;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.4em;
+            }
+
+            .priority
+            {
+                @extend %checkbox;
+                @include priority-checkbox;
+
+                &:first-of-type
+                {
+                    margin-top: 5%;
+                }
+            }
         }
     }
 }

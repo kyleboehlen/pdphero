@@ -198,4 +198,9 @@ class ToDoController extends Controller
 
         return redirect()->route('todo.list');
     }
+
+    public function colorGuide()
+    {
+        return view('todo.colors');
+    }
 }

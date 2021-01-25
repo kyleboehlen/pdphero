@@ -5,7 +5,7 @@
     <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-todo.nav page="list|create-from-habit|create-from-goal" />
+    <x-todo.nav page="list|create-from-habit|create-from-goal|color-key" />
 
     <div class="app-container">
         @switch($from)

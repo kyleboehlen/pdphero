@@ -141,6 +141,9 @@ Route::prefix('todo')->group(function(){
     // Root
     Route::get('/', [ToDoController::class, 'index'])->name('todo.list');
 
+    // View the todo priority colors guide
+    Route::get('colors', [ToDoController::class, 'colorGuide'])->name('todo.colors');
+
     // Show the create to do item form
     Route::get('create', [ToDoController::class, 'create'])->name('todo.create');
 

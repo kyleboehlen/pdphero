@@ -5,7 +5,7 @@
     <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-todo.nav show="create|create-from-habit|create-from-goal" />
+    <x-todo.nav show="create|create-from-habit|create-from-goal|color-key" />
 
     <div class="app-container">
         @if($to_do_items->count() == 0)

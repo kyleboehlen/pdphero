@@ -22,6 +22,10 @@
             <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
         @endif
 
+        @if(in_array('color-key', $show))
+            <a href="{{ route('todo.colors') }}"><li>Color Guide</li></a>
+        @endif
+
         @if(in_array('delete', $show))
             <form id="delete-item-form" action="{{ route('todo.destroy', ['todo' => $item->uuid]) }}" method="POST">
                 @csrf
