@@ -19,7 +19,7 @@
         @foreach($habit->getHistoryArray() as $day_key => $history)
             <div class="history-toggle-item">
                 <p>{{ $history['label'] }}</p>
-                <div class="toggle-history {{ $history['classes'] }}" 
+                <div class="toggle-history {{ $history['classes'] }}"
                     id="toggle-{{ $habit->uuid }}-{{ $day_key }}">
                 </div>
             </div>

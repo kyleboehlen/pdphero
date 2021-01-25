@@ -64,6 +64,12 @@ class HabitsController extends Controller
             'habit' => $habit,
         ]);
     }
+
+    public function colorGuide()
+    {
+        // Return color guide view
+        return view('habits.colors');
+    }
     public function destroy(Habits $habit)
     {
         if(!$habit->delete())
