@@ -157,7 +157,7 @@ class ToDoTest extends TestCase
         $response->assertStatus(200);
 
         // Check for various important parts of the form
-        $response->assertSee('<h2>Create New Item</h2>', false);
+        $response->assertSee('<h2> Create New Item </h2>', false);
         $response->assertSee('<form class="to-do"  action="' . route('todo.store') . '"  method="POST">', false);
         $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value=""  required />', false);
         $response->assertSee('<div class="priority-container">', false);
@@ -187,7 +187,7 @@ class ToDoTest extends TestCase
         $response->assertStatus(200);
 
         // Check for various important parts of the form
-        $response->assertSee('<h2>Edit Item</h2>', false);
+        $response->assertSee('<h2> Edit Item </h2>', false);
         $response->assertSee('<form class="to-do"  action="' . route('todo.update', ['todo' => $item->uuid]) . '"  method="POST">', false);
         $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $item->title . '"  required />', false);
         $response->assertSee('<div class="priority-container">', false);
