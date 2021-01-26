@@ -1,7 +1,8 @@
-<form class="to-do" @isset($item) action="{{ route($action, ['todo' => $item->uuid]) }}" @else action="{{ route($action) }}" @endisset method="POST">
+<form class="to-do" @isset($item) action="{{ route('todo.update', ['todo' => $item->uuid]) }}" @else action="{{ route('todo.store') }}" @endisset method="POST">
     @csrf
 
-    <h2>{{ $title }}</h2>
+
+    <h2>@isset($item) Edit Item @else Create New Item @endisset</h2>
 
     <input type="text" name="title" placeholder="Title" maxlength="255" @isset($item) value="{{ $item->title }}" @else value="{{ old('title') }}" @endisset required />
     @error('title')

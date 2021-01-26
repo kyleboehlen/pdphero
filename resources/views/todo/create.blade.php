@@ -16,7 +16,7 @@
                 
                 @break
             @default
-                <x-todo.form action="todo.store" title="Create-New-Item" />
+                <x-todo.form />
         @endswitch
     </div>
 

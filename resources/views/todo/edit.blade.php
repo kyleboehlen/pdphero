@@ -20,7 +20,7 @@
             <x-todo.nav show="list|create|delete" :item="$item"/>
 
             <div class="app-container">
-                <x-todo.form action="todo.update" :item="$item" title="Edit-Item"/>
+                <x-todo.form :item="$item"/>
             </div>
     @endswitch
 
