@@ -5,10 +5,10 @@
     <x-app.header title="Habits" />
 
     {{-- Side Nav --}}
-    <x-habits.nav show="back|edit|delete" :habit="$habit" />
+    <x-habits.nav show="back|color-key" />
 
     <div class="app-container">
-        {{-- Details --}}
+        <x-habits.form />
     </div>
 
     {{-- Navigation Footer --}}

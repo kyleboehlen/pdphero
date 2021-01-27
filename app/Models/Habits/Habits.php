@@ -33,6 +33,15 @@ class Habits extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'type_id', 'name', 'times-daily', 'show_todo',
+    ];
+
+    /**
      * Set the threshold for the low percentage styling
      * 
      * @var integer

@@ -163,8 +163,8 @@ class ToDoController extends Controller
             // Log error
             $user = \Auth::user();
             Log::error('Failed to update new To-Do item.', [
-                'user->id' => $user->id,
                 'todo' => $todo->toArray(),
+                'request_values' => $request->all(),
             ]);
 
             // Redirect back with old values and error

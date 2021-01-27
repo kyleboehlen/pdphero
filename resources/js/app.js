@@ -85,6 +85,40 @@ $(document).ready(function(){
             $(this).parent().submit();
         }
     });
+
+    // Handles toggling disabled classes and attributes between day of week and every x days inputs
+    $('.day-of-week').click(function(){
+        // Remove disabled classes
+        $('.day-of-week').removeClass('disabled');
+
+        // Remove checkbox disabled
+        var dayOfWeekCheckbox = $(this).children('input');
+        var attr = dayOfWeekCheckbox.attr('disabled');
+        if(typeof attr !== typeof undefined && attr !== false) {
+            dayOfWeekCheckbox.removeAttr('disabled');
+            dayOfWeekCheckbox.prop('checked', !dayOfWeekCheckbox.prop('checked'));
+        }
+
+        // Disabled every x days
+        $('.every-x-days').addClass('disabled');
+        $('#every-x-days-input').prop('disabled', true);
+    });
+    $('.every-x-days').click(function(){
+        // Remove disabled classes
+        $('.every-x-days').removeClass('disabled');
+
+        // Remove disabled attr from input
+        var everyXDaysInput = $('#every-x-days-input');
+        var attr = everyXDaysInput.attr('disabled');
+        if(typeof attr !== typeof undefined && attr !== false) {
+            everyXDaysInput.attr('disabled', false);
+            everyXDaysInput.focus();
+        }
+
+        // Disable day of week
+        $('.day-of-week-container').children().addClass('disabled');
+        $('.day-of-week > input').attr('disabled', true);
+    });
 });
 
 // Replaces custom alert pop-up boxes

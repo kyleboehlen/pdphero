@@ -363,4 +363,296 @@ div.app-container
             }
         }
     }
+
+    form.habit
+    {
+        @extend %base-form;
+
+        height: 60%;
+        margin-top: 1%;
+        overflow-y: scroll;
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 1%;
+        }
+
+        h3
+        {
+            @include form-title;
+
+            border: none;
+            font-size: 1.5em;
+            margin-bottom: .25%;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.25em;
+            }
+        }
+
+        input[type="checkbox"]
+        {
+            @extend %checkbox;
+        }
+
+        div.required-on
+        {
+            border: $thin-border solid $light-grey;
+            margin-left: 12.5%;
+            padding-bottom: 1%;
+            padding-top: .5%;
+            width: 75%;
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 1.5%;
+                width: 96%;
+            }
+
+            div.day-of-week-container
+            {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-evenly;
+                width: 100%;
+
+                div.day-of-week
+                {
+                    z-index: 10;
+
+                    input[type="checkbox"]
+                    {
+                        height: 60px;
+                        width: 60px;
+
+                        @media only screen and (max-width: 1300px)
+                        {
+                            height: 50px;
+                            width: 50px;
+                        }
+
+                        @media only screen and (max-width: 900px)
+                        {
+                            height: 45px;
+                            width: 45px;
+                        }
+
+                        @media only screen and (max-width: 450px)
+                        {
+                            height: 40px;
+                            width: 40px;
+                        }
+
+                        @media only screen and (max-width: 400px)
+                        {
+                            height: 35px;
+                            width: 35px;
+                        }
+
+                        &:disabled
+                        {
+                            pointer-events: none;
+                        }
+
+                        &:hover
+                        {
+                            cursor: pointer;
+                        }
+                    }
+
+                    p
+                    {
+                        color: $white;
+                        font-family: $body-font;
+                        font-size: 1.75em;
+                        margin: 0;
+
+                        @media only screen and (max-width: 1300px)
+                        {
+                            font-size: 1.5em;
+                        }
+
+                        @media only screen and (max-width: 900px)
+                        {
+                            font-size: 1.25em;
+                        }
+
+                        @media only screen and (max-width: 450px)
+                        {
+                            font-size: 1.25em;
+                        }
+
+                        @media only screen and (max-width: 375px)
+                        {
+                            font-size: 1em;
+                        }
+                    }
+
+                    &.disabled > p
+                    {
+                        color: $light-grey;
+                    }
+
+                    &.active > p
+                    {
+                        color: $white;
+                    }
+
+                    &.disabled > input[type="checkbox"]
+                    {
+                        border-color: $light-grey;
+                    }
+
+                    &.active > input[type="checkbox"]
+                    {
+                        border-color: $white;
+                    }
+
+                    &:hover
+                    {
+                        cursor: pointer;
+                    }
+                    
+                    &:hover > p
+                    {
+                        font-weight: bold;
+
+                        @media only screen and (max-width: 800px)
+                        {
+                            font-weight: normal;
+                        }
+                    }
+
+                    &:hover > input[type="checkbox"]
+                    {
+                        border: $medium-border solid $white;
+
+                        @media only screen and (max-width: 800px)
+                        {
+                            border: $thin-border solid $white;
+                        }
+                    }
+                }
+            }
+
+            p
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2.25em;
+                margin: 0;
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.5em;
+                }
+
+                &.disabled
+                {
+                    color: $light-grey;
+                }
+            }
+
+            input[type="number"]
+            {
+                height: auto;
+                font-size: .75em;
+                text-align: center;
+                width: 10%;
+
+                @media only screen and (max-width: 450px)
+                {
+                    width: 20%;
+                }
+            }
+        }
+
+        span.show-todo, span.times-daily
+        {
+            color: $white;
+            display: inline-block;
+            font-family: $body-font;
+            font-size: 2.5em;
+            text-align: left;
+            width: 75%;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 2em;
+                width: 96%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.75em;
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.5em;
+            }
+
+            input[type="number"]
+            {
+                height: auto;
+                font-size: .75em;
+                text-align: center;
+                width: 15%;
+
+                @media only screen and (max-width: 400px)
+                {
+                    width: 20%;
+                }
+            }
+
+            input.show-todo
+            {
+                height: 50px;
+                width: 50px;
+
+                @media only screen and (max-width: 800px)
+                {
+                    height: 40px;
+                    width: 40px;
+                }
+
+                &:checked
+                {
+                    background: $green;
+                }
+
+                &:not(:checked)
+                {
+                    background: $red;
+                }
+            }
+        }
+
+        textarea
+        {
+            @media only screen and (max-width: 800px)
+            {
+                margin-bottom: 15%;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+
+            bottom: 1.5%;
+        }
+    }
 }

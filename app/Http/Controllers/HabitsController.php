@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Log;
 
 // Constants
 use App\Helpers\Constants\Habits\Type;
 
 // Models
 use App\Models\Habits\Habits;
+
+// Requests
+use App\Http\Requests\Habits\StoreRequest;
+use App\Http\Requests\Habits\UpdateRequest;
 
 class HabitsController extends Controller
 {
@@ -70,6 +75,110 @@ class HabitsController extends Controller
         // Return color guide view
         return view('habits.colors');
     }
+
+    public function create()
+    {
+        // Return create view
+        return view('habits.create');
+    }
+
+    public function store(StoreRequest $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Build base attr array for creating a habit
+        $attr = [
+            'user_id' => $user->id,
+            'type_id' => Type::USER_GENERATED,
+            'name' => $request->get('title'),
+            'times_daily' => $request->get('times-daily'),
+            'show_todo' => $request->has('show-todo'),
+        ];
+
+        // Create habit
+        $habit =  new Habits($attr);
+
+        // Determine how the required on days is set
+        if($request->has('days-of-week'))
+        {
+            $habit->days_of_week = $request->get('days-of-week');
+        }
+        else // Request has every_x_days (required_without:days_of_week)
+        {
+            $habit->every_x_days = $request->get('every-x-days');
+        }
+
+        // Add notes if we have em
+        if($request->has('notes'))
+        {
+            $habit->notes = $request->get('notes');
+        }
+
+        if(!$habit->save())
+        {
+            // Log error
+            Log::error('Failed to store new habit', $habit->toArray());
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to create your habit, please try again.'
+            ]);
+        }
+
+        return redirect()->route('habits');
+    }
+
+    public function edit(Habits $habit)
+    {
+        // Return edit view with habit
+        return view('habits.edit')->with([
+            'habit' => $habit,
+        ]);
+    }
+
+    public function update(UpdateRequest $request, Habits $habit)
+    {
+        // Update values
+        $habit->name = $request->get('title');
+        $habit->times_daily = $request->get('times-daily');
+        $habit->show_todo = $request->has('show-todo');
+
+        // Determine how the required on days is set
+        if($request->has('days-of-week'))
+        {
+            $habit->days_of_week = $request->get('days-of-week');
+            $habit->every_x_days = null;
+        }
+        else // Request has every_x_days (required_without:days_of_week)
+        {
+            $habit->every_x_days = $request->get('every-x-days');
+            $habit->days_of_week = null;
+        }
+
+        // Add notes if we have em
+        if($request->has('notes'))
+        {
+            $habit->notes = $request->get('notes');
+        }
+
+        if(!$habit->save())
+        {
+            // Log error
+            Log::error('Failed to update habit', [
+                'habit' => $habit->toArray(),
+                'request_values' => $request->all(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to update your habit, please try again.'
+            ]);
+        }
+
+        return redirect()->route('habits.view', ['habit' => $habit->uuid]);
+    }
+
     public function destroy(Habits $habit)
     {
         if(!$habit->delete())
