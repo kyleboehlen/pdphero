@@ -38,7 +38,7 @@ class Habits extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'type_id', 'name', 'times-daily', 'show_todo',
+        'user_id', 'type_id', 'name', 'times_daily', 'show_todo',
     ];
 
     /**

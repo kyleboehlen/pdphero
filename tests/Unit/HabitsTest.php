@@ -87,4 +87,349 @@ class HabitsTest extends TestCase
         $response = $this->actingAs($test_user)->post(route('habits.history', ['habit' => $uuid]));
         $response->assertStatus(403);
     }
+
+
+    /**
+     * Tests the create form shows properly
+     *
+     * @return void
+     * @test
+     */
+    public function testCreateForm()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Get response
+        $response = $this->actingAs($user)->get(route('habits.create'));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2> Create New Habit </h2>', false);
+        $response->assertSee('<form class="habit"  action="' . route('habits.store') . '"  method="POST">', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value=""  required />', false);
+        $response->assertSee('<div class="required-on">', false);
+        $response->assertSee('<div class="day-of-week-container">', false);
+        $response->assertSee('<p class="every-x-days  disabled " required>', false);
+        $response->assertSee('<input type="number" name="times-daily" min="1" max="100" required', false);
+        $response->assertSee('<textarea name="notes" placeholder="Any notes for your habit go here!"></textarea>', false);
+        $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
+    }
+
+    /**
+     * Tests the create route works
+     *
+     * @return void
+     * @test
+     */
+    public function testStore()
+    {
+        // Create some basic habit values
+        $title = 'Fuck a duck';
+        $times_daily = '3'; // I'm not sure if that's 3 ducks orr...
+        $notes = 'It\'s a fucking idiom, calm down PETA.';
+
+        // Create test user
+        $user = User::factory()->create();
+
+        // Send data to create a new days of the week habit
+        $days_of_week_array = ['0', '2', '5']; // Monday, Wednesday, Saturday
+        $response = $this->actingAs($user)->post(route('habits.store'), [
+            '_token' => csrf_token(),
+            'title' => $title,
+            'times-daily' => $times_daily,
+            'days-of-week' => $days_of_week_array,
+            'notes' => $notes,
+        ]);
+
+        // Verify redirected back to habits index
+        $response->assertRedirect('/habits');
+
+        // Get that habit
+        $habit = Habits::where('user_id', $user->id)->first();
+
+        $this->assertEquals($habit->name, $title); // this is kinda confusing, but whatevessss
+        $this->assertEquals($habit->times_daily, $times_daily);
+        $this->assertEquals($habit->notes, $notes);
+
+        // Verify they show up on the index page
+        $response = $this->actingAs($user)->followingRedirects()->get(route('habits'));
+        $response->assertOk();
+        $response->assertSee($title);
+        
+        // And the view details page
+        $response = $this->actingAs($user)->get(route('habits.view', ['habit' => $habit->uuid]));
+        $response->assertOk();
+        $response->assertSee($title);
+        $response->assertSee($notes);
+        $response->assertSee('Monday, Wednesday, Saturday');
+        $response->assertSee("Required $times_daily times");
+
+        // do it again with every x days
+        $user = User::factory()->create();
+
+        // Send data to create a new days of the week habit
+        $every_x_days_value = 8;
+        $response = $this->actingAs($user)->post(route('habits.store'), [
+            '_token' => csrf_token(),
+            'title' => $title,
+            'times-daily' => 1, // Default
+            'every-x-days' => $every_x_days_value,
+        ]);
+
+        // Verify redirected back to habits index
+        $response->assertRedirect('/habits');
+
+        // Get that habit
+        $habit = Habits::where('user_id', $user->id)->first();
+
+        $this->assertEquals($habit->name, $title);
+        $this->assertEquals($habit->times_daily, 1);
+        $this->assertNull($habit->notes);
+
+        // Verify they show up on the index page
+        $response = $this->actingAs($user)->followingRedirects()->get(route('habits'));
+        $response->assertOk();
+        $response->assertSee($title);
+        
+        // And the view details page
+        $response = $this->actingAs($user)->get(route('habits.view', ['habit' => $habit->uuid]));
+        $response->assertOk();
+        $response->assertSee($title);
+        $response->assertSee("every $every_x_days_value days");
+    }
+
+    /**
+     * Tests the create form shows properly
+     *
+     * @return void
+     * @test
+     */
+    public function testEditForm()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create both types of habits
+        $notes = 'Fuck a duck';
+        $days_of_week_array = [0, 2, 5]; // Monday, Wednesday, Saturday
+        $days_of_week_habit = Habits::factory()->create([
+            'user_id' => $user->id,
+            'days_of_week' => $days_of_week_array,
+            'every_x_days' => null,
+            'show_todo' => true,
+            'notes' => $notes,
+        ]);
+        $every_x_days_value = 5;
+        $every_x_days_habit = Habits::factory()->create([
+            'user_id' => $user->id,
+            'days_of_week' => null,
+            'every_x_days' => $every_x_days_value,
+            'show_todo' => false,
+            'notes' => $notes,
+        ]);
+
+        // Test editing day of week habit
+        $response = $this->actingAs($user)->get(route('habits.edit', ['habit' => $days_of_week_habit->uuid]));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2> Edit Habit </h2>', false);
+        $response->assertSee('<form class="habit"  action="' . route('habits.update', ['habit' => $days_of_week_habit->uuid]) . '"  method="POST">', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $days_of_week_habit->name . '"  required />', false);
+        $response->assertSee('<div class="required-on">', false);
+        $response->assertSee('<div class="day-of-week-container">', false);
+        $response->assertSee('<p class="every-x-days   disabled  " required>', false);
+        $response->assertSee('<input class="show-todo" type="checkbox" name="show-todo"   checked   />', false);
+        $response->assertSee('<input type="number" name="times-daily" min="1" max="100" required', false);
+        $response->assertSee('<textarea name="notes" placeholder="Any notes for your habit go here!">' . $notes . '</textarea>', false);
+        $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
+
+        // again with every x days
+        $response = $this->actingAs($user)->get(route('habits.edit', ['habit' => $every_x_days_habit->uuid]));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2> Edit Habit </h2>', false);
+        $response->assertSee('<form class="habit"  action="' . route('habits.update', ['habit' => $every_x_days_habit->uuid]) . '"  method="POST">', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $every_x_days_habit->name . '"  required />', false);
+        $response->assertSee('<div class="required-on">', false);
+        $response->assertSee('<div class="day-of-week-container">', false);
+        $response->assertSee('<p class="every-x-days   " required>', false);
+        $response->assertSee('<input class="show-todo" type="checkbox" name="show-todo"    />', false);
+        $response->assertSee('value="' . $every_x_days_value . '"', false);
+        $response->assertSee('value="1"', false);
+        $response->assertSee('<textarea name="notes" placeholder="Any notes for your habit go here!">' . $notes . '</textarea>', false);
+        $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
+    }
+
+    /**
+     * Tests the update route works
+     *
+     * @return void
+     * @test
+     */
+    public function testUpdate()
+    {
+        // Create some basic habit values
+        $title = 'Fuck a duck';
+        $times_daily = '3'; // I'm not sure if that's 3 ducks orr...
+        $notes = 'It\'s a fucking idiom, calm down PETA.';
+
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a test habit
+        $habit = Habits::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send data to update that habit
+        $days_of_week_array = ['0', '2', '5']; // Monday, Wednesday, Saturday
+        $response = $this->actingAs($user)->post(route('habits.update', ['habit' => $habit->uuid]), [
+            '_token' => csrf_token(),
+            'title' => $title,
+            'times-daily' => $times_daily,
+            'days-of-week' => $days_of_week_array,
+            'notes' => $notes,
+        ]);
+
+        // Verify redirected back to habit view
+        $response->assertRedirect("habits/view/$habit->uuid");
+
+        // Refresh model
+        $habit->refresh();
+
+        $this->assertEquals($habit->name, $title); // this is kinda confusing, but whatevessss
+        $this->assertEquals($habit->times_daily, $times_daily);
+        $this->assertEquals($habit->notes, $notes);
+
+        // Verify they show up on the index page
+        $response = $this->actingAs($user)->followingRedirects()->get(route('habits'));
+        $response->assertOk();
+        $response->assertSee($title);
+        
+        // And the view details page
+        $response = $this->actingAs($user)->get(route('habits.view', ['habit' => $habit->uuid]));
+        $response->assertOk();
+        $response->assertSee($title);
+        $response->assertSee($notes);
+        $response->assertSee('Monday, Wednesday, Saturday');
+        $response->assertSee("Required $times_daily times");
+
+        // do it again with every x days
+        $user = User::factory()->create();
+
+        // Create a test habit
+        $habit = Habits::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send data to create a new days of the week habit
+        $every_x_days_value = 8;
+        $response = $this->actingAs($user)->post(route('habits.update', ['habit' => $habit->uuid]), [
+            '_token' => csrf_token(),
+            'title' => $title,
+            'times-daily' => 1, // Default
+            'every-x-days' => $every_x_days_value,
+        ]);
+
+        // Verify redirected back to habit view
+        $response->assertRedirect("habits/view/$habit->uuid");
+
+        // Refresh model
+        $habit->refresh();
+
+        $this->assertEquals($habit->name, $title);
+        $this->assertEquals($habit->times_daily, 1);
+
+        // Verify they show up on the index page
+        $response = $this->actingAs($user)->followingRedirects()->get(route('habits'));
+        $response->assertOk();
+        $response->assertSee($title);
+        
+        // And the view details page
+        $response = $this->actingAs($user)->get(route('habits.view', ['habit' => $habit->uuid]));
+        $response->assertOk();
+        $response->assertSee($title);
+        $response->assertSee("every $every_x_days_value days");
+    }
+
+    /**
+     * Tests that the delete route works
+     *
+     * @return void
+     * @test
+     */
+    public function testDestroy()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a test habit
+        $habit = Habits::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send data to delete to-do item
+        $response = $this->actingAs($user)->post(route('habits.destroy', ['habit' => $habit->uuid]), [
+            '_token' => csrf_token(),
+        ]);
+
+        // Verify redirected back to index properly
+        $response->assertRedirect('/habits');
+
+        // Get that to do item
+        $habit = Habits::where('user_id', $user->id)->first();
+
+        // Verify it's not returned now
+        $this->assertNull($habit);
+    }
+
+    /**
+     * Tests that the index page shows properly
+     *
+     * @return void
+     * @test
+     */
+    public function testIndex()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Generate fake habits for user
+        $habits = Habits::factory(rand(5, 15))->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Get index and verify they are all there, no need to test for affirmations it is done in SettingsTest
+        $response = $this->actingAs($user)->followingRedirects()->get(route('habits'));
+        $response->assertOk();
+        foreach($habits as $habit)
+        {
+            $response->assertSee($habit->name);
+        }
+    }
+
+    /**
+     * Tests the color guide shows properly
+     *
+     * @return void
+     * @test
+     */
+    public function testColors()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Verify its working
+        $response = $this->actingAs($user)->followingRedirects()->get(route('habits.colors'));
+        $response->assertOk();
+        $response->assertSee('Gradient');
+        $response->assertSee('Solid');
+        $response->assertSee('Brown');
+        $response->assertSee('Red');
+        $response->assertSee('Yellow');
+        $response->assertSee('Green');
+    }
 }
