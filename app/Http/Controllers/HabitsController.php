@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Log;
 
 // Constants
@@ -14,6 +15,7 @@ use App\Models\Habits\Habits;
 // Requests
 use App\Http\Requests\Habits\StoreRequest;
 use App\Http\Requests\Habits\UpdateRequest;
+use App\Http\Requests\Habits\ViewRequest;
 
 class HabitsController extends Controller
 {
@@ -62,11 +64,40 @@ class HabitsController extends Controller
         ]);
     }
 
-    public function view(Habits $habit)
+    public function view(Habits $habit, ViewRequest $request)
     {
+        // Build the required on label
+        $required_on_label = 'Required ';
+        if($habit->times_daily > 1)
+        {
+            $required_on_label .= "$habit->times_daily times ";
+        }
+        if(!is_null($habit->days_of_week))
+        {
+            $required_on_label .= 'on:';
+            foreach($habit->days_of_week as $day)
+            {
+                // Turn w day value into long day
+                $required_on_label .= ' ' . jddayofweek($day, CAL_DOW_LONG) . ',';
+            }
+            
+            // Strip last comma
+            $required_on_label = substr($required_on_label, 0, strlen($required_on_label) - 1);
+        }
+        elseif($habit->every_x_days > 1)
+        {
+            $required_on_label .= "every $habit->every_x_days days";
+        }
+        else
+        {
+            $required_on_label .= "every day";
+        }
+
         // Return detail view
         return view('habits.details')->with([
             'habit' => $habit,
+            'history_offset' => $request->has('history-offset') ? $request->get('history-offset') : 0,
+            'required_on_label' => $required_on_label,
         ]);
     }
 

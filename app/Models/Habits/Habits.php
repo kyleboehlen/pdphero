@@ -76,7 +76,7 @@ class Habits extends Model
      * 
      * @return array
      */
-    public function getHistoryArray()
+    public function getHistoryArray($offset = 0, $label_format = 'D')
     {
         // Get current user
         $user = \Auth::user();
@@ -97,6 +97,17 @@ class Habits extends Model
                 $start_date = (clone $now)->startOfWeek();
                 $end_date = (clone $now)->endOfWeek();
                 break;
+        }
+
+        // Set offset
+        if($offset > 0)
+        {
+            // Change week offset into how many days back to go
+            $offset *= 7;
+
+            // Offset dates
+            $start_date->subDays($offset);
+            $end_date->subDays($offset);
         }
 
         // Populate the history to search, affirmations habits are a special case
@@ -236,7 +247,7 @@ class Habits extends Model
             // Add to the array that we're returning
             $history_array[$user_date->format('w')] = [
                 'classes' => config('habits.statuses')[$status]['style_class'] . ($required ? '' : ' not-required'),
-                'label' => $user_date->format('D'),
+                'label' => $user_date->format($label_format),
                 'required' => $required,
                 'status' => $status,
             ];
@@ -280,6 +291,86 @@ class Habits extends Model
         }
 
         return $history;
+    }
+
+    /**
+     * Calculates current streak
+     * 
+     * @return integer
+     */
+    public function getCurrentStreak()
+    {
+        // Get history
+        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        {
+            $history = $this->buildAffirmationsHistory();
+        }
+        else
+        {
+            $history = $this->history;
+        }
+
+        $current_streak = 0;
+        foreach($history as $history_entry)
+        {
+            if($history_entry->type_id == HistoryType::COMPLETED)
+            {
+                $current_streak++;
+            }
+            elseif($history_entry->type_id == HistoryType::SKIPPED)
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return $current_streak;
+    }
+
+    /**
+     * Calculates longest streak
+     * 
+     * @return integer
+     */
+    public function getLongestStreak()
+    {
+        // Get history
+        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        {
+            $history = $this->buildAffirmationsHistory();
+        }
+        else
+        {
+            $history = $this->history;
+        }
+
+        $longest_streak = 0;
+        $current_streak = 0;
+        foreach($history as $history_entry)
+        {
+            if($history_entry->type_id == HistoryType::COMPLETED)
+            {
+                $current_streak++;
+            }
+            elseif($history_entry->type_id == HistoryType::SKIPPED)
+            {
+                continue;
+            }
+            else
+            {
+                if($current_streak > $longest_streak)
+                {
+                    $longest_streak = $current_streak;
+                }
+                
+                $current_streak = 0;
+            }
+        }
+
+        return $longest_streak;
     }
 
     /**
