@@ -42,6 +42,13 @@ return [
         ],
     ],
 
+    'strength' => [
+        'min_day_change' => env('HABIT_STRENGTH_MIN_DAY_CHANGE'),
+        'max_day_change' => env('HABIT_STRENGTH_MAX_DAY_CHANGE'),
+        'change_rate' => env('HABIT_STRENGTH_CHANGE_RATE'),
+        'buffer' => env('HABIT_STRENGTH_BUFFER'),
+    ],
+
     'types' => [
         Type::AFFIRMATIONS_HABIT => [
             'name' => 'Affirmations Habit',

@@ -294,6 +294,52 @@ class Habits extends Model
     }
 
     /**
+     * This returns stats about the strength algoritm
+     * 
+     * @return array
+     */
+    public function evaluateStrengthCalculations($verbose = false)
+    {
+        $strength = 0;
+        $days = 0;
+        $days_to_cap = 0;
+        $progress_change = config('habits.strength.min_day_change');
+        while($strength < 100)
+        {
+            $days++;
+            $strength += $progress_change;
+            $progress_change += $progress_change * config('habits.strength.change_rate');
+            if($progress_change < config('habits.strength.max_day_change'))
+            {
+                $days_to_cap = $days;
+            }
+            else
+            {
+                $progress_change = config('habits.strength.max_day_change');
+            }
+            if($verbose)
+            {
+                echo "($days): Strength: " . round($strength) . '| Progress Change Rate:' . round($progress_change, 2) . "\n";
+            }
+        }
+        
+        if(!is_null($this->days_of_week))
+        {
+            $actual_days = (int) ceil(($days / count($this->days_of_week)) * 7);
+        }
+        else
+        {
+            $actual_days = $days * $this->every_x_days;
+        }
+
+        return [
+            'Habit perfect days to 100%' => $days,
+            'Calendar perfect days to 100%' => $actual_days,
+            'Days to hit progress cap' => $days_to_cap,
+        ];
+    }
+
+    /**
      * Calculates current streak
      * 
      * @return integer
