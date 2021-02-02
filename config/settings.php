@@ -8,7 +8,8 @@ return [
         Setting::TODO_SHOW_COMPLETED_FOR => '24',
         Setting::AFFIRMATIONS_SHOW_READ => '1', // True
         Setting::HABITS_SHOW_AFFIRMATIONS_HABIT => '0', // False
-        Setting::HABITS_DAYS_TO_DISPLAY => 'rolling_seven_days',
+        Setting::HABITS_DAYS_TO_DISPLAY => Setting::HABITS_ROLLING_SEVEN_DAYS,
+        Setting::HABITS_START_OF_WEEK => Setting::HABITS_SUNDAY, // Like a normal person...
     ],
 
     'options' => [
@@ -16,6 +17,11 @@ return [
             // Key => display name
             Setting::HABITS_ROLLING_SEVEN_DAYS => 'Rolling 7 Days', 
             Setting::HABITS_CURRENT_WEEK => 'Current Week',
+        ],
+        Setting::HABITS_START_OF_WEEK => [
+            // Key => display name
+            Setting::HABITS_SUNDAY => 'Sunday', 
+            Setting::HABITS_MONDAY => 'Monday',
         ],
     ],
 
@@ -35,6 +41,9 @@ return [
         Setting::HABITS_DAYS_TO_DISPLAY => [
             'desc' => 'Determines which days to display habit history and the toggle controls for.',
         ],
+        Setting::HABITS_START_OF_WEEK => [
+            'desc' => 'Determines whether the start of the week is Sunday or Monday when displaying the current week.',
+        ],
     ],
 
     'types' => [
@@ -43,5 +52,6 @@ return [
         Setting::AFFIRMATIONS_SHOW_READ => 'toggle', // True or false
         Setting::HABITS_SHOW_AFFIRMATIONS_HABIT => 'toggle', // True or false
         Setting::HABITS_DAYS_TO_DISPLAY => 'options', // Based on config('settings.options)
+        Setting::HABITS_START_OF_WEEK => 'options', // Based on config('settings.options)
     ]
 ];

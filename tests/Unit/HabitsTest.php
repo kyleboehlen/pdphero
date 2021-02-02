@@ -133,7 +133,7 @@ class HabitsTest extends TestCase
         $user = User::factory()->create();
 
         // Send data to create a new days of the week habit
-        $days_of_week_array = ['0', '2', '5']; // Monday, Wednesday, Saturday
+        $days_of_week_array = ['0', '2', '5']; // Sunday, Tuesday, Friday
         $response = $this->actingAs($user)->post(route('habits.store'), [
             '_token' => csrf_token(),
             'title' => $title,
@@ -162,7 +162,7 @@ class HabitsTest extends TestCase
         $response->assertOk();
         $response->assertSee($title);
         $response->assertSee($notes);
-        $response->assertSee('Monday, Wednesday, Saturday');
+        $response->assertSee('Sunday, Tuesday, Friday');
         $response->assertSee("Required $times_daily times");
 
         // do it again with every x days
@@ -285,7 +285,7 @@ class HabitsTest extends TestCase
         ]);
 
         // Send data to update that habit
-        $days_of_week_array = ['0', '2', '5']; // Monday, Wednesday, Saturday
+        $days_of_week_array = ['0', '2', '5']; // Sunday, Tuesday, Friday
         $response = $this->actingAs($user)->post(route('habits.update', ['habit' => $habit->uuid]), [
             '_token' => csrf_token(),
             'title' => $title,
@@ -314,7 +314,7 @@ class HabitsTest extends TestCase
         $response->assertOk();
         $response->assertSee($title);
         $response->assertSee($notes);
-        $response->assertSee('Monday, Wednesday, Saturday');
+        $response->assertSee('Sunday, Tuesday, Friday');
         $response->assertSee("Required $times_daily times");
 
         // do it again with every x days

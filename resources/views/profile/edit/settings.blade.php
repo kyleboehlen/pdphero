@@ -22,6 +22,11 @@
         {{-- Setting that determines whether to show habit history for rolling 7 days or current week --}}
         <x-settings.options-setting :id="$setting::HABITS_DAYS_TO_DISPLAY" text="Show habit history for | " />
 
+        @if($user->getSettingValue($setting::HABITS_DAYS_TO_DISPLAY) == $setting::HABITS_CURRENT_WEEK)
+            {{-- Setting that determines what the first day of "current week" should be --}}
+            <x-settings.options-setting :id="$setting::HABITS_START_OF_WEEK" text="Use | as the first day of the week" />
+        @endif
+
         <h2 id="todo-settings-header" class="settings">To-Do</h2>
 
         {{-- Setting that handles whether or not completed todo items get moved to the bottom of the todo list --}}
@@ -29,6 +34,7 @@
 
         {{-- Setting that handles how long completed todo items stay visible on the todo list --}}
         <x-settings.numeric-setting :id="$setting::TODO_SHOW_COMPLETED_FOR" text="Show completed items on the list for | hours" />
+
         <br/>
     </div>
 

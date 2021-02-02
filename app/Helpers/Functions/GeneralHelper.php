@@ -67,3 +67,16 @@ if(!function_exists('configArrayFromSeededCollection'))
         );
     }
 }
+
+if(!function_exists('dayOfWeek'))
+{
+    /**
+     * Gets the day of week based on the php datetime value 'w'
+     *
+     * @return bool
+     */
+    function dayOfWeek($day)
+    {
+        return date('l', strtotime("Sunday +{$day} days"));
+    }
+}

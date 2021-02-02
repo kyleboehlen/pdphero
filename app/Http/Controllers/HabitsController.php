@@ -78,7 +78,7 @@ class HabitsController extends Controller
             foreach($habit->days_of_week as $day)
             {
                 // Turn w day value into long day
-                $required_on_label .= ' ' . jddayofweek($day, CAL_DOW_LONG) . ',';
+                $required_on_label .= ' ' . dayOfWeek($day) . ',';
             }
             
             // Strip last comma
@@ -220,6 +220,12 @@ class HabitsController extends Controller
 
         return redirect()->route('habits');
     }
+
+    public function history(Habits $habit)
+    {
+        // Motherfuckerrrr
+    }
+
     /**
      * Builds a new affirmations ahbit based on defaults
      * 

@@ -94,8 +94,16 @@ class Habits extends Model
                 break;
 
             case Setting::HABITS_CURRENT_WEEK:
-                $start_date = (clone $now)->startOfWeek();
-                $end_date = (clone $now)->endOfWeek();
+                if($user->getSettingValue(Setting::HABITS_START_OF_WEEK) == Setting::HABITS_MONDAY)
+                {
+                    $start_date = (clone $now)->startOfWeek(Carbon::MONDAY);
+                    $end_date = (clone $now)->endOfWeek(Carbon::SUNDAY);
+                }
+                else // Setting::HABITS_SUNDAY
+                {
+                    $start_date = (clone $now)->startOfWeek(Carbon::SUNDAY);
+                    $end_date = (clone $now)->endOfWeek(Carbon::SATURDAY);
+                }
                 break;
         }
 
@@ -131,11 +139,13 @@ class Habits extends Model
 
             // Get carbon date in user's timezone
             $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
-            $user_date->hour = $now->hour;
-            $user_date->minute = $now->minute;
 
             // Get day in UTC to search for history
             $search_day = (clone $user_date)->setTimezone('UTC');
+
+            // Set hour/min for proper user date functionality
+            $user_date->hour = $now->hour;
+            $user_date->minute = $now->minute;
 
             // Determine required based on how we calculate this habit
             if(!is_null($this->days_of_week))
@@ -491,13 +501,16 @@ class Habits extends Model
         // Go back a random amount of days for a start date and create a carbon period
         $days_back = rand(1, 365);
         $carbon_period = CarbonPeriod::create(
-            (clone $carbon)->subDays($days_back)->setTimezone('UTC')->format('Y-m-d'),
-            (clone $carbon)->setTimezone('UTC')->format('Y-m-d'),
+            (clone $carbon)->subDays($days_back)->format('Y-m-d'),
+            (clone $carbon)->format('Y-m-d'),
         );
         
 
         foreach($carbon_period as $day)
         {
+            // Convert to UTC
+            $day->setTimezone('UTC');
+
             // Determine a random history type
             $type = HabitHistoryTypes::inRandomOrder()->first();
 
