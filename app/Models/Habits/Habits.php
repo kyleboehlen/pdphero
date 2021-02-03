@@ -550,30 +550,71 @@ class Habits extends Model
      */
     public function getCurrentStreak()
     {
-        // Get history
-        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        // Get current user
+        $user = \Auth::user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $now = new Carbon('now', $timezone);
+
+        // Get descedning history
+        $history = $this->getHistory();
+        if($history->count() == 0)
         {
-            $history = $this->buildAffirmationsHistory();
-        }
-        else
-        {
-            $history = $this->history;
+            // If theres no history there can't be a streak
+            return 0;
         }
 
+        // Build the dates needed to iterate through history
+        $first_history_day = $history->last()->day; // Be sure we're going out past the first day of history we have
+        $start_date = new Carbon($first_history_day, $timezone);
+        $start_date->subDay(); // Grace day to be safe with timezones
+        $end_date = (clone $now);
+
+        // Build the carbon period to iterate through
+        $carbon_period = 
+            array_reverse( // We're reversing it so we can iterate desc instead of ascending
+                CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'))
+                ->toArray()
+            );
+
+        // Iterate through dates and build streak
         $current_streak = 0;
-        foreach($history as $history_entry)
+        foreach($carbon_period as $carbon)
         {
-            if($history_entry->type_id == HistoryType::COMPLETED)
+            // Get carbon date in user's timezone
+            $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+
+            // Get day in UTC to search for history
+            $search_day = (clone $user_date)->setTimezone('UTC');
+
+            // Set hour/min for proper user date functionality
+            $user_date->hour = $now->hour;
+            $user_date->minute = $now->minute;
+
+            // Check if it was required that day
+            $required = $this->isRequired($user_date, $search_day, $timezone, $now);
+
+            if($required)
             {
-                $current_streak++;
-            }
-            elseif($history_entry->type_id == HistoryType::SKIPPED)
-            {
-                continue;
-            }
-            else
-            {
-                break;
+                $history_entry = null;
+                $key = $history->search(function($h) use ($search_day){
+                    return $h->day == $search_day->format('Y-m-d');
+                }); // Find the history entry for that day
+                if($key !== false) // If it's set
+                {
+                    // Assign it to history entry for use later
+                    $history_entry = $history[$key];
+                }
+
+                if(is_null($history_entry) || $history_entry->type_id == HistoryType::MISSED)
+                {
+                    break;
+                }
+                elseif($history_entry->type_id == HistoryType::COMPLETED)
+                {
+                    $current_streak++;
+                }
             }
         }
 
@@ -587,36 +628,73 @@ class Habits extends Model
      */
     public function getLongestStreak()
     {
-        // Get history
-        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        // Get current user
+        $user = \Auth::user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $now = new Carbon('now', $timezone);
+
+        // Get ascending history
+        $history = $this->getHistory(true);
+        if($history->count() == 0)
         {
-            $history = $this->buildAffirmationsHistory();
-        }
-        else
-        {
-            $history = $this->history;
+            // If theres no history there can't be a streak
+            return 0;
         }
 
+        // Build the dates needed to iterate through history
+        $first_history_day = $history->first()->day; // Be sure we're going out past the first day of history we have
+        $start_date = new Carbon($first_history_day, $timezone);
+        $start_date->subDay(); // Grace day to be safe with timezones
+        $end_date = (clone $now);
+
+        // Build the carbon period to iterate through
+        $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
+
+        // Iterate through dates and build streaks
         $longest_streak = 0;
         $current_streak = 0;
-        foreach($history as $history_entry)
+        foreach($carbon_period as $carbon)
         {
-            if($history_entry->type_id == HistoryType::COMPLETED)
+            // Get carbon date in user's timezone
+            $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+
+            // Get day in UTC to search for history
+            $search_day = (clone $user_date)->setTimezone('UTC');
+
+            // Set hour/min for proper user date functionality
+            $user_date->hour = $now->hour;
+            $user_date->minute = $now->minute;
+
+            // Check if it was required that day
+            $required = $this->isRequired($user_date, $search_day, $timezone, $now);
+
+            if($required)
             {
-                $current_streak++;
-            }
-            elseif($history_entry->type_id == HistoryType::SKIPPED)
-            {
-                continue;
-            }
-            else
-            {
-                if($current_streak > $longest_streak)
+                $history_entry = null;
+                $key = $history->search(function($h) use ($search_day){
+                    return $h->day == $search_day->format('Y-m-d');
+                }); // Find the history entry for that day
+                if($key !== false) // If it's set
                 {
-                    $longest_streak = $current_streak;
+                    // Assign it to history entry for use later
+                    $history_entry = $history[$key];
                 }
-                
-                $current_streak = 0;
+
+                if(is_null($history_entry) || $history_entry->type_id == HistoryType::MISSED)
+                {
+                    if($current_streak > $longest_streak)
+                    {
+                        $longest_streak = $current_streak;
+                    }
+                    
+                    $current_streak = 0;
+                }
+                elseif($history_entry->type_id == HistoryType::COMPLETED)
+                {
+                    $current_streak++;
+                }
             }
         }
 
