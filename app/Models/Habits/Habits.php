@@ -55,20 +55,164 @@ class Habits extends Model
      */
     public function calculateStrength()
     {
-        // Check if it has history
-        if($this->history->count() > 0)
+        // Get current user
+        $user = \Auth::user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $now = new Carbon('now', $timezone);
+
+        // Get ascending history
+        $history = $this->getHistory(true);
+        if($history->count() == 0)
         {
-            // For now, we're just gonna set the strength to a random percentage
-            $this->strength = rand(1, 100);
+            // If theres no history set the strength to 0
+            $strength = 0;
 
-            // To-Do: The proper strength calculating algorithm
-
-            // Return failure/success
+            // Return success/failure based on saving the model
             return $this->save();
         }
 
-        // Return success, no need to calculate strength
-        return true;
+        // Build the dates needed to iterate through history
+        $first_history_day = $history->first()->day; // Be sure we're going out past the first day of history we have
+        $start_date = new Carbon($first_history_day, $timezone);
+        $start_date->subDay(); // Grace day to be safe with timezones
+        $end_date = (clone $now);
+
+        // Build the carbon period to iterate through
+        $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
+
+        // Instantate positive/negative change and set strength to 0
+        $negative_change = config('habits.strength.min_day_change');
+        $positive_change = config('habits.strength.min_day_change');
+        $strength = 0;
+
+        // Iterate through dates and build strength
+        foreach($carbon_period as $carbon)
+        {
+            // Get carbon date in user's timezone
+            $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+
+            // Get day in UTC to search for history
+            $search_day = (clone $user_date)->setTimezone('UTC');
+
+            // Set hour/min for proper user date functionality
+            $user_date->hour = $now->hour;
+            $user_date->minute = $now->minute;
+
+            // Check if it was required that day
+            $required = $this->isRequired($user_date, $search_day, $timezone, $now);
+
+            // If it was, lets calculate how it effects strength
+            if($required)
+            {
+                $history_entry = null;
+                $key = $history->search(function($h) use ($search_day){
+                    return $h->day == $search_day->format('Y-m-d');
+                }); // Find the history entry for that day
+                if($key !== false) // If it's set
+                {
+                    // Assign it to history entry for use later
+                    $history_entry = $history[$key];
+                }
+
+                // If there is no history for that day
+                if(is_null($history_entry))
+                {
+                    // Then they missed the day
+                    $status = HistoryType::MISSED;
+                }
+                else // If we do have history for that day
+                {
+                    // Assign the status from the history type
+                    $status = $history_entry->type_id;
+                }
+
+                switch($status)
+                {
+                    // If it was completed, adjust the positive change up and negative change down
+                    case HistoryType::COMPLETED:
+                        $positive_change += $positive_change * config('habits.strength.change_rate');
+                        $negative_change -= $negative_change * config('habits.strength.change_rate');
+                        break;
+
+                    case HistoryType::SKIPPED:
+                        // Do nothing, almost like it was skipped!
+                        break;
+
+                    // If it was missed, adjust the positive change down and negative change up
+                    case HistoryType::MISSED:
+                        $positive_change -= $positive_change * config('habits.strength.change_rate');
+                        $negative_change += $negative_change * config('habits.strength.change_rate');
+                        break;
+                }
+
+                // Verify positive change isn't higher than the max day change
+                if($positive_change > config('habits.strength.max_day_change'))
+                {
+                    $positive_change = config('habits.strength.max_day_change');
+                }
+                elseif($positive_change < config('habits.strength.min_day_change')) // Or lower
+                {
+                    $postive_change = config('habits.strength.min_day_change');
+                }
+
+                // Verify negative change isn't higher than the max day change
+                if($negative_change > config('habits.strength.max_day_change'))
+                {
+                    $negative_change = config('habits.strength.max_day_change');
+                }
+                elseif($negative_change < config('habits.strength.min_day_change')) // Or lower
+                {
+                    $negative_change = config('habits.strength.min_day_change');
+                }
+
+                // Check for partial and calculate partial percent
+                if($status == HistoryType::COMPLETED && $history_entry->times < $this->times_daily)
+                {
+                    // Then it's partial
+                    $status = HistoryType::PARTIAL;
+                    $partial_percentage = $history_entry->times / $this->times_daily; // Detemine a partial adjustment for strength
+                }
+
+                switch($status)
+                {
+                    case HistoryType::COMPLETED:
+                        $strength += $positive_change; // If completed add positive change
+                        break;
+
+                    case HistoryType::PARTIAL:
+                        $strength += ($positive_change * $partial_percentage); // If partial, only give partial postive change
+                        break;
+
+                    case HistoryType::MISSED:
+                        $strength -= $negative_change; // And if missed, negative change
+                        break;
+                }
+
+                // If the strength is above the strength buffer set it back to the strength buffer
+                if($strength > config('habits.strength.buffer'))
+                {
+                    $strength = config('habits.strength.buffer');
+                }
+                elseif($strength < 0) // And make sure we don't have negative strength
+                {
+                    $strength = 0;
+                }
+            }
+        }
+
+        // If the strength was in the buffer we're only going to save it as 100%
+        if($strength > 100)
+        {
+            $strength = 100;
+        }
+
+        // Set strength
+        $this->strength = round($strength);
+
+        // And return the success/failure of saving the model
+        return $this->save();
     }
 
     /**
@@ -118,15 +262,7 @@ class Habits extends Model
             $end_date->subDays($offset);
         }
 
-        // Populate the history to search, affirmations habits are a special case
-        if($this->type_id == Type::AFFIRMATIONS_HABIT)
-        {
-            $history = $this->buildAffirmationsHistory();
-        }
-        else
-        {
-            $history = $this->history;
-        }
+        $history = $this->getHistory();
 
         // Create a carbon period to iterate through and build history array to return
         $history_array = array();
@@ -147,75 +283,7 @@ class Habits extends Model
             $user_date->hour = $now->hour;
             $user_date->minute = $now->minute;
 
-            // Determine required based on how we calculate this habit
-            if(!is_null($this->days_of_week))
-            {
-                // Calculate by days of week
-                $required = in_array($user_date->format('w'), $this->days_of_week);
-            }
-            elseif(!is_null($this->every_x_days))
-            {
-                // Check if this habit has been completed before, and when
-                $last_completed = null;
-                $key = $history->search(function($h_e) use ($search_day){
-                    return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThanOrEqualTo($search_day);
-                });
-                if($key !== false)
-                {
-                    $last_completed = $history[$key];
-                }
-
-                // If it's never been completed...
-                if(is_null($last_completed))
-                {
-                    $required = true;
-                }
-                else
-                {
-                    // if the last time it was completed was today
-                    $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                    if(
-                        (clone $last_completed_carbon)->setTimezone($timezone)->isSameDay($now) &&
-                        // and the search day is also today, we need to go back again to determine
-                        (clone $search_day)->setTimezone($timezone)->isSameDay($now)
-                    )
-                    {
-                        // Check for the last time it was completed before that
-                        $last_completed = null;
-                        $key = $history->search(function($h_e) use ($last_completed_carbon){
-                            return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThan($last_completed_carbon);
-                        });
-                        if($key !== false)
-                        {
-                            $last_completed = $history[$key];
-                            $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                            $days_since_last_completed = $last_completed_carbon->diffInDays($search_day) + 1;
-                        }
-                        else
-                        {
-                            // Set days since last completed to the habits times daily in order to make it required
-                            $days_since_last_completed = $this->every_x_days;
-                        }
-                    }
-                    else
-                    {
-                        // Determine days since it was last completed based on search date and last completed
-                        $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
-                        $days_since_last_completed = $last_completed_carbon->diffInDays($search_day) + 1;
-                    }
-
-                    // Determine required based on how many days since it's last been completed
-                    if($days_since_last_completed < $this->every_x_days || $days_since_last_completed % $this->every_x_days != 0) // if it hasn't been x days yet or if it's not a multiple of today
-                    {
-                        // Then it's not required
-                        $required = false;
-                    }
-                    else // Otherwise it's required on this day
-                    {
-                        $required = true;
-                    }
-                }
-            }
+            $required = $this->isRequired($user_date, $search_day, $timezone, $now);
 
             // Get the history entry for the day we're checking
             $history_entry = null;
@@ -267,14 +335,140 @@ class Habits extends Model
     }
 
     /**
+     * Returns history for that type of habit
+     * 
+     * @return Collection
+     */
+    private function getHistory($asc = false)
+    {
+        // Populate the history to search, affirmations habits are a special case
+        if($this->type_id == Type::AFFIRMATIONS_HABIT)
+        {
+            $history = $this->buildAffirmationsHistory($asc);
+        }
+        else
+        {
+            if($asc)
+            {
+                $history = $this->historyAsc;
+            }
+            else
+            {
+                $history = $this->history;
+            }
+        }
+
+        return $history;
+    }
+
+    /**
+     * Checks whether habit is required on a certain day or not
+     * 
+     * @return bool
+     */
+    private function isRequired($user_date, $search_day, $timezone, $now)
+    {
+        $history = $this->getHistory();
+
+        // Determine required based on how we calculate this habit
+        if(!is_null($this->days_of_week))
+        {
+            // Calculate by days of week
+            $required = in_array($user_date->format('w'), $this->days_of_week);
+        }
+        elseif(!is_null($this->every_x_days))
+        {
+            // If its required every single day
+            if($this->every_x_days == 1)
+            {
+                // Then it's required
+                $required = true;
+            }
+            else
+            {
+                // Check if this habit has been completed before, and when
+                $last_completed = null;
+                $key = $history->search(function($h_e) use ($search_day){
+                    return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThanOrEqualTo($search_day);
+                });
+                if($key !== false)
+                {
+                    $last_completed = $history[$key];
+                }
+
+                // If it's never been completed...
+                if(is_null($last_completed))
+                {
+                    $required = true;
+                }
+                else
+                {
+                    // if the last time it was completed was today
+                    $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                    if(
+                        (clone $last_completed_carbon)->setTimezone($timezone)->isSameDay($now) &&
+                        // and the search day is also today, we need to go back again to determine
+                        (clone $search_day)->setTimezone($timezone)->isSameDay($now)
+                    )
+                    {
+                        // Check for the last time it was completed before that
+                        $last_completed = null;
+                        $key = $history->search(function($h_e) use ($last_completed_carbon){
+                            return $h_e->type_id == HistoryType::COMPLETED && Carbon::parse($h_e->day)->lessThan($last_completed_carbon);
+                        });
+                        if($key !== false)
+                        {
+                            $last_completed = $history[$key];
+                            $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                            $days_since_last_completed = $last_completed_carbon->diffInDays($search_day) + 1;
+                        }
+                        else
+                        {
+                            // Set days since last completed to the habits times daily in order to make it required
+                            $days_since_last_completed = $this->every_x_days;
+                        }
+                    }
+                    else
+                    {
+                        // Determine days since it was last completed based on search date and last completed
+                        $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
+                        $days_since_last_completed = $last_completed_carbon->diffInDays($search_day);
+                    }
+
+                    // Determine required based on how many days since it's last been completed
+                    if($days_since_last_completed < $this->every_x_days || $days_since_last_completed % $this->every_x_days != 0) // if it hasn't been x days yet or if it's not a multiple of today
+                    {
+                        // Then it's not required
+                        $required = false;
+                    }
+                    else // Otherwise it's required on this day
+                    {
+                        $required = true;
+                    }
+                }
+            }
+        }
+
+        return $required;
+    }
+
+    /**
      * For building the collection of history data for the affirmations habit that matches the habit histories
      * 
      * @return array
      */
-    private function buildAffirmationsHistory()
+    private function buildAffirmationsHistory($asc = false)
     {
         // Get all the user's affirmations logs
-        $affirmation_logs = AffirmationsReadLog::where('user_id', $this->user_id)->orderBy('read_at', 'desc')->get();
+        $affirmation_logs = AffirmationsReadLog::where('user_id', $this->user_id);
+        if($asc)
+        {
+            $affirmation_logs = $affirmation_logs->orderBy('read_at')->get();
+        }
+        else
+        {
+            $affirmation_logs = $affirmation_logs->orderBy('read_at', 'desc')->get();
+        }
 
         $history_log_array = array();
         foreach($affirmation_logs as $affirmation_log)
@@ -466,6 +660,12 @@ class Habits extends Model
         return $this->hasMany(HabitHistory::class, 'habit_id', 'id')->orderBy('day', 'desc');
     }
 
+    // Habit history relationship
+    public function historyAsc()
+    {
+        return $this->hasMany(HabitHistory::class, 'habit_id', 'id')->orderBy('day');
+    }
+
     /**
      * Determines whether or not the habit is considered a low percentage based on the low percentage cut of value
      * 
@@ -525,16 +725,50 @@ class Habits extends Model
             switch($type->id)
             {
                 case HistoryType::COMPLETED:
-                    $habit_history_properties['times'] = rand(1, $this->times_daily);
+                    // Randomly do some partials
+                    if(rand(1, 3) != 3)
+                    {
+                        $habit_history_properties['times'] = rand(1, $this->times_daily);
+                    }
+                    else // Fully completed
+                    {
+                        $habit_history_properties['times'] = $this->times_daily;
+                    }
                     break;
                 
                 case HistoryType::SKIPPED:
+                    // Only skip it 10% of the times this status is choosen
+                    if(rand(1, 10) != 5)
+                    {
+                        // Change it to completed
+                        $habit_history_properties['type_id'] = HistoryType::COMPLETED;
+
+                        // Randomly do some partials
+                        if(rand(1, 3) != 3)
+                        {
+                            $habit_history_properties['times'] = rand(1, $this->times_daily);
+                        }
+                        else // Fully completed
+                        {
+                            $habit_history_properties['times'] = $this->times_daily;
+                        }
+                    }
+
                     // Use DB default on times
                     // Notes are required
                     $habit_history_properties['notes'] = 'Mandatory notes';
                     break;
 
                 case HistoryType::MISSED:
+                    // Only miss it 20% of the times this status is choosen
+                    if(rand(1, 5) != 5)
+                    {
+                        // Change it to completed
+                        $habit_history_properties['type_id'] = HistoryType::COMPLETED;
+                        $habit_history_properties['times'] = $this->times_daily;
+                        continue 2;
+                    }
+
                     // Sometimes on missed we just won't generate data at all
                     if(array_rand([true, false]))
                     {

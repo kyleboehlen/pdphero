@@ -207,6 +207,15 @@ class HabitsController extends Controller
             ]);
         }
 
+        // Calculate strength
+        if(!$habit->calculateStrength())
+        {
+            // Log error
+            Log::error('Failed to calculate strength when updating habit', [
+                'habit_id' => $habit->id,
+            ]);
+        }
+
         return redirect()->route('habits.view', ['habit' => $habit->uuid]);
     }
 
