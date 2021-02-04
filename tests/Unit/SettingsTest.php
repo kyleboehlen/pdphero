@@ -16,6 +16,7 @@ use App\Helpers\Constants\User\Setting;
 use App\Models\Affirmations\Affirmations;
 use App\Models\Habits\Habits;
 use App\Models\User\User;
+use App\Models\User\UsersSettings;
 use App\Models\ToDo\ToDo;
 
 class SettingsTest extends TestCase
@@ -324,6 +325,95 @@ class SettingsTest extends TestCase
         foreach(CarbonPeriod::create((clone $now)->startOfWeek()->format('Y-m-d'), (clone $now)->endOfWeek()->format('Y-m-d')) as $carbon)
         {
             $this->assertEquals($carbon->format('D'), $history_array[$carbon->format('w')]['label']);
+        }
+    }
+
+    /**
+     * Tests different days of the week as the start
+     *
+     * @return void
+     * @test
+     */
+    public function testHabitsStartOfWeek()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::HABITS_START_OF_WEEK;
+
+        // Set show habits hsitory for to current week, as that's the only time start of week matters
+        $user_setting = new UsersSettings();
+        $user_setting->user_id = $user->id;
+        $user_setting->setting_id = Setting::HABITS_DAYS_TO_DISPLAY;
+        $user_setting->value = Setting::HABITS_CURRENT_WEEK;
+        $this->assertTrue($user_setting->save());
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Call settings and verify it can be seen
+        $response = $this->actingAs($user)->get(route('profile.edit.settings'));
+        $response->assertStatus(200);
+        $response->assertSee(config('settings.options')[$setting_id][Setting::HABITS_SUNDAY]);
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::HABITS_MONDAY,
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+
+        // Also, might as well update the timezone before we refresh the model
+        $user->timezone = 'America/Denver';
+        $user->save();
+
+        // Refresh model
+        $user->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertEquals(Setting::HABITS_MONDAY, $user->getSettingValue($setting_id));
+
+        // Create habit and history
+        $habit = Habits::factory()->create();
+        while($habit->history()->count() === 0)
+        {
+            $habit->generateFakeHistory();
+        }
+
+        // Get the history array
+        $history_array = $habit->getHistoryArray();
+
+        // Test that Monday is first
+        foreach($history_array as $key => $value)
+        {
+            $this->assertEquals($key, Setting::HABITS_MONDAY);
+            break;
+        }
+
+        // Change setting back, and test again
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::HABITS_SUNDAY,
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+
+        // Refresh models
+        $user->refresh();
+        $habit->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertEquals(Setting::HABITS_SUNDAY, $user->getSettingValue($setting_id));
+
+        // Test that sunday is first
+        $history_array = $habit->getHistoryArray();
+        foreach($history_array as $key => $value)
+        {
+            $this->assertEquals($key, Setting::HABITS_SUNDAY);
+            break;
         }
     }
 }
