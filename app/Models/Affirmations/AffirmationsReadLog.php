@@ -11,9 +11,6 @@ class AffirmationsReadLog extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'read_at' => 'datetime',
-    ];
 
     protected $fillable = [
         'user_id',
@@ -29,14 +26,4 @@ class AffirmationsReadLog extends Model
             $model->read_at = $model->freshTimestamp();
         });
     }
-
-    /**
-     * Get the read_at attribute as a Y-m-d string
-     *
-     * @return string
-     */
-    public function getReadAtKeyAttribute()
-    {
-        return $this->read_at->format('Y-m-d');
-}
 }

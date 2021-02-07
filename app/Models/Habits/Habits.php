@@ -459,36 +459,75 @@ class Habits extends Model
      */
     private function buildAffirmationsHistory($asc = false)
     {
+        // Get current user
+        $user = \Auth::user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $end_date = new Carbon('now', $timezone);
+
         // Get all the user's affirmations logs
-        $affirmation_logs = AffirmationsReadLog::where('user_id', $this->user_id);
+        $history = collect();
+        $affirmation_logs = AffirmationsReadLog::where('user_id', $user->id);
         if($asc)
         {
             $affirmation_logs = $affirmation_logs->orderBy('read_at')->get();
+
+            if($affirmation_logs->count() == 0)
+            {
+                return $history;
+            }
+
+            $start_date = Carbon::parse($affirmation_logs->last()->read_at)->subDay();
+            $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
         }
         else
         {
             $affirmation_logs = $affirmation_logs->orderBy('read_at', 'desc')->get();
+
+            if($affirmation_logs->count() == 0)
+            {
+                return $history;
+            }
+
+            $start_date = Carbon::parse($affirmation_logs->first()->read_at)->subDay();
+            $carbon_period = 
+                array_reverse( // We're reversing it so we can iterate desc instead of ascending
+                    CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'))
+                    ->toArray()
+                );
         }
 
         $history_log_array = array();
-        foreach($affirmation_logs as $affirmation_log)
+        foreach($carbon_period as $carbon)
         {
-            if(array_key_exists($affirmation_log->read_at_key, $history_log_array))
+            // Get carbon date in user's timezone
+            $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+
+            // Generate the UTC range for searching for affirmation read logs
+            $start_timestamp = (clone $user_date)->startOfDay()->setTimezone('UTC');
+            $end_timestamp = (clone $user_date)->endOfDay()->setTimezone('UTC');
+
+            // Filter to that range
+            $filtered = $affirmation_logs->filter(function($a_r_l) use ($start_timestamp, $end_timestamp){
+                return
+                    Carbon::parse($a_r_l->read_at)->lessThanOrEqualTo($end_timestamp) &&
+                    Carbon::parse($a_r_l->read_at)->greaterThanOrEqualTo($start_timestamp);
+            });
+
+            // If we have something, add it to the array
+            $times = $filtered->count();
+            if($times > 0)
             {
-                $history_log_array[$affirmation_log->read_at_key]['times'] += 1; // Increment times that day
-            }
-            else // create an index in the entry and populate it
-            {
-                $history_log_array[$affirmation_log->read_at_key] = [
+                array_push($history_log_array, [
                     'type_id' => HistoryType::COMPLETED,
-                    'day' => $affirmation_log->read_at_key,
-                    'times' => 1,
-                ];
+                    'day' => (clone $user_date)->startOfDay()->setTimezone('UTC')->format('Y-m-d'),
+                    'times' => $times,
+                ]);
             }
         }
 
         // Cast to habit history
-        $history = collect();
         foreach($history_log_array as $history_log)
         {
             $history->push(new HabitHistory($history_log));
