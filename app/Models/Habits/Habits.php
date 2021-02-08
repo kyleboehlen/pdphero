@@ -287,18 +287,26 @@ class Habits extends Model
 
             // Get the history entry for the day we're checking
             $history_entry = null;
+            $times = 0;
             $key = $history->search(function($h) use ($search_day){
                 return $h->day == $search_day->format('Y-m-d');
             });
             if($key !== false)
             {
                 $history_entry = $history[$key];
+                $times = $history_entry->times;
             }
 
             // Figure out status
             if(!is_null($history_entry)) // If we do have history for this habit and day...
             {
                 $status = $history_entry->type_id; // Then we also already have the status
+
+                // Can't miss a day that's not required
+                if($status == HistoryType::MISSED && !$required)
+                {
+                    $status = HistoryType::SKIPPED;
+                }
 
                 // If it was a completed day, but they didn't do it enough times that day
                 if($status == HistoryType::COMPLETED && $history_entry->times < $this->times_daily)
@@ -328,6 +336,9 @@ class Habits extends Model
                 'label' => $user_date->format($label_format),
                 'required' => $required,
                 'status' => $status,
+                'carbon' => $user_date,
+                'notes' => is_null($history_entry) ? null : $history_entry->notes,
+                'times' => $times,
             ];
         }
 

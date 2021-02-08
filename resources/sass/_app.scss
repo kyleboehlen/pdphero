@@ -17,6 +17,18 @@ body
     margin-top: 0;
 }
 
+div.overlay
+{
+    background-color: $black;
+    display: none;
+    height: 100%;
+    margin-left: -.5%;
+    opacity: 50%;
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+}
+
 p.error
 {
     font-family: $body-font;

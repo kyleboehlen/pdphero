@@ -871,3 +871,175 @@ div.app-container
         }
     }
 }
+
+
+div.history-updater-container
+{
+    background-color: $dark-grey;
+    border-radius: 5px;
+    display: none;
+    height: auto;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 17.5vh;
+    position: absolute;
+    width: 40%;
+    z-index: 6;
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 0;
+        margin-top: 1%;
+        text-align: center;
+    }
+
+    h3
+    {
+        font-family: $body-font;
+        font-size: 2em;
+        margin-top: 1%;
+        text-align: center;
+
+        &.required
+        {
+            color: $green;
+        }
+
+        &.not-required
+        {
+            color: $red;
+        }
+    }
+
+
+    form
+    {
+        @extend %base-form;
+
+        p.history-status-label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin-bottom: 1%;
+            margin-top: 0;
+        }
+        
+        div.status-container
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            margin-left: 12.5%;
+            margin-right: 12.5%;
+            padding: 0;
+            width: 75%;
+
+            @media only screen and (max-width: 850px)
+            {
+                width: 95%;
+            }
+
+            &.display-none
+            {
+                display: none;
+            }
+
+            input[type="checkbox"]
+            {
+                @extend %checkbox;
+                @include toggle-history;
+
+                &.completed-checkbox
+                {
+                    border-color: $green;
+                    border-width: $medium-border;
+
+                    &:checked
+                    {
+                        background-color: $green;
+                    }
+                }
+
+                &.skipped-checkbox
+                {
+                    border-color: $brown;
+                    border-width: $medium-border;
+
+                    &:checked
+                    {
+                        background-color: $brown;
+                    }
+                }
+
+                &.missed-checkbox
+                {
+                    border-color: $red;
+                    border-width: $medium-border;
+
+                    &:checked
+                    {
+                        background-color: $red;
+                    }
+                }
+            }
+        }
+
+        div.history-times-container
+        {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            input[type="number"]
+            {
+                font-size: 2.5em;
+                height: 100%;
+                margin-left: 5%;
+                margin-right: 5%;
+                max-width: 20%;
+                text-align: center;
+                width: auto;
+            }
+
+            // Hide arrows chrome, safari, edge, opera
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button
+            {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            // Firefox
+            input[type=number]
+            {
+                -moz-appearance: textfield;
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.history-updater-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+                }
+            }
+        }
+    }
+}

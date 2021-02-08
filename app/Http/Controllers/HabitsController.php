@@ -7,12 +7,15 @@ use Carbon\Carbon;
 use Log;
 
 // Constants
+use App\Helpers\Constants\Habits\HistoryType;
 use App\Helpers\Constants\Habits\Type;
 
 // Models
 use App\Models\Habits\Habits;
+use App\Models\Habits\HabitHistory;
 
 // Requests
+use App\Http\Requests\Habits\HistoryRequest;
 use App\Http\Requests\Habits\StoreRequest;
 use App\Http\Requests\Habits\UpdateRequest;
 use App\Http\Requests\Habits\ViewRequest;
@@ -230,9 +233,71 @@ class HabitsController extends Controller
         return redirect()->route('habits');
     }
 
-    public function history(Habits $habit)
+    public function history(HistoryRequest $request, Habits $habit)
     {
-        // Motherfuckerrrr
+        // Get user
+        $user = $request->user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $day = new Carbon($request->get('day'), $timezone);
+        $day = $day->setTimezone('UTC')->format('Y-m-d');
+
+        // Determine status and times
+        $times = 0;
+        if($request->has('status-completed'))
+        {
+            $type_id = HistoryType::COMPLETED;
+
+            // Set times and trim to times daily
+            $times = $request->get('times');
+            if($times > $habit->times_daily)
+            {
+                $times = $habit->times_daily;
+            }
+        }
+        elseif($request->has('status-skipped'))
+        {
+            $type_id = HistoryType::SKIPPED;
+        }
+        else // status-missed
+        {
+            $type_id = HistoryType::MISSED;
+        }
+
+        // Set notes
+        $notes = null;
+        if($request->has('notes'))
+        {
+            $notes = $request->get('notes');
+        }
+
+        // Set keys
+        $keys = [
+            'habit_id' => $habit->id,
+            'day' => $day,
+        ];
+
+        // Set values
+        $values = [
+            'type_id' => $type_id,
+            'notes' => $notes,
+            'times' => $times,
+        ];
+
+        // Update or create history entry
+        $habit_history = HabitHistory::updateOrCreate($keys, $values);
+
+        // Update strength
+        if(!$habit->calculateStrength())
+        {
+            Log::error('Failed to calculate strength for habit when updating history', [
+                'habit_id' => $habit->id,
+            ]);
+        }
+
+        // Return either habits page or details page
+        return redirect()->back();
     }
 
     /**

@@ -119,6 +119,86 @@ $(document).ready(function(){
         $('.day-of-week-container').children().addClass('disabled');
         $('.day-of-week > input').attr('disabled', true);
     });
+
+    // History overlay toggles
+    $('.overlay').click(function(){
+        $('.overlay-hide').hide();
+        $('.overlay').hide();
+    });
+    $('.history-cancel-button').click(function(){
+        $('.overlay-hide').hide();
+        $('.overlay').hide();
+    });
+
+    // History status checkbox toggles
+    $('.history-status-checkbox').change(function(){
+        if(this.checked)
+        {
+            $('.history-status-checkbox').prop('checked', false);
+            $(this).prop('checked', true);
+
+            if(this.id.includes('skipped'))
+            {
+                $('#' + this.id.replace('skipped', 'label')).text('Skipped');
+                $('#' + this.id.replace('skipped', 'notes')).attr('placeholder', 'If you\'re skipping you must explain yourself!');
+                $('#' + this.id.replace('skipped', 'notes')).attr('required', true);
+                $('#' + this.id.replace('skipped', 'times-container')).hide();
+                $('#' + this.id.replace('completed', 'input').replace('status', 'times')).prop('disabled', true);
+            }
+            if(this.id.includes('completed'))
+            {
+                $('#' + this.id.replace('completed', 'label')).text('Completed');
+                $('#' + this.id.replace('completed', 'notes')).attr('placeholder', 'Notes');
+                $('#' + this.id.replace('completed', 'notes')).attr('required', false);
+                $('#' + this.id.replace('completed', 'times-container')).show();
+                $('#' + this.id.replace('completed', 'input').replace('status', 'times')).prop('disabled', false);
+            }
+            if(this.id.includes('missed'))
+            {
+                $('#' + this.id.replace('missed', 'label')).text('Missed');
+                $('#' + this.id.replace('missed', 'notes')).attr('placeholder', 'Notes');
+                $('#' + this.id.replace('missed', 'notes')).attr('required', false);
+                $('#' + this.id.replace('missed', 'times-container')).hide();
+                $('#' + this.id.replace('completed', 'input').replace('status', 'times')).prop('disabled', true);
+            }
+        }
+        else
+        {
+            if(this.id.includes('skipped'))
+            {
+                $('#' + this.id.replace('skipped', 'label')).text('To Be Determined');
+                $('#' + this.id.replace('skipped', 'notes')).attr('placeholder', 'Notes');
+
+            }
+            if(this.id.includes('completed'))
+            {
+                $('#' + this.id.replace('completed', 'label')).text('To Be Determined');
+                $('#' + this.id.replace('completed', 'notes')).attr('placeholder', 'Notes');
+            }
+            if(this.id.includes('missed'))
+            {
+                $('#' + this.id.replace('missed', 'label')).text('To Be Determined');
+                $('#' + this.id.replace('missed', 'notes')).attr('placeholder', 'Notes');
+            }
+        }
+    });
+
+    // History img incrementer/decrementer
+    $('.history-times-decrement').click(function(){
+        var input = $('#' + this.id.replace('decrement', 'input'));
+        if(input.val() > input.prop('min'))
+        {
+            input.val(input.val() - 1);
+        }
+    });
+
+    $('.history-times-increment').click(function(){
+        var input = $('#' + this.id.replace('increment', 'input'));
+        if(input.val() < input.prop('max'))
+        {
+            input.val(parseInt(input.val()) + 1);
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes
