@@ -886,6 +886,38 @@ div.history-updater-container
     width: 40%;
     z-index: 6;
 
+    @media only screen and (max-height: 620px)
+    {
+        margin-top: 2.5vh;
+    }
+
+    @media only screen and (max-width: 1350px)
+    {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 1100px)
+    {
+        margin-left: 20%;
+        margin-right: 20%;
+        width: 60%;
+    }
+
+    @media only screen and (max-width: 650px)
+    {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: 0;
+        width: 95%;
+    }
+
     h2
     {
         color: $white;
@@ -894,6 +926,16 @@ div.history-updater-container
         margin-bottom: 0;
         margin-top: 1%;
         text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.35em;
+        }
     }
 
     h3
@@ -902,6 +944,16 @@ div.history-updater-container
         font-size: 2em;
         margin-top: 1%;
         text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.65em;
+        }
 
         &.required
         {
@@ -926,6 +978,11 @@ div.history-updater-container
             font-size: 2em;
             margin-bottom: 1%;
             margin-top: 0;
+
+            @media only screen and (max-width: 700px)
+            {
+                font-size: 1.75em;
+            }
         }
         
         div.status-container
@@ -941,6 +998,8 @@ div.history-updater-container
 
             @media only screen and (max-width: 850px)
             {
+                margin-left: 2.5%;
+                margin-right: 2.5%;
                 width: 95%;
             }
 
@@ -953,6 +1012,12 @@ div.history-updater-container
             {
                 @extend %checkbox;
                 @include toggle-history;
+
+                @media only screen and (max-width: 550px)
+                {
+                    height: 55px;
+                    width: 55px;
+                }
 
                 &.completed-checkbox
                 {
@@ -1005,6 +1070,20 @@ div.history-updater-container
                 max-width: 20%;
                 text-align: center;
                 width: auto;
+
+                @media only screen and (max-width: 700px)
+                {
+                    font-size: 2em;
+                }
+            }
+
+            img
+            {
+                @media only screen and (max-width: 700px)
+                {
+                    max-height: 50px;
+                    max-width: 50px;
+                }
             }
 
             // Hide arrows chrome, safari, edge, opera

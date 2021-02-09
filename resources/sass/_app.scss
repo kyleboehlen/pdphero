@@ -27,6 +27,11 @@ div.overlay
     position: absolute;
     width: 100%;
     z-index: 5;
+    
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: -2.5%; // IDEK
+    }
 }
 
 p.error
