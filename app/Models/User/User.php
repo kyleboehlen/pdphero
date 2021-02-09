@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+// Constants
+use App\Helpers\Constants\ToDo\Type as ToDoType;
+
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
@@ -95,7 +98,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function completedTodos()
     {
-        return $this->hasMany(ToDo::class, 'user_id', 'id')->where('completed', 1);
+        return $this->hasMany(ToDo::class, 'user_id', 'id')->where('type_id', ToDoType::TODO_ITEM)->where('completed', 1);
     }
 
     public function completedHabits()
