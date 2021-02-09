@@ -417,9 +417,8 @@ class Habits extends Model
                     // if the last time it was completed was today
                     $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
                     if(
-                        (clone $last_completed_carbon)->setTimezone($timezone)->isSameDay($now) &&
-                        // and the search day is also today, we need to go back again to determine
-                        (clone $search_day)->setTimezone($timezone)->isSameDay($now)
+                        $last_completed->day == $search_day->format('Y-m-d') &&
+                        $last_completed->day == (clone $now)->startOfday()->setTimezone('UTC')->format('Y-m-d')
                     )
                     {
                         // Check for the last time it was completed before that
