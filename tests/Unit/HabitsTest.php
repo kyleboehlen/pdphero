@@ -5,6 +5,10 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Carbon\Carbon;
+
+// Constants
+use App\Helpers\Constants\Habits\HistoryType;
 
 // Models
 use App\Models\Habits\Habits;
@@ -431,5 +435,148 @@ class HabitsTest extends TestCase
         $response->assertSee('Red');
         $response->assertSee('Yellow');
         $response->assertSee('Green');
+    }
+
+    /**
+     * Tests updating history
+     *
+     * @return void
+     * @test
+     */
+    public function testHistory()
+    {
+        // Create a test user (keep in mind rolling seven days is default)
+        $user = User::factory()->create();
+
+        // Set timezone
+        $user->timezone = 'America/Denver';
+        $this->assertTrue($user->save());
+        $user->refresh();
+
+        // Create a date to play with
+        $now = new Carbon('now', $user->timezone);
+        $now->subDays(6);
+
+        // Create a habit, lets go with days of week to make things easy
+        $required_days = [0, 1, 2, 3, 4];
+        $not_required_days = [5, 6];
+        $habit = Habits::factory()->create([
+            'user_id' => $user->id,
+            'days_of_week' => $required_days,
+            'every_x_days' => null,
+            'times_daily' => 3,
+        ]);
+
+        // These are the keys we'll be verifying against the status in habits history array
+        $completed_key = null;
+        $partial_key = null;
+        $skipped_key = null;
+        $missed_key = null;
+        $not_required_missed_key = null;
+        $not_required_completed_key = null;
+
+        do
+        {
+            // Update a required day to completed
+            if(is_null($completed_key) && in_array($now->format('w'), $required_days))
+            {
+                $completed_key = $now->format('w');
+                $response = $this->actingAs($user)->post(route('habits.history', ['habit' => $habit->uuid]), [
+                    '_token' => csrf_token(),
+                    'day' => $now->format('Y-m-d'),
+                    'status-completed' => 'checked',
+                    'times' => 3,
+                ]);
+                $now->addDay();
+                continue;
+            }
+
+            // Update a required day to partial
+            if(is_null($partial_key) && in_array($now->format('w'), $required_days))
+            {
+                $partial_key = $now->format('w');
+                $response = $this->actingAs($user)->post(route('habits.history', ['habit' => $habit->uuid]), [
+                    '_token' => csrf_token(),
+                    'day' => $now->format('Y-m-d'),
+                    'status-completed' => 'checked',
+                    'times' => 1,
+                ]);
+                $now->addDay();
+                continue;
+            }
+
+            // Update a required day to skipped
+            if(is_null($skipped_key) && in_array($now->format('w'), $required_days))
+            {
+                $skipped_key = $now->format('w');
+                $response = $this->actingAs($user)->post(route('habits.history', ['habit' => $habit->uuid]), [
+                    '_token' => csrf_token(),
+                    'day' => $now->format('Y-m-d'),
+                    'status-skipped' => 'checked',
+                    'notes' => 'Learn about our enhanced health and safety measures',
+                ]);
+                $now->addDay();
+                continue;
+            }
+
+            // Update a required day to missed
+            if(is_null($missed_key) && in_array($now->format('w'), $required_days))
+            {
+                $missed_key = $now->format('w');
+                $response = $this->actingAs($user)->post(route('habits.history', ['habit' => $habit->uuid]), [
+                    '_token' => csrf_token(),
+                    'day' => $now->format('Y-m-d'),
+                    'status-missed' => 'checked',
+                ]);
+                $now->addDay();
+                continue;
+            }
+
+            // Update a not required day to missed
+            if(is_null($not_required_missed_key) && in_array($now->format('w'), $not_required_days))
+            {
+                $not_required_missed_key = $now->format('w');
+                $response = $this->actingAs($user)->post(route('habits.history', ['habit' => $habit->uuid]), [
+                    '_token' => csrf_token(),
+                    'day' => $now->format('Y-m-d'),
+                    'status-missed' => 'checked',
+                ]);
+                $now->addDay();
+                continue;
+            }
+
+            // Update a not required day to completed
+            if(is_null($not_required_completed_key) && in_array($now->format('w'), $not_required_days))
+            {
+                $not_required_completed_key = $now->format('w');
+                $response = $this->actingAs($user)->post(route('habits.history', ['habit' => $habit->uuid]), [
+                    '_token' => csrf_token(),
+                    'day' => $now->format('Y-m-d'),
+                    'status-completed' => 'checked',
+                    'times' => 3,
+                ]);
+                $now->addDay();
+                continue;
+            }
+        }
+        while(
+            is_null($completed_key) ||
+            is_null($partial_key) ||
+            is_null($skipped_key) ||
+            is_null($missed_key) ||
+            is_null($not_required_missed_key) ||
+            is_null($not_required_completed_key)
+        );
+
+        // Get history array for habit -- default seven rolling days
+        $history_array = $habit->getHistoryArray();
+
+        // Test each key
+        $this->assertEquals(HistoryType::COMPLETED, $history_array[$completed_key]['status']);
+        $this->assertEquals(HistoryType::PARTIAL, $history_array[$partial_key]['status']);
+        $this->assertEquals(HistoryType::SKIPPED, $history_array[$skipped_key]['status']);
+        $this->assertEquals(HistoryType::MISSED, $history_array[$missed_key]['status']);
+        $this->assertEquals(HistoryType::SKIPPED, $history_array[$not_required_missed_key]['status']);
+        $this->assertEquals(HistoryType::COMPLETED, $history_array[$not_required_completed_key]['status']);
     }
 }
