@@ -223,7 +223,6 @@ if(!function_exists('buildHabitToDos'))
                                 $times = $history_entry['times'];
                                 if($todo->completed)
                                 {
-                                    
                                     $label = "$habit->name ($times out of $habit->times_daily)";
                                 }
                                 else // Not completed todo

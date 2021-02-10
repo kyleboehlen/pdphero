@@ -579,4 +579,73 @@ class HabitsTest extends TestCase
         $this->assertEquals(HistoryType::SKIPPED, $history_array[$not_required_missed_key]['status']);
         $this->assertEquals(HistoryType::COMPLETED, $history_array[$not_required_completed_key]['status']);
     }
+
+    /**
+     * The integration that pushes habits to the to-do list
+     *
+     * @return void
+     * @test
+     */
+    public function testToDo()
+    {
+        // Create a test user
+        $user = User::factory()->create();
+
+        // Create a test habit required 2 times daily that pushes to todo list
+        $habit = Habits::factory()->create([
+            'user_id' => $user->id,
+            'days_of_week' => null,
+            'every_x_days' => 1,
+            'times_daily' => 2,
+            'show_todo' => true,
+        ]);
+
+        // Check if todo item shows up on list
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $response->assertSee("$habit->name (2 more times)");
+
+        // Toggle the todo item
+        foreach($habit->todos as $todo)
+        {
+            if(!$todo->completed)
+            {
+                $todo->toggleCompleted();
+            }
+        }
+
+        // Check if both todo items show up now
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $response->assertSee("$habit->name (1 more time)");
+        $response->assertSee("$habit->name (1 out of 2)");
+
+        // Check if habit history day shows up as partial
+        $habit->refresh();
+        $history_array = $habit->getHistoryArray();
+        $this->assertEquals(end($history_array)['status'], HistoryType::PARTIAL);
+
+        // Toggle the todo item
+        foreach($habit->todos as $todo)
+        {
+            if(!$todo->completed)
+            {
+                $todo->toggleCompleted();
+            }
+        }
+
+        // Toggle the todo item
+        foreach($habit->todos as $todo)
+        {
+            if(!$todo->completed)
+            {
+                $todo->toggleCompleted();
+            }
+        }
+
+        // Make sure just completed todo shows up
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $response->assertSee("$habit->name");
+    }
 }
