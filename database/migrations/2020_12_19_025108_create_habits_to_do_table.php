@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHabitsToDosTable extends Migration
+class CreateHabitsToDoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateHabitsToDosTable extends Migration
      */
     public function up()
     {
-        Schema::create('habits_to_dos', function (Blueprint $table) {
-            // Compound PK
-            $table->bigInteger('habit_id')->unsigned();
+        Schema::create('habits_to_do', function (Blueprint $table) {
+            // PK
+            $table->bigInteger('habits_id')->unsigned();
             $table->bigInteger('to_do_id')->unsigned();
 
             // Constraints
-            $table->foreign('habit_id')->references('id')->on('habits');
+            $table->primary(['habits_id', 'to_do_id']);
+            $table->foreign('habits_id')->references('id')->on('habits');
             $table->foreign('to_do_id')->references('id')->on('to_dos');
         });
     }
@@ -31,6 +32,6 @@ class CreateHabitsToDosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('habits_to_dos');
+        Schema::dropIfExists('habits_to_do');
     }
 }

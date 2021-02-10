@@ -41,7 +41,7 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('habits'));
         $this->assertTrue(Schema::hasTable('habit_history_types'));
         $this->assertTrue(Schema::hasTable('habit_histories'));
-        $this->assertTrue(Schema::hasTable('habits_to_dos'));
+        $this->assertTrue(Schema::hasTable('habits_to_do'));
     }
 
     /**

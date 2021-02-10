@@ -18,6 +18,8 @@ use App\Helpers\Constants\User\Setting;
 use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Habits\HabitHistory;
 use App\Models\Habits\HabitHistoryTypes;
+use App\Models\Relationships\HabitsToDo;
+use App\Models\ToDo\ToDo;
 
 class Habits extends Model
 {
@@ -791,6 +793,12 @@ class Habits extends Model
     public function historyAsc()
     {
         return $this->hasMany(HabitHistory::class, 'habit_id', 'id')->orderBy('day');
+    }
+
+    // ToDo relationship
+    public function todos()
+    {
+        return $this->belongsToMany(ToDo::class)->withTrashed();
     }
 
     /**

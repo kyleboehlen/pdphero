@@ -43,6 +43,17 @@ class ToDoController extends Controller
         // Get logged in user
         $user = $request->user();
 
+        // Build users habit todos
+        $build_habit_todos = buildHabitToDos($user);
+        if($build_habit_todos !== true)
+        {
+            // Log error
+            Log::error('Failed to build habit to-do items for user.', [
+                'user->id' => $user->id,
+                '# of failures' => $build_habit_todos,
+            ]);
+        }
+
         // Load user's to-do items
         $to_do_items = Todo::where('user_id', $user->id)->with('priority'); // This is going to need to be rewritten with constrained eager loads (habits/goals): https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
 

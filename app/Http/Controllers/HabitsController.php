@@ -224,6 +224,16 @@ class HabitsController extends Controller
 
     public function destroy(Habits $habit)
     {
+        // Delete automatically created todos
+        foreach($habit->todos as $todo)
+        {
+            if(!$todo->delete())
+            {
+                Log::error('Failed to delete habit to-do item', $todo->toArray());
+                return redirect()->back();
+            }
+        }
+
         if(!$habit->delete())
         {
             Log::error('Failed to delete habit', $habit->toArray());
