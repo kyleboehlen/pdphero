@@ -5,22 +5,22 @@
     <x-app.header title="Profile"  icon="settings" route="profile.edit.settings" />
 
     {{-- Side Nav --}}
-    <x-profile.nav show="back|edit-name|edit-picture|edit-nutshell|edit-rules|manage-membership|log-out" />
+    <x-profile.nav show="back|edit-name|edit-picture|edit-nutshell|edit-values|manage-membership|log-out" />
 
-    <div class="app-container values-list">
-        <h2>Edit Values</h2>
+    <div class="app-container rules-list">
+        <h2>Edit Personal Rules</h2>
         
-        @isset($user->values)
-            @foreach($user->values as $value)
-                <x-profile.value :value="$value" />
+        @isset($user->rules)
+            @foreach($user->rules as $rule)
+                <x-profile.rule :rule="$rule" />
             @endforeach
         @endisset
 
         {{-- Add form --}}
-        <x-profile.value />
+        <x-profile.rule />
 
         {{-- Errors --}}
-        @error('value')
+        @error('rule')
             @push('scripts')
                 <script>
                     sweetAlert('Error', 'error', '#d12828', '{{ $message }}');

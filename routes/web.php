@@ -107,6 +107,9 @@ Route::prefix('profile')->group(function(){
         // Show edit values page
         Route::get('values', [ProfileController::class, 'editValues'])->name('profile.edit.values');
 
+        // Show edit rules page
+        Route::get('rules', [ProfileController::class, 'editRules'])->name('profile.edit.rules');
+
         // Show manage memebership page
         Route::get('membership', [ProfileController::class, 'editMembership'])->name('profile.edit.membership');
     });
@@ -116,10 +119,11 @@ Route::prefix('profile')->group(function(){
         // Update settings route
         Route::post('settings/{id}', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
 
-        // Update routes for profile-picture, name, values, nutshell
+        // Update routes for profile-picture, name, values, nutshell, rules
         Route::post('name', [ProfileController::class, 'updateName'])->name('profile.update.name');
         Route::post('values', [ProfileController::class, 'updateValues'])->name('profile.update.values');
         Route::post('nutshell', [ProfileController::class, 'updateNutshell'])->name('profile.update.nutshell');
+        Route::post('rules', [ProfileController::class, 'updateRules'])->name('profile.update.rules');
 
         // Profile picture upload throttled
         Route::middleware(['throttle:profile-pictures'])->group(function(){
@@ -129,7 +133,9 @@ Route::prefix('profile')->group(function(){
 
     // Delete route
     Route::prefix('destroy')->group(function(){
+        // Value/rule
         Route::post('value', [ProfileController::class, 'destroyValue'])->name('profile.destroy.value');
+        Route::post('rule', [ProfileController::class, 'destroyRule'])->name('profile.destroy.rule');
 
         // Sets all settings to default
         Route::post('settings', [ProfileController::class, 'destroySettings'])->name('profile.destroy.settings');

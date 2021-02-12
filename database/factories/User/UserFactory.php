@@ -31,6 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_picture' => 'test/' . rand(1, 7) . '.jpg',
             'values' => array_slice(config('test.values'), 0, rand(2, 6)),
+            'rules' => array_slice(config('test.rules'), 0, rand(2, 6)),
         ];
     }
 }

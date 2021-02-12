@@ -45,6 +45,10 @@
             <a href="{{ route('profile.edit.nutshell') }}"><li>Edit Nutshell</li></a>
         @endif
 
+        @if(in_array('edit-rules', $show))
+            <a href="{{ route('profile.edit.rules') }}"><li>Edit Rules</li></a>
+        @endif
+
         @if(in_array('edit-membership', $show))
             <a href="{{ route('profile.edit.memebership') }}"><li>Manage Membership</li></a>
         @endif

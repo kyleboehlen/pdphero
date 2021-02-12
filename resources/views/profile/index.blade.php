@@ -5,7 +5,7 @@
     <x-app.header title="Profile"  icon="settings" route="profile.edit.settings" />
 
     {{-- Side Nav --}}
-    <x-profile.nav show="edit-name|edit-picture|add-affirmation|edit-nutshell|edit-values|manage-membership|log-out" />
+    <x-profile.nav show="edit-name|edit-picture|add-affirmation|edit-nutshell|edit-values|edit-rules|manage-membership|log-out" />
 
     <div class="app-container">
         <h2>{{ $user->name }}</h2>
@@ -81,6 +81,34 @@
                 </a>
             @endisset
         </div>
+
+        @if($user->getSettingValue($setting::PROFILE_SHOW_RULES))
+            {{-- Personal rules --}}
+            <div class="rules-container">
+                <h3>Personal Rules</h3>
+
+                @isset($user->rules)
+                    <ol>
+                        @foreach($user->rules as $rule)
+                            <li>{{ $rule }}</li>
+                        @endforeach
+                    </ol>
+                @else
+                    <ol>
+                        <a href="{{ route('profile.edit.rules') }}">
+                            <li>Rules and boundaries help us to do what we really want</li>
+                            <li>They're boundries you've already created to protect yourself</li>
+                            <li>They even work great with pushy friends or family!</li>
+                            <li>Click to add! Such as:</li>
+                            <li>I will get to bed before midnight</li>
+                            <li>I will not rent to friends or family</li>
+                            <li>I will compliment one person a day</li>
+                            <li>Etc...</li>
+                        </a>
+                    </ol>
+                @endisset
+            </div>
+        @endif
     </div>
 
     {{-- Navigation Footer --}}

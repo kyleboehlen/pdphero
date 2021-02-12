@@ -7,8 +7,12 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
+// Constants
+use App\Helpers\Constants\User\Setting;
+
 // Models
 use App\Models\User\User;
+use App\Models\User\UsersSettings;
 
 class ProfileTest extends TestCase
 {
@@ -162,7 +166,96 @@ class ProfileTest extends TestCase
         ];
         foreach($array as $value)
         {
-            $response->assertSee($user->name);
+            $response->assertSee($value);
+        }
+    }
+
+    /**
+     * Tests changing rules
+     *
+     * @return void
+     * @test
+     */
+    public function testRules()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::HABITS_START_OF_WEEK;
+
+        // Set show habits hsitory for to current week, as that's the only time start of week matters
+        $user_setting = new UsersSettings();
+        $user_setting->user_id = $user->id;
+        $user_setting->setting_id = Setting::PROFILE_SHOW_RULES;
+        $user_setting->value = true;
+        $this->assertTrue($user_setting->save());
+
+        // Call profile and verify it can be seen
+        $response = $this->actingAs($user)->get(route('profile'));
+        $response->assertStatus(200);
+        foreach($user->rules as $rule)
+        {
+            $response->assertSee($rule);
+        }
+
+        // Check the edit form shows it
+        $response = $this->actingAs($user)->get(route('profile.edit.rules'));
+        $response->assertStatus(200);
+        foreach($user->rules as $rule)
+        {
+            $response->assertSee($rule, false);
+        }
+
+        // Add a value
+        $response = $this->actingAs($user)->post(route('profile.update.rules'), [
+            '_token' => csrf_token(),
+            'rule' => $this->faker->word(),
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect('/profile/edit/rules');
+
+        // Refresh model
+        $user->refresh();
+
+        // And double check its showing up on the profile/edit pages
+        $profile_response = $this->actingAs($user)->get(route('profile'));
+        $profile_response->assertStatus(200);
+        $edit_response = $this->actingAs($user)->get(route('profile.edit.rules'));
+        $edit_response->assertStatus(200);
+        foreach($user->rules as $rule)
+        {
+            $profile_response->assertSee($rule);
+            $edit_response->assertSee($rule);
+        }
+
+        // Delete all of the rules
+        foreach($user->rules as $rule)
+        {
+            $response = $this->actingAs($user)->post(route('profile.destroy.rule'), [
+                '_token' => csrf_token(),
+                'rule' => $rule
+            ]);
+    
+            // Verify redirected back properly
+            $response->assertRedirect('/profile/edit/rules');
+        }
+
+        // And check that the defaults is showing up on the profile page
+        $response = $this->actingAs($user)->get(route('profile'));
+        $response->assertStatus(200);
+        $array = [
+            'Rules and boundaries help us to do what we really want',
+            'They\'re boundries you\'ve already created to protect yourself',
+            'They even work great with pushy friends or family!',
+            'Click to add! Such as:',
+            'I will get to bed before midnight',
+            'I will not rent to friends or family',
+            'I will compliment one person a day',
+            'Etc...',
+        ];
+        foreach($array as $rule)
+        {
+            $response->assertSee($rule, false);
         }
     }
 

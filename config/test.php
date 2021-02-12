@@ -20,6 +20,23 @@ return [
         'I deserve to be loved.',
         'I am my own best friend and cheerleader.',
     ],
+    'rules' => [
+        // Stolen from daniel wong tbh
+        'I spend 10 minutes every day in quiet reflection',
+        'I exercise three times a week for at least 30 minutes each time',
+        'I read for 30 minutes a day',
+        'Every day, I will write down one thing I\'m thankful for',
+        'I will compliment one person a day',
+        'I never play with my phone or look at my computer screen when someone is talking to me',
+        'I am home for dinner at least four times a week',
+        'I am five minutes early for every appointment',
+        'I never criticize someone over email. If I want to offer constructive criticism, I do it in person',
+        'I spend the last 15 minutes of each work day planning for the next day',
+        'I don\'t check my email more than three times a day.',
+        'Whenever I make a phone call, out of courtesy I will ask the other party if it’s a good time for him or her to talk.',
+        'I don\'t talk bad behind anyone\'s back.',
+        'Once a month, I will ask my teacher, spouse or boss for feedback.',
+    ],
     'values' => [
         'Compassion' , 'Creativity'          , 'Fairness'        , 'Friendship'      ,
         'Honest'     , 'Love'                , 'Loyalty'         , 'Optimism'        ,

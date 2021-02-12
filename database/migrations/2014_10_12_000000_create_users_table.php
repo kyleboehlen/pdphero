@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('profile_picture')->nullable();
             $table->text('nutshell')->nullable();
             $table->json('values')->nullable();
+            $table->json('rules')->nullable();
         });
     }
 

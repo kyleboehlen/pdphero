@@ -8,6 +8,7 @@
     <ul class="list settings">
         <a class="close-nav" href="#affirmations-settings-header"><li>Affirmations</li></a>
         <a class="close-nav" href="#habits-settings-header"><li>Habits</li></a>
+        <a class="close-nav" href="#profile-settings-header"><li>Profile</li></a>
         <a class="close-nav" href="#todo-settings-header"><li>To-Do</li></a>
 
         <form id="default-settings-form" action="{{ route('profile.destroy.settings') }}" method="POST">

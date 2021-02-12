@@ -11,6 +11,7 @@ class Setting
     const HABITS_SHOW_AFFIRMATIONS_HABIT = 4;
     const HABITS_DAYS_TO_DISPLAY = 5;
     const HABITS_START_OF_WEEK = 6;
+    const PROFILE_SHOW_RULES = 7;
 
     // Settings options
     const HABITS_ROLLING_SEVEN_DAYS = 'rolling_seven_days';

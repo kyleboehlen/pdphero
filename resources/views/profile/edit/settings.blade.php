@@ -27,6 +27,11 @@
             <x-settings.options-setting :id="$setting::HABITS_START_OF_WEEK" text="Use | as the first day of the week" />
         @endif
 
+        <h2 id="profile-settings-header" class="settings">Profile</h2>
+
+        {{-- Setting that determines whether or not personal rules show on the users profile --}}
+        <x-settings.checkbox-setting :id="$setting::PROFILE_SHOW_RULES" text="Show personal rules on my profile" />
+
         <h2 id="todo-settings-header" class="settings">To-Do</h2>
 
         {{-- Setting that handles whether or not completed todo items get moved to the bottom of the todo list --}}

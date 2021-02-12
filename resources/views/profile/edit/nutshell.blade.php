@@ -5,7 +5,7 @@
     <x-app.header title="Profile"  icon="settings" route="profile.edit.settings" />
 
     {{-- Side Nav --}}
-    <x-profile.nav show="back|edit-name|edit-picture|edit-values|manage-membership|log-out" />
+    <x-profile.nav show="back|edit-name|edit-picture|edit-values|edit-rules|manage-membership|log-out" />
 
     <div class="app-container">
         <form class="edit" action="{{ route('profile.update.nutshell') }}" method="POST">

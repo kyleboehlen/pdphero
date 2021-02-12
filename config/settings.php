@@ -10,6 +10,7 @@ return [
         Setting::HABITS_SHOW_AFFIRMATIONS_HABIT => '0', // False
         Setting::HABITS_DAYS_TO_DISPLAY => Setting::HABITS_ROLLING_SEVEN_DAYS,
         Setting::HABITS_START_OF_WEEK => Setting::HABITS_SUNDAY, // Like a normal person...
+        Setting::PROFILE_SHOW_RULES => '0', // False
     ],
 
     'options' => [
@@ -44,6 +45,9 @@ return [
         Setting::HABITS_START_OF_WEEK => [
             'desc' => 'Determines whether the start of the week is Sunday or Monday when displaying the current week.',
         ],
+        Setting::PROFILE_SHOW_RULES => [
+            'desc' => 'Determines whether or not the personal rules section displays on the profile page.',
+        ],
     ],
 
     'types' => [
@@ -53,5 +57,6 @@ return [
         Setting::HABITS_SHOW_AFFIRMATIONS_HABIT => 'toggle', // True or false
         Setting::HABITS_DAYS_TO_DISPLAY => 'options', // Based on config('settings.options)
         Setting::HABITS_START_OF_WEEK => 'options', // Based on config('settings.options)
+        Setting::PROFILE_SHOW_RULES => 'toggle', // True or false
     ]
 ];

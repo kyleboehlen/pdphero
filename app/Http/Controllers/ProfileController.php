@@ -17,10 +17,12 @@ use App\Helpers\Constants\User\Setting;
 use App\Models\User\UsersSettings;
 
 // Requests
+use App\Http\Requests\Profile\DestroyRuleRequest;
 use App\Http\Requests\Profile\DestroyValueRequest;
 use App\Http\Requests\Profile\UpdateNameRequest;
 use App\Http\Requests\Profile\UpdateNutshellRequest;
 use App\Http\Requests\Profile\UpdatePictureRequest;
+use App\Http\Requests\Profile\UpdateRulesRequest;
 use App\Http\Requests\Profile\UpdateValuesRequest;
 
 class ProfileController extends Controller
@@ -38,7 +40,9 @@ class ProfileController extends Controller
 
     public function index()
     {
-        return view('profile.index');
+        return view('profile.index')->with([
+            'setting' => Setting::class,
+        ]);
     }
 
     // Edit views
@@ -55,6 +59,11 @@ class ProfileController extends Controller
     public function editNutshell()
     {
         return view('profile.edit.nutshell');
+    }
+
+    public function editRules()
+    {
+        return view('profile.edit.rules');
     }
 
     public function editSettings()
@@ -134,6 +143,30 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile');
+    }
+
+    public function updateRules(UpdateRulesRequest $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Get user's current rules
+        $array = $user->rules ?? array();
+
+        // Add requested value
+        $rule = $request->get('rule');
+        array_push($array, $rule);
+
+        // Set rules and save user
+        $user->rules = $array;
+        if(!$user->save())
+        {
+            Log::error("Failed to add $rule to user's rules", [
+                'user->id' => $user->id,
+            ]);
+        }
+
+        return redirect()->route('profile.edit.rules');
     }
 
     public function updateSettings(Request $request, $id)
@@ -293,6 +326,41 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile.edit.values');
+    }
+
+    public function destroyRule(DestroyRuleRequest $request)
+    {
+        // Get user
+        $user = $request->user();
+
+        // Get user's current rules
+        $array = $user->rules ?? array();
+
+        // Delete requested rule
+        $rule = $request->get('rule');
+        if(($key = array_search($rule, $array)) !== false)
+        {
+            unset($array[$key]);
+        }
+
+        // If we're deleting the last rule
+        if(count($array) == 0)
+        {
+            // We want to set values to null in the db so that
+            // the empty values link still shows on profile index
+            $array = null;
+        }
+
+        // Set rules and save user
+        $user->rules = $array;
+        if(!$user->save())
+        {
+            Log::error("Failed to delete $rule from user's rules", [
+                'user->id' => $user->id,
+            ]);
+        }
+
+        return redirect()->route('profile.edit.rules');
     }
 
     public function destroySettings(Request $request)

@@ -536,6 +536,161 @@
     }
 }
 
+@mixin add-delete-list-item
+{
+    border: $thin-border solid $light-grey;
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-top: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    text-align: left;
+    width: 50%;
+    white-space: nowrap;
+
+    form
+    {
+        vertical-align: middle;
+
+        p
+        {
+            color: $white;
+            display: inline-block;
+            font-family: $body-font;
+            font-size: 2.5em;
+            margin: 0;
+            margin-left: 2.5%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 2.25em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.85em;
+            }
+        }
+
+        img
+        {
+            background-color: $dark-grey;
+            border-radius: 0 10px 10px 0;
+            padding: .5%;
+            position: absolute;
+            max-height: 82.5%;
+            right: 0;
+
+            &:hover
+            {
+                background-color: $red;
+                cursor: pointer;
+            }
+        }
+
+        input[type="text"]
+        {
+            background-color: $dark-grey;
+            border-style: inset;
+            border-radius: 7.5px 0 0 7.5px;
+            border-width: 2px;
+            color: $white;
+            height: 100%;
+            float: left;
+            font-family: $body-font;
+            font-size: 2em;
+            padding-bottom: 2.5px;
+            padding-left: 1.5%;
+            width: 75%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.65em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.35em;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+
+        button
+        {
+            border-radius: 0 10px 10px 0;
+            color: $black;
+            font-family: $body-font;
+            font-size: 2.25em;
+            height: 100%;
+            padding-left: 2.5%;
+            padding-right: 1.5%;
+            position: absolute;
+            right: 0;
+            width: auto;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 2.1em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.75em;
+            }
+
+
+            &.add
+            {
+                background-color: $green;
+            }
+
+            &.delete
+            {
+                background-color: $red;
+                display: none;
+            }
+
+            &:hover
+            {
+                cursor: pointer;
+                font-weight: bold;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 1300px)
+    {
+        width: 90%;
+    }
+
+    @media only screen and (max-width: 800px)
+    {
+        width: 95%;
+    }
+
+    &:last-of-type
+    {
+        margin-bottom: 2.5%;
+        margin-top: 2.5%;
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin-top: 5%;
+        }
+
+        @media only screen and (max-width: 800px)
+        {
+            margin-bottom: 2.5%;
+            margin-top: 10%;
+        }
+    }
+}
+
 @mixin cancel-submit-buttons
 {
     font-size: 1.85em;
