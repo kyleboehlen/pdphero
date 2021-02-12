@@ -585,6 +585,54 @@ div.app-container
         div.rule
         {
             @include add-delete-list-item;
+
+            width: 95%;
+
+            form
+            {
+                p
+                {
+                    font-size: 2em;
+                }
+
+                input[type="text"]
+                {
+                    font-size: 1.75em;
+                }
+
+                img
+                {
+                    border-radius: 0 10px 10px 0;
+                    padding: .25%;
+                    position: absolute;
+                    max-height: 72.5%;
+                    right: 2px;
+                }
+
+                button
+                {
+                    border-radius: 0 10px 10px 0;
+                    color: $black;
+                    font-family: $body-font;
+                    font-size: 2em;
+                    height: 100%;
+                    padding-left: 2.5%;
+                    padding-right: 1.5%;
+                    position: absolute;
+                    right: 0;
+                    width: auto;
+        
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 1.85em;
+                    }
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+                }
+            }
         }
     }
 
