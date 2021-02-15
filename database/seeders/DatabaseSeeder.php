@@ -27,5 +27,14 @@ class DatabaseSeeder extends Seeder
 
         // Seed Habit History Types
         $this->call(HabitHistoryTypesSeed::class);
+
+        // Seed Goal Types
+        $this->call(GoalTypesSeed::class);
+
+        // Seed Goal Statuses
+        $this->call(GoalStatusesSeed::class);
+
+        // Seed Goal Ad Hoc Periods
+        $this->call(GoalAdHocPeriodsSeed::class);
     }
 }

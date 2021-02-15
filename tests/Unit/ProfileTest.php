@@ -202,7 +202,7 @@ class ProfileTest extends TestCase
         $response->assertStatus(200);
         foreach($user->rules as $rule)
         {
-            $response->assertSee($rule, false);
+            $response->assertSee($rule, true);
         }
 
         // Add a value

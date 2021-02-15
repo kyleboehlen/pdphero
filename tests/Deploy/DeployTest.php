@@ -12,6 +12,9 @@ use DB;
 // Models
 use App\Models\Habits\HabitTypes;
 use App\Models\Habits\HabitHistoryTypes;
+use App\Models\Goal\GoalAdHocPeriod;
+use App\Models\Goal\GoalType;
+use App\Models\Goal\GoalStatus;
 use App\Models\ToDo\ToDoPriority;
 use App\Models\ToDo\ToDoTypes;
 use App\Models\User\Settings;
@@ -42,6 +45,12 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('habit_history_types'));
         $this->assertTrue(Schema::hasTable('habit_histories'));
         $this->assertTrue(Schema::hasTable('habits_to_do'));
+        $this->assertTrue(Schema::hasTable('goal_statuses'));
+        $this->assertTrue(Schema::hasTable('goal_categories'));
+        $this->assertTrue(Schema::hasTable('goal_types'));
+        $this->assertTrue(Schema::hasTable('goal_ad_hoc_periods'));
+        $this->assertTrue(Schema::hasTable('goals'));
+        $this->assertTrue(Schema::hasTable('goal_action_items'));
     }
 
     /**
@@ -68,5 +77,14 @@ class DeployTest extends TestCase
 
         // Verify Habit History Types seeded
         $this->assertEquals(configArrayFromSeededCollection(HabitHistoryTypes::all()), config('habits.history_types'));
+
+        // Verify Goal Types seeded
+        $this->assertEquals(configArrayFromSeededCollection(GoalType::all()), config('goals.types'));
+
+        // Verify Goal Statuses seeded
+        $this->assertEquals(configArrayFromSeededCollection(GoalStatus::all()), config('goals.statuses'));
+
+        // Verify Goal Ad Hoc Periods seeded
+        $this->assertEquals(configArrayFromSeededCollection(GoalAdHocPeriod::all()), config('goals.ad_hoc_periods'));
     }
 }
