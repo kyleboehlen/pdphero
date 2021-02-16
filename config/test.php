@@ -1,5 +1,14 @@
 <?php
 return [
+    'alpha' => [
+        'emails' => [
+            'jessicafootball@live.com', // Jessie Christensen
+            'kyleboehlen@gmail.com', // Me, obviously
+            'zachenf2b@gmail.com', // Zach Vasquez
+            'zane.call3@gmail.com', // Zane Call
+        ],
+    ],
+
     'affirmations' => [
         'I appreciate and love my body, fully, deeply, and joyfully.',
         'I am loved and lovable, and as I choose to love others, I find it easy for others to love me too.',
@@ -20,6 +29,7 @@ return [
         'I deserve to be loved.',
         'I am my own best friend and cheerleader.',
     ],
+
     'rules' => [
         // Stolen from daniel wong tbh
         'I spend 10 minutes every day in quiet reflection',
@@ -37,6 +47,7 @@ return [
         'I don\'t talk bad behind anyone\'s back.',
         'Once a month, I will ask my teacher, spouse or boss for feedback.',
     ],
+
     'values' => [
         'Compassion' , 'Creativity'          , 'Fairness'        , 'Friendship'      ,
         'Honest'     , 'Love'                , 'Loyalty'         , 'Optimism'        ,

@@ -157,6 +157,11 @@ Optimize route loading
    `php artisan route:cache`
 
 <br/><br/>
+### APP_ENV values:
+-local
+-testing
+-production
+<br/><br/>
 ### Current External Service List:
 - Cloudflare (CDN)
 - Mailgun (primary email)
