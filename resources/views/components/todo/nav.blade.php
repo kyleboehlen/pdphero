@@ -3,7 +3,7 @@
     <img id="close-nav" class="close hover-white" src="{{ asset('icons/close-black.png') }}" />
     
     {{-- Logo --}}
-    <img class="logo" src="{{ asset('logos/logo-white.png') }}" />
+    <img class="logo" src="{{ asset('logos/logo-white.png') }}" onclick="location.href='{{ route('home') }}'"/>
 
     <ul class="list">
         @if(in_array('list', $show))

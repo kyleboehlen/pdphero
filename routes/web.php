@@ -33,7 +33,20 @@ Route::get('/', [HomeController::class, 'index'])->name('root');
 Route::get('about', [AboutController::class, 'index'])->name('about');
 
 // Home route
-Route::get('home', [HomeController::class, 'home'])->middleware('auth')->middleware('verified')->name('home');
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], function(){
+    // View tools page
+    Route::get('/', [HomeController::class, 'home'])->name('home');
+
+    // Edit/update routes
+    Route::get('edit', [HomeController::class, 'edit'])->name('home.edit');
+    Route::post('update', [HomeController::class, 'update'])->name('home.update');
+});
+
+// Journal
+Route::prefix('journal')->group(function(){
+    // Root
+    Route::get('/', [ProfileController::class, 'index'])->name('journal');
+});
 
 // Goals
 Route::prefix('goals')->group(function(){

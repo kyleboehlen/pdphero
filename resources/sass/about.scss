@@ -152,6 +152,12 @@ nav.about
         {
             max-width: 20%
         }
+
+        &:hover
+        {
+            cursor: pointer;
+            opacity: .75;
+        }
     }
 
     ul

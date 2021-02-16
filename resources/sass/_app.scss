@@ -81,6 +81,12 @@ nav.app
             margin-top: 2.5%;
             margin-bottom: 1%;
         }
+
+        &:hover
+        {
+            cursor: pointer;
+            opacity: .75;
+        }
     }
 
     ul

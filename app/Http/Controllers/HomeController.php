@@ -33,7 +33,16 @@ class HomeController extends Controller
     public function home(Request $request)
     {
         // I've changed the RouteServiceProvider::HOME route to /todo
-        // This needs to return a home page with icons for tools, tutorials, etc
-        return view('home');
+        return view('home.index'); // This returns a home page with icons for tools, tutorials, etc
+    }
+
+    public function edit(Request $request)
+    {
+        return view('home.edit');
+    }
+
+    public function update(UpdateRequest $request)
+    {
+
     }
 }

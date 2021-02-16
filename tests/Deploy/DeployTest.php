@@ -12,6 +12,7 @@ use DB;
 // Models
 use App\Models\Habits\HabitTypes;
 use App\Models\Habits\HabitHistoryTypes;
+use App\Models\Home\Home;
 use App\Models\Goal\GoalAdHocPeriod;
 use App\Models\Goal\GoalType;
 use App\Models\Goal\GoalStatus;
@@ -51,6 +52,8 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('goal_ad_hoc_periods'));
         $this->assertTrue(Schema::hasTable('goals'));
         $this->assertTrue(Schema::hasTable('goal_action_items'));
+        $this->assertTrue(Schema::hasTable('homes'));
+        $this->assertTrue(Schema::hasTable('users_hide_homes'));
     }
 
     /**
@@ -86,5 +89,8 @@ class DeployTest extends TestCase
 
         // Verify Goal Ad Hoc Periods seeded
         $this->assertEquals(configArrayFromSeededCollection(GoalAdHocPeriod::all()), config('goals.ad_hoc_periods'));
+
+        // Verify Home seeded
+        $this->assertEquals(configArrayFromSeededCollection(Home::all()), config('home'));
     }
 }

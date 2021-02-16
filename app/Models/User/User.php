@@ -16,6 +16,7 @@ use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
+use App\Models\Relationships\UsersHideHome;
 use App\Models\ToDo\ToDo;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -111,5 +112,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function completedHabits()
     {
         return $this->hasMany(Habits::class, 'user_id', 'id')->where('strength', 100);
+    }
+
+    public function hideHomeArray()
+    {
+        return $this->hasMany(UsersHideHome::class, 'user_id', 'id')->get()->pluck('home_id')->toArray();
     }
 }
