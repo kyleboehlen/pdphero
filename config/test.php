@@ -3,7 +3,10 @@ return [
     'alpha' => [
         'emails' => [
             'jessicafootball@live.com', // Jessie Christensen
+            'kwesley@wesleys.net', // Kaitie Wesley
             'kyleboehlen@gmail.com', // Me, obviously
+            'sebweeks@gmail.com', // Sebastian Weeks
+            'sijiezhai@gmail.com', // siege/Siegester
             'zachenf2b@gmail.com', // Zach Vasquez
             'zane.call3@gmail.com', // Zane Call
         ],
