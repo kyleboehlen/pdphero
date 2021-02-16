@@ -26,8 +26,8 @@ class CreateGoalsTable extends Migration
             $table->string('name');
             $table->tinyInteger('type_id')->unsigned();
             $table->tinyInteger('status_id')->unsigned();
-            $table->bigInteger('category_id')->unsigned();
-            $table->boolean('completed')->default(0);
+            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table->boolean('achieved')->default(0);
             $table->boolean('use_custom_img')->default(0); // Otherwise use default based on status
             $table->tinyInteger('progress')->default(0); // To store cached calculated goal progress %
             $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();

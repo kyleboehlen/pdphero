@@ -58,6 +58,8 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'goal.uuid' => \App\Http\Middleware\Goal\UUID::class,
+        'goal.action_item.uuid' => \App\Http\Middleware\Goal\ActionItemUUID::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'habits.uuid' => \App\Http\Middleware\Habits\UUID::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,

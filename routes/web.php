@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AffirmationsController;
-use App\Http\Controllers\GoalsController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\HabitsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalController;
@@ -38,7 +38,49 @@ Route::get('home', [HomeController::class, 'home'])->middleware('auth')->middlew
 // Goals
 Route::prefix('goals')->group(function(){
     // Root
-    Route::get('/', [ProfileController::class, 'index'])->name('goals');
+    Route::get('/', [GoalController::class, 'index'])->name('goals');
+
+    // Toggle Completed routes
+    Route::prefix('toggle-completed')->group(function(){
+        Route::post('goal/{goal}', [GoalController::class, 'toggleCompletedGoal'])->name('goals.toggle-completed.goal');
+        Route::post('action-item/{action_item}', [GoalController::class, 'toggleCompletedActionItem'])->name('goals.toggle-completed.action-item');
+    });
+
+    // View routes
+    Route::prefix('view')->group(function(){
+        Route::get('goal/{goal}', [GoalController::class, 'viewGoal'])->name('goals.view.goal');
+        Route::get('action-item/{action_item}', [GoalController::class, 'viewActionItem'])->name('goals.view.action-item');
+    });
+
+    // Create routes
+    Route::prefix('create')->group(function(){
+        Route::get('goal', [GoalController::class, 'createGoal'])->name('goals.create.goal');
+        Route::get('action-item', [GoalController::class, 'createActionItem'])->name('goals.create.action-item');
+    });
+
+    // Store routes
+    Route::prefix('store')->group(function(){
+        Route::post('goal', [GoalController::class, 'storeGoal'])->name('goals.store.goal');
+        Route::post('action-item', [GoalController::class, 'storeActionItem'])->name('goals.store.action-item');
+    });
+    
+    // Edit routes
+    Route::prefix('edit')->group(function(){
+        Route::get('goal/{goal}', [GoalController::class, 'editGoal'])->name('goals.edit.goal');
+        Route::get('action-item/{action_item}', [GoalController::class, 'editActionItem'])->name('goals.edit.action-item');
+    });
+
+    // Update routes
+    Route::prefix('update')->group(function(){
+        Route::post('goal/{goal}', [GoalController::class, 'updateGoal'])->name('goals.update.goal');
+        Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.update.action-item');
+    });
+
+    // Destroy routes
+    Route::prefix('destroy')->group(function(){
+        Route::post('goal/{goal}', [GoalController::class, 'destroyGoal'])->name('goals.destroy.goal');
+        Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.destroy.action-item');
+    });
 });
 
 // Habits

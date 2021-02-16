@@ -14,6 +14,7 @@ use App\Helpers\Constants\ToDo\Type as ToDoType;
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
 use App\Models\ToDo\ToDo;
 
@@ -90,6 +91,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function affirmationsReadLog()
     {
         return $this->hasMany(AffirmationsReadLog::class, 'user_id', 'id');
+    }
+
+    public function goals()
+    {
+        return $this->hasMany(Goal::class, 'user_id', 'id');
     }
 
     public function todos()

@@ -15,7 +15,10 @@ class CreateGoalStatusesTable extends Migration
     {
         Schema::create('goal_statuses', function (Blueprint $table) {
             $table->tinyIncrements('id'); // PK
-            $table->string('name'); // Other column
+
+            // Other columns
+            $table->string('name');
+            $table->string('desc');
         });
     }
 

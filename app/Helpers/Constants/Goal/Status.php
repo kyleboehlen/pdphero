@@ -4,8 +4,9 @@ namespace App\Helpers\Constants\Goal;
 
 class Status
 {
-    const AHEAD = 1;
-    const ON_TRACK = 2;
-    const LAGGING = 3;
-    const TBD = 4;
+    const TBD = 1;
+    const LAGGING = 2;
+    const ON_TRACK = 3;
+    const AHEAD = 4;
+    const COMPLETED = 5;
 }

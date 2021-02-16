@@ -22,18 +22,27 @@ return [
             'name' => 'Yearly',
         ],
     ],
+
     'statuses' => [
-        Status::AHEAD => [
-            'name' => 'Ahead of Schedule',
+        Status::TBD => [
+            'name' => 'To Be Determined',
+            'desc' => 'The goal was just created and has yet to be worked on!',
+        ],
+        Status::LAGGING => [
+            'name' => 'Lagging',
+            'desc' => 'You\'re currently lagging behind the due dates set for this goal.',
         ],
         Status::ON_TRACK => [
             'name' => 'On Track',
+            'desc' => 'You\'re on track to complete this goal by the due date set for this goal.',
         ],
-        Status::LAGGING => [
-            'name' => 'Lagging Behind',
+        Status::AHEAD => [
+            'name' => 'Ahead of Schedule',
+            'desc' => 'You\'re currently finishing this goal before the due dates, good job!',
         ],
-        Status::TBD => [
-            'name' => 'To Be Determined',
+        Status::COMPLETED => [
+            'name' => 'Completed',
+            'desc' => 'This goal has been completed and is ready to be marked as acheived.',
         ],
     ],
 
