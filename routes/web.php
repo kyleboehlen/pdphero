@@ -45,7 +45,39 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], functio
 // Journal
 Route::prefix('journal')->group(function(){
     // Root
-    Route::get('/', [ProfileController::class, 'index'])->name('journal');
+    Route::get('/', [JournalController::class, 'index'])->name('journal');
+
+    // Views
+    Route::prefix('view')->group(function(){
+        // List view
+        Route::get('list/{month?}/{year?}', [JournalController::class, 'viewList'])->name('journal.view.list')
+        ->where('month', config('regex.month_name'))
+        ->where('year', config('regex.year'));
+
+        // Day view
+        Route::get('day/{date}', [JournalController::class, 'viewDay'])->name('journal.view.day')
+        ->where('date', config('regex.route_date'));
+
+        // Entry view
+        Route::get('entry/{journal_entry}', [JournalController::class, 'viewEntry'])->name('journal.view.entry');
+
+        // The journal search form
+        Route::get('search', [JournalController::class, 'viewSearch'])->name('journal.view.search');
+    });
+
+    // Search functionality
+    Route::post('search', [JournalController::class, 'search'])->name('journal.search');
+
+    // Create/Store
+    Route::get('create/entry', [JournalController::class, 'createEntry'])->name('journal.create.entry');
+    Route::post('store/entry', [JournalController::class, 'storeEntry'])->name('journal.store.entry');
+
+    // Edit/Update entry
+    Route::get('edit/entry/{journal_entry}', [JournalController::class, 'editEntry'])->name('journal.edit.entry');
+    Route::post('update/entry/{journal_entry}', [JournalController::class, 'updateEntry'])->name('journal.update.entry');
+
+    // Delete entry
+    Route::post('destroy/entry/{journal_entry}', [JournalController::class, 'destroyEntry'])->name('journal.destroy.entry');
 });
 
 // Goals

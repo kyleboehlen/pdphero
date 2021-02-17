@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'goal.uuid' => \App\Http\Middleware\Goal\UUID::class,
         'goal.action_item.uuid' => \App\Http\Middleware\Goal\ActionItemUUID::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'journal.entry.uuid' => \App\Http\Middleware\Journal\EntryUUID::class,
         'habits.uuid' => \App\Http\Middleware\Habits\UUID::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,

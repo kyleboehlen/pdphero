@@ -16,6 +16,7 @@ use App\Models\Home\Home;
 use App\Models\Goal\GoalAdHocPeriod;
 use App\Models\Goal\GoalType;
 use App\Models\Goal\GoalStatus;
+use App\Models\Journal\JournalMood;
 use App\Models\ToDo\ToDoPriority;
 use App\Models\ToDo\ToDoTypes;
 use App\Models\User\Settings;
@@ -54,6 +55,8 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('goal_action_items'));
         $this->assertTrue(Schema::hasTable('homes'));
         $this->assertTrue(Schema::hasTable('users_hide_homes'));
+        $this->assertTrue(Schema::hasTable('journal_moods'));
+        $this->assertTrue(Schema::hasTable('journal_entries'));
     }
 
     /**
@@ -92,5 +95,8 @@ class DeployTest extends TestCase
 
         // Verify Home seeded
         $this->assertEquals(configArrayFromSeededCollection(Home::all()), config('home'));
+
+        // Verify Journal moods
+        $this->assertEquals(configArrayFromSeededCollection(JournalMood::all()), config('journal.moods'));
     }
 }

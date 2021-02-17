@@ -39,5 +39,8 @@ class DatabaseSeeder extends Seeder
 
         // Seed Home icons or whatever
         $this->call(HomeSeed::class);
+
+        // Journal Moods
+        $this->call(JournalMoodsSeed::class);
     }
 }
