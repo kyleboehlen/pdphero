@@ -86,11 +86,25 @@ class GoalController extends Controller
 
     public function destroyGoal(Request $request, Goal $goal)
     {
+        // Delete goal
+        if(!$goal->delete())
+        {
+            Log::error('Failed to delete goal', $goal->toArray());
+            return redirect()->back();
+        }
 
+        return redirect()->route('goals');
     }
 
     public function destroyActionItem(Request $request, GoalActionItem $action_item)
     {
+        // Delete action item
+        if(!$action_item->delete())
+        {
+            Log::error('Failed to delete goal action item', $action_item->toArray());
+            return redirect()->back();
+        }
 
+        return redirect()->route('goals');
     }
 }
