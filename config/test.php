@@ -2,6 +2,7 @@
 return [
     'alpha' => [
         'emails' => [
+            'darthzombie@gmail.com', // Randy Riches
             'jessicafootball@live.com', // Jessie Christensen
             'kwesley@wesleys.net', // Kaitie Wesley
             'kyleboehlen@gmail.com', // Me, obviously
