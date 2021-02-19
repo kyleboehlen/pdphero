@@ -199,6 +199,11 @@ $(document).ready(function(){
             input.val(parseInt(input.val()) + 1);
         }
     });
+
+    // Home hide/show functionality
+    $('.hide-show').click(function(){
+        $(this).children()[0].submit();
+    });
 });
 
 // Replaces custom alert pop-up boxes

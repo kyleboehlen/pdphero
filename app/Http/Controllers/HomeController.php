@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Log;
+
+// Models
+use App\Models\Home\Home;
+use App\Models\Relationships\UsersHideHome;
 
 class HomeController extends Controller
 {
@@ -41,8 +46,44 @@ class HomeController extends Controller
         return view('home.edit');
     }
 
-    public function update(UpdateRequest $request)
+    public function hide(Request $request, Home $home)
     {
+        $user = $request->user();
 
+        if(!in_array($home->id, $user->hideHomeArray()))
+        {
+            $hide_home = new UsersHideHome([
+                'user_id' => $user->id,
+                'home_id' => $home->id,
+            ]);
+
+            if(!$hide_home->save())
+            {
+                Log::error('Failed to hide home', [
+                    'user_id' => $user->id,
+                    'home_id' => $home->id,
+                ]);
+            }
+        }
+
+        return redirect()->route('home.edit');
+    }
+
+    public function show(Request $request, Home $home)
+    {
+        $user = $request->user();
+
+        if(in_array($home->id, $user->hideHomeArray()))
+        {
+            if(!UsersHideHome::where('user_id', $user->id)->where('home_id', $home->id)->delete())
+            {
+                Log::error('Failed to show  home', [
+                    'user_id' => $user->id,
+                    'home_id' => $home->id,
+                ]);
+            }
+        }
+
+        return redirect()->route('home.edit');
     }
 }

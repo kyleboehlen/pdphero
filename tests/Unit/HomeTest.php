@@ -7,17 +7,18 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 // Models
+use App\Models\Home\Home;
 use App\Models\User\User;
 
 class HomeTest extends TestCase
 {
     /**
-     * Tests goal UUID routes with fake UUIDs for 404 errors
+     * Tests the home page
      *
      * @return void
      * @test
      */
-    public function testFakeUUIDs()
+    public function testIndex()
     {
         // Create test user
         $user = User::factory()->create();
@@ -32,5 +33,46 @@ class HomeTest extends TestCase
             $response->assertSee($home['desc']);
             $response->assertSee($home['img']);
         }
+    }
+
+    /**
+     * Tests the hide/show routes
+     *
+     * @return void
+     * @test
+     */
+    public function testHideShow()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Get a home id
+        $home_id = Home::all()->random()->id;
+
+        // Hide it
+        $response = $this->actingAs($user)->followingRedirects()->post(route('home.hide', ['home' => $home_id]), [
+            '_token' => csrf_token(),
+        ]);
+        $response->assertStatus(200);
+
+        // Refresh model and get hide array
+        $user->refresh();
+        $hide_array = $user->hideHomeArray();
+
+        $this->assertTrue(in_array($home_id, $hide_array));
+
+        // Show it
+        $response = $this->actingAs($user)->followingRedirects()->post(route('home.show', ['home' => $home_id]), [
+            '_token' => csrf_token(),
+        ]);
+        $response->assertStatus(200);
+
+        // Refresh model and get hide array
+        $user->refresh();
+        $hide_array = $user->hideHomeArray();
+
+        $this->assertTrue(!in_array($home_id, $hide_array));
+
+        echo 'fuck';
     }
 }

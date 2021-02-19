@@ -39,7 +39,8 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], functio
 
     // Edit/update routes
     Route::get('edit', [HomeController::class, 'edit'])->name('home.edit');
-    Route::post('update', [HomeController::class, 'update'])->name('home.update');
+    Route::post('hide/{home}', [HomeController::class, 'hide'])->name('home.hide');
+    Route::post('show/{home}', [HomeController::class, 'show'])->name('home.show');
 });
 
 // Journal

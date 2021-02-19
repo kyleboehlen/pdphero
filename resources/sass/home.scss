@@ -66,5 +66,18 @@ div.app-container
             cursor: pointer;
             opacity: .6;
         }
+
+        &.hide-show
+        {
+            &.hidden
+            {
+                opacity: .2;
+
+                &:hover
+                {
+                    opacity: .6;
+                }
+            }
+        }
     }
 }
