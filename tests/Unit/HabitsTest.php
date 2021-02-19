@@ -458,8 +458,8 @@ class HabitsTest extends TestCase
         $now->subDays(6);
 
         // Create a habit, lets go with days of week to make things easy
-        $required_days = [0, 1, 2, 3, 4];
-        $not_required_days = [5, 6];
+        $required_days = [0, 1, 2, 3];
+        $not_required_days = [4, 5, 6];
         $habit = Habits::factory()->create([
             'user_id' => $user->id,
             'days_of_week' => $required_days,
