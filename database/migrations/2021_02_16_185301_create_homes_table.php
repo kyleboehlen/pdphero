@@ -20,6 +20,7 @@ class CreateHomesTable extends Migration
             $table->string('name');
             $table->string('desc')->nullable();
             $table->string('img');
+            $table->string('route');
         });
     }
 

@@ -36,6 +36,9 @@ class ViewServiceProvider extends ServiceProvider
         // Habits
         View::composer('habits.*', 'App\View\Composers\HabitsComposer');
 
+        // Home
+        View::composer('home.*', 'App\View\Composers\HomeComposer');
+
         // Profile
         View::composer('profile.*', 'App\View\Composers\ProfileComposer');
         View::composer('profile.edit.settings', 'App\View\Composers\SettingsComposer');
