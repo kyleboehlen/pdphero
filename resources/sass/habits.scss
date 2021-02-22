@@ -676,6 +676,20 @@ div.app-container
             width: 98%;
         }
 
+        div.notes-container
+        {
+            border: $thin-border solid $light-grey;
+            box-sizing: border-box;
+            margin-left: 1%;
+            padding: 2.5%;
+            width: 98%;
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 2%;
+            }
+        }
+
         h2
         {
             border-bottom: $thin-border solid $light-grey;
@@ -728,17 +742,6 @@ div.app-container
 
             &.notes
             {
-                border: $thin-border solid $light-grey;
-                box-sizing: border-box;
-                margin-left: 1%;
-                padding: 2.5%;
-                width: 98%;
-
-                @media only screen and (max-width: 800px)
-                {
-                    margin-left: 2%;
-                }
-
                 @media only screen and (max-width: 500px)
                 {
                     font-size: 1.65em;

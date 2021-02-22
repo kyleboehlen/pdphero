@@ -21,7 +21,11 @@
             {{-- Notes --}}
             @if(isset($habit->notes))
                 <br/><br/>
-                <p class="notes">{{ $habit->notes }}</p>
+                <div class="notes-container">
+                    @foreach(explode(PHP_EOL, $habit->notes) as $line)
+                        <p>{{ $habit->notes }}</p>
+                    @endforeach
+                </div>
             @endif
 
             {{-- Offset history --}}
