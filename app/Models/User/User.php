@@ -15,6 +15,8 @@ use App\Helpers\Constants\ToDo\Type as ToDoType;
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\FirstVisit\FirstVisitMessages;
+use App\Models\FirstVisit\FirstVisitDisplayed;
 use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\UsersHideHome;
@@ -123,5 +125,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function habits()
     {
         return $this->hasMany(Habits::class, 'user_id', 'id')->where('type_id', HabitsType::USER_GENERATED)->orderBy('name');
+    }
+
+    public function firstVisitMessage($route_name)
+    {
+        return
+            FirstVisitMessages::whereNotIn('id',
+                $this->firstVisitDisplayed()->pluck('message_id')->toArray()
+            )->where('route_name', $route_name)->first();
+    }
+
+    public function firstVisitDisplayed()
+    {
+        return $this->hasMany(firstVisitDisplayed::class, 'user_id', 'id');
     }
 }

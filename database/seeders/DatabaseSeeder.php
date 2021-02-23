@@ -42,5 +42,8 @@ class DatabaseSeeder extends Seeder
 
         // Journal Moods
         $this->call(JournalMoodsSeed::class);
+
+        // First Visit Pop-up messages
+        $this->call(FirstVisitMessagesSeed::class);
     }
 }

@@ -3,6 +3,13 @@
 @section('body')
     <body>
 
+        {{-- First Visit pop up --}}
+        @if(!is_null(session('first_visit_message')))
+            <script>
+                sweetAlert('Heads Up!', 'info', '#ffffff', "{!! session('first_visit_message') !!}");
+            </script>
+        @endif
+
         {{-- Info box --}}
         @error('info')
             <script>

@@ -10,12 +10,13 @@ use Hash;
 use DB;
 
 // Models
-use App\Models\Habits\HabitTypes;
-use App\Models\Habits\HabitHistoryTypes;
-use App\Models\Home\Home;
+use App\Models\FirstVisit\FirstVisitMessages;
 use App\Models\Goal\GoalAdHocPeriod;
 use App\Models\Goal\GoalType;
 use App\Models\Goal\GoalStatus;
+use App\Models\Habits\HabitTypes;
+use App\Models\Habits\HabitHistoryTypes;
+use App\Models\Home\Home;
 use App\Models\Journal\JournalMood;
 use App\Models\ToDo\ToDoPriority;
 use App\Models\ToDo\ToDoTypes;
@@ -57,6 +58,8 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('users_hide_homes'));
         $this->assertTrue(Schema::hasTable('journal_moods'));
         $this->assertTrue(Schema::hasTable('journal_entries'));
+        $this->assertTrue(Schema::hasTable('first_visit_messages'));
+        $this->assertTrue(Schema::hasTable('first_visit_displayed'));
     }
 
     /**
@@ -98,5 +101,8 @@ class DeployTest extends TestCase
 
         // Verify Journal moods
         $this->assertEquals(configArrayFromSeededCollection(JournalMood::all()), config('journal.moods'));
+
+        // First visit messages
+        $this->assertEquals(configArrayFromSeededCollection(FirstVisitMessages::all()), config('first-visit.messages'));
     }
 }
