@@ -23,7 +23,7 @@
                 <br/><br/>
                 <div class="notes-container">
                     @foreach(explode(PHP_EOL, $habit->notes) as $line)
-                        <p>{{ $habit->notes }}</p>
+                        <p>{{ $line }}</p>
                     @endforeach
                 </div>
             @endif

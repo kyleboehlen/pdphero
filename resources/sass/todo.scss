@@ -296,7 +296,7 @@ div.app-container
         }
     }
 
-    div.completed
+    div.completed, div.todo-details
     {
         @extend %card;
 
@@ -346,6 +346,55 @@ div.app-container
                 font-size: 1.25em;
             }
         }
+
+        h3.priority
+        {
+            font-family: $body-font;
+            font-size: 2.5em;
+            font-weight: bolder;
+            margin-left: 12.5%;
+            margin-top: 0;
+            width: 75%;
+            word-wrap: break-word;
+
+            @media only screen and (max-height: 850px)
+            {
+                font-size: 2.25em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 2em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            @media only screen and (max-width: 350px)
+            {
+                font-size: 1.75em;
+            }
+
+            &.default
+            {
+                color: $brown;
+            }
+
+            &.low
+            {
+                color: $green;
+            }
+
+            &.medium
+            {
+                color: $yellow;
+            }
+
+            &.high
+            {   
+                color: $red;
+            }
+        }
+        
 
         p
         {

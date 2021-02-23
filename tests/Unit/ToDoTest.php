@@ -41,6 +41,10 @@ class ToDoTest extends TestCase
         $response = $this->actingAs($user)->get(route('todo.edit', ['todo' => $uuid]));
         $response->assertStatus(404);
 
+        // Test view details route
+        $response = $this->actingAs($user)->get(route('todo.view.details', ['todo' => $uuid]));
+        $response->assertStatus(404);
+
         // Test update route
         $response = $this->actingAs($user)->post(route('todo.update', ['todo' => $uuid]));
         $response->assertStatus(404);
@@ -93,11 +97,23 @@ class ToDoTest extends TestCase
                 'type_id' => Type::TODO_ITEM,
             ]);
 
+        // Generate a real todo that is completed
+        $todo =
+            ToDo::factory()->create([
+                'user_id' => $test_user->id,
+                'type_id' => Type::TODO_ITEM,
+                'completed' => true,
+            ]);
+
         // Get a forbidden UUID
         $uuid = ToDo::where('user_id', $forbidden_user->id)->first()->uuid;
 
         // Test edit route
         $response = $this->actingAs($test_user)->get(route('todo.edit', ['todo' => $uuid]));
+        $response->assertStatus(403);
+
+        // Test view details route
+        $response = $this->actingAs($test_user)->get(route('todo.view.details', ['todo' => $uuid]));
         $response->assertStatus(403);
 
         // Test update route
@@ -124,6 +140,16 @@ class ToDoTest extends TestCase
         $response->assertStatus(403);
 
         // Verify normal todo can't hit todo.update.habit
+        $response = $this->actingAs($test_user)->post(route('todo.update.habit', ['todo' => $todo->uuid]));
+        $response->assertStatus(403);
+
+        // Verify completed todo can't hit todo.edit, todo.update, or todo.update.habit
+        $response = $this->actingAs($test_user)->get(route('todo.edit', ['todo' => $uuid]));
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($test_user)->post(route('todo.update', ['todo' => $todo->uuid]));
+        $response->assertStatus(403);
+
         $response = $this->actingAs($test_user)->post(route('todo.update.habit', ['todo' => $todo->uuid]));
         $response->assertStatus(403);
     }
@@ -242,7 +268,7 @@ class ToDoTest extends TestCase
      * @return void
      * @test
      */
-    public function testEditCompleted()
+    public function testViewCompleted()
     {
         // Create test user
         $user = User::factory()->create();
@@ -254,7 +280,7 @@ class ToDoTest extends TestCase
         ]);
 
         // Get response
-        $response = $this->actingAs($user)->get(route('todo.edit', ['todo' => $item->uuid]));
+        $response = $this->actingAs($user)->get(route('todo.view.details', ['todo' => $item->uuid]));
         $response->assertStatus(200);
 
         // Check for various important parts of the form
@@ -281,6 +307,7 @@ class ToDoTest extends TestCase
         // Give it a to do item
         $item = ToDo::factory()->create([
             'user_id' => $user->id,
+            'completed' => false,
         ]);
 
         // Send data to create a new to-do item

@@ -235,6 +235,9 @@ Route::prefix('todo')->group(function(){
     // Root
     Route::get('/', [ToDoController::class, 'index'])->name('todo.list');
 
+    // View details
+    Route::get('view/{todo}', [ToDoController::class, 'viewDetails'])->name('todo.view.details');
+
     // View the todo priority colors guide
     Route::get('colors', [ToDoController::class, 'colorGuide'])->name('todo.colors');
 
@@ -257,5 +260,5 @@ Route::prefix('todo')->group(function(){
     Route::post('destroy/{todo}', [ToDoController::class, 'destroy'])->name('todo.destroy');
 
     // Toggle a to do item's completed status
-    Route::post('toggle-completed/{todo}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
+    Route::post('toggle-completed/{todo}/{view_details?}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
 });

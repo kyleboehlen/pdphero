@@ -4,7 +4,7 @@
         <input class="submit-completed" name="completed" type="checkbox" @if($item->completed) checked @endif />
     </form>
     &nbsp;
-    <a @if($item->completed) class="completed" @endif href="{{ route('todo.edit', ['todo' => $item->uuid]) }}">
+    <a @if($item->completed) class="completed" @endif href="{{ route('todo.view.details', ['todo' => $item->uuid]) }}">
         {{ $item->title }}
     </a>
     &nbsp;

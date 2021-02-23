@@ -85,7 +85,24 @@ class ToDoController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function viewDetails(ToDo $todo)
+    {
+        // Return the completed view if to-do item is completed
+        if($todo->completed)
+        {
+            return view('todo.completed')->with([
+                'item' => $todo,
+            ]);
+        }
+
+        // Return view details page
+        return view('todo.details')->with([
+            'item' => $todo,
+            'type' => Type::class,
+        ]);
+    }
+
+    public function create()
     {
         // Return the create to-do item form
         return view('todo.create');
@@ -225,14 +242,6 @@ class ToDoController extends Controller
 
     public function edit(ToDo $todo)
     {
-        // Return the completed view if to-do item is completed
-        if($todo->completed)
-        {
-            return view('todo.completed')->with([
-                'item' => $todo,
-            ]);
-        }
-
         // Return view to edit title, pri, notes with the todo item
         return view('todo.edit')->with([
             'item' => $todo,
@@ -318,13 +327,18 @@ class ToDoController extends Controller
         return redirect()->route('todo.list');
     }
 
-    public function toggleCompleted(ToDo $todo)
+    public function toggleCompleted(ToDo $todo, $view_details = false)
     {
         if(!$todo->toggleCompleted())
         {
             // Log error
             Log::error('Failed to toggle completed on to-do item', ['uuid' => $todo->uuid]);
             return redirect()->back();
+        }
+
+        if($view_details)
+        {
+            return redirect()->route('todo.view.details', ['todo' => $todo->uuid]);
         }
 
         return redirect()->route('todo.list');

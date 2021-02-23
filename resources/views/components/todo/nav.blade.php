@@ -10,6 +10,30 @@
             <a href="{{ route('todo.list') }}"><li>Back To List</li></a>
         @endif
 
+        @if(in_array('toggle-complete', $show))
+            <form id="toggle-complete-item-form" action="{{ route('todo.toggle-completed', ['todo' => $item->uuid, 'view_details' => true]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('todo.toggle-completed', ['todo' => $item->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('toggle-complete-item-form').submit();">
+                <li>Mark Completed</li>
+            </a>
+        @endif
+
+        @if(in_array('toggle-incomplete', $show))
+            <form id="toggle-incomplete-item-form" action="{{ route('todo.toggle-completed', ['todo' => $item->uuid, 'view_details' => true]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('todo.toggle-completed', ['todo' => $item->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('toggle-incomplete-item-form').submit();">
+                <li>Mark Incomplete</li>
+            </a>
+        @endif
+
+        @if(in_array('edit', $show))
+            <a href="{{ route('todo.edit', ['todo' => $item->uuid]) }}"><li>Edit To-Do Item</li></a>
+        @endif
+
         @if(in_array('create', $show))
             <a href="{{ route('todo.create') }}"><li class="top">Create New To-Do Item</li></a>
         @endif
