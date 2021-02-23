@@ -5,6 +5,9 @@ namespace App\Http\Middleware\ToDo;
 use Closure;
 use Illuminate\Http\Request;
 
+// Constants
+use App\Helpers\Constants\ToDo\Type;
+
 class UUID
 {
     /**
@@ -23,6 +26,35 @@ class UUID
             if($todo->user_id != $request->user()->id) // Verify to do item belongs to user
             {
                 return abort(403); // Return forbidden if different user's To-Do item
+            }
+            else
+            {
+                $route_name = $request->route()->getName();
+                if($todo->type_id == Type::TODO_ITEM) // if todo item is a, well, user created todo item
+                {
+                    // Ban it from the update habit route
+                    if($route_name == 'todo.update.habit')
+                    {
+                        return abort(403);
+                    }
+                }
+                elseif($todo->type_id == Type::RECURRING_HABIT_ITEM) // If todo item is a recurring habit
+                {
+                    // Ban it from the update and destroy routes
+                    if($route_name == 'todo.update' || $route_name == 'todo.destroy')
+                    {
+                        return abort(403);
+                    }
+                }
+                elseif($todo->type_id == Type::SINGULAR_HABIT_ITEM)
+                {
+                    // Ban it from the update route
+                    if($route_name == 'todo.update')
+                    {
+                        return abort(403);
+                    }
+                }
+                // To-do: add bans for action item routes/todo items
             }
         }
         return $next($request);

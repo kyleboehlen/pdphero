@@ -72,7 +72,5 @@ class HomeTest extends TestCase
         $hide_array = $user->hideHomeArray();
 
         $this->assertTrue(!in_array($home_id, $hide_array));
-
-        echo 'fuck';
     }
 }

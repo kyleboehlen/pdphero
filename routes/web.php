@@ -240,15 +240,18 @@ Route::prefix('todo')->group(function(){
 
     // Show the create to do item form
     Route::get('create', [ToDoController::class, 'create'])->name('todo.create');
+    Route::get('create-habit', [ToDoController::class, 'createHabit'])->name('todo.create.habit');
 
     // Submit the create to do item form
     Route::post('store', [ToDoController::class, 'store'])->name('todo.store');
+    Route::post('store-habit', [ToDoController::class, 'storeHabit'])->name('todo.store.habit');
 
     // Show the edit to do item form
     Route::get('edit/{todo}', [ToDoController::class, 'edit'])->name('todo.edit');
 
     // Submit the edit to do item form
     Route::post('update/{todo}', [ToDoController::class, 'update'])->name('todo.update');
+    Route::post('update-habit/{todo}', [ToDoController::class, 'updateHabit'])->name('todo.update.habit');
 
     // Delete a to do item
     Route::post('destroy/{todo}', [ToDoController::class, 'destroy'])->name('todo.destroy');

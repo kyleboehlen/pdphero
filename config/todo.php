@@ -23,8 +23,11 @@ return [
         Type::TODO_ITEM => [
             'name' => 'To Do Item',
         ],
-        Type::HABIT_ITEM => [
-            'name' => 'Habit Item',
+        Type::RECURRING_HABIT_ITEM => [
+            'name' => 'Recurring Habit Item',
+        ],
+        Type::SINGULAR_HABIT_ITEM => [
+            'name' => 'Singular Habit Item',
         ],
         Type::ACTION_ITEM => [
             'name' => 'Action Item',

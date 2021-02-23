@@ -453,13 +453,21 @@ class HabitsTest extends TestCase
         $this->assertTrue($user->save());
         $user->refresh();
 
-        // Create a date to play with
+        // Create a date to play with and set the required/not required days
         $now = new Carbon('now', $user->timezone);
+        if($now->format('w') == 5) // Friday
+        {
+            $required_days = [0, 1, 2, 3];
+            $not_required_days = [4, 5, 6];
+        }
+        else
+        {
+            $required_days = [0, 1, 2, 3, 4];
+            $not_required_days = [5, 6];
+        }
         $now->subDays(6);
 
         // Create a habit, lets go with days of week to make things easy
-        $required_days = [0, 1, 2, 3];
-        $not_required_days = [4, 5, 6];
         $habit = Habits::factory()->create([
             'user_id' => $user->id,
             'days_of_week' => $required_days,
@@ -606,7 +614,7 @@ class HabitsTest extends TestCase
         $response->assertSee("$habit->name (2 more times)");
 
         // Toggle the todo item
-        foreach($habit->todos as $todo)
+        foreach($habit->recurringTodos as $todo)
         {
             if(!$todo->completed)
             {
@@ -626,7 +634,7 @@ class HabitsTest extends TestCase
         $this->assertEquals(end($history_array)['status'], HistoryType::PARTIAL);
 
         // Toggle the todo item
-        foreach($habit->todos as $todo)
+        foreach($habit->recurringTodos as $todo)
         {
             if(!$todo->completed)
             {
@@ -635,7 +643,7 @@ class HabitsTest extends TestCase
         }
 
         // Toggle the todo item
-        foreach($habit->todos as $todo)
+        foreach($habit->recurringTodos as $todo)
         {
             if(!$todo->completed)
             {

@@ -15,7 +15,7 @@
         @endif
 
         @if(in_array('create-from-habit', $show))
-            <a href="{{ route('todo.create', ['from' => 'habit']) }}"><li>Create From Habit</li></a>
+            <a href="{{ route('todo.create.habit') }}"><li>Create From Habit</li></a>
         @endif
 
         @if(in_array('create-from-goal', $show))

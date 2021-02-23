@@ -94,14 +94,14 @@ if(!function_exists('dayOfWeek'))
     }
 }
 
-if(!function_exists('buildHabitToDos'))
+if(!function_exists('buildRecurringHabitToDos'))
 {
     /**
      * Builds ToDo items for habits that push to the todo list
      *
      * @return bool
      */
-    function buildHabitToDos($user)
+    function buildRecurringHabitToDos($user)
     {
         // Track how we do
         $failures = 0;
@@ -111,7 +111,7 @@ if(!function_exists('buildHabitToDos'))
         $now = new Carbon('now', $timezone);
 
         // Get all of the user's (user generate) habits with it's todo relationship loaded
-        $habits = Habits::where('user_id', $user->id)->where('type_id', HabitsType::USER_GENERATED)->with('todos')->get();
+        $habits = Habits::where('user_id', $user->id)->where('type_id', HabitsType::USER_GENERATED)->with('recurringTodos')->get();
 
         // Iterate through the habits
         foreach($habits as $habit)
@@ -126,13 +126,13 @@ if(!function_exists('buildHabitToDos'))
                 if($history_entry['required'])
                 {
                     // Create the todo items if they don't exsist
-                    if($habit->todos->count() < 2)
+                    if($habit->recurringTodos->count() < 2)
                     {
                         $completed_todo = new ToDo([
                             'user_id' => $user->id,
                             'title' => $habit->name,
-                            'type_id' => ToDoType::HABIT_ITEM,
-                            'notes' => "Automatically generated To-Do item for $habit->name",
+                            'type_id' => ToDoType::RECURRING_HABIT_ITEM,
+                            'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . $habit->notes,
                             'completed' => true,
                         ]);
 
@@ -154,8 +154,8 @@ if(!function_exists('buildHabitToDos'))
                         $pending_todo = new ToDo([
                             'user_id' => $user->id,
                             'title' => $habit->name,
-                            'type_id' => ToDoType::HABIT_ITEM,
-                            'notes' => "Automatically generated To-Do item for $habit->name",
+                            'type_id' => ToDoType::RECURRING_HABIT_ITEM,
+                            'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . $habit->notes,
                             'completed' => false,
                         ]);
 
@@ -178,7 +178,7 @@ if(!function_exists('buildHabitToDos'))
                     }
 
                     // Iterate through the todo items and update accordingly
-                    foreach($habit->todos as $todo)
+                    foreach($habit->recurringTodos as $todo)
                     {
                         switch($history_entry['status'])
                         {
@@ -297,7 +297,7 @@ if(!function_exists('buildHabitToDos'))
 
             if($delete_todos)
             {
-                foreach($habit->todos as $todo)
+                foreach($habit->recurringTodos as $todo)
                 {
                     if(!$todo->trashed())
                     {

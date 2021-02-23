@@ -47,14 +47,15 @@ class ToDo extends Model
         // Check what type of to do it is
         switch($this->type_id)
         {
-            case Type::HABIT_ITEM:
+            case Type::RECURRING_HABIT_ITEM:
+            case Type::SINGULAR_HABIT_ITEM:
                 // Get habit history entry for the day
                 $user = \Auth::user();
                 $timezone = $user->timezone ?? 'America/Denver'; // Again... weird default
                 $now = new Carbon('now', $timezone);
                 $day = $now->startOfDay()->setTimezone('UTC')->format('Y-m-d');
-                $habit_id = $this->habits->first()->id;
-                $history_entry = HabitHistory::where('habit_id', $habit_id)->where('day', $day)->first();
+                $habit = $this->habits->first();
+                $history_entry = HabitHistory::where('habit_id', $habit->id)->where('day', $day)->first();
 
                 // Increment/Decrement habit history it references (Refreshing of the actual todo items happens in index)
                 if($this->completed)
@@ -74,7 +75,7 @@ class ToDo extends Model
                     if(is_null($history_entry))
                     {
                         $history_entry = new HabitHistory([
-                            'habit_id' => $habit_id,
+                            'habit_id' => $habit->id,
                             'type_id' => HistoryType::COMPLETED,
                             'day' => $day,
                             'times' => 0,
@@ -87,12 +88,27 @@ class ToDo extends Model
                         }
                     }
 
-                    // Increment times
-                    $history_entry->times++;
+                    // Increment times as long as we're not surpassing the habit's times daily
+                    if($history_entry->times < $habit->times_daily)
+                    {
+                        $history_entry->times++;
+                    }
                 }
 
-                // Return whether the habit history saves
-                return $history_entry->save();
+                // save the history habit
+                $saved = $history_entry->save();
+
+                // If it saved properly, and it's a singular habit, toggle completed
+                if($saved && $this->type_id == Type::SINGULAR_HABIT_ITEM)
+                {
+                    $this->completed = !$this->completed;
+
+                    // Save this, and modify saved if it fails
+                    $saved = ($saved && $this->save());
+                }
+
+                // Return success based on if everything saved or not
+                return $saved;
                 break;
 
             default: // including Type::TODO_ITEM

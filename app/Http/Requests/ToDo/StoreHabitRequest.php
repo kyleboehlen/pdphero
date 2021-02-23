@@ -5,7 +5,7 @@ namespace App\Http\Requests\ToDo;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateRequest extends FormRequest
+class StoreHabitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,11 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
+        $user = \Auth::user();
+        $uuids = $user->habits->pluck('uuid')->toArray();
         return [
-            'from' => ['nullable', Rule::in(['habit', 'goal'])]
+            'habit' => ['required', Rule::in($uuids)],
+            'notes' => 'nullable',
         ];
     }
 }

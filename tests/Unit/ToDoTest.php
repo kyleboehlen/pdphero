@@ -7,6 +7,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Carbon\Carbon;
 
+// Constants
+use App\Helpers\Constants\ToDo\Type;
+
 // Models
 use App\Models\User\User;
 use App\Models\ToDo\ToDo;
@@ -69,6 +72,27 @@ class ToDoTest extends TestCase
             'user_id' => $forbidden_user->id,
         ]);
 
+        // Generate a real todo with recurring habit type
+        $recurring_habit_todo =
+            ToDo::factory()->create([
+                'user_id' => $test_user->id,
+                'type_id' => Type::RECURRING_HABIT_ITEM,
+            ]);
+
+        // Generate a real todo with singular habit type
+        $singular_habit_todo =
+            ToDo::factory()->create([
+                'user_id' => $test_user->id,
+                'type_id' => Type::SINGULAR_HABIT_ITEM,
+            ]);
+
+        // Generate a real todo with normal type
+        $todo =
+            ToDo::factory()->create([
+                'user_id' => $test_user->id,
+                'type_id' => Type::TODO_ITEM,
+            ]);
+
         // Get a forbidden UUID
         $uuid = ToDo::where('user_id', $forbidden_user->id)->first()->uuid;
 
@@ -86,6 +110,21 @@ class ToDoTest extends TestCase
 
         // Test toggle completed route
         $response = $this->actingAs($test_user)->post(route('todo.toggle-completed', ['todo' => $uuid]));
+        $response->assertStatus(403);
+
+        // Verify recurring habit todo can't hit todo.update or todo.destroy
+        $response = $this->actingAs($test_user)->post(route('todo.update', ['todo' => $recurring_habit_todo->uuid]));
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($test_user)->post(route('todo.destroy', ['todo' => $recurring_habit_todo->uuid]));
+        $response->assertStatus(403);
+
+        // Verify singular habit todo can't hit todo.update
+        $response = $this->actingAs($test_user)->post(route('todo.update', ['todo' => $singular_habit_todo->uuid]));
+        $response->assertStatus(403);
+
+        // Verify normal todo can't hit todo.update.habit
+        $response = $this->actingAs($test_user)->post(route('todo.update.habit', ['todo' => $todo->uuid]));
         $response->assertStatus(403);
     }
 
@@ -158,10 +197,10 @@ class ToDoTest extends TestCase
 
         // Check for various important parts of the form
         $response->assertSee('<h2> Create New Item </h2>', false);
-        $response->assertSee('<form class="to-do"  action="' . route('todo.store') . '"  method="POST">', false);
-        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value=""  required />', false);
+        $response->assertSee('action="' . route('todo.store') . '"', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"', false);
         $response->assertSee('<div class="priority-container">', false);
-        $response->assertSee('<textarea name="notes" placeholder="Any notes for your to-do item go here!"></textarea>', false);
+        $response->assertSee('placeholder="Any notes for your to-do item go here!"', false);
         $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
     }
 
@@ -188,10 +227,12 @@ class ToDoTest extends TestCase
 
         // Check for various important parts of the form
         $response->assertSee('<h2> Edit Item </h2>', false);
-        $response->assertSee('<form class="to-do"  action="' . route('todo.update', ['todo' => $item->uuid]) . '"  method="POST">', false);
-        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $item->title . '"  required />', false);
+        $response->assertSee('action="' . route('todo.update', ['todo' => $item->uuid]) . '"', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"', false);
+        $response->assertSee('value="' . $item->title . '"', false);
         $response->assertSee('<div class="priority-container">', false);
-        $response->assertSee('<textarea name="notes" placeholder="Any notes for your to-do item go here!">' . $item->notes . '</textarea>', false);
+        $response->assertSee('placeholder="Any notes for your to-do item go here!"', false);
+        $response->assertSee('>' . $item->notes . '</textarea>', false);
         $response->assertSee('<button class="submit" type="submit">Submit</button>', false);
     }
 

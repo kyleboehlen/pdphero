@@ -11,12 +11,15 @@ use App\Helpers\Constants\ToDo\Type;
 use App\Helpers\Constants\User\Setting;
 
 // Models
+use App\Models\Habits\Habits;
+use App\Models\Relationships\HabitsToDo;
 use App\Models\ToDo\ToDo;
 
 // Requests
-use App\Http\Requests\ToDo\CreateRequest;
 use App\Http\Requests\ToDo\StoreRequest;
+use App\Http\Requests\ToDo\StoreHabitRequest;
 use App\Http\Requests\ToDo\UpdateRequest;
+use App\Http\Requests\ToDo\UpdateHabitRequest;
 
 class ToDoController extends Controller
 {
@@ -44,7 +47,7 @@ class ToDoController extends Controller
         $user = $request->user();
 
         // Build users habit todos
-        $build_habit_todos = buildHabitToDos($user);
+        $build_habit_todos = buildRecurringHabitToDos($user);
         if($build_habit_todos !== true)
         {
             // Log error
@@ -81,11 +84,17 @@ class ToDoController extends Controller
         ]);
     }
 
-    public function create(CreateRequest $request)
+    public function create(Request $request)
+    {
+        // Return the create to-do item form
+        return view('todo.create');
+    }
+
+    public function createHabit(Request $request)
     {
         // Return the create to-do item form
         return view('todo.create')->with([
-            'from' => $request->get('from')
+            'create_type' => Type::SINGULAR_HABIT_ITEM,
         ]);
     }
 
@@ -133,7 +142,85 @@ class ToDoController extends Controller
         return redirect()->route('todo.list');
     }
 
-    // To-Do: storeFromHabit() and storeFromGoal()
+    public function storeHabit(StoreHabitRequest $request)
+    {
+        // Get the habit
+        $habit = Habits::where('uuid', $request->get('habit'))->first();
+
+        // Create new to-do
+        $todo = new Todo();
+
+        // Set type to singular habit item
+        $todo->type_id = Type::SINGULAR_HABIT_ITEM;
+
+        // Set user
+        $user = \Auth::user();
+        $todo->user_id = $user->id;
+
+        // Set title
+        $todo->title = $habit->name;
+
+        // Set priority
+        foreach(config('todo.priorities') as $id => $priority)
+        {
+            if($request->has("priority-$id"))
+            {
+                $todo->priority_id = $id;
+            }
+        }
+
+        // Set notes
+        $todo->notes = $request->get('notes');
+
+        // If notes aren't set, pull from habit's notes
+        if(is_null($todo->notes))
+        {
+            $todo->notes = $habit->notes;
+        }
+
+        if(!$todo->save())
+        {
+            // Log error
+            Log::error('Failed to store new Singular Habit To-Do item.', [
+                'user->id' => $user->id,
+                'todo' => $todo->toArray(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to create To-Do item, please try again.'
+            ]);
+        }
+
+        // Associate it with a habit
+        if(!HabitsToDo::create([
+            'habits_id' => $habit->id,
+            'to_do_id' => $todo->id,
+        ]))
+        {
+            // Log error
+            Log::error('Failed to associate Singular Habit To-Do item with a habit.', [
+                'habits_id' => $habit->id,
+                'to_do_id' => $todo->id,
+            ]);
+
+            // Delete the new todo
+            if(!$todo->delete())
+            {
+                Log::critical('Failed to delete Singular Habit To-Do item after failing to associate it with a habit.', [
+                    'habits_id' => $habit->id,
+                    'to_do_id' => $todo->id,
+                ]);
+            }
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to create To-Do item, please try again.'
+            ]);
+        }
+
+        return redirect()->route('todo.list');
+    }
 
     public function edit(ToDo $todo)
     {
@@ -173,7 +260,39 @@ class ToDoController extends Controller
         {
             // Log error
             $user = \Auth::user();
-            Log::error('Failed to update new To-Do item.', [
+            Log::error('Failed to update To-Do item.', [
+                'todo' => $todo->toArray(),
+                'request_values' => $request->all(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong updating To-Do item, please try again.'
+            ]);
+        }
+
+        return redirect()->route('todo.list');
+    }
+
+    public function updateHabit(UpdateHabitRequest $request, ToDo $todo)
+    {
+        // Set priority
+        foreach(config('todo.priorities') as $id => $priority)
+        {
+            if($request->has("priority-$id"))
+            {
+                $todo->priority_id = $id;
+            }
+        }
+
+        // Set notes
+        $todo->notes = $request->get('notes');
+
+        if(!$todo->save())
+        {
+            // Log error
+            $user = \Auth::user();
+            Log::error('Failed to update recurring habit To-Do item.', [
                 'todo' => $todo->toArray(),
                 'request_values' => $request->all(),
             ]);

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 // Constants
+use App\Helpers\Constants\Habits\Type as HabitsType;
 use App\Helpers\Constants\ToDo\Type as ToDoType;
 
 // Models
@@ -117,5 +118,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hideHomeArray()
     {
         return $this->hasMany(UsersHideHome::class, 'user_id', 'id')->get()->pluck('home_id')->toArray();
+    }
+
+    public function habits()
+    {
+        return $this->hasMany(Habits::class, 'user_id', 'id')->where('type_id', HabitsType::USER_GENERATED)->orderBy('name');
     }
 }

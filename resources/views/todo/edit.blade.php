@@ -5,10 +5,17 @@
     <x-app.header title="To-Do" />
 
     @switch($item->type_id)
-        @case($type::HABIT_ITEM)
-            {{-- Side Nav --}}
-            <x-todo.nav show="list|create-from-habit|delete" />
-
+        @case($type::RECURRING_HABIT_ITEM)
+            <x-todo.nav show="list|create-from-habit|color-key" />
+            <div class="app-container">
+                <x-todo.form :item="$item" />
+            </div>
+            @break
+        @case($type::SINGULAR_HABIT_ITEM)
+            <x-todo.nav show="list|create-from-habit|color-key|delete" :item="$item" />
+            <div class="app-container">
+                <x-todo.form :item="$item" />
+            </div>
             @break
         @case($type::ACTION_ITEM)
             {{-- Side Nav --}}

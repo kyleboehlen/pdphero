@@ -12,6 +12,7 @@ use Carbon\CarbonPeriod;
 // Constants
 use App\Helpers\Constants\Habits\HistoryType;
 use App\Helpers\Constants\Habits\Type;
+use App\Helpers\Constants\ToDo\Type as ToDoType;
 use App\Helpers\Constants\User\Setting;
 
 // Models
@@ -799,6 +800,12 @@ class Habits extends Model
     public function todos()
     {
         return $this->belongsToMany(ToDo::class)->withTrashed();
+    }
+
+    // ToDo relationship
+    public function recurringTodos()
+    {
+        return $this->belongsToMany(ToDo::class)->where('type_id', ToDoType::RECURRING_HABIT_ITEM)->withTrashed();
     }
 
     /**

@@ -8,16 +8,11 @@
     <x-todo.nav page="list|create-from-habit|create-from-goal|color-key" />
 
     <div class="app-container">
-        @switch($from)
-            @case('habit')
-                
-                @break
-            @case('goal')
-                
-                @break
-            @default
-                <x-todo.form />
-        @endswitch
+        @isset($create_type)
+            <x-todo.form :create="$create_type"/>
+        @else
+            <x-todo.form />
+        @endisset
     </div>
 
     {{-- Navigation Footer --}}
