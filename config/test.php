@@ -8,6 +8,7 @@ return [
             'kyleboehlen@gmail.com', // Me, obviously
             'sebweeks@gmail.com', // Sebastian Weeks
             'sijiezhai@gmail.com', // siege/Siegester
+            'steven.day.2010@gmail.com', // Steven Day
             'zachenf2b@gmail.com', // Zach Vasquez
             'zane.call3@gmail.com', // Zane Call
         ],
