@@ -18,6 +18,7 @@ use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\FirstVisit\FirstVisitMessages;
 use App\Models\FirstVisit\FirstVisitDisplayed;
 use App\Models\Goal\Goal;
+use App\Models\Goal\GoalCategory;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\UsersHideHome;
 use App\Models\ToDo\ToDo;
@@ -137,6 +138,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function firstVisitDisplayed()
     {
-        return $this->hasMany(firstVisitDisplayed::class, 'user_id', 'id');
+        return $this->hasMany(FirstVisitDisplayed::class, 'user_id', 'id');
+    }
+
+    public function goalCategories()
+    {
+        return $this->hasMany(GoalCategory::class, 'user_id', 'id');
     }
 }

@@ -27,9 +27,11 @@ class CreateGoalsTable extends Migration
             $table->tinyInteger('type_id')->unsigned();
             $table->tinyInteger('status_id')->unsigned();
             $table->bigInteger('category_id')->unsigned()->nullable();
-            $table->boolean('achieved')->default(0);
+            $table->boolean('achieved')->default(0); // Whether or not the user has marked it as achieved, not if progress is at 100%
             $table->boolean('use_custom_img')->default(0); // Otherwise use default based on status
             $table->tinyInteger('progress')->default(0); // To store cached calculated goal progress %
+            $table->boolean('default_show_todo')->default(0); // Whether or not to automatically push to the todo list
+            $table->boolean('default_todo_days_before')->default(0); // How many days before the duedate should we push to the todo list
             $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();
             $table->tinyInteger('ad_hoc_times')->unsigned()->nullable();
             $table->string('ad_hoc_label')->nullable();

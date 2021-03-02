@@ -26,6 +26,8 @@ class CreateGoalActionItemsTable extends Migration
             $table->string('name');
             $table->text('notes')->nullable();
             $table->date('deadline')->nullable();
+            $table->boolean('override_show_todo')->nullable(); // Overrides the default todo behavior of the goal
+            $table->boolean('override_todo_days_before')->default(0); // How many days before the duedate should we push to the todo list
 
             // Constraints
             $table->foreign('goal_id')->references('id')->on('goals');

@@ -7,9 +7,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Carbon\Carbon;
 
-// Constants
-use App\Helpers\Constants\Habits\HistoryType;
-
 // Models
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;

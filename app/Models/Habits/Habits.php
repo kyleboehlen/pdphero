@@ -45,13 +45,6 @@ class Habits extends Model
     ];
 
     /**
-     * Set the threshold for the low percentage styling
-     * 
-     * @var integer
-     */
-    private $low_percentage_cut_off = 15;
-
-    /**
      * For calculating the strength of a habit
      * 
      * @return bool
@@ -753,37 +746,6 @@ class Habits extends Model
         return $longest_streak;
     }
 
-    /**
-     * Calculates the padding for the percent label
-     * 
-     * @return integer
-     */
-    public function getPadding()
-    {
-        return $this->isLowPercentage() ? $this->strength : 0;
-    }
-
-    /**
-     * Gets the RGB values for the progress background color based on percent
-     * 
-     * @return string
-     */
-    public function getRGB()
-    {
-        // 0% is a special case, no background color
-        if($this->strength == 0)
-        {
-            return '';
-        }
-
-        $percent = $this->strength;
-
-        $red = $percent < 50 ? 255 : floor(255 - ($percent * 2 - 100) * 255 / 100);
-        $green = $percent > 50 ? 255 : floor(($percent * 2) * 255 / 100);
-
-        return "rgb($red, $green, 0)";
-    }
-
     // Habit history relationship
     public function history()
     {
@@ -806,22 +768,6 @@ class Habits extends Model
     public function recurringTodos()
     {
         return $this->belongsToMany(ToDo::class)->where('type_id', ToDoType::RECURRING_HABIT_ITEM)->withTrashed();
-    }
-
-    /**
-     * Determines whether or not the habit is considered a low percentage based on the low percentage cut of value
-     * 
-     * @return bool
-     */
-    public function isLowPercentage()
-    {
-        // 0% is a special case
-        if($this->strength == 0)
-        {
-            return false;
-        }
-
-        return $this->strength < $this->low_percentage_cut_off;
     }
 
     /**

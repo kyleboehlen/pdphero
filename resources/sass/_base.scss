@@ -888,3 +888,67 @@
         font-size: 1.25em;
     }
 }
+
+@mixin progress-bar
+{
+    border-bottom: $thin-border solid $white;
+    border-radius: 10px;
+    border-top: $thin-border solid $white;
+    box-sizing: border-box;
+    margin-left: 1%;
+    margin-right: 1%;
+    min-height: 35px;
+    width: 98%;
+    
+    @media only screen and (max-width: 800px)
+    {
+        margin-left: 2%;
+        margin-right: 2%;
+        min-height: 30px;
+        width: 96%;
+    }
+
+    @media only screen and (max-width: 450px)
+    {
+        font-size: 1.15em;
+        min-height: 25px;
+    }
+
+    div.progress-bar
+    {
+        border-left: $thin-border solid $white;
+        border-radius: 10px;
+        border-right: $thin-border solid $white;
+        box-sizing: border-box;
+        color: $white;
+        font-size: 2em;
+        height: 100%;
+        // min-height: 35px;
+        margin-bottom: 0;
+        text-shadow: 2px 2px 3px $black;
+        text-align: center;
+
+        @media only screen and (max-width: 800px)
+        {
+            font-size: 1.5em;
+            // min-height: 30px;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            font-size: 1.15em;
+            // min-height: 25px;
+        }
+
+        span.low-percentage
+        {
+            position: relative;
+            right: -10px;
+        }
+    }
+
+    div.no-border
+    {
+        border: none;
+    }
+}

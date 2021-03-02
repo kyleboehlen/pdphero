@@ -5,7 +5,7 @@
     </a>
 
     {{-- Habit progress bar --}}
-    <x-habits.progress-bar :habit="$habit" /><br/>
+    <x-app.progress-bar :percent="$habit->strength" /><br/>
 
     {{-- Habit history tracker/toggle --}}
     <x-habits.history :habit="$habit" />

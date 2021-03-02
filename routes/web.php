@@ -84,7 +84,7 @@ Route::prefix('journal')->group(function(){
 // Goals
 Route::prefix('goals')->group(function(){
     // Root
-    Route::get('/', [GoalController::class, 'index'])->name('goals');
+    Route::get('/{scope?}/{category?}', [GoalController::class, 'index'])->name('goals');
 
     // Toggle Completed routes
     Route::prefix('toggle-completed')->group(function(){

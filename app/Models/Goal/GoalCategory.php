@@ -10,4 +10,6 @@ use JamesMills\Uuid\HasUuidTrait;
 class GoalCategory extends Model
 {
     use HasFactory, HasUuidTrait, SoftDeletes;
+
+    public $timestamps = false;
 }

@@ -16,7 +16,7 @@
             <p class="required">{{ $required_on_label }}</p><br/><br/>
 
             {{-- Progress bar --}}
-            <x-habits.progress-bar :habit="$habit" />
+            <x-app.progress-bar :percent="$habit->strength" /><br/>
 
             {{-- Notes --}}
             @if(isset($habit->notes))

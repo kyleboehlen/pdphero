@@ -8,6 +8,8 @@ use Tests\TestCase;
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Habits\Habits;
+use App\Models\Goal\Goal;
+use App\Models\Goal\GoalCategory;
 use App\Models\ToDo\ToDo;
 use App\Models\User\User;
 
@@ -84,5 +86,26 @@ class TestUserTest extends TestCase
             // Calculate strength based on fake
             $test->assertTrue($habit->calculateStrength());
         });
+    }
+
+    /**
+     * Give test user Goals
+     * 
+     * @depends userTest
+     * @test
+     */
+    public function goalsTest(User $user)
+    {
+        GoalCategory::factory(rand(1, 4))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(GoalCategory::where('user_id', $user->id)->get()->count() >= 1);
+
+        Goal::factory(rand(3, 7))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(Goal::where('user_id', $user->id)->get()->count() >= 3);
     }
 }

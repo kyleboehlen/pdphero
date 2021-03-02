@@ -33,6 +33,9 @@ class ViewServiceProvider extends ServiceProvider
         // Auth
         View::composer('auth.*', 'App\View\Composers\AuthComposer');
 
+        // Goals
+        View::composer('goals.*', 'App\View\Composers\GoalsComposer');
+
         // Habits
         View::composer('habits.*', 'App\View\Composers\HabitsComposer');
 

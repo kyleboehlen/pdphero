@@ -16,6 +16,7 @@ class CreateGoalTypesTable extends Migration
         Schema::create('goal_types', function (Blueprint $table) {
             $table->tinyIncrements('id'); // PK
             $table->string('name'); // Other column
+            $table->string('desc');
         });
     }
 

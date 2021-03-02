@@ -1,0 +1,196 @@
+@import 'app';
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: scroll;
+
+    @media only screen and (max-width: 800px)
+    {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-y: scroll;
+    }
+
+    div.selector
+    {
+        align-self: flex-start;
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 1%;
+        margin-top: 1%;
+        text-align: center;
+        width: 99%;
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1em;
+            text-align: center;
+            
+            padding-left: .5%;
+            padding-right: .5%;
+
+            @media only screen and (max-width: 800px)
+            {
+                max-width: 25%;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+    }
+
+    div.goal
+    {
+        align-self: flex-start;
+        border: $thin-border solid $light-grey;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 0;
+        flex-wrap: wrap;
+        margin: .25%;
+        text-align: center;
+        width: 45%;
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin: 1%; 
+            width: 98%;
+        }
+        
+        @media only screen and (max-width: 800px)
+        {
+            width: 96.5%;
+        }
+
+        img.goal-img
+        {
+            align-self: center;
+            max-width: 30%;
+        }
+
+        a
+        {
+            align-self: center;
+            flex-direction: column;
+            height: auto;
+            text-decoration: none;
+            width: 69%;
+
+            h2
+            {
+                color: $white;
+                font-family: $header-font;
+                font-size: 1.65em;
+                font-weight: normal;
+                margin-bottom: 0;
+                margin-top: 0;
+                width: 100%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.4em;
+                    margin-bottom: 1%;
+                    margin-top: 1%;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.15em;
+                    margin-bottom: 2%;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1em;
+                    margin-bottom: 2%;
+                }
+            }
+
+            &:hover > h2
+            {
+                font-weight: bold;
+            }
+        }
+
+        div.progress-container
+        {
+            @include progress-bar;
+
+            flex-grow: 0;
+            margin-top: 1%;
+        }
+
+        div.status
+        {
+            p.label
+            {
+                font-family: $body-font;
+                font-size: 3em;
+                font-weight: bolder;
+                margin-bottom: 1%;
+                margin-top: 3%;
+
+                &.tbd
+                {
+                    color: $brown;
+                }
+
+                &.lagging
+                {
+                    color: $red;
+                }
+
+                &.ontrack
+                {
+                    color: $yellow;
+                }
+
+                &.ahead
+                {
+                    color: $green;
+                }
+
+                &.completed
+                {
+                    color: $green;
+                }
+            }
+
+            img
+            {
+                margin-bottom: 1%;
+                margin-left: 1%;
+                margin-right: 1%;
+                width: 98%;
+                
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 2%;
+                    margin-right: 2%;
+                    width: 96%;
+                }
+            }
+        }
+    }
+}

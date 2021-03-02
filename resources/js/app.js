@@ -204,6 +204,22 @@ $(document).ready(function(){
     $('.hide-show').click(function(){
         $(this).children()[0].submit();
     });
+
+    // Goal selectors
+    $('.goal-selector').change(function(){
+        var scope = $('#scope-selector').find(':selected').val();
+        var category = $('#category-selector').find(':selected').val();
+        var url = window.location.toString();
+        url = url.substring(0, url.indexOf('goals') + 5);
+        url = url + '/' + scope;
+
+        if(category != 'all')
+        {
+            url = url + '/' + category;
+        }
+
+        window.location.href = url;
+    });
 });
 
 // Replaces custom alert pop-up boxes

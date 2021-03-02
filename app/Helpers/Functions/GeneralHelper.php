@@ -320,3 +320,57 @@ if(!function_exists('buildRecurringHabitToDos'))
         return true;
     }
 }
+
+if(!function_exists('isLowPercentage'))
+{
+    /**
+     * Determines whether or not the strength is considered a low percentage based on the low percentage cut of value
+     * 
+     * @return bool
+     */
+    function isLowPercentage($percent)
+    {
+        // 0% is a special case
+        if($percent == 0)
+        {
+            return false;
+        }
+
+        return $percent < config('general.progress_bar.low_percentage_cut_off');
+    }
+}
+
+if(!function_exists('getPadding'))
+{
+    /**
+     * Calculates the padding for the percent label
+     * 
+     * @return integer
+     */
+    function getPadding($percent)
+    {
+        return isLowPercentage($percent) ? $percent : 0;
+    }
+}
+
+if(!function_exists('getRGB'))
+{
+    /**
+     * Gets the RGB values for the progress background color based on percent
+     * 
+     * @return string
+     */
+    function getRGB($percent)
+    {
+        // 0% is a special case, no background color
+        if($percent == 0)
+        {
+            return '';
+        }
+
+        $red = $percent < 50 ? 255 : floor(255 - ($percent * 2 - 100) * 255 / 100);
+        $green = $percent > 50 ? 255 : floor(($percent * 2) * 255 / 100);
+
+        return "rgb($red, $green, 0)";
+    }
+}

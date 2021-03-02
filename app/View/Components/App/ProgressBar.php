@@ -1,24 +1,21 @@
 <?php
 
-namespace App\View\Components\Habits;
+namespace App\View\Components\App;
 
 use Illuminate\View\Component;
 
-// Models
-use App\Models\Habits\Habits;
-
 class ProgressBar extends Component
 {
-    public $habit;
+    public $percent;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(Habits $habit)
+    public function __construct($percent)
     {
-        $this->habit = $habit;
+        $this->percent = $percent;
     }
 
     /**
@@ -28,6 +25,6 @@ class ProgressBar extends Component
      */
     public function render()
     {
-        return view('components.habits.progress-bar');
+        return view('components.app.progress-bar');
     }
 }
