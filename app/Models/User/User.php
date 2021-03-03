@@ -143,6 +143,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function goalCategories()
     {
-        return $this->hasMany(GoalCategory::class, 'user_id', 'id');
+        return $this->hasMany(GoalCategory::class, 'user_id', 'id')->orderBy('name');
     }
 }

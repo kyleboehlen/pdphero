@@ -36,6 +36,34 @@ div.app-container
         text-align: center;
         width: 99%;
 
+        span
+        {
+            @media only screen and (max-width: 1400px)
+            {
+                display: block;
+            }
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: .8em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: .7em;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: .6em;
+            }
+
+            @media only screen and (max-width: 340px)
+            {
+                font-size: .5em;
+            }
+        }
+
         select
         {
             background-color: $dark-grey;
@@ -47,9 +75,9 @@ div.app-container
             padding-left: .5%;
             padding-right: .5%;
 
-            @media only screen and (max-width: 800px)
+            @media only screen and (max-width: 550px)
             {
-                max-width: 25%;
+                max-width: 60%;
             }
 
             &:focus
@@ -107,23 +135,34 @@ div.app-container
                 margin-top: 0;
                 width: 100%;
 
-                @media only screen and (max-width: 800px)
+                @media only screen and (max-width: 1300px)
                 {
-                    font-size: 1.4em;
-                    margin-bottom: 1%;
-                    margin-top: 1%;
+                    font-size: 2.25em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.5em;
                 }
 
                 @media only screen and (max-width: 450px)
                 {
-                    font-size: 1.15em;
-                    margin-bottom: 2%;
+                    font-size: 1.35em;
                 }
 
                 @media only screen and (max-width: 375px)
                 {
-                    font-size: 1em;
-                    margin-bottom: 2%;
+                    font-size: 1.25em;
+                }
+
+                @media only screen and (max-width: 320px)
+                {
+                    font-size: 1.1em;
                 }
             }
 
@@ -150,6 +189,36 @@ div.app-container
                 font-weight: bolder;
                 margin-bottom: 1%;
                 margin-top: 3%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 3.25em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 2.75em;
+                }
+
+                @media only screen and (max-width: 600px)
+                {
+                    font-size: 2.5em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 320px)
+                {
+                    font-size: 1.5em;
+                }
 
                 &.tbd
                 {

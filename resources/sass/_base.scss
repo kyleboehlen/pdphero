@@ -187,7 +187,7 @@
 
     @media only screen and (max-width: 1300px)
     {
-        height: 77.5vh;
+        height: 76vh;
         margin: 0;
         margin-top: 3.5%;
         margin-left: 30%;
@@ -923,7 +923,6 @@
         color: $white;
         font-size: 2em;
         height: 100%;
-        // min-height: 35px;
         margin-bottom: 0;
         text-shadow: 2px 2px 3px $black;
         text-align: center;
@@ -931,13 +930,11 @@
         @media only screen and (max-width: 800px)
         {
             font-size: 1.5em;
-            // min-height: 30px;
         }
 
         @media only screen and (max-width: 450px)
         {
             font-size: 1.15em;
-            // min-height: 25px;
         }
 
         span.low-percentage
