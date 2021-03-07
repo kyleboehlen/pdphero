@@ -9,6 +9,7 @@ use Log;
 // Constants
 use App\Helpers\Constants\Habits\HistoryType;
 use App\Helpers\Constants\Habits\Type;
+use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Habits\Habits;
@@ -50,15 +51,21 @@ class HabitsController extends Controller
 
         // Check for an affirmations habit
         $type_id = Type::AFFIRMATIONS_HABIT;
-        $key = $habits->search(function($h) use ($type_id){
+        $affirmations_key = $habits->search(function($h) use ($type_id){
             return $h->type_id == $type_id;
         });
 
         // Build said affirmations habit if missing
-        if($key === false)
+        if($affirmations_key === false)
         {
             $this->buildAffirmationsHabit($user->id);
             return redirect()->route('habits');
+        }
+
+        // Remove affirmations habit if user doesn't the setting to display the affirmations habit
+        if(!$user->getSettingValue(Setting::HABITS_SHOW_AFFIRMATIONS_HABIT))
+        {
+            $habits->forget($affirmations_key);
         }
 
         // Return habit view
