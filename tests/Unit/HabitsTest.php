@@ -455,7 +455,7 @@ class HabitsTest extends TestCase
 
         // Create a date to play with and set the required/not required days
         $now = new Carbon('now', $user->timezone);
-        if($now->format('w') == 5) // Friday
+        if($now->format('w') == 5 || $now->format('w') == 6) // Friday/Saturday
         {
             $required_days = [0, 1, 2, 3];
             $not_required_days = [4, 5, 6];
