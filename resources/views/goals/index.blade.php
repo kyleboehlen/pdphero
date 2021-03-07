@@ -29,7 +29,11 @@
         </div>
 
         @if($goals->count() == 0)
-            <x-goals.empty-goal />
+            @isset($selected_scope)
+                <x-goals.empty-goal :scope="$selected_scope" />
+            @else
+                <x-goals.empty-goal />
+            @endif
         @else
             @foreach($goals as $goal)
                 <x-goals.goal :goal="$goal" />

@@ -5,6 +5,7 @@ namespace App\View\Components\Goals;
 use Illuminate\View\Component;
 
 // Constants
+use App\Helpers\Constants\Goal\Type;
 use App\Helpers\Constants\Goal\Status;
 
 class Goal extends Component
@@ -15,6 +16,9 @@ class Goal extends Component
     // For holding goal status constants
     public $status;
 
+    // Scope that is being viewed
+    public $scope;
+
     /**
      * Create a new component instance.
      *
@@ -24,6 +28,20 @@ class Goal extends Component
     {
         $this->goal = $goal;
         $this->status = Status::class;
+
+        // Build scope
+        if($goal->type_id == Type::FUTURE_GOAL)
+        {
+            $this->scope = 'future';
+        }
+        elseif($goal->achieved)
+        {
+            $this->scope = 'achieved';
+        }
+        else
+        {
+            $this->scope = 'active';
+        }
     }
 
     /**

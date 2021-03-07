@@ -89,7 +89,7 @@ div.app-container
 
     div.goal
     {
-        align-self: flex-start;
+        align-self: center;
         border: $thin-border solid $light-grey;
         border-radius: 10px;
         display: flex;
@@ -100,9 +100,9 @@ div.app-container
         text-align: center;
         width: 45%;
 
-        &.empty
+        &.achieved-padding
         {
-            border-style: dashed;
+            padding-bottom: 2.5%;
         }
 
         @media only screen and (max-width: 1300px)
@@ -120,6 +120,17 @@ div.app-container
         {
             align-self: center;
             max-width: 30%;
+        }
+
+        &.empty
+        {
+            border-style: dashed;
+            
+            img.goal-img
+            {
+                padding: 25px;
+                padding-left: 50px;
+            }
         }
 
         a
@@ -323,7 +334,6 @@ div.app-container
             font-size: 1.75em;
             margin-left: 12.5%;
             max-height: 40%;
-            overflow-y: scroll;
             padding: 5%;
             padding-bottom: 2%;
             padding-top: 2%;
