@@ -1,4 +1,4 @@
-<div class="goal @if($scope == 'achieved') achieved-padding @endif">
+<div class="goal {{ $class }} @if($scope == 'achieved') achieved-padding @endif">
     {{-- Goal image --}}
     @if($goal->use_custom_img)
     @else

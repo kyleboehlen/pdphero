@@ -36,7 +36,11 @@
             @endif
         @else
             @foreach($goals as $goal)
-                <x-goals.goal :goal="$goal" />
+                @if($goals->count() < 3)
+                    <x-goals.goal :goal="$goal" class="align-start" />
+                @else
+                    <x-goals.goal :goal="$goal" />
+                @endif
             @endforeach
         @endif
     </div>

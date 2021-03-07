@@ -897,6 +897,7 @@
     box-sizing: border-box;
     margin-left: 1%;
     margin-right: 1%;
+    max-height: 40px;
     min-height: 35px;
     width: 98%;
     
@@ -904,6 +905,7 @@
     {
         margin-left: 2%;
         margin-right: 2%;
+        max-height: 35px;
         min-height: 30px;
         width: 96%;
     }
@@ -911,6 +913,7 @@
     @media only screen and (max-width: 450px)
     {
         font-size: 1.15em;
+        max-height: 30px;
         min-height: 25px;
     }
 

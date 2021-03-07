@@ -10,6 +10,9 @@ use App\Helpers\Constants\Goal\Status;
 
 class Goal extends Component
 {
+    // For extra styling classes
+    public $class;
+
     // Holds the goal being rendered
     public $goal;
 
@@ -24,8 +27,9 @@ class Goal extends Component
      *
      * @return void
      */
-    public function __construct($goal)
+    public function __construct($goal, $class = null)
     {
+        $this->class = $class;
         $this->goal = $goal;
         $this->status = Status::class;
 
