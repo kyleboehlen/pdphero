@@ -10,7 +10,6 @@ class Type
     const HABIT_BASED = 4;
     const FUTURE_GOAL = 5;
     const MANUAL_GOAL = 6;
-    // Bucket list
+    // Bucket list goal -- special ad-hoc goal
     // YNAB goal
-    // Maybe a numbers based goal
 }

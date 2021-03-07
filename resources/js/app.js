@@ -220,6 +220,11 @@ $(document).ready(function(){
 
         window.location.href = url;
     });
+    $('#goal-create-type-select').change(function(){
+        var id = $('#goal-create-type-select').find(':selected').val();
+        $('.goal-create-type-description').hide();
+        $('#goal-create-type-description-' + id).show();
+    })
 });
 
 // Replaces custom alert pop-up boxes

@@ -98,12 +98,6 @@ class GoalTest extends TestCase
             'user_id' => $forbidden_user->id,
         ]);
 
-        // Generate a not a parent goal
-        $not_a_parent_goal = Goal::factory()->create([
-            'user_id' => $test_user,
-            'type_id' => Type::FUTURE_GOAL,
-        ]);
-
         // Get a forbidden UUID
         $goal = $goals->random();
         $goal_uuid = $goal->uuid;
@@ -144,13 +138,6 @@ class GoalTest extends TestCase
         $response = $this->actingAs($test_user)->post(route('goals.destroy.goal', ['goal' => $goal_uuid]));
         $response->assertStatus(403);
         $response = $this->actingAs($test_user)->post(route('goals.destroy.action-item', ['action_item' => $action_item_uuid]));
-        $response->assertStatus(403);
-
-        // Test create route
-        $response = $this->actingAs($test_user)->get(route('goals.create.goal', [
-            'type' => Type::PARENT_GOAL,
-            'parent_goal' => $not_a_parent_goal->uuid
-        ]));
         $response->assertStatus(403);
     }
 }

@@ -33,8 +33,7 @@ class CreateGoalsTable extends Migration
             $table->boolean('default_show_todo')->default(0); // Whether or not to automatically push to the todo list
             $table->boolean('default_todo_days_before')->default(0); // How many days before the duedate should we push to the todo list
             $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();
-            $table->tinyInteger('ad_hoc_times')->unsigned()->nullable();
-            $table->string('ad_hoc_label')->nullable();
+            $table->tinyInteger('custom_times')->unsigned()->nullable(); // For times -- manual goals and ad hoc action plans
             $table->text('reason')->nullable();
             $table->text('notes')->nullable();
             $table->bigInteger('parent_id')->unsigned()->nullable();

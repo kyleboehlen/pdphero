@@ -13,6 +13,9 @@ use App\Models\Goal\GoalActionItem;
 use App\Models\Goal\GoalCategory;
 use App\Models\Goal\GoalType;
 
+// Requests
+use App\Http\Requests\Goal\CreateRequest;
+
 class GoalController extends Controller
 {
     private $scopes = [
@@ -104,9 +107,39 @@ class GoalController extends Controller
 
     }
 
-    public function createGoal(Request $request, GoalType $type = null, Goal $parent_goal = null)
+    public function createGoal(CreateRequest $request)
     {
+        // Set optional vars from request
+        $future_goal_uuid = null;
+        $parent_goal_uuid = null;
+        $type_id = null;
 
+        if($request->has('future-goal'))
+        {
+            $future_goal_uuid = $request->get('future-goal');
+        }
+
+        if($request->has('parent-goal'))
+        {
+            $parent_goal_uuid = $request->get('parent-goal');
+        }
+
+        if($request->has('type'))
+        {
+            $type_id = $request->get('type');
+        }
+
+
+        // If we don't know what type we're creating
+        if(is_null($type_id))
+        {
+            // Return the type selector view
+            return view('goals.create-selector')->with([
+                'goal_types' => GoalType::all(),
+                'future_goal_uuid' => $future_goal_uuid,
+                'parent_goal_uuid' => $parent_goal_uuid,
+            ]);
+        }
     }
 
     public function createActionItem(Request $request, GoalActionItem $action_item)

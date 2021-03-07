@@ -267,4 +267,103 @@ div.app-container
             }
         }
     }
+
+    form.create-selector
+    {
+        @extend %base-form;
+
+        align-self: center;
+
+        h2
+        {
+            @include form-title;
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            padding-left: .5%;
+            padding-right: .5%;
+            text-align: center;
+            width: 75%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 2.25em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 2em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.5em;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+
+        p
+        {
+            border: $thin-border solid $light-grey;
+            border-radius: 5px;
+            color: $white;
+            display: none;
+            font-family: $body-font;
+            font-size: 1.75em;
+            margin-left: 12.5%;
+            max-height: 40%;
+            overflow-y: scroll;
+            padding: 5%;
+            padding-bottom: 2%;
+            padding-top: 2%;
+            text-align: left;
+            width: 65%;
+
+            @media only screen and (max-height: 850px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.5em;
+                margin-left: 2.5%;
+                max-height: 55%;
+                width: 83.5%;
+            }
+
+            @media only screen and (max-width: 350px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-height: 725px)
+            {
+                max-height: 45%;
+            }
+
+            &:first-of-type
+            {
+                display: block;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include okay-button;
+        }
+    }
 }

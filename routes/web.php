@@ -83,9 +83,9 @@ Route::prefix('journal')->group(function(){
 
 // Goals
 Route::prefix('goals')->group(function(){
-    // Root
-    Route::get('/{scope?}/{category?}', [GoalController::class, 'index'])->name('goals');
-
+    // Categories route
+    Route::get('categories', [GoalController::class, 'categories'])->name('goals.categories');
+    
     // Toggle Completed routes
     Route::prefix('toggle-completed')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'toggleCompletedGoal'])->name('goals.toggle-completed.goal');
@@ -100,7 +100,7 @@ Route::prefix('goals')->group(function(){
 
     // Create routes
     Route::prefix('create')->group(function(){
-        Route::get('goal/{type?}/{parent_goal?}', [GoalController::class, 'createGoal'])->name('goals.create.goal');
+        Route::get('goal', [GoalController::class, 'createGoal'])->name('goals.create.goal');
         Route::get('action-item', [GoalController::class, 'createActionItem'])->name('goals.create.action-item');
     });
 
@@ -127,6 +127,9 @@ Route::prefix('goals')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'destroyGoal'])->name('goals.destroy.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.destroy.action-item');
     });
+
+    // Root -- at the end of the prefix so scope/category don't block other routes
+    Route::get('/{scope?}/{category?}', [GoalController::class, 'index'])->name('goals');
 });
 
 // Habits

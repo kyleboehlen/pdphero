@@ -4,7 +4,7 @@
 
     {{-- Goal title/link --}}
     <a href="{{ route('goals.create.goal') }}">
-        <h2>Create Your First Goal</h2>
+        <h2>Create A Goal</h2>
     </a>
 
     {{-- Goal progress bar --}}
