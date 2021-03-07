@@ -100,7 +100,7 @@ Route::prefix('goals')->group(function(){
 
     // Create routes
     Route::prefix('create')->group(function(){
-        Route::get('goal', [GoalController::class, 'createGoal'])->name('goals.create.goal');
+        Route::get('goal/{type?}/{parent_goal?}', [GoalController::class, 'createGoal'])->name('goals.create.goal');
         Route::get('action-item', [GoalController::class, 'createActionItem'])->name('goals.create.action-item');
     });
 

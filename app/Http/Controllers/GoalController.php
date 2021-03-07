@@ -11,6 +11,7 @@ use App\Helpers\Constants\Goal\Type;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;
 use App\Models\Goal\GoalCategory;
+use App\Models\Goal\GoalType;
 
 class GoalController extends Controller
 {
@@ -103,7 +104,7 @@ class GoalController extends Controller
 
     }
 
-    public function createGoal(Request $request, Goal $goal)
+    public function createGoal(Request $request, GoalType $type = null, Goal $parent_goal = null)
     {
 
     }
