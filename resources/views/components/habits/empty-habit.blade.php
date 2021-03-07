@@ -1,4 +1,4 @@
-<div class="habit">
+<div class="habit empty">
     {{-- Habit title/link --}}
     <a href="{{ route('habits.create') }}">
         <h2>Create Your First Habit</h2>
