@@ -5,7 +5,7 @@
     <x-app.header title="Goals" />
 
     {{-- Side Nav --}}
-    <x-goals.nav show="create" />
+    <x-goals.nav show="create|categories|types" />
 
     <div class="app-container">
         <div class="selector">

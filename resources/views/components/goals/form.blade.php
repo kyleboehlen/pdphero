@@ -1,0 +1,172 @@
+<form class="goal" method="POST" enctype="multipart/form-data"
+    @isset($edit_goal)
+        action="{{ route('goals.update.goal', ['goal' => $edit_goal->uuid]) }}"
+    @else
+        action="{{ route('goals.store.goal') }}"
+    @endisset>
+    @csrf
+
+    {{-- Header --}}
+    <h2>@isset($edit_goal) Edit Goal @else Create New {{ $type_name }} @endisset</h2>
+
+    {{-- Hidden elements --}}
+    <input type="hidden" name="type" value="{{ $type_id }}" />
+
+    @isset($parent_goal)
+        <input type="hidden" name="parent-goal" value="{{ $parent_goal->uuid }}" />
+    @endisset
+    
+    @isset($future_goal)
+        <input type="hidden" name="future-goal" value="{{ $future_goal->uuid }}" />
+    @endisset
+
+    {{-- Show name as long as it's not a habit based goal --}}
+    @if($type_id != $type::HABIT_BASED)
+        <input type="text" name="name" placeholder="Name" maxlength="255" required
+        @if(!is_null($edit_goal))
+            value="{{ $edit_goal->name }}"
+        @elseif(!is_null($future_goal))
+            value="{{ $future_goal->name }}"
+        @else
+            value="{{ old('name') }}"
+        @endif>
+
+        @error('name')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    @else
+        {{-- If it is, show the drop down of habits --}}
+        <select name="habit" required>
+            @if(is_null($edit_goal) && is_null(old('habit')))
+                <option disabled selected value> -- Select a Habit -- </option>
+            @endif
+
+            @foreach($habits as $habit)
+                <option value="{{ $habit->uuid }}"
+                    @if(!is_null($edit_goal) && $edit_goal->habit_uuid == $habit->uuid)
+                        selected
+                    @elseif(old('habit') == $habit->uuid)
+                        selected
+                    @endif
+                >{{ $habit->name }}</option>
+            @endforeach
+        </select>
+
+        @error('habit')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    @endif
+    <br/><br/>
+
+    {{-- Goal category --}}
+    <select name="category">
+        <option value="no-category">No Category</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->uuid }}">{{ $category->name }}</option>
+        @endforeach
+    </select>
+    @error('category')
+        <p class="error">{{ $message }}</p>
+    @enderror
+    <br/><br/>
+
+    {{-- Ad-hoc options --}}
+    @if($type_id == $type::ACTION_AD_HOC)
+        {{-- How many action items  --}}
+        <label for="ad-hoc-number">Complete </label><input class="ad-hoc-number" name="ad-hoc-number" type="number"
+        @isset($edit_goal)
+            value="{{ $edit_goal->custom_times }}"
+        @else
+            value="1"
+        @endisset><label class="ad-hoc-period" for="ad-hoc-period"> action items</label>
+        <select class="ad-hoc-period" name="ad-hoc-period">
+            @foreach($ad_hoc_periods as $value => $ad_hoc_period)
+                <option value="{{ $value }}">{{ $ad_hoc_period['name'] }}</option>
+            @endforeach
+        </select><br/><br/>
+    @endif
+
+    {{-- Manual goal options --}}
+    @if($type_id == $type::MANUAL_GOAL)
+        {{-- How many items  --}}
+        <label for="manual-number">Items to Complete: </label><input class="manual-number" name="manual-number" type="number"
+        @isset($edit_goal)
+            value="{{ $edit_goal->custom_times }}"
+        @else
+            value="10"
+        @endisset><br/><br/>
+    @endif
+
+    {{-- Goal dates --}}
+    @if($type_id != $type::FUTURE_GOAL)
+        @if($type_id == $type::HABIT_BASED)
+            {{-- Todo - soonest date habit could reach 100% --}}
+            <input type="number" name="habit-strength" value="100" min="1" max="100" required /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
+        @else
+            <label for="start-date"> Start goal: </label><input type="date" name="start-date" required />
+        @endif
+
+        {{-- End date --}}
+        <br/>
+        <label for="end-date">Complete by: </label>
+        <input type="date" name="end-date" required
+            {{-- To-do - determine value based on edit goal/habit soonest date --}}
+        /><br/><br/>
+    @endif
+
+    {{-- Goal image --}}
+    <label for="image">Goal image:</label>
+    <input type="file" name="goal-image" accept="image/png, image/jpeg, image/jpg" />
+    <br/><br/>
+
+    {{-- Goal reason --}}
+    <textarea name="reason" required
+        placeholder="Put the reason you want to accomplish this goal here. What do you envision things looking like when you accomplish it? It's important to reference your goal reason on days where you just don't feel like working on it!"
+    >@isset($edit_goal){{ $edit_goal->reason }}@else{{ old('reason') }}@endisset</textarea>
+    @error('reason')
+        <p class="error">{{ $message }}</p>
+    @enderror
+    <br/><br/>
+
+    {{-- Action plan goals push to todo options --}}
+    @if(in_array($type_id, [$type::ACTION_AD_HOC, $type::ACTION_DETAILED, $type::PARENT_GOAL]))
+        <span class="show-todo" title="If this is selected your goal action items will automatically show up in your to-do list">
+            <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @endisset /> Show action items on To-Do List<br/>
+            <input id="days-before-due-input" type="number" name="show-todo-days-before"
+                @isset($edit_goal)
+                    value="{{ $edit_goal->default_todo_days_before }}"
+                    @if($edit_goal->default_show_todo)
+                        disabled>
+                        <span id="days-before-due-label" class="disabled">
+                    @else
+                        <span id="days-before-due-label">
+                    @endif
+                @else
+                    disabled
+                    value="7">
+                    <span id="days-before-due-label" class="disabled">
+                @endisset days before due </span>
+        </span><br/><br/>
+    @endif
+
+    {{-- Don't show notes for habit based goals, use the habit notes --}}
+    @if($type_id != $type::HABIT_BASED)
+        <textarea name="notes"
+            placeholder="Any other notes you have for this goal go here!"
+        >@isset($edit_goal){{ $edit_goal->notes }}@else{{ old('notes') }}@endisset</textarea>
+
+        @error('notes')
+            <p class="error">{{ $message }}</p>
+        @enderror
+
+        <br/><br/>
+    @endif
+
+    {{-- Buttons --}}
+    <a href="{{ route('goals') }}">
+        <button class="cancel" type="button">Cancel</button>
+    </a>
+
+    <button class="submit" type="submit">Submit</button>
+
+</form>

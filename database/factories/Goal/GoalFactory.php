@@ -36,6 +36,7 @@ class GoalFactory extends Factory
             'use_custom_img' => false,
             'progress' => rand(0, 100),
             'category_id' => (!is_null($category) && array_rand([true, false])) ? $category->id : null,
+            'reason' => $this->faker->paragraph(),
         ];
     }
 }

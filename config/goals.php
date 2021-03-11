@@ -66,7 +66,7 @@ return [
         ],
         Type::HABIT_BASED => [
             'name' => 'Habit Based Goal',
-            'desc' => 'A habit based goal allows you to create a goal based off hitting 100% strength on a habit.',
+            'desc' => 'A habit based goal allows you to create a goal based off hitting a specified strength on a habit.',
         ],
         Type::FUTURE_GOAL => [
             'name' => 'Future Goal',

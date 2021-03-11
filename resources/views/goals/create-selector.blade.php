@@ -23,7 +23,9 @@
 
             <select id="goal-create-type-select" name="type">
                 @foreach($goal_types as $goal_type)
-                    <option value="{{ $goal_type->id }}">{{ $goal_type->name }}</option>
+                    @if(is_null($future_goal_uuid) || $goal_type->id != $type::FUTURE_GOAL)
+                        <option value="{{ $goal_type->id }}">{{ $goal_type->name }}</option>
+                    @endif
                 @endforeach
             </select>
 

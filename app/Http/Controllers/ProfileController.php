@@ -264,8 +264,10 @@ class ProfileController extends Controller
         catch(\Exception $e)
         {
             // Log error
+            $exception_message = $e->getMessage();
             Log::critical("Failed to crop uploaded image for $user->name, attempting to set user->profile_picture back to null", [
                 'user->id' => $user->id,
+                'exception_message' => $exception_message,
             ]);
 
             // Reset profile picture attribute

@@ -83,8 +83,8 @@ Route::prefix('journal')->group(function(){
 
 // Goals
 Route::prefix('goals')->group(function(){
-    // Categories route
-    Route::get('categories', [GoalController::class, 'categories'])->name('goals.categories');
+    // Types route
+    Route::get('types', [GoalController::class, 'types'])->name('goals.types');
     
     // Toggle Completed routes
     Route::prefix('toggle-completed')->group(function(){
@@ -114,12 +114,14 @@ Route::prefix('goals')->group(function(){
     Route::prefix('edit')->group(function(){
         Route::get('goal/{goal}', [GoalController::class, 'editGoal'])->name('goals.edit.goal');
         Route::get('action-item/{action_item}', [GoalController::class, 'editActionItem'])->name('goals.edit.action-item');
+        Route::get('categories', [GoalController::class, 'editCategories'])->name('goals.edit.categories');
     });
 
     // Update routes
     Route::prefix('update')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'updateGoal'])->name('goals.update.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.update.action-item');
+        Route::get('categories', [GoalController::class, 'updateCategories'])->name('goals.update.categories');
     });
 
     // Destroy routes

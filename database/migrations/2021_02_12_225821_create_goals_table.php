@@ -30,15 +30,31 @@ class CreateGoalsTable extends Migration
             $table->boolean('achieved')->default(0); // Whether or not the user has marked it as achieved, not if progress is at 100%
             $table->boolean('use_custom_img')->default(0); // Otherwise use default based on status
             $table->tinyInteger('progress')->default(0); // To store cached calculated goal progress %
-            $table->boolean('default_show_todo')->default(0); // Whether or not to automatically push to the todo list
-            $table->boolean('default_todo_days_before')->default(0); // How many days before the duedate should we push to the todo list
-            $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();
-            $table->tinyInteger('custom_times')->unsigned()->nullable(); // For times -- manual goals and ad hoc action plans
-            $table->text('reason')->nullable();
+            $table->text('reason');
             $table->text('notes')->nullable();
             $table->bigInteger('parent_id')->unsigned()->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+
+            /**
+             * Goal Type Specific Attributes
+             */
+
+            // Determines the default for if the ToDo list should show action items for the goal
+            $table->boolean('default_show_todo')->nullable();
+
+            // Determines the default for how many days before an action items due date it shows up on the ToDo list
+            $table->tinyInteger('default_todo_days_before')->unsigned()->nullable();
+
+            // The amount of times something needs to be accomplished for a manual goal or
+            // The number of action items that need to be scheduled and accomplished each ad-hoc period
+            $table->smallInteger('custom_times')->unsigned()->nullable();
+
+            // The length of the period of time in which {custom_times} number of action items needs to be scheduled and accomplished
+            $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();
+
+            // The strength level that a habit must hit in order to achieve the goal
+            $table->tinyInteger('habit_strength')->unsigned()->nullable();
 
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');

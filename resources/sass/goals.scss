@@ -71,7 +71,6 @@ div.app-container
             font-family: $header-font;
             font-size: 1em;
             text-align: center;
-            
             padding-left: .5%;
             padding-right: .5%;
 
@@ -123,7 +122,9 @@ div.app-container
         img.goal-img
         {
             align-self: center;
-            max-width: 30%;
+            border-radius: 10px;
+            margin: 1%;
+            max-width: 32.5%;
         }
 
         &.empty
@@ -144,7 +145,7 @@ div.app-container
             flex-direction: column;
             height: auto;
             text-decoration: none;
-            width: 69%;
+            width: 62.5%;
 
             h2
             {
@@ -379,6 +380,316 @@ div.app-container
             @extend %button;
 
             @include okay-button;
+        }
+    }
+
+    form.goal
+    {
+        @extend %base-form;
+
+        height: 60%;
+        font-size: 1.25em;
+        margin-top: 1%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin-left: 7%;
+            margin-right: 0;
+            width: 90%;
+        }
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 1%;
+            font-size: 1.75em;
+            margin-left: 10%;
+            width: 80%;
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.25em;
+            }
+        
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.25em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+        
+            @media only screen and (max-width: 350px)
+            {
+                font-size: 1.15em;
+            }
+        }
+
+        input[type="text"]
+        {
+            font-size: 1.75em;
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.25em;
+            text-align: center;
+            padding-left: .5%;
+            padding-right: .5%;
+            width: 75%;
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                max-width: 60%;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+
+        label, span.show-todo
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin-left: 12.5%;
+            text-align: right;
+            width: 25%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+        }
+
+        label.habit-strength, label.ad-hoc-period, label.manual-number
+        {
+            margin-left: 0;
+        }
+
+        input[type="number"]
+        {
+            height: auto;
+            font-size: 1.5em;
+            text-align: center;
+            width: 15%;
+
+            &.ad-hoc-number
+            {
+                width: 5%;
+            }
+
+            &.manual-number
+            {
+                float: right;
+                margin-right: 12.5%;
+                text-align: center;
+                width: 40%;
+    
+                @media only screen and (max-width: 1600px)
+                {
+                    width: 35%;
+                }
+
+                @media only screen and (max-width: 1400px)
+                {
+                    font-size: 1.3em;
+                }
+
+                @media only screen and (max-width: 1200px)
+                {
+                    width: 30%;
+                }
+
+                @media only screen and (max-width: 1100px)
+                {
+                    font-size: 1.15em;
+                }
+
+                @media only screen and (max-width: 925px)
+                {
+                    width: 25%;
+                }
+            }
+        }
+
+        select.ad-hoc-period
+        {
+            margin-right: 12.5%;
+            float: right;
+            width: 30%;
+
+            @media only screen and (max-width: 1700px)
+            {
+                width: 25%;
+            }
+
+            @media only screen and (max-width: 1475px)
+            {
+                width: 20%;
+            }
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 1em;
+            }
+        }
+
+        span.percent-label, span.manual-number
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+        }
+
+        input[type="date"]
+        {
+            font-size: 1.75em;
+            float: right;
+            margin-right: 12.5%;
+            text-align: center;
+            width: 50%;
+
+            @media only screen and (max-width: 1550px)
+            {
+                width: 40%;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+        }
+
+        input[type="file"]
+        {
+            font-size: 1.25em;
+            float: right;
+            margin-right: 12.5%;
+            width: 50%;
+
+            @media only screen and (max-width: 1550px)
+            {
+                width: 40%;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1em;
+            }
+        }
+
+        span.show-todo
+        {
+            color: $white;
+            display: inline-block;
+            font-family: $body-font;
+            font-size: 2em;
+            padding: 0;
+            text-align: left;
+            width: 75%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+                width: 96%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.25em;
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1em;
+            }
+
+            input[type="number"]
+            {
+                height: auto;
+                font-size: .75em;
+                margin-left: 60px;
+                text-align: center;
+                width: 10%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 50px;
+                }
+
+                @media only screen and (max-width: 400px)
+                {
+                    width: 20%;
+                }
+
+                &:disabled
+                {
+                    color: $light-grey;
+                }
+            }
+        }
+
+        span.disabled
+        {
+            color: $light-grey;
+        }
+
+        input[type="checkbox"]
+        {
+            @extend %checkbox;
+
+            height: 50px;
+            margin-left: 0;
+            width: 50px;
+
+            @media only screen and (max-width: 800px)
+            {
+                height: 40px;
+                width: 40px;
+            }
+
+            &:checked
+            {
+                background: $green;
+            }
+
+            &:not(:checked)
+            {
+                background: $red;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+
+            bottom: 1.5%;
         }
     }
 }

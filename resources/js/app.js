@@ -224,7 +224,23 @@ $(document).ready(function(){
         var id = $('#goal-create-type-select').find(':selected').val();
         $('.goal-create-type-description').hide();
         $('#goal-create-type-description-' + id).show();
-    })
+    });
+
+    // Goal change push todo
+    $('#goal-show-todo').change(function(){
+        var span = $('#days-before-due-label');
+        var num = $('#days-before-due-input');
+        if($(this).is(":checked"))
+        {
+            num.prop('disabled', false);
+            span.removeClass('disabled');
+        }
+        else
+        {
+            num.prop('disabled', true);
+            span.addClass('disabled');
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes

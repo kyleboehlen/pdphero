@@ -43,6 +43,7 @@ class CreateRequest extends FormRequest
         }
 
         // Get future goal uuids
+        $future_goal_uuids = array();
         $future_goals = Goal::where('user_id', $user->id)->where('type_id', Type::FUTURE_GOAL)->get();
         if(!is_null($future_goals))
         {
