@@ -92,6 +92,11 @@ class GoalController extends Controller
         ]);
     }
 
+    public function types()
+    {
+        return view('goals.types');
+    }
+
     public function toggleCompletedGoal(Request $request, Goal $goal)
     {
 

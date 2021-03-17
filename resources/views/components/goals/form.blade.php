@@ -101,7 +101,7 @@
     @if($type_id != $type::FUTURE_GOAL)
         @if($type_id == $type::HABIT_BASED)
             {{-- Todo - soonest date habit could reach 100% --}}
-            <input type="number" name="habit-strength" value="100" min="1" max="100" required /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
+            <input type="number" class="habit-strength" name="habit-strength" value="100" min="1" max="100" required /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
         @else
             <label for="start-date"> Start goal: </label><input type="date" name="start-date" required />
         @endif
@@ -120,7 +120,7 @@
     <br/><br/>
 
     {{-- Goal reason --}}
-    <textarea name="reason" required
+    <textarea class="reason" name="reason" required
         placeholder="Put the reason you want to accomplish this goal here. What do you envision things looking like when you accomplish it? It's important to reference your goal reason on days where you just don't feel like working on it!"
     >@isset($edit_goal){{ $edit_goal->reason }}@else{{ old('reason') }}@endisset</textarea>
     @error('reason')
@@ -159,6 +159,8 @@
             <p class="error">{{ $message }}</p>
         @enderror
 
+        <br/><br/><br/>
+    @else
         <br/><br/>
     @endif
 

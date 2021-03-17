@@ -400,6 +400,24 @@ div.app-container
             width: 90%;
         }
 
+        @media only screen and (max-width: 900px)
+        {
+            margin-left: 0;
+            margin-right: 0;
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 900px)
+        {
+            margin-left: 2.5%;
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            font-size: 1em;
+        }
+
         h2
         {
             @include form-title;
@@ -430,6 +448,12 @@ div.app-container
         input[type="text"]
         {
             font-size: 1.75em;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.5em;
+                width: 95%;
+            }
         }
 
         select
@@ -448,14 +472,41 @@ div.app-container
                 font-size: 1em;
             }
 
-            @media only screen and (max-width: 550px)
+            @media only screen and (max-width: 900px)
             {
-                max-width: 60%;
+                width: 95%;
             }
 
             &:focus
             {
                 outline: none;
+            }
+
+            &.ad-hoc-period
+            {
+                margin-right: 12.5%;
+                float: right;
+                width: 30%;
+
+                @media only screen and (max-width: 1700px)
+                {
+                    width: 25%;
+                }
+
+                @media only screen and (max-width: 1475px)
+                {
+                    width: 20%;
+                }
+
+                @media only screen and (max-width: 1400px)
+                {
+                    font-size: 1em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    max-width: 60%;
+                }
             }
         }
 
@@ -477,6 +528,12 @@ div.app-container
             {
                 font-size: 1.5em;
             }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 2.5%;
+                text-align: left;
+            }
         }
 
         label.habit-strength, label.ad-hoc-period, label.manual-number
@@ -494,6 +551,19 @@ div.app-container
             &.ad-hoc-number
             {
                 width: 5%;
+            }
+
+            &.habit-strength
+            {
+                @media only screen and (max-width: 575px)
+                {
+                    width: 20%;
+                }
+
+                @media only screen and (max-width: 475px)
+                {
+                    width: 25%;
+                }
             }
 
             &.manual-number
@@ -527,28 +597,11 @@ div.app-container
                 {
                     width: 25%;
                 }
-            }
-        }
 
-        select.ad-hoc-period
-        {
-            margin-right: 12.5%;
-            float: right;
-            width: 30%;
-
-            @media only screen and (max-width: 1700px)
-            {
-                width: 25%;
-            }
-
-            @media only screen and (max-width: 1475px)
-            {
-                width: 20%;
-            }
-
-            @media only screen and (max-width: 1400px)
-            {
-                font-size: 1em;
+                @media only screen and (max-width: 400px)
+                {
+                    margin-right: 2.5%;
+                }
             }
         }
 
@@ -576,6 +629,27 @@ div.app-container
             {
                 font-size: 1.5em;
             }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-right: 2.5%;
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                width: 65%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                width: 50%;
+            }
         }
 
         input[type="file"]
@@ -594,6 +668,27 @@ div.app-container
             {
                 font-size: 1em;
             }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-right: 2.5%;
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                width: 65%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                width: 50%;
+            }
         }
 
         span.show-todo
@@ -611,21 +706,30 @@ div.app-container
                 font-size: 1.75em;
             }
 
-            @media only screen and (max-width: 1100px)
+            @media only screen and (max-width: 1300px)
             {
                 font-size: 1.5em;
                 width: 96%;
             }
 
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+
             @media only screen and (max-width: 800px)
             {
-                font-size: 1.25em;
                 text-align: center;
+            }
+
+            @media only screen and (max-width: 525px)
+            {
+                font-size: 1.25em;
             }
 
             @media only screen and (max-width: 450px)
             {
-                font-size: 1em;
+                font-size: 1.4em;
             }
 
             input[type="number"]
@@ -635,6 +739,12 @@ div.app-container
                 margin-left: 60px;
                 text-align: center;
                 width: 10%;
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: .85em;
+                    width: 15%;
+                }
 
                 @media only screen and (max-width: 800px)
                 {
@@ -683,6 +793,23 @@ div.app-container
             }
         }
 
+        textarea
+        {
+            @media only screen and (max-width: 900px)
+            {
+                width: 95%;
+            }
+
+            &.reason
+            {
+                @media only screen and (max-width: 675px)
+                {
+                    min-height: 200px;
+                }
+            }
+        }
+
+
         button
         {
             @extend %button;
@@ -690,6 +817,49 @@ div.app-container
             @include cancel-submit-buttons;
 
             bottom: 1.5%;
+        }
+    }
+
+    div.goal-type-container
+    {
+        color: $white;
+        text-align: center;
+        width: 75%;
+
+        @media only screen and (max-width: 800px)
+        {
+            margin-left: 2.5%;
+            width: 95%;
+        }
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+            margin-bottom: 0;
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 475px)
+            {
+                font-size: 1.35em;
+            }
+        }
+
+        p
+        {
+            font-family: $body-font;
+            font-size: 1.75em;
+            margin-top: 1%;
+
+            @media only screen and (max-width: 475px)
+            {
+                font-size: 1.35em;
+            }
         }
     }
 }
