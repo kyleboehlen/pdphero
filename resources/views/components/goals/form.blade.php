@@ -36,7 +36,7 @@
         @enderror
     @else
         {{-- If it is, show the drop down of habits --}}
-        <select name="habit" required>
+        <select id="goal-habit-select" name="habit" required>
             @if(is_null($edit_goal) && is_null(old('habit')))
                 <option disabled selected value> -- Select a Habit -- </option>
             @endif
@@ -101,7 +101,7 @@
     @if($type_id != $type::FUTURE_GOAL)
         @if($type_id == $type::HABIT_BASED)
             {{-- Todo - soonest date habit could reach 100% --}}
-            <input type="number" class="habit-strength" name="habit-strength" value="100" min="1" max="100" required /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
+            <input id="goal-habit-strength" type="number" class="habit-strength" name="habit-strength" value="100" min="1" max="100" required /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
         @else
             <label for="start-date"> Start goal: </label><input type="date" name="start-date" required />
         @endif
@@ -109,9 +109,33 @@
         {{-- End date --}}
         <br/>
         <label for="end-date">Complete by: </label>
-        <input type="date" name="end-date" required
-            {{-- To-do - determine value based on edit goal/habit soonest date --}}
-        /><br/><br/>
+        <input type="date" name="end-date" required />
+        @if($type_id == $type::HABIT_BASED)
+            {{-- Habit strength script/label --}}
+            <p id="goal-habit-strength-label"></p><br/>
+            <script>
+                $(document).ready(function(){
+                    // Habit goals get strength for create form
+                    $('#goal-habit-select').add('#goal-habit-strength').change(function(){
+                        var habit = $('#goal-habit-select').find(':selected').val();
+                        var strength = $('#goal-habit-strength').val();
+    
+                        $.ajax({
+                            type: 'POST',
+                            url: window.location.origin + '/habits/soonest/' + habit + '/' + strength,
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                            }
+                        }).done(function(date){
+                            $('#goal-habit-strength-label').html('The soonest you can hit ' + strength + '% strength is ' + date);
+                            $('#goal-habit-strength-label').show();
+                        });
+                    });
+                });
+            </script>
+        @else
+            <br/><br/>
+        @endif
     @endif
 
     {{-- Goal image --}}

@@ -56,6 +56,9 @@ class CreateGoalsTable extends Migration
             // The strength level that a habit must hit in order to achieve the goal
             $table->tinyInteger('habit_strength')->unsigned()->nullable();
 
+            // The habit id of the habit the goal references
+            $table->bigInteger('habit_id')->unsigned()->nullable();
+
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('type_id')->references('id')->on('goal_types');
@@ -63,6 +66,7 @@ class CreateGoalsTable extends Migration
             $table->foreign('category_id')->references('id')->on('goal_categories');
             $table->foreign('ad_hoc_period_id')->references('id')->on('goal_ad_hoc_periods');
             $table->foreign('parent_id')->references('id')->on('goals');
+            $table->foreign('habit_id')->references('id')->on('habits');
         });
     }
 

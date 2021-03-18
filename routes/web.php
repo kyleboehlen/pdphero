@@ -158,6 +158,9 @@ Route::prefix('habits')->group(function(){
 
     // Update habit history
     Route::post('history/{habit}', [HabitsController::class, 'history'])->name('habits.history');
+
+    // Get soonest a strength can be hit on a habit
+    Route::post('soonest/{habit}/{strength?}', [HabitsController::class, 'soonest'])->name('habits.soonest');
 });
 
 // Affirmations

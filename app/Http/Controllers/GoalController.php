@@ -16,6 +16,7 @@ use App\Models\Goal\GoalActionItem;
 use App\Models\Goal\GoalCategory;
 use App\Models\Goal\GoalType;
 use App\Models\Habits\Habits;
+use App\Models\Relationships\GoalsHabits;
 
 // Requests
 use App\Http\Requests\Goal\CreateRequest;
@@ -229,9 +230,10 @@ class GoalController extends Controller
         }
 
         // Habit options
-        if($type_id == Type::HABIT_BASED && !is_null($habit_strength))
+        if($type_id == Type::HABIT_BASED && !is_null($habit_strength) && !is_null($habit))
         {
             $goal->habit_strength = $habit_strength;
+            $goal->habit_id = $habit->id;
         }
         
         // Dates and shit
@@ -276,12 +278,6 @@ class GoalController extends Controller
                 'goal' => $goal->toArray(),
                 'request_values' => $request->all(),
             ]);
-        }
-
-        // Create habit/goal relationship
-        if($type_id == Type::HABIT_BASED && !is_null($habit))
-        {
-            // TODO
         }
 
         // Save custom image

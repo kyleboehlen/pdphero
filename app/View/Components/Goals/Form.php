@@ -89,8 +89,6 @@ class Form extends Component
         if($this->type_id == Type::HABIT_BASED)
         {
             $this->habits = $user->habits;
-
-            // Todo: build habit quickest date can achieve 100 percent
         }
         elseif($this->type_id == Type::ACTION_AD_HOC)
         {

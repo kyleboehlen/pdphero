@@ -317,6 +317,21 @@ class HabitsController extends Controller
         return redirect()->back();
     }
 
+    public function soonest(Habits $habit, $strength = 100)
+    {
+        // Evaluate how long it would take to build strength
+        $evaluation_array = $habit->evaluateStrengthCalculations(false, $strength);
+
+        // Figure out date
+        $user = \Auth::user();
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $carbon = new Carbon('now', $timezone);
+        $carbon->addDays($evaluation_array['actual_days']);
+
+        // Return the date
+        return $carbon->format('n/j/y');
+    }
+
     /**
      * Builds a new affirmations ahbit based on defaults
      * 

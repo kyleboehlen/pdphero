@@ -652,6 +652,15 @@ div.app-container
             }
         }
 
+        #goal-habit-strength-label
+        {
+            color: $white;
+            display: none;
+            font-family: $body-font;
+            font-size: 1.25em;
+            margin: 0;
+        }
+
         input[type="file"]
         {
             font-size: 1.25em;
