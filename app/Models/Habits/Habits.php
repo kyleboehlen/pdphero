@@ -348,7 +348,7 @@ class Habits extends Model
      */
     public function evaluateStrengthCalculations($verbose = false, $strength_cap = 100)
     {
-        $strength = 0;
+        $strength = $this->strength;
         $days = 0;
         $days_to_cap = 0;
         $progress_change = config('habits.strength.min_day_change');
