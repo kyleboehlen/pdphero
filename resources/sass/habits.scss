@@ -493,6 +493,13 @@ div.app-container
                 }
             }
 
+            span.every-x-days-clickable
+            {
+                position: relative;
+                width: 100%;
+                z-index: -1;
+            }
+
             p
             {
                 color: $white;
@@ -520,8 +527,10 @@ div.app-container
             {
                 height: auto;
                 font-size: .75em;
+                // position: relative;
                 text-align: center;
                 width: 10%;
+                // z-index: 1;
 
                 @media only screen and (max-width: 450px)
                 {

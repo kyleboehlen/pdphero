@@ -37,6 +37,7 @@
         <p>--or--</p>
         
         <p class="every-x-days @isset($habit) @if(is_null($habit->every_x_days)) disabled @endif @else disabled @endisset" required>Every
+            <span class="every-x-days-clickable">
             <input id="every-x-days-input" type="number" name="every-x-days" min="1" max="10"
                 @isset($habit)
                     @isset($habit->every_x_days)
@@ -47,7 +48,7 @@
                 @else
                     disabled
                 @endisset
-            /> day(s)
+            /></span> day(s)
         </p>
     </div><br/><br/>
 
