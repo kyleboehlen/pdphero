@@ -5,7 +5,7 @@
     <x-app.header title="Goals" />
 
     {{-- Side Nav --}}
-    <x-goals.nav show="create" />
+    <x-goals.nav show="back|create|categories|types" />
 
     <div class="app-container">
         <x-goals.form :type="$type_id" :future="$future_goal_uuid" :parent="$parent_goal_uuid" />

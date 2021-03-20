@@ -5,7 +5,7 @@
     <x-app.header title="Goals" />
 
     {{-- Side Nav --}}
-    <x-goals.nav show="categories" />
+    <x-goals.nav show="back|categories|types" />
 
     <div class="app-container">
         <form class="create-selector" action="{{ route('goals.create.goal') }}" method="GET">

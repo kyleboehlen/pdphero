@@ -21,6 +21,7 @@ use App\Models\Relationships\GoalsHabits;
 // Requests
 use App\Http\Requests\Goal\CreateRequest;
 use App\Http\Requests\Goal\StoreRequest;
+use App\Http\Requests\Goal\StoreCategoryRequest;
 
 class GoalController extends Controller
 {
@@ -164,6 +165,24 @@ class GoalController extends Controller
     public function createActionItem(Request $request, GoalActionItem $action_item)
     {
 
+    }
+
+    public function storeCategory(StoreCategoryRequest $request)
+    {
+        // Create category
+        $category = new GoalCategory([
+            'name' => $request->name,
+            'user_id' => $request->user()->id,
+        ]);
+
+        // Save/log errors
+        if(!$category->save())
+        {
+            Log::error('Failed to save goal category', $category->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('goals.edit.categories');
     }
 
     public function storeGoal(StoreRequest $request)
@@ -329,6 +348,17 @@ class GoalController extends Controller
 
     }
 
+    public function editCategories(Request $request)
+    {
+        // Get users categories
+        $categories = $request->user()->goalCategories;
+
+        // Return edit view
+        return view('goals.categories')->with([
+            'categories' => $categories,
+        ]);
+    }
+
     public function editGoal(Request $request, Goal $goal)
     {
 
@@ -349,7 +379,22 @@ class GoalController extends Controller
 
     }
 
-    public function destroyGoal(Request $request, Goal $goal)
+    public function destroyCategory(Request $request, GoalCategory $category)
+    {
+        // Remove category from goals with that category
+        Goal::where('user_id', $request->user()->id)->where('category_id', $category->id)->update(['category_id' => null]);
+
+        // Delete category
+        if(!$category->delete())
+        {
+            Log::error('Failed to delete category', $category->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('goals.edit.categories');
+    }
+
+    public function destroyGoal(Goal $goal)
     {
         // Delete goal
         if(!$goal->delete())
@@ -361,7 +406,7 @@ class GoalController extends Controller
         return redirect()->route('goals');
     }
 
-    public function destroyActionItem(Request $request, GoalActionItem $action_item)
+    public function destroyActionItem(GoalActionItem $action_item)
     {
         // Delete action item
         if(!$action_item->delete())

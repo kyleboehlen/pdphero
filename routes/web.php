@@ -108,6 +108,7 @@ Route::prefix('goals')->group(function(){
     Route::prefix('store')->group(function(){
         Route::post('goal', [GoalController::class, 'storeGoal'])->name('goals.store.goal');
         Route::post('action-item', [GoalController::class, 'storeActionItem'])->name('goals.store.action-item');
+        Route::post('category', [GoalController::class, 'storeCategory'])->name('goals.store.category');
     });
     
     // Edit routes
@@ -121,13 +122,13 @@ Route::prefix('goals')->group(function(){
     Route::prefix('update')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'updateGoal'])->name('goals.update.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.update.action-item');
-        Route::get('categories', [GoalController::class, 'updateCategories'])->name('goals.update.categories');
     });
 
     // Destroy routes
     Route::prefix('destroy')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'destroyGoal'])->name('goals.destroy.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.destroy.action-item');
+        Route::post('category/{category}', [GoalController::class, 'destroyCategory'])->name('goals.destroy.category');
     });
 
     // Root -- at the end of the prefix so scope/category don't block other routes

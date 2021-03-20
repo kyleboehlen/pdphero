@@ -12,4 +12,8 @@ class GoalCategory extends Model
     use HasFactory, HasUuidTrait, SoftDeletes;
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'name', 'user_id',
+    ];
 }

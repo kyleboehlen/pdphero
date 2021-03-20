@@ -14,12 +14,20 @@
             <a href="{{ route('goals.create.goal') }}"><li>Create New Goal</li></a>
         @endif
 
-        @if(in_array('categories', $show))
-            <a href="{{ route('goals.edit.categories') }}"><li>Edit Categories</li></a>
+        @if(in_array('edit', $show))
+            <a href="{{ route('goals.edit.goal') }}"><li>Edit Goal</li></a>
         @endif
 
         @if(in_array('create-sub', $show))
             <a href="{{ route('goals.create.goal', ['parent-goal' => $goal->uuid]) }}"><li>Create Sub-Goal</li></a>
+        @endif
+
+        @if(in_array('shift', $show))
+            <a href="{{ route('?') }}"><li>Shift Dates</li></a>
+        @endif
+
+        @if(in_array('categories', $show))
+            <a href="{{ route('goals.edit.categories') }}"><li>Edit Categories</li></a>
         @endif
 
         @if(in_array('types', $show))
