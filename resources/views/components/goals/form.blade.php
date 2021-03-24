@@ -43,7 +43,7 @@
 
             @foreach($habits as $habit)
                 <option value="{{ $habit->uuid }}"
-                    @if(!is_null($edit_goal) && $edit_goal->habit_uuid == $habit->uuid)
+                    @if(!is_null($edit_goal) && $edit_goal->habit_id == $habit->id)
                         selected
                     @elseif(old('habit') == $habit->uuid)
                         selected
@@ -62,7 +62,13 @@
     <select name="category">
         <option value="no-category">No Category</option>
         @foreach($categories as $category)
-            <option value="{{ $category->uuid }}">{{ $category->name }}</option>
+            <option value="{{ $category->uuid }}"
+                @if(!is_null($edit_goal) && $edit_goal->category_id == $category->id)
+                    selected
+                @elseif(old('category') == $category->uuid)
+                    selected
+                @endif
+            >{{ $category->name }}</option>
         @endforeach
     </select>
     @error('category')
@@ -81,7 +87,13 @@
         @endisset><label class="ad-hoc-period" for="ad-hoc-period"> action items</label>
         <select class="ad-hoc-period" name="ad-hoc-period">
             @foreach($ad_hoc_periods as $value => $ad_hoc_period)
-                <option value="{{ $value }}">{{ $ad_hoc_period['name'] }}</option>
+                <option value="{{ $value }}"
+                    @if(!is_null($edit_goal) && $edit_goal->ad_hoc_period_id == $value)
+                        selected
+                    @elseif(old('ad-hoc-period') == $value)
+                        selected
+                    @endif
+                >{{ $ad_hoc_period['name'] }}</option>
             @endforeach
         </select><br/><br/>
     @endif
@@ -100,16 +112,26 @@
     {{-- Goal dates --}}
     @if($type_id != $type::FUTURE_GOAL)
         @if($type_id == $type::HABIT_BASED)
-            {{-- Todo - soonest date habit could reach 100% --}}
-            <input id="goal-habit-strength" type="number" class="habit-strength" name="habit-strength" value="100" min="1" max="100" required /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
+            <input id="goal-habit-strength" type="number" class="habit-strength" name="habit-strength" min="1" max="100" required
+            @isset($edit_goal)
+                value="{{ $edit_goal->habit_strength }}"
+            @else
+                value="100"
+            @endisset /><span class="percent-label">% </span><label class="habit-strength" for="habit-strength">Habit Strength</label><br/>
         @else
-            <label for="start-date"> Start goal: </label><input type="date" name="start-date" required />
+            <label for="start-date"> Start goal: </label><input type="date" name="start-date" required
+                @isset($edit_goal)
+                    value="{{ $edit_goal->start_date }}"
+                @endisset />
         @endif
 
         {{-- End date --}}
         <br/>
         <label for="end-date">Complete by: </label>
-        <input type="date" name="end-date" required />
+        <input type="date" name="end-date" required
+            @isset($edit_goal)
+                value="{{ $edit_goal->end_date }}"
+            @endisset />
         @if($type_id == $type::HABIT_BASED)
             {{-- Habit strength script/label --}}
             <p id="goal-habit-strength-label"></p><br/>
@@ -141,6 +163,9 @@
     {{-- Goal image --}}
     <label for="image">Goal image:</label>
     <input type="file" name="goal-image" accept="image/png, image/jpeg, image/jpg" />
+    @error('image')
+        <p class="error">{{ $message }}</p>
+    @enderror
     <br/><br/>
 
     {{-- Goal reason --}}
@@ -159,7 +184,7 @@
             <input id="days-before-due-input" type="number" name="show-todo-days-before"
                 @isset($edit_goal)
                     value="{{ $edit_goal->default_todo_days_before }}"
-                    @if($edit_goal->default_show_todo)
+                    @if(!$edit_goal->default_show_todo)
                         disabled>
                         <span id="days-before-due-label" class="disabled">
                     @else

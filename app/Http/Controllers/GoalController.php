@@ -21,6 +21,7 @@ use App\Models\Relationships\GoalsHabits;
 // Requests
 use App\Http\Requests\Goal\CreateRequest;
 use App\Http\Requests\Goal\StoreRequest;
+use App\Http\Requests\Goal\UpdateRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
 
 class GoalController extends Controller
@@ -111,7 +112,22 @@ class GoalController extends Controller
 
     public function viewGoal(Request $request, Goal $goal)
     {
+        // Build nav based on goal type
+        $nav_show = 'back|edit|categories|types|delete';
+        if($goal->type_id == Type::PARENT_GOAL)
+        {
+            $nav_show .= '|create-sub';
+        }
+        if($goal->type_id != Type::ACTION_AD_HOC && $goal->type_id != Type::FUTURE_GOAL)
+        {
+            $nav_show .= '|shift';
+        }
 
+        // Return details view
+        return view('goals.details')->with([
+            'goal' => $goal,
+            'nav_show' => $nav_show,
+        ]);
     }
 
     public function viewActionItem(Request $request, GoalActionItem $action_item)
@@ -285,7 +301,7 @@ class GoalController extends Controller
         if($type_id != Type::FUTURE_GOAL && $request->has('parent-goal'))
         {
             // Get parent goal id
-            $parent_goal = Goal::where('uuid', $request->get('future-goal'))->first();
+            $parent_goal = Goal::where('uuid', $request->get('parent-goal'))->first();
             $goal->parent_id = $parent_goal->id;
         }
 
@@ -361,7 +377,7 @@ class GoalController extends Controller
 
     public function editGoal(Request $request, Goal $goal)
     {
-
+        return view('goals.edit')->with(['goal' => $goal]);
     }
 
     public function editActionItem(Request $request, GoalActionItem $action_item)
@@ -369,9 +385,141 @@ class GoalController extends Controller
 
     }
 
-    public function updateGoal(Request $request, Goal $goal)
+    public function updateGoal(UpdateRequest $request, Goal $goal)
     {
+        // Set user
+        $user = $request->user();
 
+        if($request->has('name'))
+        {
+            $name = $request->get('name');
+        }
+        else // Has habit and habit strength
+        {
+            $habit = Habits::where('uuid', $request->get('habit'))->first();
+            $habit_strength = $request->get('habit-strength');
+
+            // Build name
+            $name = "$habit_strength% Strength on $habit->name Habit";
+        }
+
+        // Start setting goal values
+        $goal->name = $name;
+        $goal->reason = $request->get('reason');
+
+        // Check category
+        if($request->has('category'))
+        {
+            $category_uuid = $request->get('category');
+            if($category_uuid !== 'no-category')
+            {
+                $category = GoalCategory::where('uuid', $category_uuid)->first();
+                $goal->category_id = $category->id;
+            }
+        }
+
+        // Check notes
+        if($request->has('notes') && $goal->type_id != Type::HABIT_BASED) // Habit goals get notes from the habit
+        {
+            $goal->notes = $request->get('notes');
+        }
+        elseif($goal->type_id == Type::HABIT_BASED && !is_null($habit->notes))
+        {
+            $goal->notes = $habit->notes;
+        }
+
+        // Ad hoc options
+        if($goal->type_id == Type::ACTION_AD_HOC && $request->get('ad-hoc-number') && $request->get('ad-hoc-period'))
+        {
+            $goal->custom_times = $request->get('ad-hoc-number');
+            $goal->ad_hoc_period_id = $request->get('ad-hoc-period');
+        }
+
+        // Manual options
+        if($goal->type_id == Type::MANUAL_GOAL && $request->has('manual-number'))
+        {
+            $goal->custom_times = $request->get('manual-number');
+        }
+
+        // Habit options
+        if($goal->type_id == Type::HABIT_BASED && !is_null($habit_strength) && !is_null($habit))
+        {
+            $goal->habit_strength = $habit_strength;
+            $goal->habit_id = $habit->id;
+        }
+        
+        // Dates and shit
+        if($goal->type_id != Type::FUTURE_GOAL) // Future goals don't have dates
+        {
+            // All goals have an end-date
+            if($request->has('end-date'))
+            {
+                $goal->end_date = $request->get('end-date'); // Are we gonna need to do some sort of timezone conversion here?
+            }
+
+            // Habit goals don't have a start-date
+            if($goal->type_id != Type::HABIT_BASED && $request->has('start-date'))
+            {
+                $goal->start_date = $request->get('start-date'); // Are we gonna need to do some sort of timezone conversion here?
+            }
+        }
+
+        // Default show-todo settings
+        if(in_array($goal->type_id, [Type::ACTION_AD_HOC, Type::ACTION_DETAILED, Type::PARENT_GOAL]))
+        {
+            if($request->has('show-todo'))
+            {
+                $goal->default_show_todo = true;
+                $goal->default_todo_days_before = $request->get('show-todo-days-before');
+            }
+        }
+
+        // Check for parent goal
+        if($goal->type_id != Type::FUTURE_GOAL && $request->has('parent-goal'))
+        {
+            // Get parent goal id
+            $parent_goal = Goal::where('uuid', $request->get('parent-goal'))->first();
+            $goal->parent_id = $parent_goal->id;
+        }
+
+        if($goal->save())
+        {
+            // Log error
+            Log::error('Failed to update goal.', [
+                'user->id' => $user->id,
+                'goal' => $goal->toArray(),
+                'request_values' => $request->all(),
+            ]);
+        }
+
+        // Save custom image
+        if($request->has('goal-image'))
+        {
+            // Crop/save/encode image
+            try
+            {
+                Image::make($request->file('goal-image'))->fit(600, 600)->encode('png')->save(storage_path() . '/app/public/goal-images/' . $goal->uuid . '.png');
+                $goal->use_custom_img = true;
+                if(!$goal->save())
+                {
+                    Log::error("Failed to set user_custom_image to true after updating goal image.", [
+                        'goal->id' => $goal->id,
+                    ]);
+                }
+            }
+            catch(\Exception $e)
+            {
+                // Log error
+                $exception_message = $e->getMessage();
+                Log::error("Failed to crop, encode, and save updated goal image.", [
+                    'goal->id' => $goal->id,
+                    'exception_message' => $exception_message,
+                ]);
+            }
+        }
+        
+        // Return goal detail view
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
     }
 
     public function updateActionItem(Request $request, GoalActionItem $action_item)

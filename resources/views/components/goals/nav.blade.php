@@ -15,7 +15,7 @@
         @endif
 
         @if(in_array('edit', $show))
-            <a href="{{ route('goals.edit.goal') }}"><li>Edit Goal</li></a>
+            <a href="{{ route('goals.edit.goal', ['goal' => $goal->uuid]) }}"><li>Edit Goal</li></a>
         @endif
 
         @if(in_array('create-sub', $show))
@@ -23,7 +23,7 @@
         @endif
 
         @if(in_array('shift', $show))
-            <a href="{{ route('?') }}"><li>Shift Dates</li></a>
+            <a href="{{ route('goals.shift-dates') }}"><li>Shift Dates</li></a>
         @endif
 
         @if(in_array('categories', $show))
@@ -33,5 +33,15 @@
         @if(in_array('types', $show))
             <a href="{{ route('goals.types') }}"><li>Goal Types</li></a>
         @endif
+
+        @if(in_array('delete', $show))
+            <form id="delete-goal-form" class="verify-delete" action="{{ route('goals.destroy.goal', ['goal' => $goal->uuid]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.destroy.goal', ['goal' => $goal->uuid]) }}" class="destructive-option"
+                onclick="event.preventDefault(); verifyDeleteForm('Delete Goal?', '#delete-goal-form')">
+                <li>Delete Goal</li>
+            </a>
+        @endif 
     </ul>
 </nav>

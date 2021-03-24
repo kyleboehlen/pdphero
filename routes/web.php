@@ -85,6 +85,9 @@ Route::prefix('journal')->group(function(){
 Route::prefix('goals')->group(function(){
     // Types route
     Route::get('types', [GoalController::class, 'types'])->name('goals.types');
+
+    // Shift dates route
+    Route::post('shift-dates', [GoalController::class, 'shiftDates'])->name('goals.shift-dates');
     
     // Toggle Completed routes
     Route::prefix('toggle-completed')->group(function(){
