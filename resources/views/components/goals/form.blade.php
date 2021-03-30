@@ -65,6 +65,8 @@
             <option value="{{ $category->uuid }}"
                 @if(!is_null($edit_goal) && $edit_goal->category_id == $category->id)
                     selected
+                @elseif(!is_null($future_goal) && $future_goal->category_id == $category->id)
+                    selected
                 @elseif(old('category') == $category->uuid)
                     selected
                 @endif
@@ -163,15 +165,21 @@
     {{-- Goal image --}}
     <label for="image">Goal image:</label>
     <input type="file" name="goal-image" accept="image/png, image/jpeg, image/jpg" />
+    @isset($future_goal)
+        @if($future_goal->use_custom_img)
+            <p id="future-goal-image-label">If no image is selected one for future goal '{{ $future_goal->name }}' will be used</p>
+        @endif
+    @endisset
     @error('image')
         <p class="error">{{ $message }}</p>
+    @else
     @enderror
     <br/><br/>
 
     {{-- Goal reason --}}
     <textarea class="reason" name="reason" required
         placeholder="Put the reason you want to accomplish this goal here. What do you envision things looking like when you accomplish it? It's important to reference your goal reason on days where you just don't feel like working on it!"
-    >@isset($edit_goal){{ $edit_goal->reason }}@else{{ old('reason') }}@endisset</textarea>
+    @isset($edit_goal)>{{ $edit_goal->reason }}</textarea>@else @isset($future_goal)>{{ $future_goal->reason }}</textarea>@else>{{ old('reason') }}</textarea>@endisset @endisset
     @error('reason')
         <p class="error">{{ $message }}</p>
     @enderror
@@ -202,7 +210,7 @@
     @if($type_id != $type::HABIT_BASED)
         <textarea name="notes"
             placeholder="Any other notes you have for this goal go here!"
-        >@isset($edit_goal){{ $edit_goal->notes }}@else{{ old('notes') }}@endisset</textarea>
+        @isset($edit_goal)>{{ $edit_goal->notes }}</textarea>@else @isset($future_goal)>{{ $future_goal->notes }}</textarea>@else>{{ old('notes') }}</textarea>@endisset @endisset
 
         @error('notes')
             <p class="error">{{ $message }}</p>

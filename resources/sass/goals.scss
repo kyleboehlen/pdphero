@@ -652,13 +652,17 @@ div.app-container
             }
         }
 
-        #goal-habit-strength-label
+        #goal-habit-strength-label, #future-goal-image-label
         {
             color: $white;
-            display: none;
             font-family: $body-font;
             font-size: 1.25em;
             margin: 0;
+        }
+
+        #goal-habit-strength-label
+        {
+            display: none;
         }
 
         input[type="file"]

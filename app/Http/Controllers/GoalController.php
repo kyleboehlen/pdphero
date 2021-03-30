@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Storage;
 use Image;
 use Log;
 
@@ -122,6 +123,11 @@ class GoalController extends Controller
         {
             $nav_show .= '|shift';
         }
+        if($goal->type_id == Type::FUTURE_GOAL)
+        {
+            $nav_show .= '|convert-active';
+        }
+
 
         // Return details view
         return view('goals.details')->with([
@@ -315,6 +321,13 @@ class GoalController extends Controller
             ]);
         }
 
+        // Get future goal if exsists
+        $future_goal = null;
+        if($request->has('future-goal'))
+        {
+            $future_goal = Goal::where('uuid', $request->get('future-goal'))->first();
+        }
+
         // Save custom image
         if($request->has('goal-image'))
         {
@@ -340,12 +353,37 @@ class GoalController extends Controller
                 ]);
             }
         }
+        elseif(!is_null($future_goal))
+        {
+            // Copy image
+            try
+            {
+                Storage::copy('/public/goal-images/' . $future_goal->uuid . '.png', '/public/goal-images/' . $goal->uuid . '.png');
+                $goal->use_custom_img = true;
+                if(!$goal->save())
+                {
+                    Log::error("Failed to set user_custom_image to true after copying future goal image.", [
+                        'goal->id' => $goal->id,
+                        'future_goal->id' => $future_goal->id,
+                    ]);
+                }
+            }
+            catch(\Exception $e)
+            {
+                // Log error
+                $exception_message = $e->getMessage();
+                Log::error("Failed to copy future goal image", [
+                    'goal->id' => $goal->id,
+                    'future_goal->id' => $future_goal->id,
+                    'exception_message' => $exception_message,
+                ]);
+            }
+        }
 
         // Here we delete a future goal if we successfully turned it into a new goal
-        if($type_id != Type::FUTURE_GOAL && $request->has('future-goal'))
+        if($type_id != Type::FUTURE_GOAL && !is_null($future_goal))
         {
             // Delete future goal
-            $future_goal = Goal::where('uuid', $request->get('future-goal'))->first();
             if(!$future_goal->delete())
             {
                 Log::error("Failed to delete future goal when storing goal.", [

@@ -18,6 +18,10 @@
             <a href="{{ route('goals.edit.goal', ['goal' => $goal->uuid]) }}"><li>Edit Goal</li></a>
         @endif
 
+        @if(in_array('convert-active', $show))
+            <a href="{{ route('goals.create.goal', ['future-goal' => $goal->uuid]) }}"><li>Convert To Active</li></a>
+        @endif
+
         @if(in_array('create-sub', $show))
             <a href="{{ route('goals.create.goal', ['parent-goal' => $goal->uuid]) }}"><li>Create Sub-Goal</li></a>
         @endif
