@@ -125,7 +125,7 @@ $(document).ready(function(){
         $('.overlay-hide').hide();
         $('.overlay').hide();
     });
-    $('.history-cancel-button').click(function(){
+    $('.overlay-cancel-button').click(function(){
         $('.overlay-hide').hide();
         $('.overlay').hide();
     });
@@ -246,13 +246,38 @@ $(document).ready(function(){
     $('#goal-nav-dropdown').change(function(){
         $('.goal-nav-div').hide();
         var div = $('#goal-nav-dropdown').find(':selected').val();
-        if(div == 'sub-goals')
+        if(div == 'show-all')
+        {
+            $('#goal-details-div').show();
+            $('#goal-progress-div').show();
+            $('#goal-action-plan-div').show();
+            $('#goal-sub-goals-div').css('display', 'flex');
+            $('#goal-ad-hoc-list-div').show();
+        }
+        else if(div == 'sub-goals')
         {
             $('#goal-' + div + '-div').css('display', 'flex');
         }
         else
         {
             $('#goal-' + div + '-div').show();
+        }
+    });
+
+    // Goal manual progress increment/decrement
+    $('#manual-completed-decrement').click(function(){
+        var input = $('#manual-completed-input');
+        if(parseInt(input.val()) > parseInt(input.prop('min')))
+        {
+            input.val(input.val() - 1);
+        }
+    });
+
+    $('#manual-completed-increment').click(function(){
+        var input = $('#manual-completed-input');
+        if(parseInt(input.val()) < parseInt(input.prop('max')))
+        {
+            input.val(parseInt(input.val()) + 1);
         }
     });
 });

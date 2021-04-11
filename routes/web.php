@@ -125,6 +125,7 @@ Route::prefix('goals')->group(function(){
     Route::prefix('update')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'updateGoal'])->name('goals.update.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.update.action-item');
+        Route::post('manual-progress/{goal}', [GoalController::class, 'updateManualProgress'])->name('goals.update.manual-progress');
     });
 
     // Destroy routes

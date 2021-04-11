@@ -907,15 +907,12 @@ div.app-container
     &.goal-details
     {
         display: block;
-        // flex-direction: column;
-        // justify-content: flex-start;
-        // overflow-x: hidden;
 
         p
         {
             color: $white;
             font-family: $body-font;
-            font-size: 1.5em;
+            font-size: 1.6em;
             text-align: center;
 
             &.goal-category
@@ -924,6 +921,17 @@ div.app-container
                 margin-top: .5%;
                 text-align: center;
                 width: 100%;
+            }
+
+            &.goal-dates
+            {
+                margin: 0;
+            }
+
+            &.manual-progress
+            {
+                font-size: 2.15em;
+                margin: 0;
             }
         }
 
@@ -944,6 +952,7 @@ div.app-container
             font-family: $header-font;
             font-size: 1.75em;
             margin-left: 30%;
+            margin-top: 1%;
             text-align: center;
             width: 40%;
 
@@ -1001,17 +1010,11 @@ div.app-container
                 margin: 1.5%;
             }
 
-            // &.empty
-            // {
-            //     align-self: flex-start;
-            //     border-style: dashed;
-                
-            //     img.goal-img
-            //     {
-            //         padding: 25px;
-            //         padding-left: 50px;
-            //     }
-            // }
+            div.details-clear-all
+            {
+                clear: both;
+                width: 100%;
+            }
         }
 
         #goal-progress-div
@@ -1025,7 +1028,6 @@ div.app-container
                 @include progress-bar;
 
                 flex-grow: 0;
-                margin-top: 5%;
             }
 
             div.status
@@ -1035,7 +1037,7 @@ div.app-container
                     font-family: $body-font;
                     font-size: 5em;
                     font-weight: bolder;
-                    margin-bottom: 5%;
+                    margin-bottom: 2%;
                     margin-top: 2%;
                     text-align: center;
 
@@ -1118,7 +1120,6 @@ div.app-container
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: space-evenly;
-            // overflow-y: scroll;
             width: 100%;
 
             &.hidden
@@ -1330,6 +1331,155 @@ div.app-container
                             width: 96%;
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+#manual-progress-container
+{
+    background-color: $dark-grey;
+    border-radius: 5px;
+    display: none;
+    height: auto;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 17.5vh;
+    position: absolute;
+    width: 40%;
+    z-index: 6;
+
+    @media only screen and (max-height: 620px)
+    {
+        margin-top: 2.5vh;
+    }
+
+    @media only screen and (max-width: 1350px)
+    {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 1100px)
+    {
+        margin-left: 20%;
+        margin-right: 20%;
+        width: 60%;
+    }
+
+    @media only screen and (max-width: 650px)
+    {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: 0;
+        width: 95%;
+    }
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 0;
+        margin-top: 2.5%;
+        padding-left: 5%;
+        padding-right: 5%;
+        text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.35em;
+        }
+    }
+
+
+    form
+    {
+        @extend %base-form;
+        
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            margin: 1%;
+        }
+
+        div.manual-completed-container
+        {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            input[type="number"]
+            {
+                font-size: 2.5em;
+                height: 100%;
+                margin-left: 5%;
+                margin-right: 5%;
+                max-width: 20%;
+                text-align: center;
+                width: auto;
+
+                @media only screen and (max-width: 700px)
+                {
+                    font-size: 2em;
+                }
+            }
+
+            img
+            {
+                @media only screen and (max-width: 700px)
+                {
+                    max-height: 50px;
+                    max-width: 50px;
+                }
+            }
+
+            // Hide arrows chrome, safari, edge, opera
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button
+            {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            // Firefox
+            input[type=number]
+            {
+                -moz-appearance: textfield;
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.manual-progress-updater-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
                 }
             }
         }

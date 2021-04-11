@@ -34,6 +34,10 @@
             <a href="{{ route('goals.shift-dates') }}"><li>Shift Dates</li></a>
         @endif
 
+        @if(in_array('update-manual-progress', $show))
+            <a id="show-manual-progress" href="#"><li>Update Progress</li></a>
+        @endif
+
         @if(in_array('categories', $show))
             <a href="{{ route('goals.edit.categories') }}"><li>Edit Categories</li></a>
         @endif

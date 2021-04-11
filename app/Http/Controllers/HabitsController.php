@@ -272,6 +272,10 @@ class HabitsController extends Controller
             {
                 $times = $habit->times_daily;
             }
+            elseif($times < 0)
+            {
+                $times = 0;
+            }
         }
         elseif($request->has('status-skipped'))
         {

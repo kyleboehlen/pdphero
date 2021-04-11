@@ -22,6 +22,32 @@ class Goal extends Model
         'name', 'reason', 'type_id', 'user_id', 'status_id',
     ];
 
+    /**
+     * For calculating the strength of a goal
+     * 
+     * @return bool
+     */
+    public function calculateProgress()
+    {
+        $progress = 0;
+
+        switch($this->type_id)
+        {
+            case Type::MANUAL_GOAL:
+                $progress = ($this->manual_completed / $this->custom_times) * 100;
+                break;
+        }
+
+        $this->progress = round($progress);
+
+        return $this->save();
+    }
+
+    public function determineStatus()
+    {
+        // If the start date is before today, then it's TBD
+    }
+
     public function getScope()
     {
         if($this->type_id == Type::FUTURE_GOAL)

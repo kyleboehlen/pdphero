@@ -50,6 +50,9 @@ class CreateGoalsTable extends Migration
             // The number of action items that need to be scheduled and accomplished each ad-hoc period
             $table->smallInteger('custom_times')->unsigned()->nullable();
 
+            // The progress for a manual goal
+            $table->smallInteger('manual_completed')->unsigned()->nullable();
+
             // The length of the period of time in which {custom_times} number of action items needs to be scheduled and accomplished
             $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();
 

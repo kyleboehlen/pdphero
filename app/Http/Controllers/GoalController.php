@@ -21,6 +21,7 @@ use App\Models\Relationships\GoalsHabits;
 
 // Requests
 use App\Http\Requests\Goal\CreateRequest;
+use App\Http\Requests\Goal\ManualProgressRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\UpdateRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
@@ -131,6 +132,11 @@ class GoalController extends Controller
             $nav_show .= '|convert-active';
         }
 
+        if($goal->type_id == Type::MANUAL_GOAL)
+        {
+            $nav_show .= '|update-manual-progress';
+        }
+
         if(!is_null($goal->parent_id))
         {
             $nav_show = str_replace('back', 'parent-back', $nav_show);
@@ -161,6 +167,8 @@ class GoalController extends Controller
             $dropdown_nav['ad-hoc-list'] = 'Ad Hoc List';
         }
 
+        $dropdown_nav['show-all'] = 'Show All';
+
         // Load extra info needed for view
         $goal->load('category', 'status');
 
@@ -180,6 +188,7 @@ class GoalController extends Controller
             'nav_show' => $nav_show,
             'dropdown_nav' => $dropdown_nav,
             'status' => Status::class,
+            'type' => Type::class,
         ]);
     }
 
@@ -314,6 +323,7 @@ class GoalController extends Controller
         if($type_id == Type::MANUAL_GOAL && $request->has('manual-number'))
         {
             $goal->custom_times = $request->get('manual-number');
+            $goal->manual_completed = 0;
         }
 
         // Habit options
@@ -609,6 +619,41 @@ class GoalController extends Controller
     public function updateActionItem(Request $request, GoalActionItem $action_item)
     {
 
+    }
+
+    public function updateManualProgress(ManualProgressRequest $request, Goal $goal)
+    {
+        // This route is only for manual goals
+        if($goal->type_id == Type::MANUAL_GOAL)
+        {
+            $manual_completed = $request->get('manual-completed');
+            if($manual_completed > $goal->custom_times)
+            {
+                $manual_completed = $goal->custom_times;
+            }
+            elseif($manual_completed < 0)
+            {
+                $manual_completed = 0;
+            }
+            
+            $goal->manual_completed = $manual_completed;
+            
+            if(!$goal->save())
+            {
+                // Log error
+                Log::error('Failed to update manual completed for goal', $goal->toArray());
+            }
+            else
+            {
+                if(!$goal->calculateProgress())
+                {
+                    Log::error('Failed to calculate progress for goal after updating manual completed', $goal->toArray());
+                }
+            }
+        }
+
+        // Return goal detail view
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
     }
 
     public function destroyCategory(Request $request, GoalCategory $category)

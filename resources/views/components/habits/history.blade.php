@@ -104,7 +104,7 @@
 
                         {{-- Cancel/Save buttons --}}
                         <div class="buttons-container">
-                            <button type="button" class="swal2-confirm swal2-styled history-updater-button history-cancel-button">Cancel</button>
+                            <button type="button" class="swal2-confirm swal2-styled history-updater-button overlay-cancel-button">Cancel</button>
                             <button type="submit" class="swal2-confirm swal2-styled history-updater-button">Save</button>
                         </div>
                     </form>

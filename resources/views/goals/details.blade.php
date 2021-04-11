@@ -14,6 +14,18 @@
         {{-- Goal title --}}
         <h2>{{ $goal->name }}</h2>
 
+        {{-- Goal Dates --}}
+        @if(!is_null($goal->end_date))
+            <p class="goal-dates">
+                @if(!is_null($goal->start_date))
+                    {{ \Carbon\Carbon::parse($goal->start_date)->format('n/j/y') }} - 
+                @else
+                    By:
+                @endif
+                {{ \Carbon\Carbon::parse($goal->end_date)->format('n/j/y') }}
+            </p>
+        @endif
+
         {{-- Nav dropdown --}}
         <select id="goal-nav-dropdown">
             @foreach($dropdown_nav as $key => $value)
@@ -40,11 +52,16 @@
                     <p>{{ $line }}</p>
                 @endforeach
             @endif
+            <div class="details-clear-all"></div>
         </div>
 
         {{-- Goal Progress --}}
         <div id="goal-progress-div" class="goal-nav-div hidden">
             {{-- Goal progress bar --}}
+            <br/><br/><br/>
+            @if($goal->type_id == $type::MANUAL_GOAL)
+                <p class="manual-progress">{{ $goal->manual_completed }} out of {{ $goal->custom_times }} completed
+            @endif
             <x-app.progress-bar :percent="$goal->progress" /><br/>
 
             {{-- Status label/bar --}}
@@ -92,6 +109,48 @@
             ad hoc list
         </div>
 
+        {{-- Manual Goal progress popup --}}
+        @if($goal->type_id == $type::MANUAL_GOAL)
+            @push('scripts')
+                <div class="overlay-hide" id="manual-progress-container">
+                    {{-- Goal Header --}}
+                    <h2>Update {{ $goal->name }} Progress</h2><br/><br/><br/>
+                    
+                    {{-- Update progress form --}}
+                    <form class="history-updater" action="{{ route('goals.update.manual-progress', ['goal' => $goal->uuid]) }}" method="POST">
+                        @csrf
+
+                        <p>Completed</p>
+                        <div class="manual-completed-container">
+                            <img id="manual-completed-decrement" src="{{ asset('icons/minus-white.png') }}" />
+                            <input type="number" name="manual-completed" value={{ $goal->manual_completed }} id="manual-completed-input" min="1" max="{{ $goal->custom_times }}" />
+                            <img id="manual-completed-increment" src="{{ asset('icons/plus-white.png') }}" />
+                        </div>
+                        @error('manual-completed')
+                            <script>
+                                sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                            </script>
+                        @enderror
+                        <p>out of {{ $goal->custom_times }} required</p><br/><br/><br/>
+
+                        {{-- Cancel/Save buttons --}}
+                        <div class="buttons-container">
+                            <button type="button" class="swal2-confirm swal2-styled manual-progress-updater-button overlay-cancel-button">Cancel</button>
+                            <button type="submit" class="swal2-confirm swal2-styled manual-progress-updater-button">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+                <script>
+                    $(document).ready(function(){
+                        $('#show-manual-progress').click(function(){
+                            $('.overlay').show();
+                            $('#manual-progress-container').show();
+                        });
+                    });
+                </script>
+            @endpush
+        @endif
     </div>
 
     {{-- Navigation Footer --}}
