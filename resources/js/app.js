@@ -241,6 +241,20 @@ $(document).ready(function(){
             span.addClass('disabled');
         }
     });
+
+    // Goal change nav selector
+    $('#goal-nav-dropdown').change(function(){
+        $('.goal-nav-div').hide();
+        var div = $('#goal-nav-dropdown').find(':selected').val();
+        if(div == 'sub-goals')
+        {
+            $('#goal-' + div + '-div').css('display', 'flex');
+        }
+        else
+        {
+            $('#goal-' + div + '-div').show();
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes

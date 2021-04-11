@@ -7,11 +7,8 @@ use Illuminate\View\Component;
 // Constants
 use App\Helpers\Constants\Goal\Status;
 
-class Goal extends Component
+class Image extends Component
 {
-    // For extra styling classes
-    public $class;
-
     // Holds the goal being rendered
     public $goal;
 
@@ -26,9 +23,8 @@ class Goal extends Component
      *
      * @return void
      */
-    public function __construct($goal, $class = null)
+    public function __construct($goal)
     {
-        $this->class = $class;
         $this->goal = $goal;
         $this->status = Status::class;
         $this->scope = $goal->getScope();
@@ -41,7 +37,6 @@ class Goal extends Component
      */
     public function render()
     {
-        // To-do: don't render bucket list goal if setting is turned off
-        return view('components.goals.goal');
+        return view('components.goals.image');
     }
 }

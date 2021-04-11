@@ -10,6 +10,10 @@
             <a href="{{ route('goals') }}"><li>Back To Goals</li></a>
         @endif
 
+        @if(in_array('parent-back', $show))
+            <a href="{{ route('goals.view.goal', ['goal' => $goal->parent->uuid]) }}"><li>Back To Parent</li></a>
+        @endif
+
         @if(in_array('create', $show))
             <a href="{{ route('goals.create.goal') }}"><li>Create New Goal</li></a>
         @endif

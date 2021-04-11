@@ -113,26 +113,73 @@ class GoalController extends Controller
 
     public function viewGoal(Request $request, Goal $goal)
     {
-        // Build nav based on goal type
-        $nav_show = 'back|edit|categories|types|delete';
+        // Build nav and tab dropdowns based on goal type
+        $nav_show = 'back|edit|delete';
+
         if($goal->type_id == Type::PARENT_GOAL)
         {
             $nav_show .= '|create-sub';
         }
+
         if($goal->type_id != Type::ACTION_AD_HOC && $goal->type_id != Type::FUTURE_GOAL)
         {
             $nav_show .= '|shift';
         }
+
         if($goal->type_id == Type::FUTURE_GOAL)
         {
             $nav_show .= '|convert-active';
         }
 
+        if(!is_null($goal->parent_id))
+        {
+            $nav_show = str_replace('back', 'parent-back', $nav_show);
+        }
+
+        // Build dropdown nav
+        $dropdown_nav = [
+            'details' => 'Details',
+        ];
+
+        if($goal->type_id != Type::FUTURE_GOAL)
+        {
+            $dropdown_nav['progress'] = 'Progress';
+        }
+
+        if($goal->type_id == Type::PARENT_GOAL)
+        {
+            $dropdown_nav['sub-goals'] = 'Sub Goals';
+        }
+
+        if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $dropdown_nav['action-plan'] = 'Action Plan';
+        }
+
+        if($goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $dropdown_nav['ad-hoc-list'] = 'Ad Hoc List';
+        }
+
+        // Load extra info needed for view
+        $goal->load('category', 'status');
+
+        if($goal->type_id == Type::PARENT_GOAL)
+        {
+            $goal->load('subgoals');
+        }
+
+        if(!is_null($goal->parent_id))
+        {
+            $goal->load('parent');
+        }
 
         // Return details view
         return view('goals.details')->with([
             'goal' => $goal,
             'nav_show' => $nav_show,
+            'dropdown_nav' => $dropdown_nav,
+            'status' => Status::class,
         ]);
     }
 
@@ -162,7 +209,6 @@ class GoalController extends Controller
         {
             $type_id = $request->get('type');
         }
-
 
         // If we don't know what type we're creating
         if(is_null($type_id))
