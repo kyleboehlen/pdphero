@@ -280,6 +280,42 @@ $(document).ready(function(){
             input.val(parseInt(input.val()) + 1);
         }
     });
+
+    // Action item form toggle override show todo
+    $.fn.checkActionItemShowTodo = function(){
+        if($('#override-show-todo').is(':checked'))
+        {
+            $('#show-todo-options').removeClass('disabled');
+            $('#action-item-show-todo').attr('disabled', false);
+
+            if($('#action-item-show-todo').is(':checked'))
+            {
+                $('#days-before-due-label').removeClass('disabled');
+                $('#days-before-due-input').removeClass('disabled');
+                $('#days-before-due-input').attr('disabled', false);
+            }
+            else
+            {
+                $('#days-before-due-label').addClass('disabled');
+                $('#days-before-due-input').addClass('disabled');
+                $('#days-before-due-input').attr('disabled', true);
+            }
+        }
+        else
+        {
+            $('#show-todo-options').addClass('disabled');
+            $('#days-before-due-input').addClass('disabled');
+            $('#action-item-show-todo').attr('disabled', true);
+            $('#days-before-due-input').attr('disabled', true);
+        }
+    };
+    $.fn.checkActionItemShowTodo(); // Check on doc load
+    $('#override-show-todo').change(function(){
+        $.fn.checkActionItemShowTodo();
+    });
+    $('#action-item-show-todo').change(function(){
+        $.fn.checkActionItemShowTodo();
+    });
 });
 
 // Replaces custom alert pop-up boxes

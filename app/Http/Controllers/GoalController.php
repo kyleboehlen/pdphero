@@ -23,7 +23,7 @@ use App\Models\Relationships\GoalsHabits;
 use App\Http\Requests\Goal\CreateRequest;
 use App\Http\Requests\Goal\ManualProgressRequest;
 use App\Http\Requests\Goal\StoreRequest;
-use App\Http\Requests\Goal\UpdateRequest;
+use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
 
 class GoalController extends Controller
@@ -120,6 +120,11 @@ class GoalController extends Controller
         if($goal->type_id == Type::PARENT_GOAL)
         {
             $nav_show .= '|create-sub';
+        }
+
+        if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $nav_show .= '|create-action-item';
         }
 
         if($goal->type_id != Type::ACTION_AD_HOC && $goal->type_id != Type::FUTURE_GOAL)
@@ -239,9 +244,11 @@ class GoalController extends Controller
         ]);
     }
 
-    public function createActionItem(Request $request, GoalActionItem $action_item)
+    public function createActionItem(Request $request, Goal $goal)
     {
-
+        return view('goals.create-action-item')->with([
+            'goal' => $goal,
+        ]);
     }
 
     public function storeCategory(StoreCategoryRequest $request)
@@ -453,9 +460,52 @@ class GoalController extends Controller
         return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
     }
 
-    public function storeActionItem(Request $request, GoalActionItem $action_item)
+    public function storeActionItem(StoreActionItemRequest $request, Goal $goal)
     {
+        // Get base attributes
+        $attr = [
+            'goal_id' => $goal->id,
+            'name' => $request->get('name'),
+            'notes' => $request->get('notes'),
+        ];
 
+        // Create the action item
+        $action_item = new GoalActionItem($attr);
+
+        // If it's a detailed action item goal, set deadline
+        if($goal->type_id == Type::ACTION_DETAILED)
+        {
+            $action_item->deadline = $request->get('deadline');
+        }
+
+        // Set show todo settings if overriden
+        if($request->has('override-show-todo'))
+        {
+            if($request->has('show-todo'))
+            {
+                $action_item->override_show_todo = true;
+
+                // Set days
+                $action_item->override_todo_days_before = $request->get('show-todo-days-before');
+            }
+            else
+            {
+                $action_item->override_show_todo = false;
+            }
+        }
+
+        // Save action item
+        if(!$action_item->save())
+        {
+            // Log error
+            Log::error('Failed to store goal action item.', [
+                'user->id' => $user->id,
+                'action_item' => $action_item->toArray(),
+                'request_values' => $request->all(),
+            ]);
+        }
+
+        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
     }
 
     public function editCategories(Request $request)

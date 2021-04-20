@@ -30,6 +30,10 @@
             <a href="{{ route('goals.create.goal', ['parent-goal' => $goal->uuid]) }}"><li>Create Sub-Goal</li></a>
         @endif
 
+        @if(in_array('create-action-item', $show))
+            <a href="{{ route('goals.create.action-item', ['goal' => $goal->uuid]) }}"><li>Add Action Item</li></a>
+        @endif
+
         @if(in_array('shift', $show))
             <a href="{{ route('goals.shift-dates') }}"><li>Shift Dates</li></a>
         @endif

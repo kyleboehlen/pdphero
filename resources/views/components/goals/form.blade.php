@@ -124,6 +124,8 @@
             <label for="start-date"> Start goal: </label><input type="date" name="start-date" required
                 @isset($edit_goal)
                     value="{{ $edit_goal->start_date }}"
+                @else
+                    value="{{ old('start-date') }}"
                 @endisset />
         @endif
 
@@ -191,7 +193,13 @@
             <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @endisset /> Show action items on To-Do List<br/>
             <input id="days-before-due-input" type="number" name="show-todo-days-before"
                 @isset($edit_goal)
-                    value="{{ $edit_goal->default_todo_days_before }}"
+                    @if(!is_null($edit_goal->default_todo_days_before))
+                        value="{{ $edit_goal->default_todo_days_before }}"
+                    @else
+                        {{-- Maybe check for a parent goal value here --}}
+                        value="7" 
+                    @endif
+
                     @if(!$edit_goal->default_show_todo)
                         disabled>
                         <span id="days-before-due-label" class="disabled">

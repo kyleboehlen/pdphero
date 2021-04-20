@@ -104,13 +104,13 @@ Route::prefix('goals')->group(function(){
     // Create routes
     Route::prefix('create')->group(function(){
         Route::get('goal', [GoalController::class, 'createGoal'])->name('goals.create.goal');
-        Route::get('action-item', [GoalController::class, 'createActionItem'])->name('goals.create.action-item');
+        Route::get('action-item/{goal}', [GoalController::class, 'createActionItem'])->name('goals.create.action-item');
     });
 
     // Store routes
     Route::prefix('store')->group(function(){
         Route::post('goal', [GoalController::class, 'storeGoal'])->name('goals.store.goal');
-        Route::post('action-item', [GoalController::class, 'storeActionItem'])->name('goals.store.action-item');
+        Route::post('action-item/{goal}', [GoalController::class, 'storeActionItem'])->name('goals.store.action-item');
         Route::post('category', [GoalController::class, 'storeCategory'])->name('goals.store.category');
     });
     
