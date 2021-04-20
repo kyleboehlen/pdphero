@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 class ProgressBar extends Component
 {
     public $percent;
+    public $label;
 
     /**
      * Create a new component instance.
@@ -15,7 +16,16 @@ class ProgressBar extends Component
      */
     public function __construct($percent)
     {
-        $this->percent = $percent;
+        if($percent > 100)
+        {
+            $this->percent = 100;
+        }
+        else
+        {
+            $this->percent = $percent;
+        }
+
+        $this->label = $percent;
     }
 
     /**

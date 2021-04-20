@@ -23,6 +23,8 @@ return [
         ],
     ],
 
+    'manual_goal_buffer' => 100,
+
     'statuses' => [
         Status::TBD => [
             'class' => 'tbd',

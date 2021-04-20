@@ -29,7 +29,7 @@ class CreateGoalsTable extends Migration
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->boolean('achieved')->default(0); // Whether or not the user has marked it as achieved, not if progress is at 100%
             $table->boolean('use_custom_img')->default(0); // Otherwise use default based on status
-            $table->tinyInteger('progress')->default(0); // To store cached calculated goal progress %
+            $table->smallInteger('progress')->unsigned()->default(0); // To store cached calculated goal progress %
             $table->text('reason');
             $table->text('notes')->nullable();
             $table->bigInteger('parent_id')->unsigned()->nullable();

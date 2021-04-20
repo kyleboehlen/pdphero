@@ -677,7 +677,7 @@ class GoalController extends Controller
         if($goal->type_id == Type::MANUAL_GOAL)
         {
             $manual_completed = $request->get('manual-completed');
-            if($manual_completed > $goal->custom_times)
+            if($manual_completed > ($goal->custom_times + config('goals.manual_goal_buffer')))
             {
                 $manual_completed = $goal->custom_times;
             }
@@ -697,6 +697,7 @@ class GoalController extends Controller
             {
                 if(!$goal->calculateProgress())
                 {
+                    // Log error
                     Log::error('Failed to calculate progress for goal after updating manual completed', $goal->toArray());
                 }
             }
