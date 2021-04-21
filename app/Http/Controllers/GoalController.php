@@ -25,6 +25,7 @@ use App\Http\Requests\Goal\ManualProgressRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
+use App\Http\Requests\Goal\UpdateActionItemRequest;
 
 class GoalController extends Controller
 {
@@ -562,7 +563,12 @@ class GoalController extends Controller
 
     public function editActionItem(Request $request, GoalActionItem $action_item)
     {
+        // Load goal for nav and form
+        $action_item->load('goal');
 
+        return view('goals.edit-action-item')->with([
+            'action_item' => $action_item,
+        ]);
     }
 
     public function updateGoal(UpdateRequest $request, Goal $goal)
@@ -702,9 +708,56 @@ class GoalController extends Controller
         return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
     }
 
-    public function updateActionItem(Request $request, GoalActionItem $action_item)
+    public function updateActionItem(UpdateActionItemRequest $request, GoalActionItem $action_item)
     {
+        if($request->has('name'))
+        {
+            $action_item->name = $request->get('name');
+        }
 
+        if($request->has('notes'))
+        {
+            $action_item->notes = $request->get('notes');
+        }
+
+        if($request->has('deadline'))
+        {
+            $action_item->deadline = $request->get('deadline');
+        }
+
+        // Set show todo settings if overriden
+        if($request->has('override-show-todo'))
+        {
+            if($request->has('show-todo'))
+            {
+                $action_item->override_show_todo = true;
+
+                // Set days
+                $action_item->override_todo_days_before = $request->get('show-todo-days-before');
+            }
+            else
+            {
+                $action_item->override_show_todo = false;
+            }
+        }
+        elseif($request->has('override-options'))
+        {
+            $action_item->override_show_todo = null;
+            $action_item->override_todo_days_before = 0;
+        }
+
+        // Save action item
+        if(!$action_item->save())
+        {
+            // Log error
+            Log::error('Failed to update goal action item.', [
+                'user->id' => $user->id,
+                'action_item' => $action_item->toArray(),
+                'request_values' => $request->all(),
+            ]);
+        }
+
+        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
     }
 
     public function updateManualProgress(ManualProgressRequest $request, Goal $goal)

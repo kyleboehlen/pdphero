@@ -6,7 +6,11 @@
     <img class="logo" src="{{ asset('logos/logo-white.png') }}" onclick="location.href='{{ route('home') }}'"/>
 
     <ul class="list">
-        @if(in_array('back', $show))
+        @if(in_array('back-item', $show))
+            <a href="{{ route('goals.view.action-item', ['action_item' => $action_item->uuid]) }}"><li>Back To Action Item</li></a>
+        @endif
+        
+        @if(in_array('back-goal', $show))
             <a href="{{ route('goals.view.goal', ['goal' => $goal->uuid]) }}"><li>Back To Goal</li></a>
         @endif
 

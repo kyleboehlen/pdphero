@@ -39,6 +39,7 @@
         <br/><br/>
     @endif
 
+    <input type="hidden" name="override-options" />
     <span class="show-todo" title="Override the goal's show on To-Do list settings for this action item only">
         <input id="override-show-todo" class="show-todo" type="checkbox" name="override-show-todo"
             @isset($action_item) @if(!is_null($action_item->override_show_todo)) checked @endif @endisset /> Override goal show To-Do settings<br/>
@@ -47,7 +48,7 @@
                 @isset($action_item)
                     @if(!is_null($action_item->override_show_todo) && $action_item->override_show_todo)
                         checked
-                    @elseif(!is_null($goal->default_show_todo) && $goal->default_show_todo)
+                    @elseif(is_null($action_item->override_show_todo) && !is_null($goal->default_show_todo) && $goal->default_show_todo)
                         checked
                     @endif
                 @else
@@ -57,7 +58,7 @@
                 @endisset /> Show action items on To-Do List<br/>
             <input id="days-before-due-input" type="number" name="show-todo-days-before"
                 @isset($action_item)
-                    @if(!is_null($action_item->override_show_todo) && $action_item->override_show_todo)
+                    @if(!is_null($action_item->override_show_todo))
                         value="{{ $action_item->override_todo_days_before }}"
                     @elseif(!is_null($goal->default_show_todo) && $goal->default_show_todo)
                         value="{{ $goal->default_todo_days_before }}"

@@ -23,9 +23,9 @@ class ActionItemForm extends Component
      *
      * @return void
      */
-    public function __construct($action_item = null, $goal = null)
+    public function __construct($item = null, $goal = null)
     {
-        $this->action_item = $action_item;
+        $this->action_item = $item;
 
         if(!is_null($goal))
         {
@@ -33,7 +33,7 @@ class ActionItemForm extends Component
         }
         else
         {
-            $this->goal = $action_item->goal;
+            $this->goal = $item->goal;
         }
 
         $this->goal_type = Type::class;
