@@ -50,9 +50,9 @@ class GoalTest extends TestCase
         $this->assertTrue($fake_action_item->delete());
 
         // Test toggle completed routes
-        $response = $this->actingAs($user)->post(route('goals.toggle-completed.goal', ['goal' => $goal_uuid]));
+        $response = $this->actingAs($user)->post(route('goals.toggle-achieved.goal', ['goal' => $goal_uuid]));
         $response->assertStatus(404);
-        $response = $this->actingAs($user)->post(route('goals.toggle-completed.action-item', ['action_item' => $action_item_uuid]));
+        $response = $this->actingAs($user)->post(route('goals.toggle-achieved.action-item', ['action_item' => $action_item_uuid]));
         $response->assertStatus(404);
 
         // Test view routes
@@ -111,9 +111,9 @@ class GoalTest extends TestCase
         $action_item_uuid = $action_items->random()->uuid;
 
         // Test toggle completed routes
-        $response = $this->actingAs($test_user)->post(route('goals.toggle-completed.goal', ['goal' => $goal_uuid]));
+        $response = $this->actingAs($test_user)->post(route('goals.toggle-achieved.goal', ['goal' => $goal_uuid]));
         $response->assertStatus(403);
-        $response = $this->actingAs($test_user)->post(route('goals.toggle-completed.action-item', ['action_item' => $action_item_uuid]));
+        $response = $this->actingAs($test_user)->post(route('goals.toggle-achieved.action-item', ['action_item' => $action_item_uuid]));
         $response->assertStatus(403);
 
         // Test view routes

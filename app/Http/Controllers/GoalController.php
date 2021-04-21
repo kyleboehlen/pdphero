@@ -102,14 +102,32 @@ class GoalController extends Controller
         return view('goals.types');
     }
 
-    public function toggleCompletedGoal(Request $request, Goal $goal)
+    public function toggleAchievedGoal(Request $request, Goal $goal)
     {
 
     }
 
-    public function toggleCompletedActionItem(Request $request, GoalActionItem $action_item)
+    public function toggleAchievedActionItem(Request $request, GoalActionItem $action_item)
     {
+        // Toggle action item achieved and save
+        $action_item->achieved = !$action_item->achieved;
 
+        if(!$action_item->save())
+        {
+            Log::error('Failed to toggle achieved on goal action item', $action_item->toArray());
+        }
+
+        // Redirect back to action item details or not by checking show_details
+        if($request->has('view_details') && $request->get('view_details'))
+        {
+            return redirect()->route('goals.view.action-item', [
+                'action_item' => $action_item->uuid,
+            ]);
+        }
+
+        return redirect()->route('goals.view.goal', [
+            'goal' => $action_item->goal->uuid,
+        ]);
     }
 
     public function viewGoal(Request $request, Goal $goal)
@@ -199,7 +217,25 @@ class GoalController extends Controller
 
     public function viewActionItem(Request $request, GoalActionItem $action_item)
     {
+        // Build nav
+        $show = 'back|edit|delete';
+        if($action_item->achieved)
+        {
+            $show .= '|toggle-unachieved';
+        }
+        else
+        {
+            $show .= '|toggle-achieved';
+        }
 
+        // Load goal for nav and forms
+        $action_item->load('goal');
+
+        // Return detail view
+        return view('goals.action-item-details')->with([
+            'action_item' => $action_item,
+            'show' => $show,
+        ]);
     }
 
     public function createGoal(CreateRequest $request)

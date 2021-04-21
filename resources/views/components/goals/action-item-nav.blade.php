@@ -14,7 +14,25 @@
             <a href="{{ route('goals.edit.action-item', ['action_item' => $action_item->uuid]) }}"><li>Edit Action Item</li></a>
         @endif
 
-        {{-- Todo: Mark complete/incomplete toggle --}}
+        @if(in_array('toggle-achieved', $show))
+            <form id="toggle-achieve-item-form" action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('toggle-achieve-item-form').submit();">
+                <li>Mark Achieved</li>
+            </a>
+        @endif
+
+        @if(in_array('toggle-unachieved', $show))
+            <form id="toggle-unachieve-item-form" action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('toggle-unachieve-item-form').submit();">
+                <li>Mark Unachieved</li>
+            </a>
+        @endif
 
         @if(in_array('delete', $show))
             <form id="delete-action-item-form" class="verify-delete" action="{{ route('goals.destroy.action-item', ['action_item' => $action_item->uuid]) }}" method="POST">

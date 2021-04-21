@@ -90,9 +90,9 @@ Route::prefix('goals')->group(function(){
     Route::post('shift-dates', [GoalController::class, 'shiftDates'])->name('goals.shift-dates');
     
     // Toggle Completed routes
-    Route::prefix('toggle-completed')->group(function(){
-        Route::post('goal/{goal}', [GoalController::class, 'toggleCompletedGoal'])->name('goals.toggle-completed.goal');
-        Route::post('action-item/{action_item}', [GoalController::class, 'toggleCompletedActionItem'])->name('goals.toggle-completed.action-item');
+    Route::prefix('toggle-achieved')->group(function(){
+        Route::post('goal/{goal}', [GoalController::class, 'toggleAchievedGoal'])->name('goals.toggle-achieved.goal');
+        Route::post('action-item/{action_item}', [GoalController::class, 'toggleAchievedActionItem'])->name('goals.toggle-achieved.action-item');
     });
 
     // View routes
