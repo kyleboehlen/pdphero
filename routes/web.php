@@ -131,7 +131,7 @@ Route::prefix('goals')->group(function(){
     // Destroy routes
     Route::prefix('destroy')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'destroyGoal'])->name('goals.destroy.goal');
-        Route::post('action-item/{action_item}', [GoalController::class, 'updateActionItem'])->name('goals.destroy.action-item');
+        Route::post('action-item/{action_item}', [GoalController::class, 'destroyActionItem'])->name('goals.destroy.action-item');
         Route::post('category/{category}', [GoalController::class, 'destroyCategory'])->name('goals.destroy.category');
     });
 

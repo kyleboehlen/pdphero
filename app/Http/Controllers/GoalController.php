@@ -743,6 +743,9 @@ class GoalController extends Controller
             return redirect()->back();
         }
 
-        return redirect()->route('goals');
+        // Load goal for redirect
+        $action_item->load('goal');
+
+        return redirect()->route('goals.view.goal', ['goal' => $action_item->goal->uuid]);
     }
 }

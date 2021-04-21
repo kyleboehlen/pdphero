@@ -20,7 +20,7 @@
             <form id="delete-action-item-form" class="verify-delete" action="{{ route('goals.destroy.action-item', ['action_item' => $action_item->uuid]) }}" method="POST">
                 @csrf
             </form>
-            <a href="{{ route('goals.destroy.action_item', ['action_item' => $action_item->uuid]) }}" class="destructive-option"
+            <a href="{{ route('goals.destroy.action-item', ['action_item' => $action_item->uuid]) }}" class="destructive-option"
                 onclick="event.preventDefault(); verifyDeleteForm('Delete Action Item?', '#delete-action-item-form')">
                 <li>Delete Action Item</li>
             </a>
