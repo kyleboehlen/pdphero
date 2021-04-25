@@ -25,6 +25,7 @@ use App\Http\Requests\Goal\ManualProgressRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
+use App\Http\Requests\Goal\UpdateRequest;
 use App\Http\Requests\Goal\UpdateActionItemRequest;
 
 class GoalController extends Controller
@@ -357,16 +358,17 @@ class GoalController extends Controller
         }
 
         // Ad hoc options
-        if($type_id == Type::ACTION_AD_HOC && $request->get('ad-hoc-number') && $request->get('ad-hoc-period'))
+        if($type_id == Type::ACTION_AD_HOC && $request->get('custom-times') && $request->get('time-period'))
         {
-            $goal->custom_times = $request->get('ad-hoc-number');
-            $goal->ad_hoc_period_id = $request->get('ad-hoc-period');
+            $goal->custom_times = $request->get('custom-times');
+            $goal->time_period_id = $request->get('time-period');
         }
 
         // Manual options
-        if($type_id == Type::MANUAL_GOAL && $request->has('manual-number'))
+        if($type_id == Type::MANUAL_GOAL && $request->has('custom-times') && $request->get('time-period'))
         {
-            $goal->custom_times = $request->get('manual-number');
+            $goal->custom_times = $request->get('custom-times');
+            $goal->time_period_id = $request->get('time-period');
             $goal->manual_completed = 0;
         }
 
@@ -614,17 +616,11 @@ class GoalController extends Controller
             $goal->notes = $habit->notes;
         }
 
-        // Ad hoc options
-        if($goal->type_id == Type::ACTION_AD_HOC && $request->get('ad-hoc-number') && $request->get('ad-hoc-period'))
+        // Ad hoc/manual goal options
+        if(($goal->type_id == Type::ACTION_AD_HOC || $goal->type_id == Type::MANUAL_GOAL) && $request->get('custom-times') && $request->get('time-period'))
         {
-            $goal->custom_times = $request->get('ad-hoc-number');
-            $goal->ad_hoc_period_id = $request->get('ad-hoc-period');
-        }
-
-        // Manual options
-        if($goal->type_id == Type::MANUAL_GOAL && $request->has('manual-number'))
-        {
-            $goal->custom_times = $request->get('manual-number');
+            $goal->custom_times = $request->get('custom-times');
+            $goal->time_period_id = $request->get('time-period');
         }
 
         // Habit options

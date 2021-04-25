@@ -78,37 +78,26 @@
     @enderror
     <br/><br/>
 
-    {{-- Ad-hoc options --}}
-    @if($type_id == $type::ACTION_AD_HOC)
-        {{-- How many action items  --}}
-        <label for="ad-hoc-number">Complete </label><input class="ad-hoc-number" name="ad-hoc-number" type="number"
+    {{-- Ad-hoc/manaul goal options --}}
+    @if($type_id == $type::ACTION_AD_HOC || $type_id == $type::MANUAL_GOAL)
+        {{-- How many manual/action items  --}}
+        <label for="custom-times">Complete </label><input class="custom-times" name="custom-times" type="number"
         @isset($edit_goal)
             value="{{ $edit_goal->custom_times }}"
         @else
             value="1"
-        @endisset><label class="ad-hoc-period" for="ad-hoc-period"> action items</label>
-        <select class="ad-hoc-period" name="ad-hoc-period">
-            @foreach($ad_hoc_periods as $value => $ad_hoc_period)
+        @endisset><label class="time-period" for="time-period"> {{ $type_id == $type::ACTION_AD_HOC ? 'action' : 'manual' }} items</label>
+        <select class="time-period" name="time-period">
+            @foreach($time_periods as $value => $time_period)
                 <option value="{{ $value }}"
-                    @if(!is_null($edit_goal) && $edit_goal->ad_hoc_period_id == $value)
+                    @if(!is_null($edit_goal) && $edit_goal->time_period_id == $value)
                         selected
-                    @elseif(old('ad-hoc-period') == $value)
+                    @elseif(old('time-period') == $value)
                         selected
                     @endif
-                >{{ $ad_hoc_period['name'] }}</option>
+                >{{ $time_period['name'] }}</option>
             @endforeach
         </select><br/><br/>
-    @endif
-
-    {{-- Manual goal options --}}
-    @if($type_id == $type::MANUAL_GOAL)
-        {{-- How many items  --}}
-        <label for="manual-number">Items to Complete: </label><input class="manual-number" name="manual-number" type="number"
-        @isset($edit_goal)
-            value="{{ $edit_goal->custom_times }}"
-        @else
-            value="10"
-        @endisset><br/><br/>
     @endif
 
     {{-- Goal dates --}}

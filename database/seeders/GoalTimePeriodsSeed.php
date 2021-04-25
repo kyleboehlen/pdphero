@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 // Models
-use App\Models\Goal\GoalAdHocPeriod;
+use App\Models\Goal\GoalTimePeriod;
 
-class GoalAdHocPeriodsSeed extends AbstractSeeder
+class GoalTimePeriodsSeed extends AbstractSeeder
 {
-    const CONFIG = 'goals.ad_hoc_periods';
-    const MODEL = GoalAdHocPeriod::class;
+    const CONFIG = 'goals.time_periods';
+    const MODEL = GoalTimePeriod::class;
 
     /**
      * Handles seed failures
@@ -20,6 +20,6 @@ class GoalAdHocPeriodsSeed extends AbstractSeeder
         // Log Error
         $id = $type['id'];
         $name = $type['name'];
-        Log::error("Failed to seed Goal Ad Hoc Period: $id ($name)");
+        Log::error("Failed to seed Goal Time Period: $id ($name)");
     }
 }

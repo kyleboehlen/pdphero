@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GoalStatusesSeed::class);
 
         // Seed Goal Ad Hoc Periods
-        $this->call(GoalAdHocPeriodsSeed::class);
+        $this->call(GoalTimePeriodsSeed::class);
 
         // Seed Home icons or whatever
         $this->call(HomeSeed::class);

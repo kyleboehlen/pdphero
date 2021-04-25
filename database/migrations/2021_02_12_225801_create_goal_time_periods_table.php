@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGoalAdHocPeriodsTable extends Migration
+class CreateGoalTimePeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGoalAdHocPeriodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('goal_ad_hoc_periods', function (Blueprint $table) {
+        Schema::create('goal_time_periods', function (Blueprint $table) {
             $table->tinyIncrements('id'); // PK
             $table->string('name'); // Other column
         });
@@ -26,6 +26,6 @@ class CreateGoalAdHocPeriodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('goal_ad_hoc_periods');
+        Schema::dropIfExists('goal_time_periods');
     }
 }

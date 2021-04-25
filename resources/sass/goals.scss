@@ -482,7 +482,7 @@ div.app-container
                 outline: none;
             }
 
-            &.ad-hoc-period
+            &.time-period
             {
                 margin-right: 12.5%;
                 float: right;
@@ -536,7 +536,7 @@ div.app-container
             }
         }
 
-        label.habit-strength, label.ad-hoc-period, label.manual-number
+        label.habit-strength, label.time-period
         {
             margin-left: 0;
         }
@@ -548,7 +548,7 @@ div.app-container
             text-align: center;
             width: 15%;
 
-            &.ad-hoc-number
+            &.custom-times
             {
                 width: 5%;
             }
@@ -563,44 +563,6 @@ div.app-container
                 @media only screen and (max-width: 475px)
                 {
                     width: 25%;
-                }
-            }
-
-            &.manual-number
-            {
-                float: right;
-                margin-right: 12.5%;
-                text-align: center;
-                width: 40%;
-    
-                @media only screen and (max-width: 1600px)
-                {
-                    width: 35%;
-                }
-
-                @media only screen and (max-width: 1400px)
-                {
-                    font-size: 1.3em;
-                }
-
-                @media only screen and (max-width: 1200px)
-                {
-                    width: 30%;
-                }
-
-                @media only screen and (max-width: 1100px)
-                {
-                    font-size: 1.15em;
-                }
-
-                @media only screen and (max-width: 925px)
-                {
-                    width: 25%;
-                }
-
-                @media only screen and (max-width: 400px)
-                {
-                    margin-right: 2.5%;
                 }
             }
         }

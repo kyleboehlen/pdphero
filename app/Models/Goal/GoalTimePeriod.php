@@ -4,7 +4,7 @@ namespace App\Models\Goal;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GoalAdHocPeriod extends Model
+class GoalTimePeriod extends Model
 {
     public $timestamps = false;
 }

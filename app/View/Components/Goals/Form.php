@@ -38,7 +38,7 @@ class Form extends Component
     public $habits;
 
     // For storing ad hoc periods if the goal is action plan ad hoc
-    public $ad_hoc_periods;
+    public $time_periods;
 
     /**
      * Create a new component instance.
@@ -90,9 +90,9 @@ class Form extends Component
         {
             $this->habits = $user->habits;
         }
-        elseif($this->type_id == Type::ACTION_AD_HOC)
+        elseif($this->type_id == Type::ACTION_AD_HOC || $this->type_id == Type::MANUAL_GOAL )
         {
-            $this->ad_hoc_periods = config('goals.ad_hoc_periods');
+            $this->time_periods = config('goals.time_periods');
         }
     }
 

@@ -1,25 +1,28 @@
 <?php
 
-use App\Helpers\Constants\Goal\AdHocPeriod;
+use App\Helpers\Constants\Goal\TimePeriod;
 use App\Helpers\Constants\Goal\Type;
 use App\Helpers\Constants\Goal\Status;
 
 return [
-    'ad_hoc_periods' => [
-        AdHocPeriod::WEEKLY => [
+    'time_periods' => [
+        TimePeriod::WEEKLY => [
             'name' => 'Weekly',
         ],
-        AdHocPeriod::BI_WEEKLY => [
+        TimePeriod::BI_WEEKLY => [
             'name' => 'Bi-Weekly',
         ],
-        AdHocPeriod::MONTHLY => [
+        TimePeriod::MONTHLY => [
             'name' => 'Monthly',
         ],
-        AdHocPeriod::QUARTERLY => [
+        TimePeriod::QUARTERLY => [
             'name' => 'Quarterly',
         ],
-        AdHocPeriod::YEARLY => [
+        TimePeriod::YEARLY => [
             'name' => 'Yearly',
+        ],
+        TimePeriod::TOTAL => [
+            'name' => 'Total',
         ],
     ],
 

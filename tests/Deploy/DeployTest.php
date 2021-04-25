@@ -11,7 +11,7 @@ use DB;
 
 // Models
 use App\Models\FirstVisit\FirstVisitMessages;
-use App\Models\Goal\GoalAdHocPeriod;
+use App\Models\Goal\GoalTimePeriod;
 use App\Models\Goal\GoalType;
 use App\Models\Goal\GoalStatus;
 use App\Models\Habits\HabitTypes;
@@ -51,7 +51,7 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('goal_statuses'));
         $this->assertTrue(Schema::hasTable('goal_categories'));
         $this->assertTrue(Schema::hasTable('goal_types'));
-        $this->assertTrue(Schema::hasTable('goal_ad_hoc_periods'));
+        $this->assertTrue(Schema::hasTable('goal_time_periods'));
         $this->assertTrue(Schema::hasTable('goals'));
         $this->assertTrue(Schema::hasTable('goal_action_items'));
         $this->assertTrue(Schema::hasTable('homes'));
@@ -94,7 +94,7 @@ class DeployTest extends TestCase
         $this->assertEquals(configArrayFromSeededCollection(GoalStatus::all()), config('goals.statuses'));
 
         // Verify Goal Ad Hoc Periods seeded
-        $this->assertEquals(configArrayFromSeededCollection(GoalAdHocPeriod::all()), config('goals.ad_hoc_periods'));
+        $this->assertEquals(configArrayFromSeededCollection(GoalTimePeriod::all()), config('goals.time_periods'));
 
         // Verify Home seeded
         $this->assertEquals(configArrayFromSeededCollection(Home::all()), config('home'));

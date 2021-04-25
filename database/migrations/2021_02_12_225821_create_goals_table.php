@@ -54,7 +54,7 @@ class CreateGoalsTable extends Migration
             $table->smallInteger('manual_completed')->unsigned()->nullable();
 
             // The length of the period of time in which {custom_times} number of action items needs to be scheduled and accomplished
-            $table->tinyInteger('ad_hoc_period_id')->unsigned()->nullable();
+            $table->tinyInteger('time_period_id')->unsigned()->nullable();
 
             // The strength level that a habit must hit in order to achieve the goal
             $table->tinyInteger('habit_strength')->unsigned()->nullable();
@@ -67,7 +67,7 @@ class CreateGoalsTable extends Migration
             $table->foreign('type_id')->references('id')->on('goal_types');
             $table->foreign('status_id')->references('id')->on('goal_statuses');
             $table->foreign('category_id')->references('id')->on('goal_categories');
-            $table->foreign('ad_hoc_period_id')->references('id')->on('goal_ad_hoc_periods');
+            $table->foreign('time_period_id')->references('id')->on('goal_time_periods');
             $table->foreign('parent_id')->references('id')->on('goals');
             $table->foreign('habit_id')->references('id')->on('habits');
         });
