@@ -106,7 +106,17 @@ class GoalController extends Controller
 
     public function toggleAchievedGoal(Request $request, Goal $goal)
     {
+        // Toggle goal achieved and save
+        $goal->achieved = !$goal->achieved;
 
+        if(!$goal->save())
+        {
+            Log::error('Failed to toggle achieved on goal', $goal->toArray());
+        }
+
+        return redirect()->route('goals.view.goal', [
+            'goal' => $goal->uuid,
+        ]);
     }
 
     public function toggleAchievedActionItem(Request $request, GoalActionItem $action_item)
@@ -155,6 +165,17 @@ class GoalController extends Controller
         if($goal->type_id == Type::FUTURE_GOAL)
         {
             $nav_show .= '|convert-active';
+        }
+        else
+        {
+            if($goal->achieved)
+            {
+                $nav_show .= '|toggle-unachieved';
+            }
+            else
+            {
+                $nav_show .= '|toggle-achieved';
+            }
         }
 
         if($goal->type_id == Type::MANUAL_GOAL)

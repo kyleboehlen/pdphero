@@ -42,6 +42,26 @@
             <a id="show-manual-progress" href="#"><li>Update Progress</li></a>
         @endif
 
+        @if(in_array('toggle-achieved', $show))
+            <form id="toggle-achieved-form" action="{{ route('goals.toggle-achieved.goal', ['goal' => $goal->uuid]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.toggle-achieved.goal', ['goal' => $goal->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('toggle-achieved-form').submit();">
+                <li>Mark Achieved</li>
+            </a>
+        @endif
+
+        @if(in_array('toggle-unachieved', $show))
+            <form id="toggle-unachieved-form" action="{{ route('goals.toggle-achieved.goal', ['goal' => $goal->uuid]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.toggle-achieved.goal', ['goal' => $goal->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('toggle-unachieved-form').submit();">
+                <li>Mark Unachieved</li>
+            </a>
+        @endif
+
         @if(in_array('categories', $show))
             <a href="{{ route('goals.edit.categories') }}"><li>Edit Categories</li></a>
         @endif
