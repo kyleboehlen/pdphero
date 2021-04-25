@@ -5,6 +5,7 @@ return [
             'flare.shadow.echo.calm@gmail.com', // Erik Tammienmslkdjfsl
             'darthzombie@gmail.com', // Randy Riches
             'jessicafootball@live.com', // Jessie Christensen
+            'kosmocutie@gmail.com', // Bailey Sandoval
             'kwesley@wesleys.net', // Kaitie Wesley
             'kyleboehlen@gmail.com', // Me, obviously
             'lioness_melinda@hotmail.com', // Aunt Melinda Boehlen
