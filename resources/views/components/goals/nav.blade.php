@@ -34,8 +34,8 @@
             <a href="{{ route('goals.create.action-item', ['goal' => $goal->uuid]) }}"><li>Add Action Item</li></a>
         @endif
 
-        @if(in_array('shift', $show))
-            <a href="{{ route('goals.shift-dates') }}"><li>Shift Dates</li></a>
+        @if(in_array('shift-dates', $show))
+            <a id="show-shift-dates" href="#"><li>Shift Dates</li></a>
         @endif
 
         @if(in_array('update-manual-progress', $show))

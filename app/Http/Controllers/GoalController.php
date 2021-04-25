@@ -22,6 +22,7 @@ use App\Models\Relationships\GoalsHabits;
 // Requests
 use App\Http\Requests\Goal\CreateRequest;
 use App\Http\Requests\Goal\ManualProgressRequest;
+use App\Http\Requests\Goal\ShiftDatesRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
@@ -157,9 +158,9 @@ class GoalController extends Controller
             $nav_show .= '|create-action-item';
         }
 
-        if($goal->type_id != Type::ACTION_AD_HOC && $goal->type_id != Type::FUTURE_GOAL)
+        if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::PARENT_GOAL)
         {
-            $nav_show .= '|shift';
+            $nav_show .= '|shift-dates';
         }
 
         if($goal->type_id == Type::FUTURE_GOAL)
@@ -241,7 +242,7 @@ class GoalController extends Controller
     public function viewActionItem(Request $request, GoalActionItem $action_item)
     {
         // Build nav
-        $show = 'back|edit|delete';
+        $show = 'back-goal|edit|delete';
         if($action_item->achieved)
         {
             $show .= '|toggle-unachieved';
@@ -592,6 +593,23 @@ class GoalController extends Controller
         return view('goals.edit-action-item')->with([
             'action_item' => $action_item,
         ]);
+    }
+
+    public function shiftDates(ShiftDatesRequest $request, Goal $goal)
+    {
+        $days = $request->get('shift-days');
+
+        if($days < 0)
+        {
+            $days = abs($days);
+            $goal->shiftDates($days, 'sub');
+        }
+        elseif($days > 0)
+        {
+            $goal->shiftDates($days);
+        }
+
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
     }
 
     public function updateGoal(UpdateRequest $request, Goal $goal)

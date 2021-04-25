@@ -151,6 +151,49 @@
                 </script>
             @endpush
         @endif
+
+        {{-- Shift dates popup --}}
+        @if(strpos($nav_show, 'shift-date') !== false)
+            @push('scripts')
+                <div class="overlay-hide" id="shift-dates-container">
+                    {{-- Goal Header --}}
+                    <h2>Shift Deadlines For All @if($goal->type_id == $type::PARENT_GOAL){{ 'Sub-Goals and' }}@endif Action Items</h2><br/><br/><br/>
+                    
+                    {{-- Shift dates form --}}
+                    <form action="{{ route('goals.shift-dates', ['goal' => $goal->uuid]) }}" method="POST">
+                        @csrf
+
+                        <p>Shift by:</p>
+                        <div class="shift-days-container">
+                            <img id="shift-days-decrement" src="{{ asset('icons/minus-white.png') }}" />
+                            <input type="number" name="shift-days" value="1" id="shift-days-input" min="-365" max="365" />
+                            <img id="shift-days-increment" src="{{ asset('icons/plus-white.png') }}" />
+                        </div>
+                        @error('shift-days')
+                            <script>
+                                sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                            </script>
+                        @enderror
+                        <p>days</p><br/><br/><br/>
+
+                        {{-- Cancel/Save buttons --}}
+                        <div class="buttons-container">
+                            <button type="button" class="swal2-confirm swal2-styled shift-dates-updater-button overlay-cancel-button">Cancel</button>
+                            <button type="submit" class="swal2-confirm swal2-styled shift-dates-updater-button">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+                <script>
+                    $(document).ready(function(){
+                        $('#show-shift-dates').click(function(){
+                            $('.overlay').show();
+                            $('#shift-dates-container').show();
+                        });
+                    });
+                </script>
+            @endpush
+        @endif
     </div>
 
     {{-- Navigation Footer --}}

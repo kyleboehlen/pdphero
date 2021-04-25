@@ -281,6 +281,22 @@ $(document).ready(function(){
         }
     });
 
+    // Goal shift dates increment/decrement -- might possibly want to add a mousedown/mouseup for holding increment/decrement here
+    $('#shift-days-decrement').click(function(){
+        var input = $('#shift-days-input');
+        if(parseInt(input.val()) > parseInt(input.prop('min')))
+        {
+            input.val(input.val() - 1);
+        }
+    });
+    $('#shift-days-increment').click(function(){
+        var input = $('#shift-days-input');
+        if(parseInt(input.val()) < parseInt(input.prop('max')))
+        {
+            input.val(parseInt(input.val()) + 1);
+        }
+    });
+
     // Action item form toggle override show todo
     $.fn.checkActionItemShowTodo = function(){
         if($('#override-show-todo').is(':checked'))

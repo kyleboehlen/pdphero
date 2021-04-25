@@ -1516,7 +1516,7 @@ div.app-container
     }
 }
 
-#manual-progress-container
+#manual-progress-container, #shift-dates-container
 {
     background-color: $dark-grey;
     border-radius: 5px;
@@ -1596,7 +1596,7 @@ div.app-container
             margin: 1%;
         }
 
-        div.manual-completed-container
+        div.manual-completed-container, div.shift-days-container
         {
             align-items: center;
             display: flex;
@@ -1651,7 +1651,7 @@ div.app-container
             flex-wrap: nowrap;
             justify-content: center;
             
-            button.manual-progress-updater-button
+            button.manual-progress-updater-button, button.shift-dates-updater-button
             {
                 background-color: $light-blue;
                 display: inline-block;
