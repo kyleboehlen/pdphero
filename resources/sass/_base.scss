@@ -242,7 +242,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     height: 15vh;
-    justify-content: center;
+    justify-content: space-evenly;
     margin-left: 20%;
     position: fixed;
     top: 85vh;
@@ -723,6 +723,7 @@
 
     @media only screen and (max-width: 450px)
     {
+        font-size: 1.35em;
         width: 45%;
     }
 

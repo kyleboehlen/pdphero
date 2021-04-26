@@ -87,7 +87,7 @@ Route::prefix('goals')->group(function(){
     Route::get('types', [GoalController::class, 'types'])->name('goals.types');
 
     // Shift dates route
-    Route::post('shift-dates', [GoalController::class, 'shiftDates'])->name('goals.shift-dates');
+    Route::post('shift-dates/{goal}', [GoalController::class, 'shiftDates'])->name('goals.shift-dates');
     
     // Toggle Completed routes
     Route::prefix('toggle-achieved')->group(function(){
