@@ -28,7 +28,7 @@
                 <li>To-Do Items Completed: <span class="highlight">{{ $user->completedTodos->count() }}</span></li>
 
                 {{-- To-Do: Goals accomplished --}}
-                <li>Goals Accomplished: <span class="highlight">15</span></li>
+                <li>Goals Accomplished: <span class="highlight">{{ $user->accomplishedGoals->count() }}</span></li>
 
                 {{-- To-Do: Habits created --}}
                 <li>Habits Created: <span class="highlight">{{ $user->completedHabits->count() }}</span></li>

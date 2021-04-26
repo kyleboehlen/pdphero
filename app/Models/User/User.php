@@ -98,6 +98,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(AffirmationsReadLog::class, 'user_id', 'id');
     }
 
+    public function accomplishedGoals()
+    {
+        return $this->hasMany(Goal::class, 'user_id', 'id')->where('progress', '>=', 100)->where('achieved', 1);
+    }
+
     public function goals()
     {
         return $this->hasMany(Goal::class, 'user_id', 'id');
