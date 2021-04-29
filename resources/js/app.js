@@ -246,12 +246,14 @@ $(document).ready(function(){
     $.fn.goalNavSelector = function(){
         $('.goal-nav-div').hide();
         $('.goal-section-title').hide();
+        $('#goal-progress-div').removeClass('show-all');
         var div = $('#goal-nav-dropdown').find(':selected').val();
         if(div == 'show-all')
         {
             $('.goal-section-title').show();
             $('#goal-details-div').show();
             $('#goal-progress-div').show();
+            $('#goal-progress-div').addClass('show-all');
             $('#goal-action-plan-div').show();
             $('#goal-sub-goals-div').css('display', 'flex');
             $('#goal-ad-hoc-list-div').show();

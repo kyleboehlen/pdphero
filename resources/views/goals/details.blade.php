@@ -35,7 +35,6 @@
 
         {{-- Goal Details --}}
         @if(array_key_exists('details', $dropdown_nav))
-            <h3 class="goal-section-title">Details</h3>
             <div id="goal-details-div" class="goal-nav-div">
                 {{-- Goal Image --}}
                 <x-goals.image :goal="$goal" />
@@ -55,7 +54,7 @@
                     @endforeach
                 @endif
                 <div class="details-clear-all"></div>
-            </div>
+            </div><br/>
         @endif
 
         {{-- Goal Progress --}}
@@ -90,7 +89,7 @@
                             @break
                     @endswitch
                 </div>
-            </div>
+            </div><br/>
         @endif
         
         {{-- Goal Action Plan --}}
