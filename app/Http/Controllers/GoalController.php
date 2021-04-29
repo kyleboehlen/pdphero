@@ -10,6 +10,7 @@ use Log;
 // Constants
 use App\Helpers\Constants\Goal\Status;
 use App\Helpers\Constants\Goal\Type;
+use App\Helpers\Constants\Goal\TimePeriod;
 
 // Models
 use App\Models\Goal\Goal;
@@ -380,17 +381,23 @@ class GoalController extends Controller
         }
 
         // Ad hoc options
-        if($type_id == Type::ACTION_AD_HOC && $request->get('custom-times') && $request->get('time-period'))
+        if($type_id == Type::ACTION_AD_HOC && $request->has('custom-times'))
         {
             $goal->custom_times = $request->get('custom-times');
-            $goal->time_period_id = $request->get('time-period');
+            if($request->has('time-period'))
+            {
+                $goal->time_period_id = $request->get('time-period');
+            }
+            else
+            {
+                $goal->time_period_id = TimePeriod::TOTAL;
+            }
         }
 
         // Manual options
-        if($type_id == Type::MANUAL_GOAL && $request->has('custom-times') && $request->get('time-period'))
+        if($type_id == Type::MANUAL_GOAL && $request->has('custom-times'))
         {
             $goal->custom_times = $request->get('custom-times');
-            $goal->time_period_id = $request->get('time-period');
             $goal->manual_completed = 0;
         }
 
@@ -656,9 +663,13 @@ class GoalController extends Controller
         }
 
         // Ad hoc/manual goal options
-        if(($goal->type_id == Type::ACTION_AD_HOC || $goal->type_id == Type::MANUAL_GOAL) && $request->get('custom-times') && $request->get('time-period'))
+        if(($goal->type_id == Type::ACTION_AD_HOC || $goal->type_id == Type::MANUAL_GOAL) && $request->get('custom-times'))
         {
             $goal->custom_times = $request->get('custom-times');
+        }
+
+        if($goal->type_id == Type::ACTION_AD_HOC && $request->get('time-period'))
+        {
             $goal->time_period_id = $request->get('time-period');
         }
 

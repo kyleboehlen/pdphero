@@ -90,7 +90,7 @@ class Form extends Component
         {
             $this->habits = $user->habits;
         }
-        elseif($this->type_id == Type::ACTION_AD_HOC || $this->type_id == Type::MANUAL_GOAL )
+        elseif($this->type_id == Type::ACTION_AD_HOC)
         {
             $this->time_periods = config('goals.time_periods');
         }

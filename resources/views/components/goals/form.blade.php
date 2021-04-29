@@ -81,23 +81,26 @@
     {{-- Ad-hoc/manaul goal options --}}
     @if($type_id == $type::ACTION_AD_HOC || $type_id == $type::MANUAL_GOAL)
         {{-- How many manual/action items  --}}
-        <label for="custom-times">Complete </label><input class="custom-times" name="custom-times" type="number"
+        <label for="custom-times" @if($type_id == $type::MANUAL_GOAL) class="manual-times" @endif >Complete </label><input class="{{ $type_id == $type::MANUAL_GOAL ? 'manual-times' : 'ad-hoc-times' }}" name="custom-times" type="number"
         @isset($edit_goal)
             value="{{ $edit_goal->custom_times }}"
         @else
             value="1"
         @endisset><label class="time-period" for="time-period"> {{ $type_id == $type::ACTION_AD_HOC ? 'action' : 'manual' }} items</label>
-        <select class="time-period" name="time-period">
-            @foreach($time_periods as $value => $time_period)
-                <option value="{{ $value }}"
-                    @if(!is_null($edit_goal) && $edit_goal->time_period_id == $value)
-                        selected
-                    @elseif(old('time-period') == $value)
-                        selected
-                    @endif
-                >{{ $time_period['name'] }}</option>
-            @endforeach
-        </select><br/><br/>
+        @if($type_id == $type::ACTION_AD_HOC)
+            <select class="time-period" name="time-period">
+                @foreach($time_periods as $value => $time_period)
+                    <option value="{{ $value }}"
+                        @if(!is_null($edit_goal) && $edit_goal->time_period_id == $value)
+                            selected
+                        @elseif(old('time-period') == $value)
+                            selected
+                        @endif
+                    >{{ $time_period['name'] }}</option>
+                @endforeach
+            </select>
+        @endif
+        <br/><br/>
     @endif
 
     {{-- Goal dates --}}

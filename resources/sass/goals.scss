@@ -536,7 +536,7 @@ div.app-container
             }
         }
 
-        label.habit-strength, label.time-period
+        label.habit-strength, label.time-period, label.manual-times
         {
             margin-left: 0;
         }
@@ -548,9 +548,14 @@ div.app-container
             text-align: center;
             width: 15%;
 
-            &.custom-times
+            &.ad-hoc-times
             {
                 width: 5%;
+            }
+
+            &.manual-times
+            {
+                width: 15%;
             }
 
             &.habit-strength
