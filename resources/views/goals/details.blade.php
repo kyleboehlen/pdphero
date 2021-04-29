@@ -34,96 +34,111 @@
         </select><br/>
 
         {{-- Goal Details --}}
-        <div id="goal-details-div" class="goal-nav-div">
-            {{-- Goal Image --}}
-            <x-goals.image :goal="$goal" />
+        @if(array_key_exists('details', $dropdown_nav))
+            <h3 class="goal-section-title">Details</h3>
+            <div id="goal-details-div" class="goal-nav-div">
+                {{-- Goal Image --}}
+                <x-goals.image :goal="$goal" />
 
-            {{-- Goal Reason --}}
-            <br/>
-            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-            @foreach(explode(PHP_EOL, $goal->reason) as $line)
-                <p>{{ $line }}</p>
-            @endforeach
-
-            {{-- Goal Notes --}}
-            @if(!is_null($goal->notes))
-                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-                @foreach(explode(PHP_EOL, $goal->notes) as $line)
+                {{-- Goal Reason --}}
+                <br/>
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                @foreach(explode(PHP_EOL, $goal->reason) as $line)
                     <p>{{ $line }}</p>
                 @endforeach
-            @endif
-            <div class="details-clear-all"></div>
-        </div>
+
+                {{-- Goal Notes --}}
+                @if(!is_null($goal->notes))
+                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                    @foreach(explode(PHP_EOL, $goal->notes) as $line)
+                        <p>{{ $line }}</p>
+                    @endforeach
+                @endif
+                <div class="details-clear-all"></div>
+            </div>
+        @endif
 
         {{-- Goal Progress --}}
-        <div id="goal-progress-div" class="goal-nav-div hidden">
-            {{-- Goal progress bar --}}
-            <br/><br/><br/>
-            @if($goal->type_id == $type::MANUAL_GOAL)
-                <p class="manual-progress">{{ $goal->manual_completed }} out of {{ $goal->custom_times }} completed
-            @endif
-            <x-app.progress-bar :percent="$goal->progress" /><br/>
+        @if(array_key_exists('progress', $dropdown_nav))
+            <h3 class="goal-section-title" id="progress-section-title">Progress</h3>
+            <div id="goal-progress-div" class="goal-nav-div hidden">
+                {{-- Goal progress bar --}}
+                <br/><br/><br/>
+                @if($goal->type_id == $type::MANUAL_GOAL)
+                    <p class="manual-progress">{{ $goal->manual_completed }} out of {{ $goal->custom_times }} completed
+                @endif
+                <x-app.progress-bar :percent="$goal->progress" /><br/>
 
-            {{-- Status label/bar --}}
-            <div class="status" title="{{ $goal->status->desc }}">
-                <p class="label {{ $goal->status->class }}">{{ $goal->status->name }}</p>
-                @switch($goal->status_id)
-                    @case($status::TBD)
-                        <img src="{{ asset('icons/goal-status-bar-tbd.png') }}" />
-                        @break
-                    @case($status::LAGGING)
-                        <img src="{{ asset('icons/goal-status-bar-lagging.png') }}" />
-                        @break
-                    @case($status::ON_TRACK)
-                        <img src="{{ asset('icons/goal-status-bar-ontrack.png') }}" />
-                        @break
-                    @case($status::AHEAD)
-                        <img src="{{ asset('icons/goal-status-bar-ahead.png') }}" />
-                        @break
-                    @case($status::COMPLETED)
-                        <img src="{{ asset('icons/goal-status-bar-completed.png') }}" />
-                        @break
-                @endswitch
+                {{-- Status label/bar --}}
+                <div class="status" title="{{ $goal->status->desc }}">
+                    <p class="label {{ $goal->status->class }}">{{ $goal->status->name }}</p>
+                    @switch($goal->status_id)
+                        @case($status::TBD)
+                            <img src="{{ asset('icons/goal-status-bar-tbd.png') }}" />
+                            @break
+                        @case($status::LAGGING)
+                            <img src="{{ asset('icons/goal-status-bar-lagging.png') }}" />
+                            @break
+                        @case($status::ON_TRACK)
+                            <img src="{{ asset('icons/goal-status-bar-ontrack.png') }}" />
+                            @break
+                        @case($status::AHEAD)
+                            <img src="{{ asset('icons/goal-status-bar-ahead.png') }}" />
+                            @break
+                        @case($status::COMPLETED)
+                            <img src="{{ asset('icons/goal-status-bar-completed.png') }}" />
+                            @break
+                    @endswitch
+                </div>
             </div>
-        </div>
+        @endif
         
         {{-- Goal Action Plan --}}
-        <div id="goal-action-plan-div" class="goal-nav-div hidden">
-            action plan
-        </div>
+        @if(array_key_exists('action-plan', $dropdown_nav))
+            <h3 class="goal-section-title">Action Plan</h3>
+            <div id="goal-action-plan-div" class="goal-nav-div hidden">
+                action plan
+            </div>
+        @endif
 
         {{-- Sub Goals --}}
-        <div id="goal-sub-goals-div" class="goal-nav-div hidden">
-            <br/>
-            @foreach($goal->subgoals as $sub_goal)
-                @if($goal->subgoals->count() < 3)
-                    <x-goals.goal :goal="$sub_goal" class="align-start" />
-                @else
-                    <x-goals.goal :goal="$sub_goal" />
-                @endif
-            @endforeach
-        </div>
+        @if(array_key_exists('sub-goals', $dropdown_nav))
+            <h3 class="goal-section-title">Sub Goals</h3>
+            <div id="goal-sub-goals-div" class="goal-nav-div hidden">
+                <br/>
+                @foreach($goal->subGoals as $sub_goal)
+                    @if($goal->subGoals->count() < 3)
+                        <x-goals.goal :goal="$sub_goal" class="align-start" />
+                    @else
+                        <x-goals.goal :goal="$sub_goal" />
+                    @endif
+                @endforeach
+            </div>
+        @endif
 
         {{-- Ad Hoc List --}}
-        <div id="goal-ad-hoc-list-div" class="goal-nav-div hidden">
-            ad hoc list
-        </div>
+        @if(array_key_exists('ad-hoc-list', $dropdown_nav))
+            <h3 class="goal-section-title">Ad Hoc List</h3>
+            <div id="goal-ad-hoc-list-div" class="goal-nav-div hidden">
+                ad hoc list
+            </div>
+        @endif
 
         {{-- Manual Goal progress popup --}}
-        @if($goal->type_id == $type::MANUAL_GOAL)
+        @if(strpos($nav_show, 'update-manual-progress') !== false)
             @push('scripts')
                 <div class="overlay-hide" id="manual-progress-container">
                     {{-- Goal Header --}}
                     <h2>Update {{ $goal->name }} Progress</h2><br/><br/><br/>
                     
                     {{-- Update progress form --}}
-                    <form class="history-updater" action="{{ route('goals.update.manual-progress', ['goal' => $goal->uuid]) }}" method="POST">
+                    <form action="{{ route('goals.update.manual-progress', ['goal' => $goal->uuid]) }}" method="POST">
                         @csrf
 
                         <p>Completed</p>
                         <div class="manual-completed-container">
                             <img id="manual-completed-decrement" src="{{ asset('icons/minus-white.png') }}" />
-                            <input type="number" name="manual-completed" value={{ $goal->manual_completed }} id="manual-completed-input" min="1" max="{{ $goal->custom_times }}" />
+                            <input type="number" name="manual-completed" value={{ $goal->manual_completed }} id="manual-completed-input" min="1" max="{{ $goal->custom_times + config('goals.manual_goal_buffer') }}" />
                             <img id="manual-completed-increment" src="{{ asset('icons/plus-white.png') }}" />
                         </div>
                         @error('manual-completed')

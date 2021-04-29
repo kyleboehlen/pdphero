@@ -242,12 +242,14 @@ $(document).ready(function(){
         }
     });
 
-    // Goal change nav selector
-    $('#goal-nav-dropdown').change(function(){
+    // Goal change nav selector function
+    $.fn.goalNavSelector = function(){
         $('.goal-nav-div').hide();
+        $('.goal-section-title').hide();
         var div = $('#goal-nav-dropdown').find(':selected').val();
         if(div == 'show-all')
         {
+            $('.goal-section-title').show();
             $('#goal-details-div').show();
             $('#goal-progress-div').show();
             $('#goal-action-plan-div').show();
@@ -262,7 +264,12 @@ $(document).ready(function(){
         {
             $('#goal-' + div + '-div').show();
         }
+    };
+    $.fn.goalNavSelector(); // Check on doc load
+    $('#goal-nav-dropdown').change(function(){ // And check on select change
+        $.fn.goalNavSelector();
     });
+
 
     // Goal manual progress increment/decrement
     $('#manual-completed-decrement').click(function(){
@@ -272,7 +279,6 @@ $(document).ready(function(){
             input.val(input.val() - 1);
         }
     });
-
     $('#manual-completed-increment').click(function(){
         var input = $('#manual-completed-input');
         if(parseInt(input.val()) < parseInt(input.prop('max')))

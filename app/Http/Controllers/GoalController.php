@@ -222,7 +222,7 @@ class GoalController extends Controller
 
         if($goal->type_id == Type::PARENT_GOAL)
         {
-            $goal->load('subgoals');
+            $goal->load('subGoals');
         }
 
         if(!is_null($goal->parent_id))
