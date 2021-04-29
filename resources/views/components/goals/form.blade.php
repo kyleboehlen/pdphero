@@ -38,7 +38,7 @@
         {{-- If it is, show the drop down of habits --}}
         <select id="goal-habit-select" name="habit" required>
             @if(is_null($edit_goal) && is_null(old('habit')))
-                <option disabled selected value> -- Select a Habit -- </option>
+                <option disabled selected value="0"> -- Select a Habit -- </option>
             @endif
 
             @foreach($habits as $habit)
@@ -138,16 +138,19 @@
                         var habit = $('#goal-habit-select').find(':selected').val();
                         var strength = $('#goal-habit-strength').val();
     
-                        $.ajax({
-                            type: 'POST',
-                            url: window.location.origin + '/habits/soonest/' + habit + '/' + strength,
-                            data: {
-                                "_token": "{{ csrf_token() }}",
-                            }
-                        }).done(function(date){
-                            $('#goal-habit-strength-label').html('The soonest you can hit ' + strength + '% strength is ' + date);
-                            $('#goal-habit-strength-label').show();
-                        });
+                        if(parseInt(habit) != 0 && parseInt(strength) != 0)
+                        {
+                            $.ajax({
+                                type: 'POST',
+                                url: window.location.origin + '/habits/soonest/' + habit + '/' + strength,
+                                data: {
+                                    "_token": "{{ csrf_token() }}",
+                                }
+                            }).done(function(date){
+                                $('#goal-habit-strength-label').html('The soonest you can hit ' + strength + '% strength is ' + date);
+                                $('#goal-habit-strength-label').show();
+                            });
+                        }
                     });
                 });
             </script>
