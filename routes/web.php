@@ -88,6 +88,9 @@ Route::prefix('goals')->group(function(){
 
     // Shift dates route
     Route::post('shift-dates/{goal}', [GoalController::class, 'shiftDates'])->name('goals.shift-dates');
+
+    // Set deadline
+    Route::post('set-ad-hoc-deadline/{action_item}', [GoalController::class, 'setAdHocDeadline'])->name('goals.set-ad-hoc-deadline');
     
     // Toggle Completed routes
     Route::prefix('toggle-achieved')->group(function(){
