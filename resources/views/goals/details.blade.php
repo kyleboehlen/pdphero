@@ -29,7 +29,7 @@
         {{-- Nav dropdown --}}
         <select id="goal-nav-dropdown">
             @foreach($dropdown_nav as $key => $value)
-                <option value="{{ $key }}">{{ $value }}</option>
+                <option value="{{ $key }}" @if($selected_dropdown == $key) selected @endif>{{ $value }}</option>
             @endforeach
         </select><br/>
 

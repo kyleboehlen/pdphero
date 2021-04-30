@@ -141,6 +141,7 @@ class GoalController extends Controller
 
         return redirect()->route('goals.view.goal', [
             'goal' => $action_item->goal->uuid,
+            'selected-dropdown' => 'action-plan',
         ]);
     }
 
@@ -217,6 +218,12 @@ class GoalController extends Controller
 
         $dropdown_nav['show-all'] = 'Show All';
 
+        $selected_dropdown = null;
+        if($request->has('selected-dropdown'))
+        {
+            $selected_dropdown = $request->get('selected-dropdown');
+        }
+
         // Load extra info needed for view
         $goal->load('category', 'status');
 
@@ -245,6 +252,7 @@ class GoalController extends Controller
             'goal' => $goal,
             'nav_show' => $nav_show,
             'dropdown_nav' => $dropdown_nav,
+            'selected_dropdown' => $selected_dropdown,
             'status' => Status::class,
             'type' => Type::class,
         ]);
@@ -583,7 +591,16 @@ class GoalController extends Controller
             ]);
         }
 
-        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
+        if($goal->type_id == Type::ACTION_DETAILED)
+        {
+            $selected_dropdown = 'action-plan';
+        }
+        else // ad hoc
+        {
+            $selected_dropdown = 'ad-hoc-list';
+        }
+
+        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid, 'selected-dropdown' => $selected_dropdown]);
     }
 
     public function editCategories(Request $request)
@@ -813,7 +830,16 @@ class GoalController extends Controller
             ]);
         }
 
-        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
+        if($goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
+        {
+            $selected_dropdown = 'action-plan';
+        }
+        else // ad hoc
+        {
+            $selected_dropdown = 'ad-hoc-list';
+        }
+
+        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid, 'selected-dropdown' => $selected_dropdown]);
     }
 
     public function updateManualProgress(ManualProgressRequest $request, Goal $goal)
@@ -849,7 +875,7 @@ class GoalController extends Controller
         }
 
         // Return goal detail view
-        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid, 'selected-dropdown' => 'progress']);
     }
 
     public function destroyCategory(Request $request, GoalCategory $category)
@@ -891,6 +917,16 @@ class GoalController extends Controller
         // Load goal for redirect
         $action_item->load('goal');
 
-        return redirect()->route('goals.view.goal', ['goal' => $action_item->goal->uuid]);
+        // Set selected dropdown
+        if($goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
+        {
+            $selected_dropdown = 'action-plan';
+        }
+        else // ad hoc
+        {
+            $selected_dropdown = 'ad-hoc-list';
+        }
+
+        return redirect()->route('goals.view.goal', ['goal' => $action_item->goal->uuid, 'selected-dropdown' => $selected_dropdown]);
     }
 }
