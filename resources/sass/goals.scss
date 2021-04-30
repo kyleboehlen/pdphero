@@ -1808,6 +1808,78 @@ div.app-container
             }
         }
     }
+
+    &.action-item-details
+    {
+        display: block;
+
+        p, a
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            text-align: center;
+
+            &.goal-name
+            {
+                margin-bottom: 0;
+                margin-top: .5%;
+                text-align: center;
+                width: 100%;
+            }
+
+            &.deadline
+            {
+                margin-top: 1%;
+            }
+
+            &.notes
+            {
+                margin-left: 12.5%;
+                margin-right: 12.5%;
+                width: 75%;
+
+                @media only screen and (max-width: 650px)
+                {
+                    margin-left: 5%;
+                    margin-right: 5%;
+                    width: 90%;
+                }
+            }
+        }
+
+        a.deadline
+        {
+            &:hover
+            {
+                text-decoration: underline;
+            }
+        }
+
+        h2
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 0;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        h3.notes
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.85em;
+            margin-bottom: 0;
+            margin-left: 12.5%;
+            margin-right: 12.5%;
+            margin-top: 2.5%;
+            text-align: center;
+            width: 75%;
+        }
+    }
 }
 
 #manual-progress-container, #shift-dates-container

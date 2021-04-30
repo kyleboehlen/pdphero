@@ -830,7 +830,8 @@ class GoalController extends Controller
             ]);
         }
 
-        if($goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
+        $action_item->load('goal');
+        if($action_item->goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
         {
             $selected_dropdown = 'action-plan';
         }
