@@ -1657,6 +1657,156 @@ div.app-container
                 }
             }
         }
+
+        #goal-action-plan-div
+        {
+            div.action-item
+            {
+                align-items: center;
+                border: $thin-border solid $light-grey;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-left: 15%;
+                margin-top: 5px;
+                text-align: center;
+                width: 70%;
+        
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-left: 5%;
+                    width: 90%;
+                }
+        
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 1.5%;
+                    width: 95%;
+                }
+        
+                &:first-of-type
+                {
+                    margin-top: .5%;
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-top: 5%;
+                    }
+                }
+        
+                &:last-of-type
+                {
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-bottom: 2.5%;
+                    }
+                }
+        
+                form
+                {
+                    flex-grow: 0;
+        
+                    input[type="checkbox"]
+                    {
+                        @extend %checkbox;
+        
+                        height: 50px;
+                        width: 50px;
+        
+                        &:checked
+                        {
+                            background: $black;
+                        }
+                    }
+                }
+        
+                a
+                {
+                    color: $white;
+                    flex-grow: 1;
+                    font-family: $body-font;
+                    font-size: 2.25em;
+                    max-width: 85%;
+                    overflow-x: hidden;
+                    text-decoration: none;
+                    vertical-align: middle;
+        
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 1.75em;
+                        max-width: 75%;
+                    }
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+        
+                    @media only screen and (max-width: 450px)
+                    {
+                        font-size: 1.25em;
+                    }
+        
+                    &.achieved
+                    {
+                        color: $light-grey;
+                        text-decoration: line-through;
+                    }
+        
+                    &:hover
+                    {
+                        text-shadow: 1.5px 1px $white;
+                    }
+                }
+        
+                div.deadline
+                {
+                    border-left: $thin-border solid $light-grey;
+                    border-radius: 0 7.5px 7.5px 0;
+                    flex-basis: 25px;
+                    flex-grow: 0;
+                    height: 100%;
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        flex-basis: 15px;
+                    }
+
+                    p
+                    {
+                        color: $white;
+                        font-family: $body-font;
+                        margin-bottom: 1%;
+                        margin-top: 1%;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                    }
+                }
+        
+                &.empty
+                {
+                    border: $thin-border dashed $light-grey;
+        
+                    form
+                    {
+                        flex-grow: 0;
+        
+                        input[type="checkbox"]
+                        {
+                            @extend %checkbox;
+        
+                            border: $thin-border dashed $white;
+                        }
+                    }
+        
+                    div.deadline
+                    {
+                        border-left: $thin-border dashed $light-grey;
+                    }
+                }
+            }
+        }
     }
 }
 

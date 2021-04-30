@@ -126,7 +126,12 @@ class Goal extends Model
     // RELATIONSHIPS
     public function actionItems()
     {
-        return $this->hasMany(GoalActionItem::class, 'goal_id', 'id')->orderBy('deadline');
+        return $this->hasMany(GoalActionItem::class, 'goal_id', 'id')->whereNotNull('deadline')->orderBy('deadline');
+    }
+
+    public function adHocItems()
+    {
+        return $this->hasMany(GoalActionItem::class, 'goal_id', 'id')->whereNull('deadline')->orderBy('deadline');
     }
 
     public function category()

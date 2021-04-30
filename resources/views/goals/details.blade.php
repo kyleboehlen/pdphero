@@ -96,8 +96,14 @@
         @if(array_key_exists('action-plan', $dropdown_nav))
             <h3 class="goal-section-title">Action Plan</h3>
             <div id="goal-action-plan-div" class="goal-nav-div hidden">
-                action plan
-            </div>
+                @if($goal->actionItems->count() > 0)
+                    @foreach($goal->actionItems as $action_item)
+                        <x-goals.action-item :item="$action_item" />
+                    @endforeach
+                @else
+                    <x-goals.empty-action-item :goal="$goal" />
+                @endif
+            </div><br/><br/>
         @endif
 
         {{-- Sub Goals --}}

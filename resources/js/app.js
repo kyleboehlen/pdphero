@@ -17,6 +17,7 @@ $(document).ready(function(){
 
     // Handles submitting the toggle checkbox forms
     // Also handles the toggles on the settings page
+    // Also handles toggling achieved on action items
     $('.submit-completed').change(function(){
         event.target.closest('form').submit();
     });

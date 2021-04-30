@@ -225,6 +225,16 @@ class GoalController extends Controller
             $goal->load('subGoals');
         }
 
+        if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $goal->load('actionItems');
+        }
+
+        if($goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $goal->load('adHocItems');
+        }
+
         if(!is_null($goal->parent_id))
         {
             $goal->load('parent');
