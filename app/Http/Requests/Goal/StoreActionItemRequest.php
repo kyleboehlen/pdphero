@@ -34,6 +34,7 @@ class StoreActionItemRequest extends FormRequest
         // Set base rules
         $rules = [
             'name' => 'required|string|max:255',
+            'deadline' => 'date_format:Y-m-d',
             'override-show-todo' => 'required_with:show-todo',
             'show-todo' => 'required_with:show-todo-days-before',
             'show-todo-days-before' => 'required_with:show-todo|numeric|min:0|max:60',

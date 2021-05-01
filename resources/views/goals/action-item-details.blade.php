@@ -18,7 +18,10 @@
         @if(!is_null($action_item->deadline))
             <p class="deadline">Due: {{ \Carbon\Carbon::parse($action_item->deadline)->format('n/j/y') }}</p>
         @else
-            <a class="deadline" href="{{ route('goals.set-ad-hoc-deadline', ['action_item' => $action_item->uuid]) }}">Set Deadline</a>
+            <p class="deadline"> <a class="deadline" id="set-deadline-link-{{ $action_item->uuid }}" href="#">Set Deadline</a></p>
+            @push('scripts')
+                <x-goals.ad-hoc-deadline-popup :item="$action_item" details="true" />
+            @endpush
         @endif
 
         {{-- Notes --}}

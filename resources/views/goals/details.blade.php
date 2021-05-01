@@ -125,8 +125,14 @@
         @if(array_key_exists('ad-hoc-list', $dropdown_nav))
             <h3 class="goal-section-title">Ad Hoc List</h3>
             <div id="goal-ad-hoc-list-div" class="goal-nav-div hidden">
-                ad hoc list
-            </div>
+                @if($goal->adHocItems->count() > 0)
+                    @foreach($goal->adHocItems as $ad_hoc_item)
+                        <x-goals.ad-hoc-list-item :item="$ad_hoc_item" />
+                    @endforeach
+                @else
+                    <x-goals.empty-ad-hoc-list-item :goal="$goal" />
+                @endif
+            </div><br/><br/>
         @endif
 
         {{-- Manual Goal progress popup --}}

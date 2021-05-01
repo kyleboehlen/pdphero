@@ -18,6 +18,16 @@
             <a href="{{ route('goals.edit.action-item', ['action_item' => $action_item->uuid]) }}"><li>Edit Action Item</li></a>
         @endif
 
+        @if(in_array('clear-deadline', $show))
+            <form id="clear-deadline-form" action="{{ route('goals.ad-hoc-deadline.clear', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.ad-hoc-deadline.clear', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                onclick="event.preventDefault(); document.getElementById('clear-deadline-form').submit();">
+                <li>Clear Deadline</li>
+            </a>
+        @endif
+
         @if(in_array('toggle-achieved', $show))
             <form id="toggle-achieved-item-form" action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
                 @csrf

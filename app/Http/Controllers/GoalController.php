@@ -24,6 +24,7 @@ use App\Models\Relationships\GoalsHabits;
 use App\Http\Requests\Goal\CreateRequest;
 use App\Http\Requests\Goal\ManualProgressRequest;
 use App\Http\Requests\Goal\ShiftDatesRequest;
+use App\Http\Requests\Goal\SetDeadlineRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
@@ -260,6 +261,9 @@ class GoalController extends Controller
 
     public function viewActionItem(Request $request, GoalActionItem $action_item)
     {
+        // Load goal for nav and forms
+        $action_item->load('goal');
+
         // Build nav
         $show = 'back-goal|edit|delete';
         if($action_item->achieved)
@@ -269,10 +273,12 @@ class GoalController extends Controller
         else
         {
             $show .= '|toggle-achieved';
-        }
 
-        // Load goal for nav and forms
-        $action_item->load('goal');
+            if(!is_null($action_item->deadline) && $action_item->goal->type_id == Type::ACTION_AD_HOC)
+            {
+                $show .= '|clear-deadline';
+            }
+        }
 
         // Return detail view
         return view('goals.action-item-details')->with([
@@ -328,6 +334,54 @@ class GoalController extends Controller
         return view('goals.create-action-item')->with([
             'goal' => $goal,
         ]);
+    }
+
+    public function clearAdHocDeadline(Request $request, GoalActionItem $action_item)
+    {
+        // Clear deadline
+        $action_item->load('goal');
+        if($action_item->goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $action_item->deadline = null;
+        }
+
+        // Save
+        if(!$action_item->save())
+        {
+            // Log error
+            Log::error('Failed to clear action item deadline', $action_item->toArray());
+        }
+
+        // Return detail view
+        return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
+    }
+
+    public function setAdHocDeadline(SetDeadlineRequest $request, GoalActionItem $action_item)
+    {
+        // Set deadline
+        $action_item->deadline = $request->get('deadline');
+
+        // Save
+        if(!$action_item->save())
+        {
+            // Log error
+            Log::error('Failed to set action item deadline', $action_item->toArray());
+        }
+
+        // Redirect
+        $view_details = false;
+        if($request->has('view_details'))
+        {
+            $view_details = (bool) $request->get('view_details');
+        }
+
+        if($view_details)
+        {
+            return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
+        }
+
+        $action_item->load('goal');
+        return redirect()->route('goals.view.goal', ['goal' => $action_item->goal->uuid, 'selected-dropdown' => 'ad-hoc-list']);
     }
 
     public function storeCategory(StoreCategoryRequest $request)
