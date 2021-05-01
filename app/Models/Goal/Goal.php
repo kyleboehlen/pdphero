@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 // Constants
 use App\Helpers\Constants\Goal\Type;
+use App\Helpers\Constants\Goal\TimePeriod;
 
 // Models
 use App\Models\Goal\GoalActionItem;
@@ -48,6 +49,61 @@ class Goal extends Model
     public function determineStatus()
     {
         // If the start date is before today, then it's TBD
+    }
+
+    public function getAdHocArray()
+    {
+        $ad_hoc_array = array();
+        $carbon = Carbon::parse($this->start_date);
+        $carbon_end = Carbon::parse($this->end_date);
+
+        while($carbon->lessThan($carbon_end))
+        {
+            // Set start date
+            $start_date = $carbon->format('Y-m-d');
+            $array = [
+                'start_date' => $carbon->format('n/j/y'),
+            ];
+
+            // Set end date
+            switch($this->time_period_id)
+            {
+                case TimePeriod::WEEKLY:
+                    $carbon->addWeek();
+                    break;
+                
+                case TimePeriod::BI_WEEKLY:
+                    $carbon->addWeeks(2);
+                    break;
+
+                case TimePeriod::MONTHLY:
+                    $carbon->addMonth();
+                    break;
+
+                case TimePeriod::QUARTERLY:
+                    $carbon->addQuarter();
+                    break;
+
+                case TimePeriod::YEARLY:
+                    $carbon->addYear();
+                    break;
+                
+                case TimePeriod::TOTAL:
+                    $carbon = Carbon::parse($this->end_date);
+                default:
+                    break;
+            }
+            $end_date = $carbon->format('Y-m-d');
+            $array['end_date'] = $carbon->format('n/j/y');
+
+            // Get action items
+            $array['action_items'] = $this->actionItems()->whereBetween('deadline', [$start_date, $end_date])->get();
+
+            // Push
+            array_push($ad_hoc_array, $array);
+        }
+
+        return $ad_hoc_array;
     }
 
     public function getScope()

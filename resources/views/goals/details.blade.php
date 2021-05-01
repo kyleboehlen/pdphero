@@ -96,12 +96,27 @@
         @if(array_key_exists('action-plan', $dropdown_nav))
             <h3 class="goal-section-title">Action Plan</h3>
             <div id="goal-action-plan-div" class="goal-nav-div hidden">
-                @if($goal->actionItems->count() > 0)
-                    @foreach($goal->actionItems as $action_item)
-                        <x-goals.action-item :item="$action_item" />
+                @if($goal->type_id == $type::ACTION_AD_HOC)
+                    @foreach($goal->getAdHocArray() as $array)
+                        <p class="ad-hoc-label">{{ $array['start_date'] }} - {{ $array['end_date'] }}</p>
+                        <p class="ad-hoc-label"> {{ $array['action_items']->count() }} out of {{ $goal->custom_times }} scheduled </p>
+                        <hr class="ad-hoc-label">
+                        @foreach($array['action_items'] as $action_item)
+                            <x-goals.action-item :item="$action_item" />
+                        @endforeach
+                        @for($i = $array['action_items']->count(); $i < $goal->custom_times; $i++)
+                            <x-goals.empty-action-item :goal="$goal" route="goals.view.goal" />
+                        @endfor
+                        <br/><br/>
                     @endforeach
                 @else
-                    <x-goals.empty-action-item :goal="$goal" />
+                    @if($goal->actionItems->count() > 0)
+                        @foreach($goal->actionItems as $action_item)
+                            <x-goals.action-item :item="$action_item" />
+                        @endforeach
+                    @else
+                        <x-goals.empty-action-item :goal="$goal" />
+                    @endif
                 @endif
             </div><br/><br/>
         @endif

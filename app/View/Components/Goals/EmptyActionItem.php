@@ -9,14 +9,18 @@ class EmptyActionItem extends Component
     // For holding the goal we're creating an action item for
     public $goal;
 
+    // For holding route for links
+    public $route;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($goal)
+    public function __construct($goal, $route = 'goals.create.action-item')
     {
         $this->goal = $goal;
+        $this->route = $route;
     }
 
     /**
