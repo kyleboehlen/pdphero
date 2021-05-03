@@ -15,6 +15,9 @@ class ActionItemNav extends Component
     // For holding the goal if the action item hasn't been created
     public $goal;
 
+    // For the selected dropdown redirect param
+    public $selected_dropdown;
+
     /**
      * Create a new component instance.
      *
@@ -32,6 +35,22 @@ class ActionItemNav extends Component
         else
         {
             $this->goal = $item->goal;
+        }
+
+        if(!is_null($item) && in_array('back-goal', $this->show))
+        {
+            if(is_null($item->deadline))
+            {
+                $this->selected_dropdown = 'ad-hoc-list';
+            }
+            else
+            {
+                $this->selected_dropdown = 'action-plan';
+            }
+        }
+        else
+        {
+            $this->selected_dropdown = 'details';
         }
     }
 

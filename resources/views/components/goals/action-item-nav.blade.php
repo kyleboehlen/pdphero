@@ -11,7 +11,7 @@
         @endif
         
         @if(in_array('back-goal', $show))
-            <a href="{{ route('goals.view.goal', ['goal' => $goal->uuid]) }}"><li>Back To Goal</li></a>
+            <a href="{{ route('goals.view.goal', ['goal' => $goal->uuid, 'selected-dropdown' => $selected_dropdown]) }}"><li>Back To Goal</li></a>
         @endif
 
         @if(in_array('edit', $show))
