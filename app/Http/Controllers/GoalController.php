@@ -93,6 +93,19 @@ class GoalController extends Controller
         $goals = $goals->with('status')->get();
         $categories = $user->goalCategories;
 
+        // Verify status and refresh
+        foreach($goals as $goal)
+        {
+            if(!$goal->determineStatus())
+            {
+                Log::error('Failed to determine status for goal when viewing goal index', $goal->toArray());
+            }
+            else
+            {
+                $goal->refresh();
+            }
+        }
+
         return view('goals.index')->with([
             'goals' => $goals,
             'scopes' => $this->scopes,
@@ -131,6 +144,13 @@ class GoalController extends Controller
         {
             Log::error('Failed to toggle achieved on goal action item', $action_item->toArray());
         }
+        else
+        {
+            if(!$action_item->goal->calculateProgress())
+            {
+                Log::error('Failed to calculate progress when toggling achieved action item', $action_item->toArray());
+            }
+        }
 
         // Redirect back to action item details or not by checking show_details
         if($request->has('view_details') && $request->get('view_details'))
@@ -148,6 +168,16 @@ class GoalController extends Controller
 
     public function viewGoal(Request $request, Goal $goal)
     {
+        // Verify proper status
+        if(!$goal->determineStatus())
+        {
+            Log::error('Failed to determine status for goal when viewing goal details', $goal->toArray());
+        }
+        else
+        {
+            $goal->refresh();
+        }
+
         // Build nav and tab dropdowns based on goal type
         $nav_show = 'back|edit|delete';
 
@@ -200,6 +230,7 @@ class GoalController extends Controller
         if($goal->type_id != Type::FUTURE_GOAL)
         {
             $dropdown_nav['progress'] = 'Progress';
+            $dropdown_nav['show-all'] = 'Show All';
         }
 
         if($goal->type_id == Type::PARENT_GOAL)
@@ -216,8 +247,6 @@ class GoalController extends Controller
         {
             $dropdown_nav['ad-hoc-list'] = 'Ad Hoc List';
         }
-
-        $dropdown_nav['show-all'] = 'Show All';
 
         $selected_dropdown = null;
         if($request->has('selected-dropdown'))
@@ -690,11 +719,25 @@ class GoalController extends Controller
         if($days < 0)
         {
             $days = abs($days);
-            $goal->shiftDates($days, 'sub');
+            if(!$goal->shiftDates($days, 'sub'))
+            {
+                Log::error('Failed to shift dates for goal', [
+                    'goal' => $goal->toArray(),
+                    'days' => $days,
+                    'request_values' => $request->all(),
+                ]);
+            }
         }
         elseif($days > 0)
         {
-            $goal->shiftDates($days);
+            if(!$goal->shiftDates($days))
+            {
+                Log::error('Failed to shift dates for goal', [
+                    'goal' => $goal->toArray(),
+                    'days' => $days,
+                    'request_values' => $request->all(),
+                ]);
+            }
         }
 
         return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
@@ -795,7 +838,7 @@ class GoalController extends Controller
             $goal->parent_id = $parent_goal->id;
         }
 
-        if($goal->save())
+        if(!$goal->save())
         {
             // Log error
             Log::error('Failed to update goal.', [
@@ -803,6 +846,14 @@ class GoalController extends Controller
                 'goal' => $goal->toArray(),
                 'request_values' => $request->all(),
             ]);
+        }
+        else
+        {
+            if(!$goal->calculateProgress())
+            {
+                // Log error
+                Log::error('Failed to calculate progress for goal after updating goal details', $goal->toArray());
+            }
         }
 
         // Save custom image
@@ -955,6 +1006,15 @@ class GoalController extends Controller
         {
             Log::error('Failed to delete goal', $goal->toArray());
             return redirect()->back();
+        }
+
+        if(!is_null($goal->parent_id))
+        {
+            $goal->load('parent');
+            return redirect()->route('goals.view.goal', [
+                'goal' => $goal->parent->uuid,
+                'selected-dropdown' => 'sub-goals',
+            ]);
         }
 
         return redirect()->route('goals');

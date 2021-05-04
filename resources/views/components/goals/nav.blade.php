@@ -10,8 +10,12 @@
             <a href="{{ route('goals') }}"><li>Back To Goals</li></a>
         @endif
 
+        @if(in_array('back-goal', $show))
+            <a href="{{ route('goals.view.goal', ['goal' => $goal->uuid]) }}"><li>Back To Goal</li></a>
+        @endif
+
         @if(in_array('parent-back', $show))
-            <a href="{{ route('goals.view.goal', ['goal' => $goal->parent->uuid]) }}"><li>Back To Parent</li></a>
+            <a href="{{ route('goals.view.goal', ['goal' => $goal->parent->uuid, 'selected-dropdown' => 'sub-goals']) }}"><li>Back To Parent</li></a>
         @endif
 
         @if(in_array('create', $show))

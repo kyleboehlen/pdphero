@@ -26,6 +26,16 @@ return [
         ],
     ],
 
+    'ahead_buffer' => [
+        'days' => 12,
+        'percent' => 15,
+    ],
+
+    'lagging_buffer' => [
+        'days' => 7,
+        'percent' => 10,
+    ],
+
     'manual_goal_buffer' => 100,
 
     'statuses' => [

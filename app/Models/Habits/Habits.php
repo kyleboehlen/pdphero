@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use JamesMills\Uuid\HasUuidTrait;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Log\Log;
 
 // Constants
 use App\Helpers\Constants\Habits\HistoryType;
@@ -17,6 +18,7 @@ use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\Goal\Goal;
 use App\Models\Habits\HabitHistory;
 use App\Models\Habits\HabitHistoryTypes;
 use App\Models\Relationships\HabitsToDo;
@@ -207,8 +209,20 @@ class Habits extends Model
         // Set strength
         $this->strength = round($strength);
 
-        // And return the success/failure of saving the model
-        return $this->save();
+        // And set the success/failure of saving the model
+        $success = $this->save();
+
+        // Update the progress of any goals associated with this habit
+        $this->load('goals');
+        foreach($this->goals as $goal)
+        {
+            if(!$goal->calculateProgress())
+            {
+                Log::error('Failed to calculate progress for goal after updating habit strength', $goal->toArray());
+            }
+        }
+
+        return $success;
     }
 
     /**
@@ -746,6 +760,12 @@ class Habits extends Model
         }
 
         return $longest_streak;
+    }
+
+    // Goals relationship
+    public function goals()
+    {
+        return $this->hasMany(Goal::class, 'habit_id', 'id');
     }
 
     // Habit history relationship
