@@ -472,11 +472,10 @@ class Habits extends Model
                 }
                 else
                 {
-                    // if the last time it was completed was today
+                    // if the last time it was completed was the search day
                     $last_completed_carbon = new Carbon($last_completed->day, 'UTC');
                     if(
-                        $last_completed->day == $search_day->format('Y-m-d') &&
-                        $last_completed->day == (clone $now)->startOfday()->setTimezone('UTC')->format('Y-m-d')
+                        $last_completed->day == $search_day->format('Y-m-d') 
                     )
                     {
                         // Check for the last time it was completed before that
@@ -504,7 +503,8 @@ class Habits extends Model
                     }
 
                     // Determine required based on how many days since it's last been completed
-                    if($days_since_last_completed < $this->every_x_days || $days_since_last_completed % $this->every_x_days != 0) // if it hasn't been x days yet or if it's not a multiple of today
+                    if($days_since_last_completed < $this->every_x_days || 
+                        ($search_day->greaterThan($now) && $days_since_last_completed % $this->every_x_days != 0)) // if it hasn't been x days yet or if it's not a multiple of today
                     {
                         // Then it's not required
                         $required = false;

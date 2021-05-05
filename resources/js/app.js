@@ -113,12 +113,14 @@ $(document).ready(function(){
         var attr = everyXDaysInput.attr('disabled');
         if(typeof attr !== typeof undefined && attr !== false) {
             everyXDaysInput.attr('disabled', false);
-            everyXDaysInput.focus();
         }
 
         // Disable day of week
         $('.day-of-week-container').children().addClass('disabled');
         $('.day-of-week > input').attr('disabled', true);
+
+        // Focus input
+        everyXDaysInput.focus();
     });
 
     // History overlay toggles
