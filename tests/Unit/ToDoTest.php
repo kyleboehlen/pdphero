@@ -319,7 +319,7 @@ class ToDoTest extends TestCase
         ]);
 
         // Verify redirected back to to do list properly
-        $response->assertRedirect('/todo');
+        $response->assertRedirect("/todo/view/$item->uuid");
 
         // Refresh model
         $item->refresh();

@@ -10,6 +10,8 @@ use Carbon\Carbon;
 
 // Models
 use App\Models\Goal\Goal;
+use App\Models\Relationships\GoalActionItemsToDo;
+use App\Models\ToDo\ToDo;
 
 class GoalActionItem extends Model
 {
@@ -43,5 +45,10 @@ class GoalActionItem extends Model
     public function goal()
     {
         return $this->hasOne(Goal::class, 'id', 'goal_id');
+    }
+
+    public function todo()
+    {
+        return $this->hasOneThrough(ToDo::class, GoalActionItemsToDo::class, 'action_item_id', 'id', 'id', 'to_do_id');
     }
 }

@@ -3,13 +3,16 @@
 use Carbon\Carbon;
 
 // Constants
+use App\Helpers\Constants\Goal\Type as GoalType;
 use App\Helpers\Constants\Habits\HistoryType as HabitsHistoryType;
 use App\Helpers\Constants\Habits\Type as HabitsType;
 use App\Helpers\Constants\ToDo\Type as ToDoType;
 
 
 // Models
+use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
+use App\Models\Relationships\GoalActionItemsToDo;
 use App\Models\Relationships\HabitsToDo;
 use App\Models\Todo\ToDo;
 
@@ -132,7 +135,7 @@ if(!function_exists('buildRecurringHabitToDos'))
                             'user_id' => $user->id,
                             'title' => $habit->name,
                             'type_id' => ToDoType::RECURRING_HABIT_ITEM,
-                            'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . $habit->notes,
+                            'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . PHP_EOL . $habit->notes,
                             'completed' => true,
                         ]);
 
@@ -155,7 +158,7 @@ if(!function_exists('buildRecurringHabitToDos'))
                             'user_id' => $user->id,
                             'title' => $habit->name,
                             'type_id' => ToDoType::RECURRING_HABIT_ITEM,
-                            'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . $habit->notes,
+                            'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . PHP_EOL . $habit->notes,
                             'completed' => false,
                         ]);
 
@@ -304,6 +307,124 @@ if(!function_exists('buildRecurringHabitToDos'))
                         if(!$todo->delete())
                         {
                             $failures++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Return success/failure
+        if($failures > 0)
+        {
+            return $failures;
+        }
+
+        // Success!
+        return true;
+    }
+}
+
+if(!function_exists('buildActionItemTodos'))
+{
+    /**
+     * Builds ToDo items for action items that push to the todo list
+     * 
+     * @return bool
+     */
+    function buildActionItemTodos($user)
+    {
+        // Track how we do
+        $failures = 0;
+
+        // Create a user date
+        $timezone = $user->timezone ?? 'America/Denver'; // Should probably change this default someday
+        $user_date = new Carbon('now', $timezone);
+
+        // Get action item goals that belong to user w/ action items
+        $goals = Goal::where('user_id', $user->id)->whereIn('type_id', [GoalType::ACTION_AD_HOC, GoalType::ACTION_DETAILED])->with('actionItems')->get();
+
+        // Iterate through the goals
+        foreach($goals as $goal)
+        {
+            if($goal->actionItems->count() > 0)
+            {
+                // Get current action item todos
+                $action_item_array = GoalActionItemsTodo::whereIn('action_item_id', $goal->actionItems->pluck('id'))->get()->pluck('action_item_id')->toArray();
+
+                // Iterate through the action items
+                foreach($goal->actionItems as $action_item)
+                {
+                    // Skip if it's already been created or if it's already been completed
+                    if(!in_array($action_item->id, $action_item_array) && !$action_item->achieved)
+                    {
+                        // Instantiate vars
+                        $push_todo = false;
+                        $days_to_deadline = 0;
+
+                        // Get the push todo settings for the action item
+                        if(!is_null($action_item->override_show_todo)) // if there are push todo settings on the action item
+                        {
+                            $push_todo = true;
+                            $days_to_deadline = $action_item->override_todo_days_before;
+                        }
+                        else // Check the default push to do settings for the goal
+                        {
+                            $default_for_goal = $goal->defaultPushTodo();
+                            if($default_for_goal !== false)
+                            {
+                                $push_todo = true;
+                                $days_to_deadline = $default_for_goal;
+                            }
+                        }
+
+                        // Determine if we should create the todo
+                        $create_todo = false; // Start by assuming we're not creating the todo
+                        if($push_todo)
+                        {
+                            // Create deadline carbon
+                            $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
+
+                            // If we're already past the deadline, push it
+                            if($user_date->greaterThan($deadline))
+                            {
+                                $create_todo = true;
+                            }
+                            else // Check if we're within the push to do days setting
+                            {
+                                $diff_in_days = $deadline->diffInDays($user_date);
+
+                                if($diff_in_days <= $days_to_deadline)
+                                {
+                                    $create_todo = true;
+                                }
+                            }
+                        }
+
+                        if($create_todo)
+                        {
+                            // Create the todo and relationship
+                            $action_item_todo = new ToDo([
+                                'user_id' => $user->id,
+                                'title' => $action_item->name,
+                                'type_id' => ToDoType::ACTION_ITEM,
+                                'notes' => "Automatically generated for goal ($goal->name) action item $action_item->name" . PHP_EOL . PHP_EOL . $action_item->notes,
+                                'completed' => false,
+                            ]);
+    
+                            if(!$action_item_todo->save())
+                            {
+                                $failures++;
+                            }
+                            else
+                            {
+                                if(!GoalActionItemsToDo::create([
+                                    'action_item_id' => $action_item->id,
+                                    'to_do_id' => $action_item_todo->id,
+                                ]))
+                                {
+                                    $failures++;
+                                }
+                            }
                         }
                     }
                 }

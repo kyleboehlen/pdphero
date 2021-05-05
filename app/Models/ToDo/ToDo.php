@@ -14,9 +14,11 @@ use App\Helpers\Constants\Habits\HistoryType;
 use App\Helpers\Constants\ToDo\Type;
 
 // Models
+use App\Models\Goal\GoalActionItem;
 use App\Models\Habits\HabitHistory;
 use App\Models\Habits\Habits;
 use App\Models\ToDo\ToDoPriority;
+use App\Models\Relationships\GoalActionItemsToDo;
 
 class ToDo extends Model
 {
@@ -111,6 +113,16 @@ class ToDo extends Model
                 return $saved;
                 break;
 
+            case Type::ACTION_ITEM:
+                // Toggle completed status
+                $this->completed = !$this->completed;
+
+                // Set action item to match
+                $this->load('actionItem');
+                $this->actionItem->achieved = $this->completed;
+                $this->actionItem->save();
+                break;
+
             default: // including Type::TODO_ITEM
                 // Toggle completed status
                 $this->completed = !$this->completed;
@@ -144,6 +156,11 @@ class ToDo extends Model
         }
 
         return 'on ' . $update_at->format('m/d/y');
+    }
+
+    public function actionItem()
+    {
+        return $this->hasOneThrough(GoalActionItem::class, GoalActionItemsToDo::class, 'to_do_id', 'id', 'id', 'action_item_id');
     }
 
     // Create the habit relationship

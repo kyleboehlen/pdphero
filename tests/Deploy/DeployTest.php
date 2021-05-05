@@ -54,6 +54,7 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('goal_time_periods'));
         $this->assertTrue(Schema::hasTable('goals'));
         $this->assertTrue(Schema::hasTable('goal_action_items'));
+        $this->assertTrue(Schema::hasTable('goal_action_items_to_do'));
         $this->assertTrue(Schema::hasTable('homes'));
         $this->assertTrue(Schema::hasTable('users_hide_homes'));
         $this->assertTrue(Schema::hasTable('journal_moods'));

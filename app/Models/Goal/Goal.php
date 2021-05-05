@@ -58,7 +58,14 @@ class Goal extends Model
                 }
 
                 // Calculate progress
-                $progress = ($achieved_count / $total_count) * 100;
+                if($total_count == 0)
+                {
+                    $progress = 0;
+                }
+                else
+                {
+                    $progress = ($achieved_count / $total_count) * 100;
+                }
                 break;
             
             case Type::ACTION_DETAILED:
@@ -69,7 +76,14 @@ class Goal extends Model
                 $total_count = $this->actionItems()->get()->count();
 
                 // Calculate progress
-                $progress = ($achieved_count / $total_count) * 100;
+                if($total_count == 0)
+                {
+                    $progress = 0;
+                }
+                else
+                {
+                    $progress = ($achieved_count / $total_count) * 100;
+                }
                 break;
             
             case Type::HABIT_BASED:
@@ -119,7 +133,7 @@ class Goal extends Model
 
 
         // If start date is before now, it's TBD
-        if(!is_null($this->start_date) && Carbon::parse($this->start_date)->greaterThan($user_date))
+        if(!is_null($this->start_date) && Carbon::parse($this->start_date)->setTimezone($timezone)->greaterThan($user_date))
         {
             $this->status_id = Status::TBD;
         }
@@ -142,7 +156,7 @@ class Goal extends Model
                     // Check if deadline is already past
                     if(!is_null($action_item))
                     {
-                        $deadline = Carbon::parse($action_item->deadline);
+                        $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
                         if($deadline->lessThan($user_date)) // Lagging
                         {
                             // Check if it's above the threshold that triggers lagging
@@ -160,7 +174,7 @@ class Goal extends Model
                             // See if it has been completed before the deadline
                             if(!is_null($action_item))
                             {
-                                $deadline = Carbon::parse($action_item->deadline);
+                                $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
                                 if($deadline->greaterThan($user_date))
                                 {
                                     // Check if it's above the threshold that triggers ahead
@@ -182,7 +196,7 @@ class Goal extends Model
                     $days_to_strength = $evaluation_array['actual_days'];
 
                     // Get goal end date and see if we've already passed it
-                    $end_date = Carbon::parse($this->end_date);
+                    $end_date = Carbon::parse($this->end_date)->setTimezone($timezone);
                     if($end_date->lessThan($user_date))
                     {
                         $diff_in_days = $end_date->diffInDays($user_date);
@@ -224,8 +238,8 @@ class Goal extends Model
                 case Type::ACTION_AD_HOC:
                 case Type::MANUAL_GOAL:
                     // Get carbon objects for goal start/end dates
-                    $start_date = Carbon::parse($this->start_date);
-                    $end_date = Carbon::parse($this->end_date);
+                    $start_date = Carbon::parse($this->start_date)->setTimezone($timezone);
+                    $end_date = Carbon::parse($this->end_date)->setTimezone($timezone);
 
                     // Figure out the total amount of days between start/end date
                     $goal_length_in_days = $start_date->diffInDays($end_date);
@@ -271,6 +285,21 @@ class Goal extends Model
 
         
         return $this->save();
+    }
+
+    public function defaultPushTodo()
+    {
+        if(!is_null($this->default_show_todo))
+        {
+            return $this->default_todo_days_before;
+        }
+        elseif(!is_null($this->parent_id))
+        {
+            $this->load('parent');
+            return $this->parent->defaultPushTodo();
+        }
+
+        return false;
     }
 
     public function getAdHocArray()

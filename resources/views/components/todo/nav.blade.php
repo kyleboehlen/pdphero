@@ -42,10 +42,6 @@
             <a href="{{ route('todo.create.habit') }}"><li>Create From Habit</li></a>
         @endif
 
-        @if(in_array('create-from-goal', $show))
-            <a href="{{ route('todo.create', ['from' => 'goal']) }}"><li>Create From Goal</li></a>
-        @endif
-
         @if(in_array('color-key', $show))
             <a href="{{ route('todo.colors') }}"><li>Color Guide</li></a>
         @endif

@@ -13,7 +13,7 @@
             <x-todo.nav show="list|toggle-complete|create-from-habit|color-key|edit|delete" :item="$item" />
             @break
         @case($type::ACTION_ITEM)
-            <x-todo.nav show="list|create-from-goal|delete" />
+            <x-todo.nav show="list|toggle-complete|color-key|delete" :item="$item" />
             @break
         @default
             <x-todo.nav show="list|toggle-complete|create|edit|delete" :item="$item"/>
@@ -31,9 +31,11 @@
             {{-- Notes --}}
             @if(isset($item->notes))
                 <div class="notes-container">
-                    @foreach(explode(PHP_EOL, $item->notes) as $line)
-                        <p>{{ $line }}</p>
-                    @endforeach
+                    <p>
+                        @foreach(explode(PHP_EOL, $item->notes) as $line)
+                            {{ $line }}<br/>
+                        @endforeach
+                    </p>
                 </div>
             @else
                 <div class="notes-container">

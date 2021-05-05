@@ -146,6 +146,18 @@ class GoalController extends Controller
         }
         else
         {
+            // Toggle complete on todo for action item if exsists
+            $action_item->load('todo');
+            if(!is_null($action_item->todo))
+            {
+                $action_item->todo->completed = $action_item->achieved;
+                if(!$action_item->todo->save())
+                {
+                    Log::error('Failed to toggle todo item when toggling achieved action item', $action_item->toArray());
+                }
+            }
+
+            // Recalculate progress for the goal
             if(!$action_item->goal->calculateProgress())
             {
                 Log::error('Failed to calculate progress when toggling achieved action item', $action_item->toArray());

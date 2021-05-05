@@ -13,6 +13,7 @@ use App\Helpers\Constants\User\Setting;
 // Models
 use App\Models\Habits\Habits;
 use App\Models\Relationships\HabitsToDo;
+use App\Models\Relationships\GoalActionItemsToDo;
 use App\Models\ToDo\ToDo;
 
 // Requests
@@ -55,6 +56,17 @@ class ToDoController extends Controller
             Log::error('Failed to build habit to-do items for user.', [
                 'user->id' => $user->id,
                 '# of failures' => $build_habit_todos,
+            ]);
+        }
+
+        // Build users action item todos
+        $build_action_item_todos = buildActionItemTodos($user);
+        if($build_action_item_todos !== true)
+        {
+            // Log error
+            Log::error('Failed to build action item to-do items for user.', [
+                'user->id' => $user->id,
+                '# of failures' => $build_action_item_todos,
             ]);
         }
 
@@ -281,7 +293,7 @@ class ToDoController extends Controller
             ]);
         }
 
-        return redirect()->route('todo.list');
+        return redirect()->route('todo.view.details', ['todo' => $todo->uuid]);
     }
 
     public function updateHabit(UpdateHabitRequest $request, ToDo $todo)
@@ -313,15 +325,27 @@ class ToDoController extends Controller
             ]);
         }
 
-        return redirect()->route('todo.list');
+        return redirect()->route('todo.view.details', ['todo' => $todo->uuid]);
     }
 
     public function destroy(ToDo $todo)
     {
-        if(!$todo->delete())
+        if($todo->type_id != Type::RECURRING_HABIT_ITEM)
         {
-            Log::error('Failed to delete to-do item', $todo->toArray());
-            return redirect()->back();
+            if(!$todo->delete())
+            {
+                Log::error('Failed to delete to-do item', $todo->toArray());
+                return redirect()->back();
+            }
+    
+            // Delete the relationship if it is an action item
+            if($todo->type_id == Type::ACTION_ITEM)
+            {
+                if(!GoalActionItemsToDo::where('to_do_id', $todo->id)->delete())
+                {
+                    Log::error('Failed to delete action item relationship after deleting to-do item', $todo->toArray());
+                }
+            }
         }
 
         return redirect()->route('todo.list');
