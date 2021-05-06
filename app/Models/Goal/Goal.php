@@ -41,7 +41,14 @@ class Goal extends Model
         {
             case Type::PARENT_GOAL:
                 $this->load('subGoals');
-                $progress = ($this->subGoals->sum('progress') / ($this->subGoals->count() * 100)) * 100;
+                if($this->subGoals->count() > 0)
+                {
+                    $progress = ($this->subGoals->sum('progress') / ($this->subGoals->count() * 100)) * 100;
+                }
+                else
+                {
+                    $progress = 0;
+                }
                 break;
 
             case Type::ACTION_AD_HOC:
