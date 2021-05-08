@@ -14,7 +14,8 @@
             <h2>About</h2>
             <img class="left" src="{{ asset('images/about.jpg') }}" />
             <p>When was the last time you lost motivation to complete a goal because it didn't feel like you were making any progress?</p>
-            <p>PDPHero, the all-in-one personal development plan app, to the rescue! The best way to track S.M.A.R.T. goals, action items, and create long term habits.</p>
+            <p>PDPHero, the all-in-one personal development plan app, to the rescue! The best way to track S.M.A.R.T. goals, accomplish to-do items, write journal entries, and create long term habits.</p>
+            <p>Not only are all the tools you need in one app, but all the features of PDPHero are tightly coupled and integrated to make personal development planning a breeze</p>
         </div>
 
         {{-- Features --}}
@@ -23,13 +24,13 @@
             <h2>Features</h2>
             <img class="right" src="{{ asset('images/features.jpg') }}" />
             <ul>
-                <li>S.M.A.R.T. Goal Tracking</li>
-                <li>Habit Tracking with Strength Indicator</li>
-                <li>Integration with YNAB for Financial Goals</li>
-                <li>A Profile to List Personal Values</li>
-                <li>Works on All Devices</li>
-                <li>A To-Do List that Automatically Pulls In Habits and Action Items</li>
-                <li>Distinguish Actionable To-Do Items From Dependent To-Do Items</li>
+                <li>Flexible habit tracking with accurate strength indication</li>
+                <li>Various S.M.A.R.T. goal tracking types to suit any of your goal needs</li>
+                <li>Integration with YNAB for financial based goals</li>
+                <li>A personal profile so you don't lose sight of your personal values and rules</li>
+                <li>An affirmations system</li>
+                <li>Compadibliity with all devices</li>
+                <li>A To-Do list that automatically updates with your habits and action items</li>
             </ul>
         </div>
 
@@ -57,17 +58,17 @@
 
                     <p class="pricing-label">${{ config('membership.basic_price') }} monthly</p>
 
-                    <p>Comes with all the features you need for creating smart goals, managing action plans, building habits, and personal development planning.</p>
+                    <p>Comes with all the features you need for creating smart goals, managing to-do items, building habits, journaling, and personal development planning.</p>
                 </div>
 
                 <div class="pricing-item">
                     <img class="pricing" src="{{ asset('logos/logo-black.png') }}" />
 
-                    <h4>Black Label</h4>
+                    <h4>Black Label Membership</h4>
 
                     <p class="pricing-label">${{ config('membership.black_label_price') }} monthly</p>
 
-                    <p>Also includes YNAB integration for financial goals, and access to submit and vote on new features. Guaranteed to include any additional features.</p>
+                    <p>Also includes YNAB integration for financial goals, and access to vote for which features are built next. A great way to support the app :)</p>
                 </div>
             </div>
         </div>
