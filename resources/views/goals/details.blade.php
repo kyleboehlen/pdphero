@@ -94,7 +94,7 @@
         
         {{-- Goal Action Plan --}}
         @if(array_key_exists('action-plan', $dropdown_nav))
-            <h3 class="goal-section-title">Action Plan</h3>
+            <h3 class="goal-section-title" id="action-plan-section-title">Action Plan</h3>
             <div id="goal-action-plan-div" class="goal-nav-div hidden">
                 @if($goal->type_id == $type::ACTION_AD_HOC)
                     @foreach($goal->getAdHocArray() as $array)
