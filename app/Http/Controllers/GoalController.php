@@ -1004,7 +1004,7 @@ class GoalController extends Controller
         // Delete category
         if(!$category->delete())
         {
-            Log::error('Failed to delete category', $category->toArray());
+            Log::error('Failed to delete goal category', $category->toArray());
             return redirect()->back();
         }
 

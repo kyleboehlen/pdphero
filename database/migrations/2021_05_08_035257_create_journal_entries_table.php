@@ -24,6 +24,7 @@ class CreateJournalEntriesTable extends Migration
             // Other columns
             $table->bigInteger('user_id')->unsigned();
             $table->uuid('uuid')->unique();
+            $table->bigInteger('category_id')->unsigned()->nullable();
             $table->tinyInteger('mood_id')->unsigned()->default(0); // Default
             $table->string('title');
             $table->date('day');
@@ -31,6 +32,7 @@ class CreateJournalEntriesTable extends Migration
 
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('category_id')->references('id')->on('journal_categories');
             $table->foreign('mood_id')->references('id')->on('journal_moods');
         });
     }

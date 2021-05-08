@@ -70,6 +70,34 @@ header.app
 
 div.app-container
 {
+    &.categories-list
+    {
+        @extend %flex-container;
+
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0;
+        text-align: center;
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+            width: 50%;
+        }
+
+        div.category
+        {
+            @include add-delete-list-item;
+        }
+    }
+    
     div.color-guide
     {
         align-items: center;

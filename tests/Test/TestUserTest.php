@@ -13,6 +13,8 @@ use App\Models\Affirmations\Affirmations;
 use App\Models\Habits\Habits;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalCategory;
+use App\Models\Journal\JournalCategory;
+use App\Models\Journal\JournalEntry;
 use App\Models\ToDo\ToDo;
 use App\Models\User\User;
 
@@ -148,5 +150,39 @@ class TestUserTest extends TestCase
         {
             $this->assertTrue($goal->calculateProgress());
         }
+    }
+
+    /**
+     * Give test user journal entries and categories
+     * 
+     * @depends userTest
+     * @test
+     */
+    public function journalTest(User $user)
+    {
+        // Create default categories
+        foreach(config('journal.default_categories') as $category_name)
+        {
+            $default_category = new JournalCategory([
+                'user_id' => $user->id,
+                'name' => $category_name,
+            ]);
+
+            $this->assertTrue($default_category->save());
+        }
+
+        // Create a custom category
+        JournalCategory::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(JournalCategory::where('user_id', $user->id)->get()->count() >= count(config('journal.default_categories')) + 1);
+
+        // Generate journal entries
+        JournalEntry::factory(rand(10, 30))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(JournalEntry::where('user_id', $user->id)->get()->count() >= 10);
     }
 }

@@ -169,7 +169,7 @@ class AffirmationsTest extends TestCase
         {
             $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
             $response->assertStatus(200);
-            usleep(200000);
+            usleep(300000);
         }
 
         // Verify that calling the read function returns the read page redirect
