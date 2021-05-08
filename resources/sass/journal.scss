@@ -1,0 +1,107 @@
+@import 'app';
+
+@mixin mood-checkbox
+{
+    height: 75px;
+    width: 75px;
+
+    @media only screen and (max-width: 900px)
+    {
+        height: 65px;
+        width: 65px;
+    }
+
+    @media only screen and (max-height: 850px)
+    {
+        height: 50px;
+        width: 50px;
+    }
+
+    &.default
+    {
+        border-color: $brown;
+
+        &:checked
+        {
+            background: $brown;
+        }
+    }
+
+    &.positive
+    {
+        border-color: $green;
+
+        &:checked
+        {
+            background: $green;
+        }
+    }
+
+    &.neutral
+    {
+        border-color: $yellow;
+
+        &:checked
+        {
+            background: $yellow;
+        }
+    }
+
+    &.negative
+    {
+        border-color: $red;
+
+        &:checked
+        {
+            background: $red;
+        }
+    }
+}
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    div.color-guide
+    {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 95%;
+        width: 100%;
+
+        div.color-key
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+            text-align: center;
+            width: auto;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.4em;
+            }
+
+            .priority
+            {
+                @extend %checkbox;
+                @include mood-checkbox;
+
+                &:first-of-type
+                {
+                    margin-top: 5%;
+                }
+            }
+        }
+    }
+}
