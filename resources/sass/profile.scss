@@ -359,6 +359,12 @@ div.app-container
             width: 95%;
         }
 
+        &:hover > a.create-hover, &:hover > ol > a.create-hover
+        {
+            text-decoration: none;
+            text-shadow: 1px 1px $white;
+        }
+
         h3
         {
             border-bottom: $thin-border solid $light-grey;
