@@ -27,7 +27,6 @@ class CreateJournalEntriesTable extends Migration
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->tinyInteger('mood_id')->unsigned()->default(0); // Default
             $table->string('title');
-            $table->date('day');
             $table->text('body')->nullable();
 
             // Constraints

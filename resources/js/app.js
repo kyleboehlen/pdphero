@@ -343,6 +343,25 @@ $(document).ready(function(){
     $('#action-item-show-todo').change(function(){
         $.fn.checkActionItemShowTodo();
     });
+
+    // Handles making sure only one journal entry mood checkbox is checked
+    $('.mood-checkbox').change(function(){
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if($box.is(":checked"))
+        {
+            // get all of the other checkboxes
+            var group = $('.mood-checkbox');
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        }
+        else
+        {
+            $box.prop("checked", false);
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes

@@ -56,7 +56,7 @@
                 </ul>
             @else
                 <ul>
-                    <a href="{{ route('profile.edit.values') }}">
+                    <a href="{{ route('profile.edit.values') }}" class="create-hover">
                         <li>Click to add!</li>
                         <li>Such as:</li>
                         <li>Honesty</li>
@@ -76,7 +76,7 @@
                     <p>{{ $line }}</p>
                 @endforeach
             @else
-                <a href="{{ route('profile.edit.nutshell') }}">
+                <a href="{{ route('profile.edit.nutshell') }}" class="create-hover">
                     <p>Click here to add your nutshell; this is where you list the things that are important to you, that you love doing, and that make you who you are!</p>
                 </a>
             @endisset
@@ -95,7 +95,7 @@
                     </ol>
                 @else
                     <ol>
-                        <a href="{{ route('profile.edit.rules') }}">
+                        <a href="{{ route('profile.edit.rules') }}" class="create-hover">
                             <li>Rules and boundaries help us to do what we really want</li>
                             <li>They're boundries you've already created to protect yourself</li>
                             <li>They even work great with pushy friends or family!</li>

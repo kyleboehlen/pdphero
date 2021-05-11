@@ -15,6 +15,10 @@
             <a href="{{ route('journal.view.day', ['day' => $idek]) }}"><li>Back To Day</li></a>
         @endif
 
+        @if(in_array('back-entry', $show))
+            <a href="{{ route('journal.view.entry', ['journal_entry' => $journal_entry->uuid]) }}"><li>Back To Entry</li></a>
+        @endif
+
         @if(in_array('create', $show))
             <a href="{{ route('journal.create.entry') }}"><li>Add Entry</li></a>
         @endif

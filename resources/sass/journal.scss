@@ -98,6 +98,114 @@ div.app-container
         }
     }
     
+    form.journal-entry
+    {
+        @extend %base-form;
+
+        margin-top: 0;
+        overflow-y: scroll;
+
+        h2
+        {
+            @include form-title;
+
+            margin-bottom: .5%;
+        }
+
+        input[type="text"]
+        {
+            font-size: 2em;
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.25em;
+            margin-bottom: 1%;
+            padding-left: .5%;
+            padding-right: .5%;
+            text-align: center;
+            width: 75%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 2em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.75em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.5em;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+
+        textarea
+        {
+            min-height: 250px;
+
+            @media only screen and (max-height: 725px)
+            {
+                min-height: 200px;
+            }
+
+            @media only screen and (max-height: 650px)
+            {
+                min-height: 150px;
+            }
+
+            @media only screen and (max-height: 575px)
+            {
+                min-height: 100px;
+            }
+
+            @media only screen and (max-height: 500px)
+            {
+                min-height: 50px;
+            }
+        }
+
+        div.mood-container
+        {
+            @extend %flex-container;
+
+            margin-left: 12.5%;
+            width: 75%;
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            .mood-checkbox
+            {
+                @extend %checkbox;
+                @include mood-checkbox;
+            }
+        }
+
+        button.cancel,
+        button.submit
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+        }
+    }
+    
     div.color-guide
     {
         align-items: center;
