@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 // Models
 use App\Models\Journal\JournalEntry;
+use App\Models\Journal\JournalCategory;
 use App\Models\User\User;
 
 class JournalTest extends TestCase
@@ -30,11 +31,15 @@ class JournalTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        // Generate a goal and grab the UUID for testing
+        // Generate a fake journal entry and grab the UUID for testing
         $fake_journal_entry = JournalEntry::factory()->create();
         $journal_entry_uuid = $fake_journal_entry->uuid;
         $this->assertTrue($fake_journal_entry->delete());
-
+        
+        // Generate fake journal category and grab uuid for testing delete
+        $fake_journal_category = JournalCategory::factory()->create();
+        $journal_category_uuid = $fake_journal_category->uuid;
+        $this->assertTrue($fake_journal_category->delete());
 
         // Test view route
         $response = $this->actingAs($user)->get(route('journal.view.entry', ['journal_entry' => $journal_entry_uuid]));
@@ -50,6 +55,8 @@ class JournalTest extends TestCase
 
         // Test delete route
         $response = $this->actingAs($user)->post(route('journal.destroy.entry', ['journal_entry' => $journal_entry_uuid]));
+        $response->assertStatus(404);
+        $response = $this->actingAs($user)->post(route('journal.destroy.category', ['category' => $journal_category_uuid]));
         $response->assertStatus(404);
     }
 
@@ -75,6 +82,12 @@ class JournalTest extends TestCase
         $journal_entry = $journal_entries->random();
         $journal_entry_uuid = $journal_entry->uuid;
 
+        // Get a forbidden journal category uuid
+        $journal_category = JournalCategory::factory()->create([
+            'user_id' => $forbidden_user->id,
+        ]);
+        $journal_category_uuid = $journal_category->uuid;
+
         // Test view route
         $response = $this->actingAs($test_user)->get(route('journal.view.entry', ['journal_entry' => $journal_entry_uuid]));
         $response->assertStatus(403);
@@ -89,6 +102,8 @@ class JournalTest extends TestCase
 
         // Test delete route
         $response = $this->actingAs($test_user)->post(route('journal.destroy.entry', ['journal_entry' => $journal_entry_uuid]));
+        $response->assertStatus(403);
+        $response = $this->actingAs($test_user)->post(route('journal.destroy.category', ['category' => $journal_category_uuid]));
         $response->assertStatus(403);
     }
 }
