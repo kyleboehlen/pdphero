@@ -191,7 +191,7 @@ class GoalController extends Controller
         }
 
         // Build nav and tab dropdowns based on goal type
-        $nav_show = 'back|edit|delete';
+        $nav_show = 'back|delete';
 
         if($goal->type_id == Type::PARENT_GOAL)
         {
@@ -220,7 +220,7 @@ class GoalController extends Controller
             }
             else
             {
-                $nav_show .= '|toggle-achieved';
+                $nav_show .= '|edit|toggle-achieved';
             }
         }
 
@@ -711,6 +711,11 @@ class GoalController extends Controller
 
     public function editGoal(Request $request, Goal $goal)
     {
+        if($goal->achieved)
+        {
+            return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
+        }
+
         return view('goals.edit')->with(['goal' => $goal]);
     }
 
@@ -757,9 +762,11 @@ class GoalController extends Controller
 
     public function updateGoal(UpdateRequest $request, Goal $goal)
     {
-        // Set user
-        $user = $request->user();
-
+        if($goal->achieved)
+        {
+            return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
+        }
+        
         if($request->has('name'))
         {
             $name = $request->get('name');
