@@ -306,14 +306,14 @@ class GoalController extends Controller
         $action_item->load('goal');
 
         // Build nav
-        $show = 'back-goal|edit|delete';
+        $show = 'back-goal|delete';
         if($action_item->achieved)
         {
             $show .= '|toggle-unachieved';
         }
         else
         {
-            $show .= '|toggle-achieved';
+            $show .= '|edit|toggle-achieved';
 
             if(!is_null($action_item->deadline) && $action_item->goal->type_id == Type::ACTION_AD_HOC)
             {
@@ -721,6 +721,11 @@ class GoalController extends Controller
 
     public function editActionItem(Request $request, GoalActionItem $action_item)
     {
+        if($action_item->achieved)
+        {
+            return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
+        }
+        
         // Load goal for nav and form
         $action_item->load('goal');
 
@@ -907,6 +912,11 @@ class GoalController extends Controller
 
     public function updateActionItem(UpdateActionItemRequest $request, GoalActionItem $action_item)
     {
+        if($action_item->achieved)
+        {
+            return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
+        }
+        
         if($request->has('name'))
         {
             $action_item->name = $request->get('name');

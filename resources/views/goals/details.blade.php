@@ -15,15 +15,19 @@
         <h2>{{ $goal->name }}</h2>
 
         {{-- Goal Dates --}}
-        @if(!is_null($goal->end_date))
-            <p class="goal-dates">
-                @if(!is_null($goal->start_date))
-                    {{ \Carbon\Carbon::parse($goal->start_date)->format('n/j/y') }} - 
-                @else
-                    By:
-                @endif
-                {{ \Carbon\Carbon::parse($goal->end_date)->format('n/j/y') }}
-            </p>
+        @if($goal->achieved)
+            <p class="goal-dates">Achieved On {{ \Carbon\Carbon::parse($goal->updated_at)->setTimezone(\Auth::user()->timezone ?? 'America/Denver')->format('n/j/y') }}</p>
+        @else
+            @if(!is_null($goal->end_date))
+                <p class="goal-dates">
+                    @if(!is_null($goal->start_date))
+                        {{ \Carbon\Carbon::parse($goal->start_date)->format('n/j/y') }} - 
+                    @else
+                        By:
+                    @endif
+                    {{ \Carbon\Carbon::parse($goal->end_date)->format('n/j/y') }}
+                </p>
+            @endif
         @endif
 
         {{-- Nav dropdown --}}
