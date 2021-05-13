@@ -362,6 +362,16 @@ $(document).ready(function(){
             $box.prop("checked", false);
         }
     });
+
+    // Journal selectors
+    $('.journal-selector').change(function(){
+        var month = $('#month-selector').find(':selected').val();
+        var year = $('#year-selector').find(':selected').val();
+        var url = window.location.toString();
+        url = url.substring(0, url.indexOf('list') + 4);
+        url = url + '/' + month + '/' + year;
+        window.location.href = url;
+    });
 });
 
 // Replaces custom alert pop-up boxes

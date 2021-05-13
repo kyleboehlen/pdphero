@@ -70,6 +70,222 @@ header.app
 
 div.app-container
 {
+    &.month-list
+    {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    
+        @media only screen and (max-width: 800px)
+        {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-y: scroll;
+        }
+
+        div.selector
+        {
+            align-self: flex-start;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 1%;
+            margin-top: 1%;
+            text-align: center;
+            width: 99%;
+    
+            select
+            {
+                background-color: $dark-grey;
+                color: $white;
+                font-family: $header-font;
+                font-size: 1em;
+                text-align: center;
+                padding-left: .5%;
+                padding-right: .5%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: .8em;
+                }
+    
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: .7em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    max-width: 60%;
+                }
+    
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: .6em;
+                }
+    
+                @media only screen and (max-width: 340px)
+                {
+                    font-size: .5em;
+                }
+    
+                &:focus
+                {
+                    outline: none;
+                }
+            }
+        }
+
+        div.summary
+        {
+            align-self: stretch;
+            border: $thin-border solid $light-grey;
+            border-radius: 10px;
+            margin: .25%;
+            text-align: center;
+            width: 45%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                margin: 1%; 
+                width: 98%;
+            }
+            
+            @media only screen and (max-width: 800px)
+            {
+                width: 96.5%;
+            }
+
+            a
+            {   
+                height: auto;
+                text-decoration: none;
+                width: 100%;
+                
+                &:hover > h2
+                {
+                    text-shadow: 1.5px 1px $white;
+                    text-decoration-color: $white;
+                }
+            }
+
+            h2
+            {
+                color: $white;
+                font-family: $header-font;
+                font-size: 1.85em;
+                font-weight: normal;
+                margin-bottom: 0;
+                margin-top: 1.5%;
+                text-decoration: underline;
+                text-decoration-color: $green;
+                width: 100%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 2.25em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1.25em;
+                }
+
+                @media only screen and (max-width: 320px)
+                {
+                    font-size: 1.1em;
+                }
+            }
+
+            ul
+            {
+                padding-left: 15%;
+                text-align: left;
+                width: 100%;
+
+                li
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 2em;
+                    margin: 0;
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.75em;
+                    }
+
+                    @media only screen and (max-width: 550px)
+                    {
+                        font-size: 1.5em;
+                    }
+
+                    @media only screen and (max-width: 375px)
+                    {
+                        font-size: 1.25em;
+                    }
+                }
+            }
+
+            &.totals
+            {
+                width: 80%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    margin: 1%; 
+                    width: 98%;
+                }
+                
+                @media only screen and (max-width: 800px)
+                {
+                    width: 96.5%;
+                }
+
+                ul
+                {
+                    columns: 2;
+                    -webkit-columns: 2;
+                    -moz-columns: 2;
+
+                    padding-left: 10%;
+
+                    @media only screen and (max-width: 1600px)
+                    {
+                        padding-left: 5%;
+                    }
+
+                    @media only screen and (max-width: 1300px)
+                    {
+                        columns: 1;
+                        -webkit-columns: 1;
+                        -moz-columns: 1;
+
+                        padding-left: 15%;
+                    }
+                }
+            }
+        }
+    }
+
     &.entry-details
     {
         display: block;
