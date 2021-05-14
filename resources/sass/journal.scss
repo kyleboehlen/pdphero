@@ -286,7 +286,7 @@ div.app-container
         }
     }
 
-    &.day-timeline
+    &.day-timeline, &.search-results
     {
         align-items: center;
         flex-direction: column;
@@ -294,6 +294,38 @@ div.app-container
         justify-content: flex-start;
         overflow-y: scroll;
         overflow-x: hidden;
+
+        h2.search-title
+        {
+            @include form-title;
+
+            margin-bottom: 0;
+            margin-left: 0;
+            text-align: center;
+        }
+
+        span.search-highlight
+        {
+            &.default
+            {
+                background-color: $brown-highlight;
+            }
+
+            &.positive
+            {
+                background-color: $green-highlight;
+            }
+
+            &.neutral
+            {
+                background-color: $yellow-highlight;
+            }
+
+            &.negative
+            {
+                background-color: $red-highlight;
+            }
+        }
 
         div.selector
         {
@@ -1009,6 +1041,133 @@ div.app-container
                 &:first-of-type
                 {
                     margin-top: 5%;
+                }
+            }
+        }
+    }
+}
+
+#search-entries-container
+{
+    background-color: $dark-grey;
+    border-radius: 5px;
+    display: none;
+    height: auto;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 17.5vh;
+    position: absolute;
+    width: 40%;
+    z-index: 6;
+
+    @media only screen and (max-height: 620px)
+    {
+        margin-top: 2.5vh;
+    }
+
+    @media only screen and (max-width: 1350px)
+    {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 1100px)
+    {
+        margin-left: 20%;
+        margin-right: 20%;
+        width: 60%;
+    }
+
+    @media only screen and (max-width: 650px)
+    {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: 0;
+        width: 95%;
+    }
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 0;
+        margin-top: 2.5%;
+        padding-left: 5%;
+        padding-right: 5%;
+        text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.35em;
+        }
+    }
+
+
+    form
+    {
+        @extend %base-form;
+        
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            margin: 1%;
+        }
+
+        div.between-dates-container
+        {
+            input[type="date"]
+            {
+                font-size: 2.25em;
+                text-align: center;
+                width: 50%;
+
+                @media only screen and (max-width: 1000px)
+                {
+                    width: 60%;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    width: 70%;
+                }
+
+                @media only screen and (max-width: 700px)
+                {
+                    width: 80%;
+                }
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.journal-search-button, button.journal-search-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
                 }
             }
         }

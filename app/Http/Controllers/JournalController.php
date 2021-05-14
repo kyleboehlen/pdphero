@@ -20,6 +20,7 @@ use App\Models\Journal\JournalEntry;
 use App\Models\ToDo\ToDo;
 
 // Requests
+use App\Http\Requests\Journal\SearchRequest;
 use App\Http\Requests\Journal\StoreRequest;
 use App\Http\Requests\Journal\StoreCategoryRequest;
 use App\Http\Requests\Journal\UpdateRequest;
@@ -394,14 +395,26 @@ class JournalController extends Controller
         ]);
     }
 
-    public function viewSearch()
+    public function search(SearchRequest $request)
     {
+        // Get search term
+        $keywords = $request->get('keywords');
 
-    }
+        // Create UTC timestamps
+        $user = $request->user();
+        $timezone = $user->timezone ?? 'America/Denver';
+        $start_timestamp = Carbon::createFromFormat('Y-m-d', $request->get('start-date'), $timezone)->startOfDay()->setTimezone('UTC')->toDateTimeString();
+        $end_timestamp = Carbon::createFromFormat('Y-m-d', $request->get('end-date'), $timezone)->endOfDay()->setTimezone('UTC')->toDateTimeString();
 
-    public function search()
-    {
+        // Search
+        $journal_entries = JournalEntry::where('user_id', $user->id)->whereBetween('created_at', [$start_timestamp, $end_timestamp])->where(function($q) use ($keywords){
+            return $q->where('title', 'like', '%' . $keywords . '%')->orWhere('body', 'like', '%' . $keywords . '%');
+        })->orderBy('created_at')->get();
 
+        return view('journal.search')->with([
+            'journal_entries' => $journal_entries,
+            'keywords' => $keywords,
+        ]);
     }
 
     public function editCategories(Request $request)

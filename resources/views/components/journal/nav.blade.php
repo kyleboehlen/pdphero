@@ -36,7 +36,7 @@
         @endif
 
         @if(in_array('search', $show))
-            <a href="#"><li>Search Entries</li></a>
+            <a href="#" id="show-search-entries"><li>Search Entries</li></a>
         @endif
 
         @if(in_array('color-key', $show))
@@ -51,6 +51,62 @@
                 onclick="event.preventDefault(); verifyDeleteForm('Delete Journal Entry?', '#delete-entry-form')">
                 <li>Delete Entry</li>
             </a>
-        @endif 
+        @endif
     </ul>
 </nav>
+
+{{-- Search popup --}}
+@push('scripts')
+    <div class="overlay-hide" id="search-entries-container">
+        {{-- Search Headline --}}
+        <h2>Search Journal Entries</h2><br/>
+        
+        {{-- Search Entries Form --}}
+        <form action="{{ route('journal.search') }}" method="POST">
+            @csrf
+
+            <p>Search For:</p>
+            <div class="search-for-container">
+                <input type="text" name="keywords" placeholder="Keywords..." required/>
+            </div>
+            @error('keywords')
+                <script>
+                    sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                </script>
+            @enderror
+
+            <div class="between-dates-container">
+                <p>From:</p>
+                <input type="date" name="start-date" required />
+                <p>To:</p>
+                <input type="date" name="end-date" required />
+            </div>
+            @error('start-date')
+                <script>
+                    sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                </script>
+            @enderror
+            @error('end-date')
+                <script>
+                    sweetAlert('Error', 'error', '#d12828', '{{ $message }}');
+                </script>
+            @enderror
+            <br/><br/>
+
+            {{-- Cancel/Save buttons --}}
+            <div class="buttons-container">
+                <button type="button" class="swal2-confirm swal2-styled journal-search-button overlay-cancel-button">Cancel</button>
+                <button type="submit" class="swal2-confirm swal2-styled journal-search-button">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#show-search-entries').click(function(){
+                $('.overlay').show();
+                $('#search-entries-container').show();
+            });
+        });
+    </script>
+@endpush

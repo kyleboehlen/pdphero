@@ -64,9 +64,6 @@ Route::prefix('journal')->group(function(){
 
         // Entry view
         Route::get('entry/{journal_entry}', [JournalController::class, 'viewEntry'])->name('journal.view.entry');
-
-        // The journal search form
-        Route::get('search', [JournalController::class, 'viewSearch'])->name('journal.view.search');
     });
 
     // Search functionality

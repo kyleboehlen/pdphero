@@ -4,8 +4,14 @@
     <div class="text">
         <b>{{ $journal_entry->title }}: </b>
         <a class="preview" href="{{ route('journal.view.entry', ['journal_entry' => $journal_entry]) }}">
-            <i>{{ $journal_entry->body }}</i>
+            <i>
+                @if(!is_null($before_body) && !is_null($matching_text) && !is_null($after_body))
+                    {{ $before_body }}<span class="search-highlight {{ $mood }}">{{ $matching_text }}</span>{{ $after_body }}
+                @else
+                    {{ $journal_entry->body }}
+                @endif
+            </i>
         </a>
     </div>
-    <div class="mood {{ strtolower(config('journal.moods')[$journal_entry->mood_id]['name']) }}"></div>
+    <div class="mood {{ $mood }}"></div>
 </div>
