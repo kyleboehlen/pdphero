@@ -40,6 +40,16 @@ class TotalsSummary extends Component
      */
     public function render()
     {
-        return view('components.journal.totals-summary');
+        if( $this->todo_count > 0 ||
+            $this->habit_count > 0 ||
+            $this->goal_count > 0 ||
+            $this->action_item_count > 0 ||
+            $this->journal_entry_count > 0 ||
+            $this->affirmations_count > 0)
+        {
+            return view('components.journal.totals-summary');
+        }
+        
+        return;
     }
 }

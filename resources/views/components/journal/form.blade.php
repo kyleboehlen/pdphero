@@ -21,7 +21,7 @@
     <br/><br/>
 
     <select name="category" required>
-        <option @if(is_null($journal_entry) && is_null(old('category'))) selected @endif value="0">Journal Entry</option>
+        <option @if(is_null($journal_entry) && is_null(old('category'))) selected @endif value="no-category">Journal Entry</option>
 
         @foreach($categories as $category)
             <option value="{{ $category->uuid }}"
@@ -44,12 +44,12 @@
     @endisset
 
     <br/>
-    <textarea name="body" required
-        placeholder="Your journal entry goes here! :)"
-    >@isset($journal_entry){{ $journal_entry->body }}@else{{ old('body') }}@endisset</textarea><br/><br/>
     @error('body')
         <p class="error">{{ $message }}</p>
     @enderror
+    <textarea name="body" required
+        placeholder="Your journal entry goes here! :)"
+    >@isset($journal_entry){{ $journal_entry->body }}@else{{ old('body') }}@endisset</textarea><br/><br/>
 
     <a href="{{ route('journal.view.list') }}">
         <button class="cancel" type="button">Cancel</button>

@@ -27,6 +27,7 @@ class StoreRequest extends FormRequest
         // Get category uuids
         $user = \Auth::user();
         $category_uuids = $user->journalCategories()->get()->pluck('uuid')->toArray();
+        array_push($category_uuids, 'no-category');
 
         return [
             'title' => 'required|string|max:255',

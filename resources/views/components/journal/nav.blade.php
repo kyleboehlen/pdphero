@@ -7,12 +7,16 @@
 
     <ul class="list">
         @if(in_array('back', $show))
-            <a href="{{ route('journal') }}"><li>Back To List</li></a>
+            @if(!is_null($month) && !is_null($year))
+                <a href="{{ route('journal.view.list', ['month' => $month, 'year' => $year]) }}"><li>Back To List</li></a>
+            @else
+                <a href="{{ route('journal') }}"><li>Back To List</li></a>
+            @endif
         @endif
 
         @if(in_array('back-day', $show))
             {{-- Gotta use day here somehow --}}
-            <a href="{{ route('journal.view.day', ['day' => $idek]) }}"><li>Back To Day</li></a>
+            <a href="{{ route('journal.view.day', ['date' => $date]) }}"><li>Back To Day</li></a>
         @endif
 
         @if(in_array('back-entry', $show))

@@ -475,7 +475,7 @@ class GoalTest extends TestCase
         $user = User::factory()->create();
 
         // Create a goal
-        $goal = Goal::factory()->parent()->create(['user_id' => $user->id]);
+        $goal = Goal::factory()->parent()->create(['user_id' => $user->id, 'achieved' => false]);
 
         // Now see if we can get the edit form
         $response = $this->actingAs($user)->get(route('goals.edit.goal', ['goal' => $goal->uuid]));
@@ -518,12 +518,13 @@ class GoalTest extends TestCase
         $user = User::factory()->create();
 
         // Create goal we can put action items under
-        $goal = Goal::factory()->adHoc()->create(['user_id' => $user->id]);
+        $goal = Goal::factory()->adHoc()->create(['user_id' => $user->id, 'achieved' => false]);
         
         // Create an action item
         $action_item = GoalActionItem::factory()->create([
             'goal_id' => $goal->id,
             'deadline' => null,
+            'achieved' => false
         ]);
 
         // See we get the action item form

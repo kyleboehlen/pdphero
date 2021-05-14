@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DB;
 
 // Constants
 use App\Helpers\Constants\Habits\HistoryType as HabitHistoryType;
@@ -106,6 +107,7 @@ class JournalController extends Controller
             // Set array and date
             $array = [
                 'display_date' => $carbon->format('n/j/y'),
+                // 'display_date' => $start_timestamp . '||' . $end_timestamp,
                 'route_date' => $carbon->format('Y-m-d'),
             ];
 
@@ -118,11 +120,10 @@ class JournalController extends Controller
 
             // Get habits
             $array['habit_count'] =
-                HabitHistory::select('habit_id')
-                    ->whereIn('habit_id', $habit_ids)
+                HabitHistory::whereIn('habit_id', $habit_ids)
                     ->where('type_id', HabitHistoryType::COMPLETED)
-                    ->whereBetween('day', $between_array)
-                    ->groupBy('habit_id')->get()->count();
+                    ->where('day', $carbon->format('Y-m-d'))
+                    ->get()->count();
 
             // Get goals
             $array['goal_count'] =
@@ -174,7 +175,216 @@ class JournalController extends Controller
 
     public function viewDay($date = null)
     {
+        // Create carbon with user's timezone for passed date
+        $user = \Auth::user();
+        $timezone = $user->timezone ?? 'America/Denver';
+        $carbon = Carbon::createFromFormat('Y-m-d', $date, $timezone);
 
+        // Create start/end timestamps for that day
+        $start_timestamp = (clone $carbon)->startOfDay()->setTimezone('UTC')->toDateTimeString();
+        $end_timestamp = (clone $carbon)->endOfDay()->setTimezone('UTC')->toDateTimeString();
+        $between_array = [$start_timestamp, $end_timestamp];
+
+        // Get content
+        $habit_ids = $user->habits()->get()->pluck('id')->toArray(); // For habit histories
+        $goal_ids = $user->goals()->get()->pluck('id')->toArray(); // For action items
+
+        // Get habits
+        $completed_habits =
+            HabitHistory::whereIn('habit_id', $habit_ids)
+                ->where('type_id', HabitHistoryType::COMPLETED)
+                ->where('day', $carbon->format('Y-m-d'))
+                ->with('habit')
+                ->get();
+        $skipped_habits =
+            HabitHistory::whereIn('habit_id', $habit_ids)
+                ->where('type_id', HabitHistoryType::SKIPPED)
+                ->where('day', $carbon->format('Y-m-d'))
+                ->with('habit')
+                ->get();
+        $missed_habits =
+            HabitHistory::whereIn('habit_id', $habit_ids)
+                ->where('type_id', HabitHistoryType::MISSED)
+                ->where('day', $carbon->format('Y-m-d'))
+                ->whereNotNull('notes')
+                ->with('habit')
+                ->get();
+
+        // And affirmations
+        $affirmations_count =
+            AffirmationsReadLog::where('user_id', $user->id)
+                ->whereBetween('read_at', $between_array)
+                ->get()->count();
+
+        // Get Todos
+        $todos =
+            ToDo::where('user_id', $user->id)
+                ->where('completed', 1)
+                ->whereBetween('updated_at', $between_array)
+                ->get();
+
+        // Get goals
+        $goals =
+            Goal::where('user_id', $user->id)
+                ->where('achieved', 1)
+                ->whereBetween('updated_at', $between_array)
+                ->get();
+
+        // Get action items
+        $action_items =
+            GoalActionItem::whereIn('goal_id', $goal_ids)
+                ->where('achieved', 1)
+                ->whereBetween('updated_at', $between_array)
+                ->get();
+
+        // Get entries
+        $journal_entries =
+            JournalEntry::where('user_id', $user->id)
+                ->whereBetween('created_at', $between_array)
+                ->get();
+
+        // Build the filter dropdown
+        $filter_dropdown = array();
+
+        if($affirmations_count > 0)
+        {
+            $filter_dropdown['affirmations'] = 'Affirmations';
+        }
+
+        if($completed_habits->count() > 0 || $skipped_habits->count() > 0)
+        {
+            $filter_dropdown['habit'] = 'Habits';
+        }
+
+        if($todos->count() > 0)
+        {
+            $filter_dropdown['todo'] = 'To-Do Items';
+        }
+
+        if($goals->count() > 0)
+        {
+            $filter_dropdown['goal'] = 'Goals';
+        }
+
+        if($action_items->count() > 0)
+        {
+            $filter_dropdown['action-item'] = 'Action Items';
+        }
+
+        if($journal_entries->count() > 0)
+        {
+            $filter_dropdown['journal-entry'] = 'Journal Entries';
+        }
+
+        if(count($filter_dropdown) > 1)
+        {
+            $filter_dropdown = array_merge(['all' => 'Show All'], $filter_dropdown);
+        }
+
+        // Order all these fucking models into a timeline
+        $timeline_array = array(); // This could probably be cleaned up by running a foreach over an array('collection' => $collection, 'property' => 'created_at/updated_at')
+        while(
+            $todos->count() > 0 ||
+            $goals->count() > 0 ||
+            $action_items->count() > 0 ||
+            $journal_entries->count() > 0)
+        {
+            $obj = null;
+
+            if($todos->count() > 0)
+            {
+                if(is_null($obj))
+                {
+                    $obj = $todos->first();
+                    $obj_carbon = Carbon::parse($obj->updated_at)->setTimezone($timezone);
+                    $obj_collection = $todos;
+                }
+                else
+                {
+                    $compare_carbon = Carbon::parse($todos->first()->updated_at)->setTimezone($timezone);
+                    if($compare_carbon->lessThan($obj_carbon))
+                    {
+                        $obj = $todos->first();
+                        $obj_carbon = $compare_carbon;
+                        $obj_collection = $todos;
+                    }
+                }
+            }
+
+            if($goals->count() > 0)
+            {
+                if(is_null($obj))
+                {
+                    $obj = $goals->first();
+                    $obj_carbon = Carbon::parse($obj->updated_at)->setTimezone($timezone);
+                    $obj_collection = $goals;
+                }
+                else
+                {
+                    $compare_carbon = Carbon::parse($goals->first()->updated_at)->setTimezone($timezone);
+                    if($compare_carbon->lessThan($obj_carbon))
+                    {
+                        $obj = $goals->first();
+                        $obj_carbon = $compare_carbon;
+                        $obj_collection = $goals;
+                    }
+                }
+            }
+
+            if($action_items->count() > 0)
+            {
+                if(is_null($obj))
+                {
+                    $obj = $action_items->first();
+                    $obj_carbon = Carbon::parse($obj->updated_at)->setTimezone($timezone);
+                    $obj_collection = $action_items;
+                }
+                else
+                {
+                    $compare_carbon = Carbon::parse($action_items->first()->updated_at)->setTimezone($timezone);
+                    if($compare_carbon->lessThan($obj_carbon))
+                    {
+                        $obj = $action_items->first();
+                        $obj_carbon = $compare_carbon;
+                        $obj_collection = $action_items;
+                    }
+                }
+            }
+
+            if($journal_entries->count() > 0)
+            {
+                if(is_null($obj))
+                {
+                    $obj = $journal_entries->first();
+                    $obj_carbon = Carbon::parse($obj->created_at)->setTimezone($timezone);
+                    $obj_collection = $journal_entries;
+                }
+                else
+                {
+                    $compare_carbon = Carbon::parse($journal_entries->first()->created_at)->setTimezone($timezone);
+                    if($compare_carbon->lessThan($obj_carbon))
+                    {
+                        $obj = $journal_entries->first();
+                        $obj_carbon = $compare_carbon;
+                        $obj_collection = $journal_entries;
+                    }
+                }
+            }
+
+            $obj->display_time = $obj_carbon->format('g:i A');
+            array_push($timeline_array, $obj);
+            $obj_collection->forget($obj_collection->keys()->first());
+        }
+
+        return view('journal.day')->with([
+            'date' => $date,
+            'completed_habits' => $completed_habits,
+            'skipped_habits' => $skipped_habits,
+            'missed_habits' => $missed_habits,
+            'affirmations_count' => $affirmations_count,
+            'filter_dropdown' => $filter_dropdown,
+            'timeline_array' => $timeline_array,
+        ]);
     }
 
     public function viewEntry(JournalEntry $journal_entry)
@@ -241,7 +451,7 @@ class JournalController extends Controller
 
         // Set category
         $category_uuid = $request->get('category');
-        if($category_uuid != 0)
+        if($category_uuid != 'no-category')
         {
             $category_id = JournalCategory::where('uuid', $category_uuid)->first()->id;
             $entry->category_id = $category_id;

@@ -372,6 +372,36 @@ $(document).ready(function(){
         url = url + '/' + month + '/' + year;
         window.location.href = url;
     });
+
+    // Journal filter
+    $('#journal-filter-selector').change(function(){
+        $('.summary-hide').hide();
+        var show = $('#journal-filter-selector').find(':selected').val();
+        switch(show)
+        {
+            case 'all':
+                $('.summary-hide').show();
+                break;
+            case 'affirmations':
+                $('.summary-show-affirmations').show();
+                break;
+            case 'habit':
+                $('.summary-show-habits').show();
+                break;
+            case 'todo':
+                $('.summary-show-todo-item').show();
+                break;
+            case 'goal':
+                $('.summary-show-goal').show();
+                break;
+            case 'action-item':
+                $('.summary-show-action-item').show();
+                break;
+            case 'journal-entry':
+                $('.summary-show-journal-entry').show();
+                break;
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes

@@ -27,14 +27,14 @@ class JournalEntryFactory extends Factory
     {
         // Generate day
         $days_back = rand(0, 365);
-        $updated_at = Carbon::now()->subDays($days_back)->format('Y-m-d');
+        $created_at = Carbon::now()->subDays($days_back)->format('Y-m-d');
 
         return [
             'user_id' => User::inRandomOrder()->first()->id,
             'mood_id' => array_rand(config('journal.moods')),
             'title' => $this->faker->words(rand(3, 5), true),
-            'updated_at' => $updated_at,
-            'body' => array_rand([true, false]) ? $this->faker->paragraph() : null,
+            'created_at' => $created_at,
+            'body' => $this->faker->paragraph(),
         ];
     }
 }

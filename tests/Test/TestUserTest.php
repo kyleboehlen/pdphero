@@ -179,10 +179,10 @@ class TestUserTest extends TestCase
         $this->assertTrue(JournalCategory::where('user_id', $user->id)->get()->count() >= count(config('journal.default_categories')) + 1);
 
         // Generate journal entries
-        JournalEntry::factory(rand(10, 30))->create([
+        JournalEntry::factory(rand(200, 300))->create([
             'user_id' => $user->id,
         ]);
 
-        $this->assertTrue(JournalEntry::where('user_id', $user->id)->get()->count() >= 10);
+        $this->assertTrue(JournalEntry::where('user_id', $user->id)->get()->count() >= 200);
     }
 }

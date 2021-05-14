@@ -286,6 +286,417 @@ div.app-container
         }
     }
 
+    &.day-timeline
+    {
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        div.selector
+        {
+            align-self: flex-start;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 1%;
+            margin-top: 1%;
+            text-align: center;
+            width: 99%;
+    
+            select
+            {
+                background-color: $dark-grey;
+                color: $white;
+                font-family: $header-font;
+                font-size: 1em;
+                text-align: center;
+                padding-left: .5%;
+                padding-right: .5%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: .8em;
+                }
+    
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: .7em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    max-width: 60%;
+                }
+    
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: .6em;
+                }
+    
+                @media only screen and (max-width: 340px)
+                {
+                    font-size: .5em;
+                }
+    
+                &:focus
+                {
+                    outline: none;
+                }
+            }
+        }
+
+        span.time-spacer
+        {
+            border-left: 2px dashed $white;
+            min-height: 50px;
+
+            @media only screen and (max-height: 900px)
+            {
+                min-height: 35px;
+            }
+
+            @media only screen and (max-height: 800px)
+            {
+                min-height: 30px;
+            }
+
+            @media only screen and (max-height: 800px)
+            {
+                min-height: 25px;
+            }
+        }
+
+        span.time-label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.75em;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.4em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.3em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.2em;
+            }
+        }
+
+        div.summary
+        {
+            border: $thin-border solid $light-grey;
+            border-radius: 10px;
+            margin: .25%;
+            text-align: center;
+            width: 60%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                width: 98%;
+            }
+            
+            @media only screen and (max-width: 800px)
+            {
+                width: 96.5%;
+            }
+
+            &#habits-journal-summary
+            {
+                width: 80%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    width: 98%;
+                }
+                
+                @media only screen and (max-width: 800px)
+                {
+                    width: 96.5%;
+                }
+            }
+
+            &#affirmations-journal-summary, &.summary-timeline-item
+            {
+                padding-top: 1%;
+            }
+
+            a
+            {   
+                height: auto;
+                text-decoration: none;
+                width: 100%;
+                
+                &:hover > h2
+                {
+                    text-shadow: 1.5px 1px $white;
+                    text-decoration-color: $white;
+                }
+            }
+
+            h2
+            {
+                color: $white;
+                font-family: $header-font;
+                font-size: 1.85em;
+                font-weight: normal;
+                margin-bottom: 0;
+                margin-top: 1.5%;
+                text-decoration: underline;
+                text-decoration-color: $green;
+                width: 100%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 2.25em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1.25em;
+                }
+
+                @media only screen and (max-width: 320px)
+                {
+                    font-size: 1.1em;
+                }
+            }
+
+            p
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2em;
+                text-align: left;
+                padding-left: 5%;
+                margin-bottom: 0;
+                margin-top: 1%;
+                width: 100%;
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 1.9em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    padding-left: 1%;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.6em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.4em;
+                }
+            }
+
+            ul
+            {
+                margin-top: 0;
+                padding-left: 15%;
+                padding-right: 5%;
+                text-align: left;
+                width: 100%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    padding-left: 10%;
+                    padding-right: 1%;
+                }
+
+                li
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 2em;
+                    margin: 0;
+                    width: 80%;
+
+                    @media only screen and (max-width: 900px)
+                    {
+                        font-size: 1.9em;
+                    }
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        width: 89%;
+                        font-size: 1.75em;
+                    }
+
+                    @media only screen and (max-width: 550px)
+                    {
+                        font-size: 1.5em;
+                    }
+
+                    @media only screen and (max-width: 450px)
+                    {
+                        font-size: 1.4em;
+                    }
+
+                    @media only screen and (max-width: 375px)
+                    {
+                        font-size: 1.25em;
+                    }
+                }
+
+                &.timeline-item
+                {
+                    padding-left: 7.5%;
+
+                    @media only screen and (max-width: 625px)
+                    {
+                        padding-left: 10%;
+                    }
+                }
+
+                &.timeline-item > li
+                {
+                    width: 90%;
+
+                    @media only screen and (max-width: 625px)
+                    {
+                        width: 80%;
+                    }
+                }
+            }
+
+            &.summary-journal-entry
+            {
+                display: flex;
+                padding: 0;
+                text-align: left;
+                width: 60%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    width: 98%;
+                }
+                
+                @media only screen and (max-width: 800px)
+                {
+                    width: 96.5%;
+                }
+
+                div.text
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 2.1em;
+                    margin-bottom: 1%;
+                    max-height: 100px;
+                    padding: 1%;
+                    padding-left: 5%;
+                    overflow-y: hidden;
+                    width: 97.5%;
+
+                    @media only screen and (max-width: 900px)
+                    {
+                        font-size: 2em;
+                    }
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.85em;
+                    }
+
+                    @media only screen and (max-width: 550px)
+                    {
+                        font-size: 1.6em;
+                    }
+
+                    @media only screen and (max-width: 450px)
+                    {
+                        font-size: 1.5em;
+                    }
+
+                    @media only screen and (max-width: 375px)
+                    {
+                        font-size: 1.35em;
+                    }
+
+                    a.preview
+                    {
+                        color: $white;
+                        font-size: .75em;
+                        text-decoration: none;
+
+                        &:hover
+                        {
+                            text-shadow: 1px 1px $white;
+                        }
+                    }
+                }
+
+                div.mood
+                {
+                    align-self: flex-end;
+                    border-left: $thin-border solid $light-grey;
+                    border-radius: 0 7.5px 7.5px 0;
+                    flex-basis: 15px;
+                    flex-grow: 0;
+                    height: 100%;
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        flex-basis: 15px;
+                    }
+        
+                    &.default
+                    {
+                        background-color: $brown;
+                    }
+        
+                    &.positive
+                    {
+                        background-color: $green;
+                    }
+        
+                    &.neutral
+                    {
+                        background-color: $yellow;
+                    }
+        
+                    &.negative
+                    {
+                        background-color: $red;
+                    }
+                }
+            }
+        }
+    }
+
     &.entry-details
     {
         display: block;
