@@ -35,6 +35,7 @@ class DeployTest extends TestCase
         Artisan::call('migrate');
 
         // Check if tables exsist
+        $this->assertTrue(Schema::hasTable('jobs'));
         $this->assertTrue(Schema::hasTable('failed_jobs'));
         $this->assertTrue(Schema::hasTable('migrations'));
         $this->assertTrue(Schema::hasTable('password_resets'));
@@ -62,6 +63,7 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('journal_entries'));
         $this->assertTrue(Schema::hasTable('first_visit_messages'));
         $this->assertTrue(Schema::hasTable('first_visit_displayed'));
+        $this->assertTrue(Schema::hasTable('cache'));
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models\Habits;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use JamesMills\Uuid\HasUuidTrait;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -24,6 +25,7 @@ use App\Models\Habits\HabitHistoryTypes;
 use App\Models\Relationships\HabitsToDo;
 use App\Models\Journal\JournalEntry;
 use App\Models\ToDo\ToDo;
+use App\Models\User\User;
 
 class Habits extends Model
 {
@@ -54,8 +56,14 @@ class Habits extends Model
      */
     public function calculateStrength()
     {
+        // Clear cache values
+        Cache::forget("habit-$this->id-longest-streak");
+        Cache::forget("habit-$this->id-current-streak");
+        Cache::forget("habit-$this->id-history-asc");
+        Cache::forget("habit-$this->id-longest-desc");
+
         // Get current user
-        $user = \Auth::user();
+        $user = $this->user;
 
         // Get the current datetime based on user's timezone if available
         $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
@@ -234,7 +242,7 @@ class Habits extends Model
     public function getHistoryArray($offset = 0, $label_format = 'D')
     {
         // Get current user
-        $user = \Auth::user();
+        $user = $this->user;
 
         // Get the current datetime based on user's timezone if available
         $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
@@ -532,8 +540,23 @@ class Habits extends Model
      */
     private function buildAffirmationsHistory($asc = false)
     {
+        // Check cache
+        if($asc)
+        {
+            $cached_history = Cache::get("habit-$this->id-history-asc");
+        }
+        else
+        {
+            $cached_history = Cache::get("habit-$this->id-history-desc");
+        }
+
+        if(!is_null($cached_history))
+        {
+            return $cached_history;
+        }
+
         // Get current user
-        $user = \Auth::user();
+        $user = $this->user;
 
         // Get the current datetime based on user's timezone if available
         $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
@@ -606,6 +629,15 @@ class Habits extends Model
             $history->push(new HabitHistory($history_log));
         }
 
+        if($asc)
+        {
+            Cache::put("habit-$this->id-history-asc", $history);
+        }
+        else
+        {
+            Cache::put("habit-$this->id-history-desc", $history);
+        }
+
         return $history;
     }
 
@@ -616,8 +648,23 @@ class Habits extends Model
      */
     private function buildJournalingHistory($asc = false)
     {
+        // Check cache
+        if($asc)
+        {
+            $cached_history = Cache::get("habit-$this->id-history-asc");
+        }
+        else
+        {
+            $cached_history = Cache::get("habit-$this->id-history-desc");
+        }
+
+        if(!is_null($cached_history))
+        {
+            return $cached_history;
+        }
+
         // Get current user
-        $user = \Auth::user();
+        $user = $this->user;
 
         // Get the current datetime based on user's timezone if available
         $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
@@ -690,6 +737,15 @@ class Habits extends Model
             $history->push(new HabitHistory($history_entry));
         }
 
+        if($asc)
+        {
+            Cache::put("habit-$this->id-history-asc", $history);
+        }
+        else
+        {
+            Cache::put("habit-$this->id-history-desc", $history);
+        }
+
         return $history;
     }
 
@@ -700,8 +756,15 @@ class Habits extends Model
      */
     public function getCurrentStreak()
     {
+        // Check cache
+        $cached_current_streak = Cache::get("habit-$this->id-current-streak");
+        if(!is_null($cached_current_streak))
+        {
+            return $cached_current_streak;
+        }
+
         // Get current user
-        $user = \Auth::user();
+        $user = $this->user;
 
         // Get the current datetime based on user's timezone if available
         $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
@@ -768,6 +831,9 @@ class Habits extends Model
             }
         }
 
+        $seconds_left_in_day = $now->diffInSeconds((clone $now)->endOfDay());
+        Cache::put("habit-$this->id-current-streak", $current_streak, $seconds_left_in_day);
+
         return $current_streak;
     }
 
@@ -778,8 +844,15 @@ class Habits extends Model
      */
     public function getLongestStreak()
     {
+        // Check cache
+        $cached_longest_streak = Cache::get("habit-$this->id-longest-streak");
+        if(!is_null($cached_longest_streak))
+        {
+            return $cached_longest_streak;
+        }
+
         // Get current user
-        $user = \Auth::user();
+        $user = $this->user;
 
         // Get the current datetime based on user's timezone if available
         $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
@@ -848,6 +921,9 @@ class Habits extends Model
             }
         }
 
+        $seconds_left_in_day = $now->diffInSeconds((clone $now)->endOfDay());
+        Cache::put("habit-$this->id-longest-streak", $longest_streak, $seconds_left_in_day);
+
         return $longest_streak;
     }
 
@@ -879,6 +955,12 @@ class Habits extends Model
     public function recurringTodos()
     {
         return $this->belongsToMany(ToDo::class)->where('type_id', ToDoType::RECURRING_HABIT_ITEM)->withTrashed();
+    }
+
+    // User relationship
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**

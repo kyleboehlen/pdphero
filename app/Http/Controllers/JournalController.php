@@ -12,6 +12,9 @@ use App\Helpers\Constants\Habits\Type as HabitType;
 use App\Helpers\Constants\Habits\HistoryType as HabitHistoryType;
 use App\Helpers\Constants\User\Setting;
 
+// Jobs
+use App\Jobs\CalculateHabitStrength;
+
 // Models
 use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Goal\Goal;
@@ -458,7 +461,7 @@ class JournalController extends Controller
     {
         // Get User
         $user = $request->user();
-        
+
         // Create new entry
         $entry = new JournalEntry();
 
@@ -510,7 +513,9 @@ class JournalController extends Controller
             $habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::JOURNALING_HABIT)->first();
             if(!is_null($habit))
             {
-                $habit->calculateStrength();
+                // Queue building strength habit
+                $queued_habit_strength = new CalculateHabitStrength($habit);
+                $this->dispatch($queued_habit_strength);
             }
         }
 

@@ -139,6 +139,11 @@ Run crontab -e and add the following line
 
 `* * * * * cd /var/www/html/pdphero && php artisan schedule:run >> /dev/null 2>&1`
 
+<br/>
+Configure a supervisor file and use this command
+
+`cd /var/www/html/pdphero && php artisan queue:work --sleep=3 --tries=3 --max-time=3600`
+
 <br/><br/>
 ### _Make sure these steps are completed last_ 
 
