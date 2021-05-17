@@ -55,6 +55,12 @@ class HabitsController extends Controller
             return $h->type_id == $type_id;
         });
 
+        // Check for journlaing habit
+        $type_id = Type::JOURNALING_HABIT;
+        $journaling_key = $habits->search(function($h) use ($type_id){
+            return $h->type_id == $type_id;
+        });
+
         // Build said affirmations habit if missing
         if($affirmations_key === false)
         {
@@ -62,10 +68,23 @@ class HabitsController extends Controller
             return redirect()->route('habits');
         }
 
+        // Build said journaling habit if missing
+        if($journaling_key === false)
+        {
+            $this->buildJournalingHabit($user->id);
+            return redirect()->route('habits');
+        }
+
         // Remove affirmations habit if user doesn't the setting to display the affirmations habit
         if(!$user->getSettingValue(Setting::HABITS_SHOW_AFFIRMATIONS_HABIT))
         {
             $habits->forget($affirmations_key);
+        }
+
+        // Remove journaling habit if use doesn't have the setting to display the journaling habit
+        if(!$user->getSettingValue(Setting::HABITS_SHOW_JOURNALING_HABIT))
+        {
+            $habits->forget($journaling_key);
         }
 
         // Return habit view
@@ -252,6 +271,12 @@ class HabitsController extends Controller
 
     public function history(HistoryRequest $request, Habits $habit)
     {
+        // We don't update the journaling/affirmations habits history
+        if($habit->type_id == Type::AFFIRMATIONS_HABIT || $habit->type_id == Type::JOURNALING_HABIT)
+        {
+            return redirect()->back();
+        }
+
         // Get user
         $user = $request->user();
 
@@ -360,6 +385,33 @@ class HabitsController extends Controller
         if(!$affirmations_habit->save())
         {
             Log::error('Failed to create affirmations habit.', $affirmations_habit->toArray());
+        }
+    }
+
+    /**
+     * Builds a new journaling habit based on defaults
+     * 
+     * @return void
+     */
+    private function buildJournalingHabit($user_id)
+    {
+        // Create a new journaling habit
+        $journaling_habit = new Habits();
+        
+        // Set user and type ids
+        $journaling_habit->type_id = Type::JOURNALING_HABIT;
+        $journaling_habit->user_id = $user_id;
+
+        // Assign properties from defaults
+        foreach(config('habits.defaults')[Type::JOURNALING_HABIT] as $key => $value)
+        {
+            $journaling_habit->$key = $value;
+        }
+
+        // Save and log any errors
+        if(!$journaling_habit->save())
+        {
+            Log::error('Failed to create journaling habit.', $journaling_habit->toArray());
         }
     }
 }

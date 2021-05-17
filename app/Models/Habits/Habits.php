@@ -22,6 +22,7 @@ use App\Models\Goal\Goal;
 use App\Models\Habits\HabitHistory;
 use App\Models\Habits\HabitHistoryTypes;
 use App\Models\Relationships\HabitsToDo;
+use App\Models\Journal\JournalEntry;
 use App\Models\ToDo\ToDo;
 
 class Habits extends Model
@@ -355,7 +356,7 @@ class Habits extends Model
         return $history_array;
     }
 
-        /**
+    /**
      * This returns stats about the strength algoritm
      * 
      * @return array
@@ -414,6 +415,10 @@ class Habits extends Model
         if($this->type_id == Type::AFFIRMATIONS_HABIT)
         {
             $history = $this->buildAffirmationsHistory($asc);
+        }
+        elseif($this->type_id == Type::JOURNALING_HABIT)
+        {
+            $history = $this->buildJournalingHistory($asc);
         }
         else
         {
@@ -558,7 +563,7 @@ class Habits extends Model
                 return $history;
             }
 
-            $start_date = Carbon::parse($affirmation_logs->first()->read_at)->subDay();
+            $start_date = Carbon::parse($affirmation_logs->last()->read_at)->subDay();
             $carbon_period = 
                 array_reverse( // We're reversing it so we can iterate desc instead of ascending
                     CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'))
@@ -599,6 +604,90 @@ class Habits extends Model
         foreach($history_log_array as $history_log)
         {
             $history->push(new HabitHistory($history_log));
+        }
+
+        return $history;
+    }
+
+    /**
+     * For building the collection of history data for the journaling habit that matches the habit histories
+     * 
+     * @return array
+     */
+    private function buildJournalingHistory($asc = false)
+    {
+        // Get current user
+        $user = \Auth::user();
+
+        // Get the current datetime based on user's timezone if available
+        $timezone = $user->timezone ?? 'America/Denver'; // We should really probably use a different default... we'll wait to find out how well the timezones work
+        $end_date = new Carbon('now', $timezone);
+
+        // Get all the user's journal entries
+        $history = collect();
+        $journal_entries = JournalEntry::where('user_id', $user->id);
+        if($asc)
+        {
+            $journal_entries = $journal_entries->orderBy('created_at')->get();
+
+            if($journal_entries->count() == 0)
+            {
+                return $history;
+            }
+
+            $start_date = Carbon::parse($journal_entries->last()->created_at)->subDay();
+            $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
+        }
+        else
+        {
+            $journal_entries = $journal_entries->orderBy('created_at', 'desc')->get();
+
+            if($journal_entries->count() == 0)
+            {
+                return $history;
+            }
+
+            $start_date = Carbon::parse($journal_entries->last()->created_at)->subDay();
+            $carbon_period = 
+                array_reverse( // We're reversing it so we can iterate desc instead of ascending
+                    CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'))
+                    ->toArray()
+                );
+        }
+
+        $history_entry_array = array();
+        foreach($carbon_period as $carbon)
+        {
+            // Get carbon date in user's timezone
+            $user_date = new Carbon($carbon->format('Y-m-d'), $timezone);
+
+            // Generate the UTC range for searching for affirmation read logs
+            $start_timestamp = (clone $user_date)->startOfDay()->setTimezone('UTC');
+            $end_timestamp = (clone $user_date)->endOfDay()->setTimezone('UTC');
+
+            // Filter to that range
+            $filtered = $journal_entries->filter(function($j_e) use ($start_timestamp, $end_timestamp){
+                return
+                    Carbon::parse($j_e->created_at)->lessThanOrEqualTo($end_timestamp) &&
+                    Carbon::parse($j_e->created_at)->greaterThanOrEqualTo($start_timestamp);
+            });
+
+            // If we have something, add it to the array
+            $times = $filtered->count();
+            if($times > 0)
+            {
+                array_push($history_entry_array, [
+                    'type_id' => HistoryType::COMPLETED,
+                    'day' => (clone $user_date)->startOfDay()->setTimezone('UTC')->format('Y-m-d'),
+                    'times' => $times,
+                ]);
+            }
+        }
+
+        // Cast to habit history
+        foreach($history_entry_array as $history_entry)
+        {
+            $history->push(new HabitHistory($history_entry));
         }
 
         return $history;

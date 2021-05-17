@@ -9,7 +9,12 @@ return [
             'name' => 'Affirmations Habit',
             'times_daily' => 9,
             'every_x_days' => 1,
-        ]
+        ],
+        Type::JOURNALING_HABIT => [
+            'name' => 'Journaling Habit',
+            'times_daily' => 1,
+            'every_x_days' => 1,
+        ],
     ],
 
     'history_types' => [
@@ -55,6 +60,9 @@ return [
         ],
         Type::USER_GENERATED => [
             'name' => 'User Generated',
+        ],
+        Type::JOURNALING_HABIT => [
+            'name' => 'Journaling Habit',
         ],
     ],
 ];

@@ -8,12 +8,15 @@ use Carbon\CarbonPeriod;
 use DB;
 
 // Constants
+use App\Helpers\Constants\Habits\Type as HabitType;
 use App\Helpers\Constants\Habits\HistoryType as HabitHistoryType;
+use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;
+use App\Models\Habits\Habits;
 use App\Models\Habits\HabitHistory;
 use App\Models\Journal\JournalCategory;
 use App\Models\Journal\JournalEntry;
@@ -453,6 +456,9 @@ class JournalController extends Controller
 
     public function storeEntry(StoreRequest $request)
     {
+        // Get User
+        $user = $request->user();
+        
         // Create new entry
         $entry = new JournalEntry();
 
@@ -495,6 +501,17 @@ class JournalController extends Controller
             return redirect()->back()->withInput($request->input())->withErrors([
                 'error' => 'Something went wrong trying to create Journal entry, please try again.'
             ]);
+        }
+
+        // Update journaling habit strength
+        if($user->getSettingValue(Setting::HABITS_SHOW_JOURNALING_HABIT))
+        {
+            // Get the journaling habit if exists
+            $habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::JOURNALING_HABIT)->first();
+            if(!is_null($habit))
+            {
+                $habit->calculateStrength();
+            }
         }
 
         return redirect()->route('journal.view.entry', ['journal_entry' => $entry->uuid]);

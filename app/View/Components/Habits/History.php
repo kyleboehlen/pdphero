@@ -27,7 +27,7 @@ class History extends Component
         $this->type = HistoryType::class;
 
         // Disable update form alerts on affirmations habits
-        if($habit->type_id == Type::AFFIRMATIONS_HABIT)
+        if($habit->type_id == Type::AFFIRMATIONS_HABIT || $habit->type_id == Type::JOURNALING_HABIT)
         {
             $this->create_update_form = false;
         }

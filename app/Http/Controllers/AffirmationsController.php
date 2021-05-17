@@ -8,10 +8,12 @@ use Log;
 
 // Constants
 use App\Helpers\Constants\User\Setting;
+use App\Helpers\Constants\Habits\Type as HabitType;
 
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\Habits\Habits;
 
 // Requests
 use App\Http\Requests\Affirmations\AffirmationRequest;
@@ -178,6 +180,16 @@ class AffirmationsController extends Controller
             return redirect()->route('affirmations.show', $user->affirmations->first()->uuid)->withErrors([
                 'Error' => 'Oops, had a hard time recording that you finished reading your affirmation list! Please try that again.',
             ]);
+        }
+
+        if($user->getSettingValue(Setting::HABITS_SHOW_AFFIRMATIONS_HABIT))
+        {
+            // Get the affirmations habit if exists
+            $habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::AFFIRMATIONS_HABIT)->first();
+            if(!is_null($habit))
+            {
+                $habit->calculateStrength();
+            }
         }
 
         // Touch the first affirmation so they're now out of order for checkRead

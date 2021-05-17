@@ -19,6 +19,9 @@
         {{-- Setting that handles whether or not the affirmations habit is shown --}}
         <x-settings.checkbox-setting :id="$setting::HABITS_SHOW_AFFIRMATIONS_HABIT" text="Show the affirmations habit" />
 
+        {{-- Setting that handles whether or not the journaling habit is shown --}}
+        <x-settings.checkbox-setting :id="$setting::HABITS_SHOW_JOURNALING_HABIT" text="Show the journaling habit" />
+
         {{-- Setting that determines whether to show habit history for rolling 7 days or current week --}}
         <x-settings.options-setting :id="$setting::HABITS_DAYS_TO_DISPLAY" text="Show habit history for | " />
 
