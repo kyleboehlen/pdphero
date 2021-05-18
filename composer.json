@@ -20,7 +20,8 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "marvinlabs/laravel-discord-logger": "^1.1"
+        "marvinlabs/laravel-discord-logger": "^1.1",
+        "silviolleite/laravelpwa": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
@@ -43,6 +44,10 @@
         }
     },
     "autoload": {
+        "exclude-from-classmap": [
+            "vendor/silviolleite/laravelpwa/Services/ManifestService.php",
+            "vendor/silviolleite/laravelpwa/Services/MetaService.php"
+        ],
         "files": [
             "app/Helpers/Functions/GeneralHelper.php"
         ],
@@ -50,7 +55,8 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Factories\\Todo\\": "database/factories/ToDo",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "LaravelPWA\\Services\\": "overrides/LaravelPWA/Services"
         }
     },
     "autoload-dev": {

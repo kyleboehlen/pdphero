@@ -10,6 +10,9 @@
 
         <title>{{ config('app.name', 'PDPHero') }}</title>
 
+        {{-- Laravel PWA Directive --}}
+        @laravelPWA
+
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
 

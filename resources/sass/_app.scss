@@ -269,3 +269,13 @@ button.swal2-cancel.swal2-styled
 {
     box-shadow: none !important;
 }
+
+#offline-message
+{
+    color: $white;
+    font-family: $header-font;
+    font-size: 2em;
+    margin-top: 30vh;
+    text-align: center;
+    width: 100%;
+}
