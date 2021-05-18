@@ -397,6 +397,7 @@ class SettingsTest extends TestCase
         $user_setting->setting_id = Setting::HABITS_DAYS_TO_DISPLAY;
         $user_setting->value = Setting::HABITS_CURRENT_WEEK;
         $this->assertTrue($user_setting->save());
+        $this->assertEquals(Setting::HABITS_CURRENT_WEEK, $user->getSettingValue(SETTING::HABITS_DAYS_TO_DISPLAY));
 
         // Double check default setting
         $default = config('settings.default');
@@ -427,7 +428,9 @@ class SettingsTest extends TestCase
         $this->assertEquals(Setting::HABITS_MONDAY, $user->getSettingValue($setting_id));
 
         // Create habit and history
-        $habit = Habits::factory()->create();
+        $habit = Habits::factory()->create([
+            'user_id' => $user->id,
+        ]);
         while($habit->history()->count() === 0)
         {
             $habit->generateFakeHistory();
