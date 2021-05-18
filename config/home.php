@@ -3,52 +3,46 @@
 use App\Helpers\Constants\Home\Home;
 
 return [
-    HOME::TEST_ONE => [
-        'name' => 'Test One',
-        'desc' => 'Here is a test description.',
-        'img' => 'icons/journal-white.png',
-        'route' => 'journal',
-    ],
-    HOME::TEST_TWO => [
-        'name' => 'Test Two',
-        'desc' => 'Here is a test description.',
+    HOME::GOALS => [
+        'name' => 'Goals',
+        'desc' => 'The goals tool.',
         'img' => 'icons/goals-white.png',
         'route' => 'goals',
     ],
-    HOME::TEST_THREE => [
-        'name' => 'Test Three',
-        'desc' => 'Here is a test description.',
+    HOME::HABITS => [
+        'name' => 'Habits',
+        'desc' => 'The habits tool.',
         'img' => 'icons/habits-white.png',
         'route' => 'habits',
     ],
-    HOME::TEST_FOUR => [
-        'name' => 'Test Four',
-        'desc' => 'Here is a test description.',
-        'img' => 'icons/todo-white.png',
-        'route' => 'todo.list',
-    ],
-    HOME::TEST_FIVE => [
-        'name' => 'Test One',
-        'desc' => 'Here is a test description.',
+    HOME::JOURNAL => [
+        'name' => 'Journal',
+        'desc' => 'The journal tool and timeline.',
         'img' => 'icons/journal-white.png',
         'route' => 'journal',
     ],
-    HOME::TEST_SIX => [
-        'name' => 'Test Two',
-        'desc' => 'Here is a test description.',
-        'img' => 'icons/goals-white.png',
-        'route' => 'goals',
+    HOME::PROFILE => [
+        'name' => 'Profile',
+        'desc' => 'View user stats, manage values, nutshell, and personal rules.',
+        'img' => 'icons/profile-white.png',
+        'route' => 'profile',
     ],
-    HOME::TEST_SEVEN => [
-        'name' => 'Test Three',
-        'desc' => 'Here is a test description.',
-        'img' => 'icons/habits-white.png',
-        'route' => 'habits',
+    HOME::SETTINGS => [
+        'name' => 'Settings',
+        'desc' => 'Manage application settings and customize your experience.',
+        'img' => 'icons/settings-white.png',
+        'route' => 'profile.edit.settings',
     ],
-    HOME::TEST_EIGHT => [
-        'name' => 'Test Four',
-        'desc' => 'Here is a test description.',
+    HOME::TODO => [
+        'name' => 'To-Do',
+        'desc' => 'Manage your To-Do items.',
         'img' => 'icons/todo-white.png',
         'route' => 'todo.list',
+    ],
+    HOME::AFFIRMATIONS => [
+        'name' => 'Affirmations',
+        'desc' => 'Read your affirmations.',
+        'img' => 'icons/smile-white.png',
+        'route' => 'affirmations',
     ],
 ];
