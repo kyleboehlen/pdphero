@@ -921,7 +921,6 @@ div.history-updater-container
         }
     }
 
-
     form
     {
         @extend %base-form;
@@ -1053,6 +1052,43 @@ div.history-updater-container
             input[type=number]
             {
                 -moz-appearance: textfield;
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.history-updater-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+                }
+            }
+        }
+    }
+
+    div.auto-out-of
+    {
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            text-align: center;
+            width: 100%;
+
+            @media only screen and (max-width: 700px)
+            {
+                font-size: 2em;
             }
         }
 
