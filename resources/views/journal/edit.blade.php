@@ -5,7 +5,7 @@
     <x-app.header title="Journal" />
 
     {{-- Side Nav --}}
-    <x-journal.nav show="back-entry|color-guide" :entry="$journal_entry" />
+    <x-journal.nav show="back-entry|categories|color-guide" :entry="$journal_entry" />
 
     <div class="app-container">
         <x-journal.form :entry="$journal_entry" />

@@ -5,7 +5,7 @@
     <x-app.header title="Journal" />
 
     {{-- Side Nav --}}
-    <x-journal.nav show="back|create|search|color-key" :date="$date" />
+    <x-journal.nav show="back|create|search|categories|color-key" :date="$date" />
 
     <div class="app-container day-timeline">
         {{-- Filter select --}}

@@ -426,7 +426,7 @@ class JournalController extends Controller
     public function editCategories(Request $request)
     {
         // Get users categories
-        $categories = $request->user()->journalCategories;
+        $categories = $request->user()->journalCategories()->get();
 
         // Return edit view
         return view('journal.categories')->with([
@@ -438,7 +438,7 @@ class JournalController extends Controller
     {
         // Create category
         $category = new JournalCategory([
-            'name' => $request->name,
+            'name' => $request->get('name'),
             'user_id' => $request->user()->id,
         ]);
 

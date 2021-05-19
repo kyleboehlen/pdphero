@@ -5,7 +5,7 @@
     <x-app.header title="Journal" />
 
     {{-- Side Nav --}}
-    <x-journal.nav show="create|search|color-key" />
+    <x-journal.nav show="create|search|categories|color-key" />
 
     <div class="app-container month-list">
         <div class="selector">

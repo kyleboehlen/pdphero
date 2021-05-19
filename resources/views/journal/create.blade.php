@@ -5,7 +5,7 @@
     <x-app.header title="Journal" />
 
     {{-- Side Nav --}}
-    <x-journal.nav show="back|color-guide" />
+    <x-journal.nav show="back|categories|color-guide" />
 
     <div class="app-container">
         <x-journal.form />
