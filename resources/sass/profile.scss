@@ -358,6 +358,11 @@ div.app-container
         {
             width: 95%;
         }
+        
+        a.create-hover
+        {
+            text-decoration: none;
+        }
 
         &:hover > a.create-hover, &:hover > ol > a.create-hover
         {
@@ -414,6 +419,11 @@ div.app-container
                 {
                     font-size: 1.5em;
                 }
+            }
+
+            a.create-hover
+            {
+                text-decoration: none;
             }
         }
 
