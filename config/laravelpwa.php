@@ -6,7 +6,7 @@ return [
         'name' => env('APP_NAME', 'PDPHero'),
         'short_name' => 'PDP',
         'start_url' => '/',
-        'background_color' => '#ffffff',
+        'background_color' => '#26130c',
         'theme_color' => '#26130c',
         'display' => 'standalone',
         'orientation'=> 'portrait',
