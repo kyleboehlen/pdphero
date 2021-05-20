@@ -555,7 +555,7 @@ class GoalController extends Controller
             $goal->parent_id = $parent_goal->id;
         }
 
-        if($goal->save())
+        if(!$goal->save())
         {
             // Log error
             Log::error('Failed to store new goal.', [
