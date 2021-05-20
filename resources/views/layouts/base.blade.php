@@ -30,6 +30,20 @@
         <meta name="msapplication-TileColor" content="#26130c">
         <meta name="theme-color" content="#26130c">
 
+        <!-- Fuck you chrome -->
+        <style>
+            a:active
+            {
+                -webkit-tap-highlight-color: transparent;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+
         {{-- HTML5 Shiv --}}
         <!--[if lt IE 9]>
             <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
