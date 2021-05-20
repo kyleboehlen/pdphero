@@ -1,6 +1,6 @@
 <div class="goal empty @if($scope == 'achieved') achieved-padding @endif">
     {{-- Goal image --}}
-    <img class="goal-img" src="{{ asset('icons/plus-white.png') }}" />
+    <img class="goal-img empty" src="{{ asset('icons/plus-white.png') }}" />
 
     {{-- Goal title/link --}}
     @if($scope == 'future')
