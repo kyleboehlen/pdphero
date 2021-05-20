@@ -423,7 +423,16 @@ div.app-container
 
             a.create-hover
             {
-                text-decoration: none;
+                li
+                {
+                    text-decoration: none;
+                }
+
+                &:hover > li
+                {
+                    text-decoration: none;
+                    text-shadow: 1px 1px $white;
+                }
             }
         }
 
