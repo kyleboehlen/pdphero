@@ -89,7 +89,7 @@
         @endisset><label class="time-period" for="time-period"> {{ $type_id == $type::ACTION_AD_HOC ? 'action' : 'manual' }} items</label>
         @if($type_id == $type::ACTION_AD_HOC)
             <br/><br/>
-            <select class="time-period" name="time-period">
+            <select name="time-period">
                 @foreach($time_periods as $value => $time_period)
                     <option value="{{ $value }}"
                         @if(!is_null($edit_goal) && $edit_goal->time_period_id == $value)
