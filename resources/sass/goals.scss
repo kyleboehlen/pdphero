@@ -408,24 +408,23 @@ div.app-container
         overflow-x: hidden;
         overflow-y: scroll;
 
-        @media only screen and (max-width: 1300px)
-        {
-            margin-left: 7%;
-            margin-right: 0;
-            width: 90%;
-        }
-
-        @media only screen and (max-width: 900px)
+        @media only screen and (max-width: 1400px)
         {
             margin-left: 0;
             margin-right: 0;
             width: 95%;
         }
 
-        @media only screen and (max-width: 900px)
-        {
-            margin-left: 2.5%;
-            width: 95%;
+        // @media only screen and (max-width: 900px)
+        // {
+        //     margin-left: 0;
+        //     margin-right: 0;
+        //     width: 95%;
+        // }
+
+        @media only screen and (max-width: 1000px)
+        {            
+            width: 100%;
         }
 
         @media only screen and (max-width: 450px)
@@ -496,33 +495,6 @@ div.app-container
             {
                 outline: none;
             }
-
-            &.time-period
-            {
-                margin-right: 12.5%;
-                float: right;
-                width: 30%;
-
-                @media only screen and (max-width: 1700px)
-                {
-                    width: 25%;
-                }
-
-                @media only screen and (max-width: 1475px)
-                {
-                    width: 20%;
-                }
-
-                @media only screen and (max-width: 1400px)
-                {
-                    font-size: 1em;
-                }
-
-                @media only screen and (max-width: 550px)
-                {
-                    max-width: 60%;
-                }
-            }
         }
 
         label, span.show-todo
@@ -565,7 +537,7 @@ div.app-container
 
             &.ad-hoc-times
             {
-                width: 5%;
+                width: 10%;
             }
 
             &.manual-times
@@ -730,6 +702,11 @@ div.app-container
             @media only screen and (max-width: 450px)
             {
                 font-size: 1.4em;
+            }
+
+            @media only screen and (max-width: 375px)
+            {
+                margin-left: 0;
             }
 
             input[type="number"]

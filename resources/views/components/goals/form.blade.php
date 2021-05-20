@@ -88,6 +88,7 @@
             value="1"
         @endisset><label class="time-period" for="time-period"> {{ $type_id == $type::ACTION_AD_HOC ? 'action' : 'manual' }} items</label>
         @if($type_id == $type::ACTION_AD_HOC)
+            <br/><br/>
             <select class="time-period" name="time-period">
                 @foreach($time_periods as $value => $time_period)
                     <option value="{{ $value }}"
@@ -122,7 +123,7 @@
         @endif
 
         {{-- End date --}}
-        <br/>
+        <br/><br/>
         <label for="end-date">Complete by: </label>
         <input type="date" name="end-date" required
             @isset($edit_goal)
@@ -185,7 +186,7 @@
     {{-- Action plan goals push to todo options --}}
     @if(in_array($type_id, [$type::ACTION_AD_HOC, $type::ACTION_DETAILED, $type::PARENT_GOAL]))
         <span class="show-todo" title="If this is selected your goal action items will automatically show up in your to-do list">
-            <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @endisset /> Show action items on To-Do List<br/>
+            <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @endisset /> List action items on To-Do<br/>
             <input id="days-before-due-input" type="number" name="show-todo-days-before"
                 @isset($edit_goal)
                     @if(!is_null($edit_goal->default_todo_days_before))
