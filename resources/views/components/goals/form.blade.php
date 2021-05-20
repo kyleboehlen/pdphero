@@ -131,7 +131,7 @@
             @endisset />
         @if($type_id == $type::HABIT_BASED)
             {{-- Habit strength script/label --}}
-            <p id="goal-habit-strength-label"></p><br/>
+            <p id="goal-habit-strength-label"></p><br/><br/>
             <script>
                 $(document).ready(function(){
                     // Habit goals get strength for create form
