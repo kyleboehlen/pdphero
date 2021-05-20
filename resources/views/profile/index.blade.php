@@ -95,7 +95,7 @@
                     </ol>
                 @else
                     <ol>
-                        <a href="{{ route('profile.edit.rules') }}" class="create-hover">
+                        <a href="{{ route('profile.edit.rules') }}" class="create-hover" style="text-decoration: none;">
                             <li>Rules and boundaries help us to do what we really want</li>
                             <li>They're boundries you've already created to protect yourself</li>
                             <li>They even work great with pushy friends or family!</li>
