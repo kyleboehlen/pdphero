@@ -358,11 +358,6 @@ div.app-container
         {
             width: 95%;
         }
-        
-        a.create-hover
-        {
-            text-decoration: none;
-        }
 
         &:hover > a.create-hover, &:hover > ol > a.create-hover
         {
@@ -420,20 +415,6 @@ div.app-container
                     font-size: 1.5em;
                 }
             }
-
-            a.create-hover
-            {
-                li
-                {
-                    text-decoration: none;
-                }
-
-                &:hover > li
-                {
-                    text-decoration: none;
-                    text-shadow: 1px 1px $white;
-                }
-            }
         }
 
         p
@@ -467,6 +448,22 @@ div.app-container
         @media only screen and (max-width: 650px)
         {
             margin-top: 2.5%;
+        }
+
+        a.create-hover
+        {
+            text-decoration: none;
+
+            li
+            {
+                text-decoration: none;
+            }
+
+            &:hover > li
+            {
+                text-decoration: none;
+                text-shadow: 1px 1px $white;
+            }
         }
     }
 
@@ -509,6 +506,19 @@ div.app-container
                     padding-left: 0%;
                     padding-right: 0%;
                 }
+            }
+        }
+    }
+
+    div.nutshell-container
+    {
+        a.create-hover
+        {
+            text-decoration: none;
+            
+            p
+            {
+                text-decoration: none;
             }
         }
     }
