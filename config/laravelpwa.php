@@ -4,7 +4,7 @@ return [
     'name' => 'LaravelPWA',
     'manifest' => [
         'name' => env('APP_NAME', 'PDPHero'),
-        'short_name' => 'PDP',
+        'short_name' => 'PDPHero',
         'start_url' => '/',
         'background_color' => '#26130c',
         'theme_color' => '#26130c',
