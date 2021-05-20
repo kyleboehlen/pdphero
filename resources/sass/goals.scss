@@ -127,6 +127,27 @@ div.app-container
             max-width: 32.5%;
         }
 
+        img.empty
+        {
+            align-self: center;
+            border-radius: 10px;
+            margin: 1%;
+            max-width: 32.5%;
+
+            padding: 25px;
+            padding-left: 50px;
+
+            @media only screen and (max-width: 420px)
+            {
+                padding-left: 25px;
+            }
+
+            @media only screen and (max-width: 420px)
+            {
+                max-width: 30%;
+            }
+        }
+
         a
         {
             align-self: center;
@@ -277,27 +298,6 @@ div.app-container
     {
         align-self: flex-start;
         border-style: dashed;
-
-        img.empty
-        {
-            align-self: center;
-            border-radius: 10px;
-            margin: 1%;
-            max-width: 32.5%;
-
-            padding: 25px;
-            padding-left: 50px;
-
-            @media only screen and (max-width: 420px)
-            {
-                padding-left: 25px;
-            }
-
-            @media only screen and (max-width: 420px)
-            {
-                max-width: 30%;
-            }
-        }
     }
 
     form.create-selector
