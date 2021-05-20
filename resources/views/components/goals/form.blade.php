@@ -81,7 +81,7 @@
     {{-- Ad-hoc/manaul goal options --}}
     @if($type_id == $type::ACTION_AD_HOC || $type_id == $type::MANUAL_GOAL)
         {{-- How many manual/action items  --}}
-        <label for="custom-times" @if($type_id == $type::MANUAL_GOAL) class="manual-times" @endif >Complete </label><input class="{{ $type_id == $type::MANUAL_GOAL ? 'manual-times' : 'ad-hoc-times' }}" name="custom-times" type="number"
+        <label for="custom-times" @if($type_id == $type::MANUAL_GOAL) class="manual-times" @else class="custom-times" @endif >Complete </label><input class="{{ $type_id == $type::MANUAL_GOAL ? 'manual-times' : 'ad-hoc-times' }}" name="custom-times" type="number"
         @isset($edit_goal)
             value="{{ $edit_goal->custom_times }}"
         @else
