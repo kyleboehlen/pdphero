@@ -446,11 +446,10 @@ div.app-container
 
         a.create-hover
         {
-            text-decoration: none;
+            color: $white;
 
             &:hover
             {
-                text-decoration: none;
                 text-shadow: 1px 1px $white;
             }
         }
@@ -501,16 +500,14 @@ div.app-container
 
     div.nutshell-container
     {
-        p
+        a.create-hover
         {
-            a.create-hover
+            p
             {
                 color: $white;
-                text-decoration: none;
 
                 &:hover
                 {
-                    text-decoration: none;
                     text-shadow: 1px 1px $white;
                 }
             }

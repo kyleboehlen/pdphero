@@ -55,17 +55,15 @@
                     @endforeach
                 </ul>
             @else
-            <a href="{{ route('profile.edit.values') }}" class="create-hover">
-                <div>
-                    <ul>
-                        <li class="create-hover">Click to add!</li>
-                        <li>Such as:</li>
-                        <li>Honesty</li>
-                        <li>Friendship</li>
-                        <li>Compassion</li>
-                        <li>Etc...</li>
-                    </ul>
-                </div>
+            <a href="{{ route('profile.edit.values') }}" class="create-hover" style="text-decoration: none;">
+                <ul>
+                    <li>Click to add!</li>
+                    <li>Such as:</li>
+                    <li>Honesty</li>
+                    <li>Friendship</li>
+                    <li>Compassion</li>
+                    <li>Etc...</li>
+                </ul>
             </a>
             @endisset
         </div>
@@ -78,9 +76,9 @@
                     <p>{{ $line }}</p>
                 @endforeach
             @else
-                <p>
-                    <a href="{{ route('profile.edit.nutshell') }}" class="create-hover">Click here to add your nutshell; this is where you list the things that are important to you, that you love doing, and that make you who you are!</a>
-                </p>
+                <a href="{{ route('profile.edit.nutshell') }}" class="create-hover" style="text-decoration: none;">
+                    <p>Click here to add your nutshell; this is where you list the things that are important to you, that you love doing, and that make you who you are!</p>
+                </a>
             @endisset
         </div>
 
