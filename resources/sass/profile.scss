@@ -434,18 +434,6 @@ div.app-container
                 margin-left: 2.5%;
                 width: 95%;
             }
-
-            a.create-hover
-            {
-                color: $white;
-                text-decoration: none;
-
-                &:hover
-                {
-                    text-decoration: none;
-                    text-shadow: 1px 1px $white;
-                }
-            }
         }
     }
 
@@ -456,9 +444,15 @@ div.app-container
             margin-top: 2.5%;
         }
 
-        a
+        a.create-hover
         {
             text-decoration: none;
+
+            &:hover
+            {
+                text-decoration: none;
+                text-shadow: 1px 1px $white;
+            }
         }
     }
 
@@ -507,13 +501,18 @@ div.app-container
 
     div.nutshell-container
     {
-        a.create-hover
+        p
         {
-            text-decoration: none;
-
-            p
+            a.create-hover
             {
+                color: $white;
                 text-decoration: none;
+
+                &:hover
+                {
+                    text-decoration: none;
+                    text-shadow: 1px 1px $white;
+                }
             }
         }
     }
