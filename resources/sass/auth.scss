@@ -1,0 +1,215 @@
+@import 'app';
+
+div.card
+{
+    @extend %card;
+
+    margin-left: 35%;
+    margin-right: auto;
+    margin-top: 2.5%;
+    text-align: center;
+    top: 10vh;
+    position: relative;
+    width: 30%;
+
+    @media screen and (max-width: 1400px)
+    {
+        margin-left: 25%;
+        width: 50%;
+    }
+
+    @media screen and (max-width: 800px)
+    {
+        margin-left: 15%;
+        width: 70%;
+    }
+
+    @media screen and (max-width: 600px)
+    {
+        margin-left: 5%;
+        width: 90%;
+    }
+
+    h1
+    {
+        border-bottom: $medium-border solid $white;
+        color: $white;
+        font-family: $header-font;
+        font-size: 2.5em;
+        line-height: 175%;
+
+        @media screen and (max-width: 600px)
+        {
+            font-size: 2em;
+        }
+
+        @media screen and (max-width: 400px)
+        {
+            font-size: 1.5em;
+        }
+    }
+
+    div
+    {
+        label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+
+            @media screen and (max-width: 600px)
+            {
+                font-size: 2em;
+            }
+
+            @media screen and (max-width: 400px)
+            {
+                font-size: 1.5em;
+            }
+        }
+
+        input
+        {
+            font-family: $body-font;
+            font-size: 1.75em;
+            width: 70%;
+
+            @media screen and (max-width: 600px)
+            {
+                font-size: 1.35em;
+            }
+
+            @media screen and (max-width: 400px)
+            {
+                font-size: 1.05em;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+
+        input[type="checkbox"]
+        {
+            @extend %checkbox;
+
+            &:checked
+            {
+                background: $green;
+            }
+        }
+
+        label.checkbox
+        {
+            margin-top: 0;
+            padding-top: 0;
+            vertical-align: middle;
+        }
+    }
+
+    button[type="submit"]
+    {
+        @extend %button;
+        
+        display: block;
+        line-height: 200%;
+        height: auto;
+        margin-left: 25%;
+        margin-right: auto;
+        width: 50%;
+
+        @media screen and (max-width: 600px)
+        {
+            font-size: 1.35em;
+        }
+
+        @media screen and (max-width: 400px)
+        {
+            font-size: 1.05em;
+            margin-left: 15%;
+            width: 70%;
+        }
+
+        &:hover
+        {
+            @extend %button-hover;
+        }
+    }
+
+    a
+    {
+        color: $white;
+        font-family: $body-font;
+        font-size: 2.5em;
+        text-decoration: none;
+
+        @media screen and (max-width: 600px)
+        {
+            font-size: 2em;
+        }
+
+        @media screen and (max-width: 400px)
+        {
+            font-size: 1.5em;
+        }
+
+        &:hover
+        {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    }
+}
+
+div.big-card
+{
+    margin-left: 25%;
+    margin-right: auto;
+    margin-top: 2.5%;
+    text-align: center;
+    width: 50%;
+
+    @media screen and (max-width: 800px)
+    {
+        margin-left: 15%;
+        width: 70%;
+    }
+
+    @media screen and (max-width: 600px)
+    {
+        margin-left: 5%;
+        width: 90%;
+    }
+
+    button[type="submit"]
+    {
+        margin-left: 15%;
+        margin-right: auto;
+        width: 70%;
+
+        @media screen and (max-width: 600px)
+        {
+            font-size: 1.35em;
+        }
+
+        @media screen and (max-width: 400px)
+        {
+            font-size: 1.05em;
+            margin-left: 15%;
+            width: 70%;
+        }
+
+        &:hover
+        {
+            @extend %button-hover;
+        }
+    }
+}
+
+p
+{
+    color: $white;
+    font-family: $body-font;
+    font-size: 1.75em;
+}

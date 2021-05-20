@@ -1,0 +1,766 @@
+@import 'app';
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+#profile-picture-input
+{
+    display: none;
+}
+
+nav.app
+{
+    ul.list
+    {
+        &.settings
+        {
+            a
+            {
+                font-size: 1.25em;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1em;
+                }
+            }
+        }
+    }
+}
+
+div.app-container
+{
+    @extend %flex-container;
+
+    align-items: center;
+    overflow-y: scroll;
+    padding: 0;
+    text-align: center;
+
+    h2
+    {
+        border-bottom: $thin-border solid $light-grey;
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin: 0;
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-top: .5%;
+        padding: 0;
+        width: 50%;
+
+        @media only screen and (max-width: 800px)
+        {
+            font-size: 1.65em;
+            margin-left: 12.5%;
+            margin-right: auto;
+            margin-top: 2.5%;
+            width: 75%;
+        }
+
+        @media only screen and (max-width: 650px)
+        {
+            margin-bottom: 2.5%;
+            margin-left: 2.5%;
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            font-size: 1.45em;
+        }
+    }
+
+
+    div.profile-picture-container
+    {
+        align-self: stretch;
+        padding: 0;
+        padding-top: 1%;
+        width: 40%;
+
+        @media only screen and (max-width: 1300px)
+        {
+            width: 30%;
+        }
+
+        @media only screen and (max-width: 800px)
+        {
+            margin-left: 10%;
+        }
+
+        @media only screen and (max-width: 700px)
+        {
+            margin-left: 5%;
+        }
+
+        @media only screen and (max-width: 575px)
+        {
+            margin-left: 5%;
+            width: 25%;
+        }
+
+        img
+        {
+            border: $thin-border solid $dark-grey;
+            border-radius: 50%;
+            float: right;
+            height: auto;
+            margin: 0;
+            margin-right: 2.5%;
+            max-width: 35%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                max-width: 60%;
+            }
+
+            @media only screen and (max-width: 575px)
+            {
+                max-width: 85%;
+                top: 5%;
+                position: relative;
+            }
+
+            @media only screen and (min-height: 1200px)
+            {
+                top: 15%;
+                position: relative;
+            }
+
+            @media only screen and (min-height: 1300px)
+            {
+                top: 25%;
+                position: relative;
+            }
+
+            &.profile-picture-link:hover
+            {
+                border: $thin-border solid $white;
+                cursor: pointer;
+            }
+        }
+    }
+
+    div.stats-container
+    {
+        width: 50%;
+
+        @media only screen and (max-width: 1300px)
+        {
+            width: 60%;
+        }
+
+        @media only screen and (max-width: 800px)
+        {
+            width: 50%;
+        }
+
+        @media only screen and (max-width: 700px)
+        {
+            width: 60%
+        }
+
+        @media only screen and (max-width: 575px)
+        {
+            width: 70%;
+        }
+
+        ul
+        {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            width: 100%;
+
+            li
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2em;
+                margin-bottom: .75%;
+                margin-left: 15%;
+                margin-top: .75%;
+                width: 85%;
+
+                @media only screen and (max-height: 800px)
+                {
+                    margin-left: 25%;
+                    width: 75%;
+                }
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 1.75em;
+                    margin-left: 5%;
+                    width: 95%;
+                }
+
+                @media only screen and (max-width: 950px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 650px)
+                {
+                    margin-left: 15%;
+                    width: 85%;
+                }
+
+                @media only screen and (max-width: 500px)
+                {
+                    margin-left: 2.5%;
+                    width: 97.5%;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 410px)
+                {
+                    font-size: 1.25em;
+                }
+
+                @media only screen and (max-width: 350px)
+                {
+                    font-size: 1.15em;
+                }
+
+                @media only screen and (max-width: 300px)
+                {
+                    font-size: 1em;
+                }
+
+                span.highlight
+                {
+                    color: $green;
+                }
+            }
+        }
+    }
+
+    div.affirmations-container
+    {
+        align-self: center;
+        margin-top: 1%;
+        vertical-align: middle;
+        width: 100%;
+
+        a
+        {
+            text-decoration: none;
+
+            div.read-affirmations
+            {
+                border: $thin-border solid $light-grey;
+                border-radius: 10px;
+                margin-left: 15%;
+                position: relative;
+                width: 70%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-left: 2%;
+                    width: 95%;
+                }
+
+                &:hover
+                {
+                    background-color: $light-blue;
+                    border-color: $white;
+                }
+
+                img
+                {
+                    bottom: 0;
+                    left: 10%;
+                    height: 100%;
+                    max-height: 100px;
+                    position: absolute;
+
+                    @media only screen and (max-width: 1500px)
+                    {
+                        left: 5%;
+                    }
+
+                    @media only screen and (max-width: 1150px)
+                    {
+                        max-height: 75px;
+                    }
+
+                    @media only screen and (max-width: 900px)
+                    {
+                        left: 1%;
+                    }
+                }
+
+                p
+                {
+                    color: $white;
+                    font-family: $header-font;
+                    font-size: 2em;
+                    margin-left: 5%;
+
+                    @media only screen and (max-width: 1150px)
+                    {
+                        font-size: 1.75em;
+                        margin-left: 10%;
+                    }
+
+                    @media only screen and (max-width: 600px)
+                    {
+                        font-size: 1.25em;
+                        margin-left: 12.5%;
+                    }
+
+                    @media only screen and (max-width: 400px)
+                    {
+                        font-size: 1em;
+                    }
+
+                    @media only screen and (max-width: 320px)
+                    {
+                        font-size: .9em;
+                    }
+
+                    @media only screen and (max-width: 300px)
+                    {
+                        font-size: .8em;
+                    }
+                }
+            }
+        }
+    }
+
+    div.values-container, div.nutshell-container, div.rules-container
+    {
+        align-self: flex-start;
+        padding: 0;
+        text-align: center;
+        width: 45%;
+
+        @media only screen and (max-width: 800px)
+        {
+            width: 95%;
+        }
+
+        &:hover > a.create-hover, &:hover > ol > a.create-hover
+        {
+            text-decoration: none;
+            text-shadow: 1px 1px $white;
+        }
+
+        h3
+        {
+            border-bottom: $thin-border solid $light-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+            width: 100%;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.5em;
+                margin: 0;
+                margin-left: 12.5%;
+                margin-right: auto;
+                width: 75%;
+            }
+
+            @media only screen and (max-width: 650px)
+            {
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.35em;
+            }
+        }
+
+        ul
+        {
+            list-style-type: none;
+            padding: 0;
+
+            li
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2.1em;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 1.8em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.5em;
+                }
+            }
+        }
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.5em;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 12.5%;
+                margin-right: auto;
+                width: 75%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                margin-left: 2.5%;
+                width: 95%;
+            }
+        }
+    }
+
+    div.values-container
+    {
+        @media only screen and (max-width: 650px)
+        {
+            margin-top: 2.5%;
+        }
+    }
+
+    div.rules-container
+    {
+        align-self: flex-start;
+        padding: 0;
+        text-align: center;
+        width: 75%;
+
+        @media only screen and (max-width: 800px)
+        {
+            width: 95%;
+        }
+
+        ol
+        {
+            padding: 0;
+            padding-left: 5%;
+            padding-right: 5%;
+
+            li
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 1.9em;
+                margin-bottom: 1%;
+                text-align: center;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 1.6em;
+                    padding-left: 2.5%;
+                    padding-right: 2.5%;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.3em;
+                    padding-left: 0%;
+                    padding-right: 0%;
+                }
+            }
+        }
+    }
+
+    form.edit
+    {
+        @extend %base-form;
+
+        h2
+        {
+            @include form-title;
+        }
+
+        &.name > h2
+        {
+            margin-top: 10%;
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-top: 30%;
+            }
+
+            @media only screen and (max-height: 400px)
+            {
+                margin-top: 20%;
+            }
+        }
+
+        input[type="text"]
+        {
+            font-size: 3em;
+            width: 60%;
+
+            @media only screen and (max-width: 850px)
+            {
+                font-size: 2em;
+                width: 95%;
+            }
+        }
+
+        textarea
+        {
+            min-height: 375px;
+
+            @media only screen and (max-height: 850px)
+            {
+                min-height: 350px;
+            }
+
+            @media only screen and (max-height: 750px)
+            {
+                min-height: 275px;
+            }
+
+            @media only screen and (max-height: 600px)
+            {
+                min-height: 175px;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+        }
+    }
+
+    &.values-list
+    {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        h2
+        {
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+        }
+
+        div.value
+        {
+            @include add-delete-list-item;
+        }
+    }
+
+    &.rules-list
+    {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        h2
+        {
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+        }
+
+        div.rule
+        {
+            @include add-delete-list-item;
+
+            width: 95%;
+
+            form
+            {
+                p
+                {
+                    font-size: 2em;
+                }
+
+                input[type="text"]
+                {
+                    font-size: 1.75em;
+                }
+
+                img
+                {
+                    border-radius: 0 10px 10px 0;
+                    padding: .25%;
+                    position: absolute;
+                    max-height: 72.5%;
+                    right: 2px;
+                }
+
+                button
+                {
+                    border-radius: 0 10px 10px 0;
+                    color: $black;
+                    font-family: $body-font;
+                    font-size: 2em;
+                    height: 100%;
+                    padding-left: 2.5%;
+                    padding-right: 1.5%;
+                    position: absolute;
+                    right: 0;
+                    width: auto;
+        
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 1.85em;
+                    }
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+                }
+            }
+        }
+    }
+
+    &.settings
+    {
+        align-content: flex-start;
+
+        h2
+        {
+            margin-bottom: .75%;
+            margin-top: 3%;
+
+            &:first-of-type
+            {
+                margin-top: .5%;
+            }
+        }
+
+        div.setting
+        {
+            border: $thin-border solid $light-grey;
+            border-radius: 10px;
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin-bottom: .5%;
+            margin-left: 2.5%;
+            margin-right: 2.5%;
+            margin-top: .25%;
+            padding-bottom: .5%;
+            padding-left: 15%;
+            padding-right: 2.5%;
+            padding-top: .5%;
+            text-align: left;
+            width: 95%;
+
+            @media only screen and (max-width: 1450px)
+            {
+                padding-left: 5%;
+            }
+
+            @media only screen and (max-width: 1200px)
+            {
+                font-size: 1.75em;
+                padding-left: 2.5%;
+            }
+
+            @media only screen and (max-width: 1000px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1.25em;
+            }
+
+            input[type="checkbox"]
+            {
+                @extend %checkbox;
+
+                margin-right: 1%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    height: 30px;
+                    width: 30px;
+                }
+
+                &:checked
+                {
+                    background: $green;
+                }
+
+                &:not(:checked)
+                {
+                    background: $red;
+                }
+            }
+
+            input[type="number"]
+            {
+                background-color: $dark-grey;
+                color: $white;
+                font-family: $body-font;
+                font-size: 1.25em;
+                text-align: center;
+                padding: 0;
+                max-width: 10%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    max-width: 25%;
+                }
+
+                &:focus
+                {
+                    outline: none;
+                }
+            }
+
+            select
+            {
+                background-color: $dark-grey;
+                color: $white;
+                font-family: $body-font;
+                font-size: 1em;
+                text-align: center;
+                
+                padding-left: .5%;
+                padding-right: .5%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    max-width: 25%;
+                }
+
+                &:focus
+                {
+                    outline: none;
+                }
+            }
+        }
+    }
+}

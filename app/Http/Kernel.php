@@ -53,14 +53,23 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'affirmations.uuid' => \App\Http\Middleware\Affirmations\UUID::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'first_visit.messages' => \App\Http\Middleware\FirstVisit\Messages::class,
+        'goal.uuid' => \App\Http\Middleware\Goal\UUID::class,
+        'goal.action_item.uuid' => \App\Http\Middleware\Goal\ActionItemUUID::class,
+        'goal.category.uuid' => \App\Http\Middleware\Goal\CategoryUUID::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'journal.entry.uuid' => \App\Http\Middleware\Journal\EntryUUID::class,
+        'journal.category.uuid' => \App\Http\Middleware\Journal\CategoryUUID::class,
+        'habits.uuid' => \App\Http\Middleware\Habits\UUID::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'todo.uuid' => \App\Http\Middleware\ToDo\UUID::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

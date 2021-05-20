@@ -1,0 +1,83 @@
+@import 'app';
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    div.home-icon
+    {
+        max-width: 25%;
+        overflow: hidden;
+        text-align: center;
+        white-space: nowrap;
+
+        @media only screen and (max-width: 500px)
+        {
+            max-width: 33%;
+        }
+
+        img
+        {
+            max-width: 75%;
+        }
+
+        p
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+
+            @media only screen and (max-width: 1200px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 1000px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1em;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                font-size: .8em;
+            }
+        }
+
+        &:hover
+        {
+            cursor: pointer;
+            opacity: .6;
+        }
+
+        &.hide-show
+        {
+            &.hidden
+            {
+                opacity: .2;
+
+                &:hover
+                {
+                    opacity: .6;
+                }
+            }
+        }
+    }
+}

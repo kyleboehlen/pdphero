@@ -1,37 +1,30 @@
 @extends('layouts.app')
 
-@section('content')
-    <h1>{{ __('Reset Password') }}</h1>
+@section('template')
+    <div class="card">
+        <h1>{{ __('Reset Password') }}</h1>
 
-    @if (session('status'))
-        <div>
-            {{ session('status') }}
-        </div>
-    @endif
+        @if(session('status'))
+            <p class="success">{{ session('status') }}</p>
+        @endif
+        
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <div>
-            <label for="email">{{ __('E-Mail Address') }}</label>
             <div>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <label for="email">{{ __('E-Mail Address') }}</label>
+                <div>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                @error('email')
-                    <span>
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-        </div>
+                    @error('email')
+                        <p class="error">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div><br/>
 
-        <div>
-            <div>
-                <button type="submit">
-                    {{ __('Send Password Reset Link') }}
-                </button>
-            </div>
-        </div>
-    </form>
-
+            <button class="reset-link" type="submit">
+                {{ __('Send Link') }}
+            </button><br/>
+        </form>
+    </div>
 @endsection

@@ -13,6 +13,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // Seed ToDoPriority
+        $this->call(ToDoPrioritySeed::class);
+
+        // Seed ToDoTypes
+        $this->call(ToDoTypesSeed::class);
+
+        // Seed Settings
+        $this->call(SettingsSeed::class);
+
+        // Seed Habit Types
+        $this->call(HabitTypesSeed::class);
+
+        // Seed Habit History Types
+        $this->call(HabitHistoryTypesSeed::class);
+
+        // Seed Goal Types
+        $this->call(GoalTypesSeed::class);
+
+        // Seed Goal Statuses
+        $this->call(GoalStatusesSeed::class);
+
+        // Seed Goal Ad Hoc Periods
+        $this->call(GoalTimePeriodsSeed::class);
+
+        // Seed Home icons or whatever
+        $this->call(HomeSeed::class);
+
+        // Journal Moods
+        $this->call(JournalMoodsSeed::class);
+
+        // First Visit Pop-up messages
+        $this->call(FirstVisitMessagesSeed::class);
     }
 }

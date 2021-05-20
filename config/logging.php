@@ -4,6 +4,8 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
+use App\Logging\CustomizeFormatter;
+
 return [
 
     /*
@@ -37,7 +39,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily', 'discord', 'papertrail'],
             'ignore_exceptions' => false,
         ],
 
@@ -52,6 +54,14 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
+            'tap' => [CustomizeFormatter::class],
+        ],
+
+        'discord' => [
+            'driver' => 'custom',
+            'via'    => MarvinLabs\DiscordLogger\Logger::class,
+            'level'  => env('LOG_DISCORD_LEVEL', 'error'),
+            'url'    => env('LOG_DISCORD_WEBHOOK_URL'),
         ],
 
         'slack' => [
@@ -64,11 +74,11 @@ return [
 
         'papertrail' => [
             'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => env('LOG_PAPERTRAIL_LEVEL', 'info'),
             'handler' => SyslogUdpHandler::class,
             'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
+                'host' => env('LOG_PAPERTRAIL_URL'),
+                'port' => env('LOG_PAPERTRAIL_PORT'),
             ],
         ],
 

@@ -1,0 +1,1115 @@
+@import 'app';
+
+@mixin toggle-history
+{
+    border: $thin-border solid $white;
+    background: $dark-grey;
+    border-radius: 5px;
+    box-sizing: border-box;
+    height: 75px;
+    vertical-align: middle;
+    width: 75px;
+
+    @media only screen and (max-width: 1650px)
+    {
+        height: 70px;
+        width: 70px;
+    }
+
+    @media only screen and (max-width: 1550px)
+    {
+        height: 65px;
+        width: 65px;
+    }
+
+    @media only screen and (max-width: 1450px)
+    {
+        height: 60px;
+        width: 60px;
+    }
+
+    @media only screen and (max-width: 1300px)
+    {
+        height: 65px;
+        width: 65px;
+    }
+
+    @media only screen and (max-width: 625px)
+    {
+        height: 60px;
+        width: 60px;
+    }
+
+    @media only screen and (max-width: 525px)
+    {
+        height: 55px;
+        width: 55px;
+    }
+
+    @media only screen and (max-width: 450px)
+    {
+        height: 50px;
+        width: 50px;
+    }
+
+    @media only screen and (max-width: 415px)
+    {
+        height: 45px;
+        width: 45px;
+    }
+
+    @media only screen and (max-width: 375px)
+    {
+        height: 40px;
+        width: 40px;
+    }
+
+    @media only screen and (max-width: 350px)
+    {
+        height: 35px;
+        width: 35px;
+    }
+
+    &.not-required
+    {
+        background-image: linear-gradient(to bottom, $light-grey, $dark-grey);
+    }
+
+    &.skipped
+    {
+        background: $brown;
+
+        &.not-required
+        {
+            background-image: linear-gradient(to bottom, $light-grey, $brown);
+        }
+    }
+
+    &.completed
+    {
+        background: $green;
+
+        &.not-required
+        {
+            background-image: linear-gradient(to bottom, $light-grey, $green);
+        }
+    }
+
+    &.partial
+    {
+        background: $yellow;
+
+        &.not-required
+        {
+            background-image: linear-gradient(to bottom, $light-grey, $yellow);
+        }
+    }
+
+    &.missed
+    {
+        background: $red;
+
+        &.not-required
+        {
+            background-image: linear-gradient(to bottom, $light-grey, $red);
+        }
+    }
+}
+
+@mixin history-container
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    margin-bottom: 1%;
+    margin-left: 1%;
+    width: 98%;
+
+    div.history-toggle-item
+    {
+        &:hover
+        {
+            cursor: pointer;
+        }
+        
+        &:hover > p
+        {
+            text-shadow: 1.5px 1px $white;
+        }
+
+        &:hover > div.toggle-history
+        {
+            border: $medium-border solid $white;
+        }
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.5em;
+            margin: 0;
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 375px)
+            {
+                font-size: 1em;
+            }
+        }
+
+        div.toggle-history
+        {
+            @include toggle-history;
+        }
+    }
+}
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    overflow-y: scroll;
+
+    @media only screen and (max-width: 800px)
+    {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-y: scroll;
+    }
+
+    div.habit
+    {
+        align-self: center;
+        border: $thin-border solid $light-grey;
+        border-radius: 10px;
+        flex-direction: row;
+        margin: .25%;
+        text-align: center;
+        width: 45%;
+
+        &.empty
+        {
+            border-style: dashed;
+        }
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin: 1%; 
+            width: 98%;
+        }
+        
+        @media only screen and (max-width: 800px)
+        {
+            width: 96.5%;
+        }
+
+        a
+        {
+            text-decoration: none;
+
+            h2
+            {
+                color: $white;
+                font-family: $header-font;
+                font-weight: normal;
+                padding: 1%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.4em;
+                    margin-bottom: 1%;
+                    margin-top: 1%;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.15em;
+                    margin-bottom: 2%;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1em;
+                    margin-bottom: 2%;
+                }
+            }
+
+            &:hover > h2
+            {
+                text-shadow: 1.5px 1px $white;
+            }
+        }
+
+        div.progress-container
+        {
+            @include progress-bar;
+        }
+
+        div.history-toggle-container
+        {
+            @include history-container;
+        }
+    }
+
+    div.color-guide
+    {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        padding-left: 15%;
+        padding-right: 15%;
+        width: 100%;
+
+        @media only screen and (max-width: 1200px)
+        {
+            padding-left: 2.5%;
+            padding-right: 2.5%;
+        }
+
+        @media only screen and (max-width: 800px)
+        {
+            padding-left: .5%;
+            padding-right: 1%;
+            width: 98%;
+        }
+
+        div.color-key
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.75em;
+            margin-bottom: 2.5%;
+            text-align: center;
+            width: auto;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.25em;
+                margin-bottom: 5%;
+            }
+
+            &:first-of-type
+            {
+                margin-top: 2.5%;
+            }
+
+            div.toggle-history
+            {
+                @include toggle-history;
+
+                display: inline-block;
+            }
+        }
+    }
+
+    form.habit
+    {
+        @extend %base-form;
+
+        height: 60%;
+        margin-top: 1%;
+        overflow-y: scroll;
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 1%;
+        }
+
+        h3
+        {
+            @include form-title;
+
+            border: none;
+            font-size: 1.5em;
+            margin-bottom: .25%;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.25em;
+            }
+        }
+
+        input[type="checkbox"]
+        {
+            @extend %checkbox;
+        }
+
+        div.required-on
+        {
+            border: $thin-border solid $light-grey;
+            margin-left: 12.5%;
+            padding-bottom: 1%;
+            padding-top: .5%;
+            width: 75%;
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 1.5%;
+                width: 96%;
+            }
+
+            div.day-of-week-container
+            {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-evenly;
+                width: 100%;
+
+                div.day-of-week
+                {
+                    z-index: 10;
+
+                    input[type="checkbox"]
+                    {
+                        height: 60px;
+                        width: 60px;
+
+                        @media only screen and (max-width: 1300px)
+                        {
+                            height: 50px;
+                            width: 50px;
+                        }
+
+                        @media only screen and (max-width: 900px)
+                        {
+                            height: 45px;
+                            width: 45px;
+                        }
+
+                        @media only screen and (max-width: 450px)
+                        {
+                            height: 40px;
+                            width: 40px;
+                        }
+
+                        @media only screen and (max-width: 400px)
+                        {
+                            height: 35px;
+                            width: 35px;
+                        }
+
+                        &:disabled
+                        {
+                            pointer-events: none;
+                        }
+
+                        &:hover
+                        {
+                            cursor: pointer;
+                        }
+                    }
+
+                    p
+                    {
+                        color: $white;
+                        font-family: $body-font;
+                        font-size: 1.75em;
+                        margin: 0;
+
+                        @media only screen and (max-width: 1300px)
+                        {
+                            font-size: 1.5em;
+                        }
+
+                        @media only screen and (max-width: 900px)
+                        {
+                            font-size: 1.25em;
+                        }
+
+                        @media only screen and (max-width: 450px)
+                        {
+                            font-size: 1.25em;
+                        }
+
+                        @media only screen and (max-width: 375px)
+                        {
+                            font-size: 1em;
+                        }
+                    }
+
+                    &.disabled > p
+                    {
+                        color: $light-grey;
+                    }
+
+                    &.active > p
+                    {
+                        color: $white;
+                    }
+
+                    &.disabled > input[type="checkbox"]
+                    {
+                        border-color: $light-grey;
+                    }
+
+                    &.active > input[type="checkbox"]
+                    {
+                        border-color: $white;
+                    }
+
+                    &:hover
+                    {
+                        cursor: pointer;
+                    }
+                    
+                    &:hover > p
+                    {
+                        font-weight: bold;
+
+                        @media only screen and (max-width: 800px)
+                        {
+                            font-weight: normal;
+                        }
+                    }
+
+                    &:hover > input[type="checkbox"]
+                    {
+                        border: $medium-border solid $white;
+
+                        @media only screen and (max-width: 800px)
+                        {
+                            border: $thin-border solid $white;
+                        }
+                    }
+                }
+            }
+
+            span.every-x-days-clickable
+            {
+                position: relative;
+                width: 100%;
+                z-index: -1;
+            }
+
+            p
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2.25em;
+                margin: 0;
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.5em;
+                }
+
+                &.disabled
+                {
+                    color: $light-grey;
+                }
+            }
+
+            input[type="number"]
+            {
+                height: auto;
+                font-size: .75em;
+                // position: relative;
+                text-align: center;
+                width: 10%;
+                // z-index: 1;
+
+                @media only screen and (max-width: 450px)
+                {
+                    width: 20%;
+                }
+            }
+        }
+
+        span.show-todo, span.times-daily
+        {
+            color: $white;
+            display: inline-block;
+            font-family: $body-font;
+            font-size: 2.5em;
+            text-align: left;
+            width: 75%;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 2em;
+                width: 96%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.75em;
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.5em;
+            }
+
+            input[type="number"]
+            {
+                height: auto;
+                font-size: .75em;
+                text-align: center;
+                width: 15%;
+
+                @media only screen and (max-width: 400px)
+                {
+                    width: 20%;
+                }
+            }
+
+            input.show-todo
+            {
+                height: 50px;
+                width: 50px;
+
+                @media only screen and (max-width: 800px)
+                {
+                    height: 40px;
+                    width: 40px;
+                }
+
+                &:checked
+                {
+                    background: $green;
+                }
+
+                &:not(:checked)
+                {
+                    background: $red;
+                }
+            }
+        }
+
+        textarea
+        {
+            @media only screen and (max-width: 800px)
+            {
+                margin-bottom: 15%;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+
+            bottom: 1.5%;
+        }
+    }
+
+    div.habit-details
+    {
+        width: 75%;
+
+        @media only screen and (max-width: 800px)
+        {
+            width: 98%;
+        }
+
+        div.notes-container
+        {
+            border: $thin-border solid $light-grey;
+            box-sizing: border-box;
+            margin-left: 1%;
+            padding: 2.5%;
+            width: 98%;
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 2%;
+            }
+        }
+
+        h2
+        {
+            border-bottom: $thin-border solid $light-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2.5em;
+            margin-bottom: 0;
+            text-align: center;
+
+            @media only screen and (max-width: 1200px)
+            {
+                font-size: 2.25em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 2%;
+                width: 98%;
+            }
+
+            @media only screen and (max-width: 500px)
+            {
+                font-size: 1.75em;
+            }
+        }
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin: 0;
+            text-align: center;
+
+            &.required
+            {
+                color: $light-grey;
+                font-size: 2.25em;
+
+                @media only screen and (max-width: 1200px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 500px)
+                {
+                    font-size: 1.75em;
+                }
+            }
+
+            &.notes
+            {
+                @media only screen and (max-width: 500px)
+                {
+                    font-size: 1.65em;
+                }
+            }
+        }
+
+        div.progress-container
+        {
+            @include progress-bar;
+
+            div.progress-bar
+            {
+                font-size: 2.75em;
+
+                @media only screen and (max-width: 1200px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 500px)
+                {
+                    font-size: 1.45em;
+                }
+            }
+        }
+
+        div.history-container
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            padding: 1%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            a
+            {
+                margin: auto;
+                max-width: 10%;
+                padding: 1%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    order: 9;
+                    margin-top: 2.5%;
+                    max-width: 15%;
+                }
+
+                img
+                {
+                    display: inline-block;
+                    object-fit: contain;
+                    max-width: 100%;
+                }
+
+                &:hover
+                {
+                    background-color: $light-blue;
+                    border-radius: 50%;
+
+                    &.disabled
+                    {
+                        background-color: $dark-grey;
+                        cursor: default;
+                    }
+                }
+            }
+            
+            div.history-toggle-container
+            {
+                @include history-container;
+            }
+        }
+
+        div.stats
+        {
+            box-sizing: border-box;
+            color: $white;
+            display: flex;
+            font-family: $body-font;
+            flex-direction: row;
+            justify-content: space-around;
+            margin: 0;
+            margin-left: 1%;
+            margin-top: 2.5%;
+            width: 98%;
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-top: 5%;
+            }
+
+            p
+            {
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 1150px)
+                {
+                    font-size: 1.6em;
+                }
+
+                @media only screen and (max-width: 1000px)
+                {
+                    font-size: 1.45em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.2em;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1em;
+                }
+            }
+        }
+    }
+}
+
+
+div.history-updater-container
+{
+    background-color: $dark-grey;
+    border-radius: 5px;
+    display: none;
+    height: auto;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 17.5vh;
+    position: absolute;
+    width: 40%;
+    z-index: 6;
+
+    @media only screen and (max-height: 620px)
+    {
+        margin-top: 2.5vh;
+    }
+
+    @media only screen and (max-width: 1350px)
+    {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 1100px)
+    {
+        margin-left: 20%;
+        margin-right: 20%;
+        width: 60%;
+    }
+
+    @media only screen and (max-width: 650px)
+    {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: 0;
+        width: 95%;
+    }
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 0;
+        margin-top: 1%;
+        text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.35em;
+        }
+    }
+
+    h3
+    {
+        font-family: $body-font;
+        font-size: 2em;
+        margin-top: 1%;
+        text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.75em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.65em;
+        }
+
+        &.required
+        {
+            color: $green;
+        }
+
+        &.not-required
+        {
+            color: $red;
+        }
+    }
+
+    form
+    {
+        @extend %base-form;
+
+        p.history-status-label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin-bottom: 1%;
+            margin-top: 0;
+
+            @media only screen and (max-width: 700px)
+            {
+                font-size: 1.75em;
+            }
+        }
+        
+        div.status-container
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            margin-left: 12.5%;
+            margin-right: 12.5%;
+            padding: 0;
+            width: 75%;
+
+            @media only screen and (max-width: 850px)
+            {
+                margin-left: 2.5%;
+                margin-right: 2.5%;
+                width: 95%;
+            }
+
+            &.display-none
+            {
+                display: none;
+            }
+
+            input[type="checkbox"]
+            {
+                @extend %checkbox;
+                @include toggle-history;
+
+                @media only screen and (max-width: 550px)
+                {
+                    height: 55px;
+                    width: 55px;
+                }
+
+                &.completed-checkbox
+                {
+                    border-color: $green;
+                    border-width: $medium-border;
+
+                    &:checked
+                    {
+                        background-color: $green;
+                    }
+                }
+
+                &.skipped-checkbox
+                {
+                    border-color: $brown;
+                    border-width: $medium-border;
+
+                    &:checked
+                    {
+                        background-color: $brown;
+                    }
+                }
+
+                &.missed-checkbox
+                {
+                    border-color: $red;
+                    border-width: $medium-border;
+
+                    &:checked
+                    {
+                        background-color: $red;
+                    }
+                }
+            }
+        }
+
+        div.history-times-container
+        {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            input[type="number"]
+            {
+                font-size: 2.5em;
+                height: 100%;
+                margin-left: 5%;
+                margin-right: 5%;
+                max-width: 20%;
+                text-align: center;
+                width: auto;
+
+                @media only screen and (max-width: 700px)
+                {
+                    font-size: 2em;
+                }
+            }
+
+            img
+            {
+                @media only screen and (max-width: 700px)
+                {
+                    max-height: 50px;
+                    max-width: 50px;
+                }
+            }
+
+            // Hide arrows chrome, safari, edge, opera
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button
+            {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            // Firefox
+            input[type=number]
+            {
+                -moz-appearance: textfield;
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.history-updater-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+                }
+            }
+        }
+    }
+
+    div.auto-out-of
+    {
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            text-align: center;
+            width: 100%;
+
+            @media only screen and (max-width: 700px)
+            {
+                font-size: 2em;
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.history-updater-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+                }
+            }
+        }
+    }
+}

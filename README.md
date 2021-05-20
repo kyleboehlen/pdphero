@@ -2,7 +2,7 @@
 
 ## Installation
 Before installing the site the following tools need to be installed:
-- php7.4 or higher with the extensions
+- php7.4 or higher with the extensions (including php-memcached)
 - apache2
 - MySQL (MariaDB)
 - git
@@ -10,9 +10,9 @@ Before installing the site the following tools need to be installed:
 - npm
 
 <br/>
-Start by cloning into the repository
+Create an ssh key (remember to copy it to root) and add it to bitbucket to clone the repo
 
-`cd /var/www/html && git clone https://github.com/kyleboehlen/pdphero`
+`cd /var/www/html && git clone git@bitbucket.org:pdphero/pdphero.git`
 
 <br/>
 Install the required depdendencies
@@ -92,10 +92,28 @@ Create a nysql database and create a new user to grant all privliages to the dat
 - DB_PASSWORD=
 
 <br/>
-Add the mail api details (add secondary email service provider)
+Add the mailgun api details
 
 - MAILGUN_DOMAIN=
 - MAILGUN_SECRET=
+
+<br/>
+Add the AWS Simple Email Service api details
+
+- SES_ACCESS_KEY_ID=
+- SES_ACCESS_KEY_SECRET=
+- SES_REGION=
+
+<br/>
+Add the discord web hook url for logging
+
+- LOG_DISCORD_WEBHOOK_URL=
+
+<br/>
+Add credentials for mailtrap if email testing is required
+
+- MAILTRAP_USERNAME=
+- MAILTRAP_PASSWORD=
 
 <br/>
 Set the super admin details
@@ -108,7 +126,7 @@ Run the database migration, use the local phpunit
 
 `alias vendor_phpunit=vendor/phpunit/phpunit/phpunit`
 
-`phpunit --filter Deploy`
+`vendor_phpunit --filter Deploy`
 
 <br/>
 Change the php.ini file to let Laravel handle file upload sizes
@@ -120,6 +138,11 @@ Change the php.ini file to let Laravel handle file upload sizes
 Run crontab -e and add the following line
 
 `* * * * * cd /var/www/html/pdphero && php artisan schedule:run >> /dev/null 2>&1`
+
+<br/>
+Configure a supervisor file and use this command
+
+`cd /var/www/html/pdphero && php artisan queue:work --sleep=3 --tries=3 --max-time=3600`
 
 <br/><br/>
 ### _Make sure these steps are completed last_ 
@@ -139,8 +162,18 @@ Optimize route loading
    `php artisan route:cache`
 
 <br/><br/>
+### APP_ENV values:
+-local
+-testing
+-production
+
+<br/><br/>
 ### Current External Service List:
-- Cloudflare (streaming and CDN)
-- Mailgun (email)
+- Cloudflare (CDN)
+- Mailgun (primary email)
+- SES (backup email)
+- Mailtrap (email testing)
 - Papertrail (logging)
-- Nexmo (sms)
+- Jira Cloud (issue tracking)
+- Bitbucket (code repo host)
+- Stripe (payment processing)

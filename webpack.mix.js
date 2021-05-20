@@ -11,7 +11,15 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+mix.js('resources/js/app.js', 'public/assets/js')
+    .sass('resources/sass/about.scss', 'public/assets/css')
+    .sass('resources/sass/affirmations.scss', 'public/assets/css')
+    .sass('resources/sass/auth.scss', 'public/assets/css')
+    .sass('resources/sass/app.scss', 'public/assets/css')
+    .sass('resources/sass/goals.scss', 'public/assets/css')
+    .sass('resources/sass/habits.scss', 'public/assets/css')
+    .sass('resources/sass/home.scss', 'public/assets/css')
+    .sass('resources/sass/journal.scss', 'public/assets/css')
+    .sass('resources/sass/profile.scss', 'public/assets/css')
+    .sass('resources/sass/todo.scss', 'public/assets/css')
+    .sass('resources/sass/email/default.scss', '../resources/views/vendor/mail/html/themes/default.css');

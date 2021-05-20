@@ -1,0 +1,281 @@
+@import 'base';
+
+html
+{
+    background-color: $dark-blue;
+    height: 100%;
+    scroll-behavior: smooth;
+
+    @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+        width: 100vh;
+        left: 0;
+    }
+}
+
+body
+{
+    margin-top: 0;
+}
+
+div.overlay
+{
+    background-color: $black;
+    display: none;
+    height: 100%;
+    margin-left: -.5%;
+    opacity: 50%;
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+    
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: -2.5%; // IDEK
+    }
+}
+
+p.error
+{
+    font-family: $body-font;
+    font-size: 2em;
+    margin: 0;
+
+    @media screen and (max-width: 550px)
+    {
+        font-size: 1.75em;
+    }
+}
+
+.error
+{
+    color: $red !important;
+}
+
+.success
+{
+    color: $green !important;
+}
+
+header.app
+{
+    @extend %app-header;
+
+    border-bottom: none;
+}
+
+nav.app
+{
+    @extend %app-nav;
+
+    img.logo
+    {   
+        margin-bottom: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10%;
+        max-width: 30%;
+        max-height: 20%;
+
+        @media only screen and (max-height: 900px)
+        {
+            margin-top: 2.5%;
+            margin-bottom: 1%;
+        }
+
+        &:hover
+        {
+            cursor: pointer;
+            opacity: .6;
+        }
+    }
+
+    ul
+    {
+        a
+        {
+            font-size: 1.5em;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.25em;
+            }
+
+            li
+            {
+                border-bottom: $thin-border solid $light-grey;
+                border-top: $thin-border solid $light-grey;
+                margin-bottom: 7.5%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    margin-bottom: 5%;
+                }
+
+                @media only screen and (max-height: 900px)
+                {
+                    margin-bottom: 1%;
+                }
+            }
+
+            &:hover > li
+            {
+                background-color: $light-blue;
+                border-bottom: $thin-border solid $white;
+                border-top: $thin-border solid $white;
+            }
+
+            &.destructive-option
+            {
+                color: $red;
+                font-weight: bolder;
+                position: relative;
+                top: 25%;
+
+                @media only screen and (max-height: 900px)
+                {
+                    top: 10%;
+                }
+
+                &:hover
+                {
+                    color: $white;
+                }
+
+                &:hover > li
+                {
+                    background-color: $red;
+                }
+            }
+        }
+    }
+}
+
+footer.app
+{
+    @extend %app-footer;
+
+    border-top: none;
+}
+
+div.app-container
+{
+    @extend %app-container;
+
+    margin-bottom: 0;
+    margin-top: 1%;
+
+    &.no-scroll
+    {
+        overflow-y: hidden;
+    }
+}
+
+div.info-box
+{
+    @extend %pop-up-box;
+}
+
+div.success-box
+{
+    @extend %pop-up-box;
+
+    border: $medium-border solid $green;
+
+    h1
+    {
+        border-bottom: $medium-border solid $green;
+    }
+
+    button.close-box:hover
+    {
+        border-color: $green;
+        color: $green;
+    }
+}
+
+div.warning-box
+{
+    @extend %pop-up-box;
+
+    border: $medium-border solid $yellow;
+
+    h1
+    {
+        border-bottom: $medium-border solid $yellow;
+    }
+
+    button.close-box:hover
+    {
+        border-color: $yellow;
+        color: $yellow;
+    }
+}
+
+div.error-box
+{
+    @extend %pop-up-box;
+
+    border: $medium-border solid $red;
+
+    h1
+    {
+        border-bottom: $medium-border solid $red;
+    }
+
+    button.close-box:hover
+    {
+        border-color: $red;
+        color: $red;
+    }
+}
+
+span.swal-title
+{
+    font-family: $header-font;
+    font-size: 1.25em;
+
+    @media only screen and (max-height: 800px)
+    {
+        font-size: 1em;
+    }
+}
+
+div#swal2-content.swal2-html-container
+{
+    color: $white !important;
+    font-family: $body-font;
+    font-size: 1.75em;
+
+    @media only screen and (max-height: 800px)
+    {
+        font-size: 1.5em;
+    }
+}
+
+button.swal2-confirm.swal2-styled,
+button.swal2-cancel.swal2-styled
+{
+    font-family: $body-font;
+    font-size: 2em;
+    padding: 5% !important;
+
+    @media only screen and (max-height: 800px)
+    {
+        font-size: 1.75em;
+    }
+}
+
+.swal2-popup .swal2-styled:focus
+{
+    box-shadow: none !important;
+}
+
+#offline-message
+{
+    color: $white;
+    font-family: $header-font;
+    font-size: 2em;
+    margin-top: 30vh;
+    text-align: center;
+    width: 100%;
+}

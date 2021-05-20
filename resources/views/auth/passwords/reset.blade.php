@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('content')
-    <h1>{{ __('Reset Password') }}</h1>
+@section('template')
+    <div class="card">
+        <h1>{{ __('Reset Password') }}</h1>
 
-    <div>
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 
@@ -16,9 +16,7 @@
                     <input id="email" type="email" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
                     @error('email')
-                        <span>
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <p class="error">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -26,13 +24,11 @@
             <div>
                 <label for="password">{{ __('Password') }}</label>
 
-                <div class="col-md-6">
+                <div>
                     <input id="password" type="password" name="password" required autocomplete="new-password">
 
                     @error('password')
-                        <span>
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <p class="error">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -45,13 +41,9 @@
                 </div>
             </div>
 
-            <div>
-                <div>
-                    <button type="submit">
-                        {{ __('Reset Password') }}
-                    </button>
-                </div>
-            </div>
+            <button type="submit">
+                {{ __('Reset Password') }}
+            </button>
         </form>
     </div>
 @endsection

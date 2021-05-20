@@ -1,0 +1,2245 @@
+@import 'app';
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    overflow-y: scroll;
+
+    @media only screen and (max-width: 800px)
+    {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-y: scroll;
+    }
+
+    div.selector
+    {
+        align-self: flex-start;
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 1%;
+        margin-top: 1%;
+        text-align: center;
+        width: 99%;
+
+        span
+        {
+            @media only screen and (max-width: 1400px)
+            {
+                display: block;
+            }
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: .8em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: .7em;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: .6em;
+            }
+
+            @media only screen and (max-width: 340px)
+            {
+                font-size: .5em;
+            }
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1em;
+            text-align: center;
+            padding-left: .5%;
+            padding-right: .5%;
+
+            @media only screen and (max-width: 550px)
+            {
+                max-width: 60%;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+    }
+
+    div.goal
+    {
+        align-self: stretch;
+        border: $thin-border solid $light-grey;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: .25%;
+        text-align: center;
+        width: 45%;
+
+        &.achieved-padding
+        {
+            padding-bottom: 2.5%;
+        }
+
+        &.align-start
+        {
+            align-self: flex-start;
+        }
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin: 1%; 
+            width: 98%;
+        }
+        
+        @media only screen and (max-width: 800px)
+        {
+            width: 96.5%;
+        }
+
+        img.goal-img
+        {
+            align-self: center;
+            border-radius: 10px;
+            margin: 1%;
+            max-width: 32.5%;
+        }
+
+        &.empty
+        {
+            align-self: flex-start;
+            border-style: dashed;
+            
+            img.goal-img
+            {
+                padding: 25px;
+                padding-left: 50px;
+            }
+        }
+
+        a
+        {
+            align-self: center;
+            flex-direction: column;
+            height: auto;
+            text-decoration: none;
+            width: 62.5%;
+
+            h2
+            {
+                color: $white;
+                font-family: $header-font;
+                font-size: 1.85em;
+                font-weight: normal;
+                margin-bottom: 0;
+                margin-top: 0;
+                width: 100%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 2.25em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 450px)
+                {
+                    font-size: 1.35em;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1.25em;
+                }
+
+                @media only screen and (max-width: 320px)
+                {
+                    font-size: 1.1em;
+                }
+            }
+
+            &:hover > h2
+            {
+                text-shadow: 1.5px 1px $white;
+            }
+        }
+
+        div.progress-container
+        {
+            @include progress-bar;
+
+            flex-grow: 0;
+            margin-top: 1%;
+        }
+
+        div.status
+        {
+            p.label
+            {
+                font-family: $body-font;
+                font-size: 3em;
+                font-weight: bolder;
+                margin-bottom: 1%;
+                margin-top: 3%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 3.25em;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 2.75em;
+                }
+
+                @media only screen and (max-width: 600px)
+                {
+                    font-size: 2.5em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 375px)
+                {
+                    font-size: 1.75em;
+                }
+
+                @media only screen and (max-width: 320px)
+                {
+                    font-size: 1.5em;
+                }
+
+                &.tbd
+                {
+                    color: $brown;
+                }
+
+                &.lagging
+                {
+                    color: $red;
+                }
+
+                &.ontrack
+                {
+                    color: $yellow;
+                }
+
+                &.ahead
+                {
+                    color: $green;
+                }
+
+                &.completed
+                {
+                    color: $green;
+                }
+            }
+
+            img
+            {
+                margin-bottom: 1%;
+                margin-left: 1%;
+                margin-right: 1%;
+                width: 98%;
+                
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 2%;
+                    margin-right: 2%;
+                    width: 96%;
+                }
+            }
+        }
+    }
+
+    form.create-selector
+    {
+        @extend %base-form;
+
+        align-self: center;
+
+        h2
+        {
+            @include form-title;
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            padding-left: .5%;
+            padding-right: .5%;
+            text-align: center;
+            width: 75%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 2.25em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 2em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.5em;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+        }
+
+        p
+        {
+            border: $thin-border solid $light-grey;
+            border-radius: 5px;
+            color: $white;
+            display: none;
+            font-family: $body-font;
+            font-size: 1.75em;
+            margin-left: 12.5%;
+            max-height: 40%;
+            padding: 5%;
+            padding-bottom: 2%;
+            padding-top: 2%;
+            text-align: left;
+            width: 65%;
+
+            @media only screen and (max-height: 850px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.5em;
+                margin-left: 2.5%;
+                max-height: 55%;
+                width: 83.5%;
+            }
+
+            @media only screen and (max-width: 350px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-height: 725px)
+            {
+                max-height: 45%;
+            }
+
+            &:first-of-type
+            {
+                display: block;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include okay-button;
+        }
+    }
+
+    form.goal
+    {
+        @extend %base-form;
+
+        height: 60%;
+        font-size: 1.25em;
+        margin-top: 1%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin-left: 7%;
+            margin-right: 0;
+            width: 90%;
+        }
+
+        @media only screen and (max-width: 900px)
+        {
+            margin-left: 0;
+            margin-right: 0;
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 900px)
+        {
+            margin-left: 2.5%;
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 450px)
+        {
+            font-size: 1em;
+        }
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 1%;
+            font-size: 1.75em;
+            margin-left: 10%;
+            width: 80%;
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.25em;
+            }
+        
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.25em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+        
+            @media only screen and (max-width: 350px)
+            {
+                font-size: 1.15em;
+            }
+        }
+
+        input[type="text"]
+        {
+            font-size: 1.75em;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.5em;
+                width: 95%;
+            }
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.25em;
+            text-align: center;
+            padding-left: .5%;
+            padding-right: .5%;
+            width: 75%;
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                width: 95%;
+            }
+
+            &:focus
+            {
+                outline: none;
+            }
+
+            &.time-period
+            {
+                margin-right: 12.5%;
+                float: right;
+                width: 30%;
+
+                @media only screen and (max-width: 1700px)
+                {
+                    width: 25%;
+                }
+
+                @media only screen and (max-width: 1475px)
+                {
+                    width: 20%;
+                }
+
+                @media only screen and (max-width: 1400px)
+                {
+                    font-size: 1em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    max-width: 60%;
+                }
+            }
+        }
+
+        label, span.show-todo
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin-left: 12.5%;
+            text-align: right;
+            width: 25%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 2.5%;
+                text-align: left;
+            }
+        }
+
+        label.habit-strength, label.time-period, label.manual-times
+        {
+            margin-left: 0;
+        }
+
+        input[type="number"]
+        {
+            height: auto;
+            font-size: 1.5em;
+            text-align: center;
+            width: 15%;
+
+            &.ad-hoc-times
+            {
+                width: 5%;
+            }
+
+            &.manual-times
+            {
+                width: 15%;
+            }
+
+            &.habit-strength
+            {
+                @media only screen and (max-width: 575px)
+                {
+                    width: 20%;
+                }
+
+                @media only screen and (max-width: 475px)
+                {
+                    width: 25%;
+                }
+            }
+        }
+
+        span.percent-label, span.manual-number
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+        }
+
+        input[type="date"]
+        {
+            font-size: 1.75em;
+            float: right;
+            margin-right: 12.5%;
+            text-align: center;
+            width: 50%;
+
+            @media only screen and (max-width: 1550px)
+            {
+                width: 40%;
+            }
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-right: 2.5%;
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                width: 65%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                width: 50%;
+            }
+        }
+
+        #goal-habit-strength-label, #future-goal-image-label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.25em;
+            margin: 0;
+        }
+
+        #goal-habit-strength-label
+        {
+            display: none;
+        }
+
+        input[type="file"]
+        {
+            font-size: 1.25em;
+            float: right;
+            margin-right: 12.5%;
+            width: 50%;
+
+            @media only screen and (max-width: 1550px)
+            {
+                width: 40%;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-right: 2.5%;
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                width: 65%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                width: 50%;
+            }
+        }
+
+        span.show-todo
+        {
+            color: $white;
+            display: inline-block;
+            font-family: $body-font;
+            font-size: 2em;
+            padding: 0;
+            text-align: left;
+            width: 75%;
+
+            @media only screen and (max-width: 1400px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.5em;
+                width: 96%;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 525px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                font-size: 1.4em;
+            }
+
+            input[type="number"]
+            {
+                height: auto;
+                font-size: .75em;
+                margin-left: 60px;
+                text-align: center;
+                width: 10%;
+
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: .85em;
+                    width: 15%;
+                }
+
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 50px;
+                }
+
+                @media only screen and (max-width: 400px)
+                {
+                    width: 20%;
+                }
+
+                &:disabled
+                {
+                    color: $light-grey;
+                }
+            }
+        }
+
+        span.disabled
+        {
+            color: $light-grey;
+        }
+
+        input[type="checkbox"]
+        {
+            @extend %checkbox;
+
+            height: 50px;
+            margin-left: 0;
+            width: 50px;
+
+            @media only screen and (max-width: 800px)
+            {
+                height: 40px;
+                width: 40px;
+            }
+
+            &:checked
+            {
+                background: $green;
+            }
+
+            &:not(:checked)
+            {
+                background: $red;
+            }
+        }
+
+        textarea
+        {
+            @media only screen and (max-width: 900px)
+            {
+                width: 95%;
+            }
+
+            &.reason
+            {
+                @media only screen and (max-width: 675px)
+                {
+                    min-height: 200px;
+                }
+            }
+        }
+
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+
+            bottom: 1.5%;
+        }
+    }
+
+    form.action-item
+    {
+        @extend %base-form;
+
+        font-size: 1.25em;
+        margin-top: 1%;
+
+        @media only screen and (max-width: 1500px)
+        {
+            margin-left: 7.5%;
+            margin-right: 7.5%;
+            width: 85%;
+        }
+
+        @media only screen and (max-width: 1300px)
+        {
+            margin-left: 2.5%;
+            margin-right: 2.5%;
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 900px)
+        {
+            overflow-y: scroll;
+        }
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 1%;
+            font-size: 1.75em;
+            margin-left: 10%;
+            width: 80%;
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.25em;
+            }
+        
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.25em;
+                margin-left: 2.5%;
+                width: 95%;
+            }
+        
+            @media only screen and (max-width: 350px)
+            {
+                font-size: 1.15em;
+            }
+        }
+
+        input[type="text"]
+        {
+            font-size: 1.75em;
+
+            @media only screen and (max-width: 900px)
+            {
+                font-size: 1.5em;
+                width: 95%;
+            }
+        }
+
+        label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            margin-left: 12.5%;
+            width: 25%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.75em;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 2.5%;
+                text-align: left;
+            }
+
+            &.deadline
+            {
+                margin-left: 20%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 5%;
+                    text-align: left;
+                }
+
+                @media only screen and (max-width: 600px)
+                {
+                    margin-left: 2.5%;
+                    text-align: left;
+                }
+            }
+        }
+
+        span.show-todo
+        {
+            color: $white;
+            display: inline-block;
+            font-family: $body-font;
+            font-size: 2em;
+            text-align: left;
+            width: 75%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 1300px)
+            {
+                width: 80%;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.4em;
+            }
+
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-left: 2.5%;
+                text-align: left;
+                width: 95%;
+            }
+        }
+
+        #show-todo-options
+        {
+            #action-item-show-todo
+            {
+                margin-left: 55px;
+
+                // Todo: add mobile styles that change margin based on when checkbox width changes
+            }
+
+            #days-before-due-input
+            {
+                margin-left: 110px;
+            }
+        }
+
+        span.disabled
+        {
+            color: $light-grey;
+        }
+
+        input[type="date"]
+        {
+            font-size: 1.75em;
+            float: right;
+            margin-right: 12.5%;
+            text-align: center;
+            width: 50%;
+
+            @media only screen and (max-width: 1550px)
+            {
+                width: 40%;
+            }
+
+            @media only screen and (max-width: 1100px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 900px)
+            {
+                margin-right: 2.5%;
+                width: 45%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                width: 55%;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                width: 50%;
+            }
+        }
+
+        input[type="checkbox"]
+        {
+            @extend %checkbox;
+
+            height: 50px;
+            margin-left: 0;
+            width: 50px;
+
+            @media only screen and (max-width: 800px)
+            {
+                height: 40px;
+                width: 40px;
+            }
+
+            &:checked
+            {
+                background: $green;
+            }
+
+            &:not(:checked)
+            {
+                background: $red;
+            }
+        }
+
+        input[type="number"]
+        {
+            height: auto;
+            font-size: .75em;
+            text-align: center;
+            width: 15%;
+
+            &.disabled
+            {
+                color: $light-grey;
+            }
+        }
+
+        textarea
+        {
+            @media only screen and (max-width: 900px)
+            {
+                margin-bottom: 100px;
+                width: 95%;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+
+            bottom: 1.5%;
+        }
+    }
+
+    div.goal-type-container
+    {
+        color: $white;
+        text-align: center;
+        width: 75%;
+
+        @media only screen and (max-width: 800px)
+        {
+            margin-left: 2.5%;
+            width: 95%;
+        }
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+            margin-bottom: 0;
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 475px)
+            {
+                font-size: 1.35em;
+            }
+        }
+
+        p
+        {
+            font-family: $body-font;
+            font-size: 1.75em;
+            margin-top: 1%;
+
+            @media only screen and (max-width: 475px)
+            {
+                font-size: 1.35em;
+            }
+        }
+    }
+
+    &.categories-list
+    {
+        @extend %flex-container;
+
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0;
+        text-align: center;
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+            width: 50%;
+        }
+
+        div.category
+        {
+            @include add-delete-list-item;
+        }
+    }
+
+    &.goal-details
+    {
+        display: block;
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.6em;
+            text-align: center;
+
+            &.goal-category
+            {
+                margin-bottom: 0;
+                margin-top: .5%;
+                text-align: center;
+                width: 100%;
+            }
+
+            &.goal-dates
+            {
+                margin: 0;
+            }
+
+            &.manual-progress
+            {
+                font-size: 2.15em;
+                margin: 0;
+            }
+        }
+
+        h2
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 0;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        h3.goal-section-title
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            display: none;
+            font-family: $header-font;
+            font-size: 1.85em;
+            margin-bottom: 0;
+            margin-left: 12.5%;
+            margin-right: 12.5%;
+            margin-top: 2.5%;
+            text-align: center;
+            width: 75%;
+        }
+
+        #progress-section-title
+        {
+            margin-bottom: -1.5%;
+        }
+
+        #action-plan-section-title
+        {
+            margin-bottom: 2.5%;
+        }
+
+        #goal-nav-dropdown
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.75em;
+            margin-left: 30%;
+            margin-top: 1%;
+            text-align: center;
+            width: 40%;
+
+            &:focus
+            {
+                outline: none;
+            }
+
+            @media only screen and (max-width: 850px)
+            {
+                margin-left: 10%;
+                margin-right: 10%;
+                width: 80%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1.6em;
+            }
+        }
+
+        div
+        {
+            width: 100%;
+        }
+
+        div.goal-nav-div
+        {
+            &.hidden
+            {
+                display: none;
+            }
+        }
+
+        #goal-details-div
+        {
+            margin-left: 10%;
+            margin-right: 10%;
+            width: 80%;
+
+            img.goal-img
+            {
+                border-radius: 10px;
+                float: left;
+                margin: 1.5%;
+                margin-top: 2.5%;
+                width: 30%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    float: none;
+                    margin-left: 25%;
+                    margin-right: 25%;
+                    width: 50%;
+                }
+
+                @media only screen and (max-width: 575px)
+                {
+                    float: none;
+                    margin-left: 20%;
+                    margin-right: 20%;
+                    width: 60%;
+                }
+
+                @media only screen and (max-width: 400px)
+                {
+                    float: none;
+                    margin-left: 17.5%;
+                    margin-right: 17.5%;
+                    width: 65%;
+                }
+            }
+
+            h3
+            {
+                color: $white;
+                font-family: $header-font;
+                font-size: 1.75em;
+                margin: 0;
+                text-align: center;
+                text-decoration: underline;
+            }
+
+            p
+            {
+                margin: 1.5%;
+            }
+
+            div.details-clear-all
+            {
+                clear: both;
+                width: 100%;
+            }
+        }
+
+        #goal-progress-div
+        {
+            margin-left: 15%;
+            margin-right: 15%;
+            width: 70%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                margin-left: 10%;
+                margin-right: 10%;
+                width: 80%;
+            }
+
+            @media only screen and (max-width: 1000px)
+            {
+                margin-left: 5%;
+                margin-right: 5%;
+                width: 90%;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-top: 5%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                margin-top: 7.5%;
+            }
+
+            @media only screen and (max-width: 500px)
+            {
+                margin-top: 10%;
+            }
+
+            @media only screen and (max-width: 450px)
+            {
+                margin-top: 12.5%;
+            }
+
+            &.show-all
+            {
+                margin-top: 0;
+            }
+
+            div.progress-container
+            {
+                @include progress-bar;
+
+                flex-grow: 0;
+            }
+
+            div.status
+            {
+                p.label
+                {
+                    font-family: $body-font;
+                    font-size: 5em;
+                    font-weight: bolder;
+                    margin-bottom: 2%;
+                    margin-top: 2%;
+                    text-align: center;
+
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 3.25em;
+                    }
+
+                    @media only screen and (max-width: 900px)
+                    {
+                        font-size: 2.75em;
+                    }
+
+                    @media only screen and (max-width: 600px)
+                    {
+                        font-size: 2.5em;
+                    }
+
+                    @media only screen and (max-width: 550px)
+                    {
+                        font-size: 2em;
+                    }
+
+                    @media only screen and (max-width: 375px)
+                    {
+                        font-size: 1.75em;
+                    }
+
+                    @media only screen and (max-width: 320px)
+                    {
+                        font-size: 1.5em;
+                    }
+
+                    &.tbd
+                    {
+                        color: $brown;
+                    }
+
+                    &.lagging
+                    {
+                        color: $red;
+                    }
+
+                    &.ontrack
+                    {
+                        color: $yellow;
+                    }
+
+                    &.ahead
+                    {
+                        color: $green;
+                    }
+
+                    &.completed
+                    {
+                        color: $green;
+                    }
+                }
+
+                img
+                {
+                    margin-bottom: 1%;
+                    margin-left: 1%;
+                    margin-right: 1%;
+                    width: 98%;
+                    
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-left: 2%;
+                        margin-right: 2%;
+                        width: 96%;
+                    }
+                }
+            }
+        }
+
+        #goal-sub-goals-div
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5%;
+            width: 100%;
+
+            &.hidden
+            {
+                display: none;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                overflow-y: scroll;
+            }
+
+            div.goal
+            {
+                align-self: stretch;
+                border: $thin-border solid $light-grey;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin: .25%;
+                text-align: center;
+                width: 45%;
+
+                &.achieved-padding
+                {
+                    padding-bottom: 2.5%;
+                }
+
+                &.align-start
+                {
+                    align-self: flex-start;
+                }
+
+                @media only screen and (max-width: 1300px)
+                {
+                    margin: 1%; 
+                    width: 98%;
+                }
+                
+                @media only screen and (max-width: 800px)
+                {
+                    width: 96.5%;
+                }
+
+                img.goal-img
+                {
+                    align-self: center;
+                    border-radius: 10px;
+                    margin: 1%;
+                    max-width: 32.5%;
+                }
+
+                &.empty
+                {
+                    align-self: flex-start;
+                    border-style: dashed;
+                    
+                    img.goal-img
+                    {
+                        padding: 25px;
+                        padding-left: 50px;
+                    }
+                }
+
+                a
+                {
+                    align-self: center;
+                    flex-direction: column;
+                    height: auto;
+                    text-decoration: none;
+                    width: 62.5%;
+
+                    h2
+                    {
+                        color: $white;
+                        font-family: $header-font;
+                        font-size: 1.85em;
+                        font-weight: normal;
+                        margin-bottom: 0;
+                        margin-top: 0;
+                        width: 100%;
+
+                        @media only screen and (max-width: 1300px)
+                        {
+                            font-size: 2.25em;
+                        }
+
+                        @media only screen and (max-width: 900px)
+                        {
+                            font-size: 1.75em;
+                        }
+
+                        @media only screen and (max-width: 550px)
+                        {
+                            font-size: 1.5em;
+                        }
+
+                        @media only screen and (max-width: 450px)
+                        {
+                            font-size: 1.35em;
+                        }
+
+                        @media only screen and (max-width: 375px)
+                        {
+                            font-size: 1.25em;
+                        }
+
+                        @media only screen and (max-width: 320px)
+                        {
+                            font-size: 1.1em;
+                        }
+                    }
+
+                    &:hover > h2
+                    {
+                        text-shadow: 1.5px 1px $white;
+                    }
+                }
+
+                div.progress-container
+                {
+                    @include progress-bar;
+
+                    flex-grow: 0;
+                    margin-top: 1%;
+                }
+
+                div.status
+                {
+                    p.label
+                    {
+                        font-family: $body-font;
+                        font-size: 3em;
+                        font-weight: bolder;
+                        margin-bottom: 1%;
+                        margin-top: 3%;
+
+                        @media only screen and (max-width: 1300px)
+                        {
+                            font-size: 3.25em;
+                        }
+
+                        @media only screen and (max-width: 900px)
+                        {
+                            font-size: 2.75em;
+                        }
+
+                        @media only screen and (max-width: 600px)
+                        {
+                            font-size: 2.5em;
+                        }
+
+                        @media only screen and (max-width: 550px)
+                        {
+                            font-size: 2em;
+                        }
+
+                        @media only screen and (max-width: 375px)
+                        {
+                            font-size: 1.75em;
+                        }
+
+                        @media only screen and (max-width: 320px)
+                        {
+                            font-size: 1.5em;
+                        }
+
+                        &.tbd
+                        {
+                            color: $brown;
+                        }
+
+                        &.lagging
+                        {
+                            color: $red;
+                        }
+
+                        &.ontrack
+                        {
+                            color: $yellow;
+                        }
+
+                        &.ahead
+                        {
+                            color: $green;
+                        }
+
+                        &.completed
+                        {
+                            color: $green;
+                        }
+                    }
+
+                    img
+                    {
+                        margin-bottom: 1%;
+                        margin-left: 1%;
+                        margin-right: 1%;
+                        width: 98%;
+                        
+                        @media only screen and (max-width: 800px)
+                        {
+                            margin-left: 2%;
+                            margin-right: 2%;
+                            width: 96%;
+                        }
+                    }
+                }
+            }
+        }
+
+        #goal-action-plan-div
+        {
+            p.ad-hoc-label
+            {   
+                margin: 0;
+            }
+
+            hr.ad-hoc-label
+            {
+                margin-bottom: 1%;;
+                margin-top: 0;
+                width: 70%;
+        
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-left: 5%;
+                    width: 90%;
+                }
+        
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 1.5%;
+                    width: 95%;
+                } 
+            }
+
+            div.action-item
+            {
+                align-items: center;
+                border: $thin-border solid $light-grey;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-left: 15%;
+                margin-top: 5px;
+                text-align: center;
+                width: 70%;
+        
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-left: 5%;
+                    width: 90%;
+                }
+        
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 1.5%;
+                    width: 95%;
+                }
+        
+                &:first-of-type
+                {
+                    margin-top: .5%;
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-top: 5%;
+                    }
+                }
+        
+                &:last-of-type
+                {
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-bottom: 2.5%;
+                    }
+                }
+        
+                form
+                {
+                    flex-grow: 0;
+        
+                    input[type="checkbox"]
+                    {
+                        @extend %checkbox;
+        
+                        height: 50px;
+                        width: 50px;
+        
+                        &:checked
+                        {
+                            background: $black;
+                        }
+                    }
+                }
+        
+                a
+                {
+                    color: $white;
+                    flex-grow: 1;
+                    font-family: $body-font;
+                    font-size: 2.25em;
+                    max-width: 85%;
+                    overflow-x: hidden;
+                    text-decoration: none;
+                    vertical-align: middle;
+        
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 1.75em;
+                        max-width: 75%;
+                    }
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+        
+                    @media only screen and (max-width: 450px)
+                    {
+                        font-size: 1.25em;
+                    }
+        
+                    &.achieved
+                    {
+                        color: $light-grey;
+                        text-decoration: line-through;
+                    }
+        
+                    &:hover
+                    {
+                        text-shadow: 1.5px 1px $white;
+                    }
+                }
+        
+                div.deadline
+                {
+                    border-left: $thin-border solid $light-grey;
+                    border-radius: 0 7.5px 7.5px 0;
+                    flex-basis: 25px;
+                    flex-grow: 0;
+                    height: 100%;
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        flex-basis: 15px;
+                    }
+
+                    p
+                    {
+                        color: $white;
+                        font-family: $body-font;
+                        margin-bottom: 1%;
+                        margin-top: 1%;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                    }
+                }
+        
+                &.empty
+                {
+                    border: $thin-border dashed $light-grey;
+        
+                    form
+                    {
+                        flex-grow: 0;
+        
+                        input[type="checkbox"]
+                        {
+                            @extend %checkbox;
+        
+                            border: $thin-border dashed $white;
+                        }
+                    }
+        
+                    div.deadline
+                    {
+                        border-left: $thin-border dashed $light-grey;
+                    }
+                }
+            }
+        }
+
+        #goal-ad-hoc-list-div
+        {
+            div.ad-hoc-list-item
+            {
+                align-items: center;
+                border: $thin-border solid $light-grey;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-left: 15%;
+                margin-top: 5px;
+                text-align: center;
+                width: 70%;
+        
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-left: 5%;
+                    width: 90%;
+                }
+        
+                @media only screen and (max-width: 800px)
+                {
+                    margin-left: 1.5%;
+                    width: 95%;
+                }
+        
+                &:first-of-type
+                {
+                    margin-top: .5%;
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-top: 5%;
+                    }
+                }
+        
+                &:last-of-type
+                {
+                    @media only screen and (max-width: 800px)
+                    {
+                        margin-bottom: 2.5%;
+                    }
+                }
+        
+                a
+                {
+                    color: $white;
+                    flex-grow: 1;
+                    font-family: $body-font;
+                    font-size: 2.25em;
+                    max-width: 85%;
+                    overflow-x: hidden;
+                    text-decoration: none;
+                    vertical-align: middle;
+        
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 1.75em;
+                        max-width: 75%;
+                    }
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+        
+                    @media only screen and (max-width: 450px)
+                    {
+                        font-size: 1.25em;
+                    }
+
+                    &:hover
+                    {
+                        text-shadow: 1.5px 1px $white;
+                    }
+
+                    &.set-deadline-icon
+                    {
+                        border-radius: 7.5px 0 0 7.5px;
+                        flex-grow: 0;
+                        margin: 0;
+                        padding-left: 2%;
+                        padding-top: 1%;
+                        padding-right: 2%;
+
+                        &:hover
+                        {
+                            background-color: $light-blue;
+                        }
+
+                        img
+                        {
+                            height: 40px;
+                            width: 40px;
+
+                            @media only screen and (max-width: 800px)
+                            {
+                                height: 30px;
+                                width: 30px;
+                            }
+                        }
+                    }
+
+                    &.set-deadline-link
+                    {
+                        flex-grow: 0;
+
+                        div.deadline
+                        {
+                            border-left: $thin-border solid $light-grey;
+                            border-radius: 0 7.5px 7.5px 0;
+                            flex-basis: 25px;
+                            flex-grow: 0;
+                            height: 100%;
+                
+                            @media only screen and (max-width: 800px)
+                            {
+                                flex-basis: 15px;
+                            }
+
+                            p
+                            {
+                                color: $light-grey;
+                                font-family: $body-font;
+                                font-size: .75em;
+                                margin-bottom: 1%;
+                                margin-top: 1%;
+                                padding-left: 15px;
+                                padding-right: 15px;
+
+                                @media only screen and (max-width: 800px)
+                                {
+                                    padding-left: 5px;
+                                    padding-right: 10px;
+                                }
+                            }
+                        }
+
+                        &:hover
+                        {
+                            text-decoration: underline;
+                            text-shadow: 0px 0px $white;
+                        }
+
+                        &:hover > div > p
+                        {
+                            color: $white;
+                        }
+                    }
+                }
+        
+                &.empty
+                {
+                    border: $thin-border dashed $light-grey;
+        
+                    div.deadline
+                    {
+                        border-left: $thin-border dashed $light-grey;
+                    }
+                }
+            }
+        }
+    }
+
+    &.action-item-details
+    {
+        display: block;
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2em;
+            text-align: center;
+
+            &.goal-name
+            {
+                margin-bottom: 0;
+                margin-top: .5%;
+                text-align: center;
+                width: 100%;
+            }
+
+            &.deadline
+            {
+                margin-top: 1%;
+
+                a
+                {
+                    color: $light-grey;
+                    text-decoration: none;
+
+                    &:hover
+                    {
+                        color: $white;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            &.notes
+            {
+                margin-left: 12.5%;
+                margin-right: 12.5%;
+                width: 75%;
+
+                @media only screen and (max-width: 650px)
+                {
+                    margin-left: 5%;
+                    margin-right: 5%;
+                    width: 90%;
+                }
+            }
+        }
+
+        h2
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 0;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        h3.notes
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.85em;
+            margin-bottom: 0;
+            margin-left: 12.5%;
+            margin-right: 12.5%;
+            margin-top: 2.5%;
+            text-align: center;
+            width: 75%;
+        }
+    }
+}
+
+.ad-hoc-deadline-container, #manual-progress-container, #shift-dates-container
+{
+    background-color: $dark-grey;
+    border-radius: 5px;
+    display: none;
+    height: auto;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 17.5vh;
+    position: absolute;
+    width: 40%;
+    z-index: 6;
+
+    @media only screen and (max-height: 620px)
+    {
+        margin-top: 2.5vh;
+    }
+
+    @media only screen and (max-width: 1350px)
+    {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 1100px)
+    {
+        margin-left: 20%;
+        margin-right: 20%;
+        width: 60%;
+    }
+
+    @media only screen and (max-width: 650px)
+    {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+
+    @media only screen and (max-width: 515px)
+    {
+        margin-left: 0;
+        width: 95%;
+    }
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 0;
+        margin-top: 2.5%;
+        padding-left: 5%;
+        padding-right: 5%;
+        text-align: center;
+
+        @media only screen and (max-width: 900px)
+        {
+            font-size: 1.5em;
+        }
+
+        @media only screen and (max-width: 420px)
+        {
+            font-size: 1.35em;
+        }
+    }
+
+
+    form
+    {
+        @extend %base-form;
+        
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 2.5em;
+            margin: 1%;
+        }
+
+        div.manual-completed-container, div.shift-days-container
+        {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            input[type="number"]
+            {
+                font-size: 2.5em;
+                height: 100%;
+                margin-left: 5%;
+                margin-right: 5%;
+                max-width: 20%;
+                text-align: center;
+                width: auto;
+
+                @media only screen and (max-width: 700px)
+                {
+                    font-size: 2em;
+                }
+            }
+
+            img
+            {
+                @media only screen and (max-width: 700px)
+                {
+                    max-height: 50px;
+                    max-width: 50px;
+                }
+            }
+
+            // Hide arrows chrome, safari, edge, opera
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button
+            {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            // Firefox
+            input[type=number]
+            {
+                -moz-appearance: textfield;
+            }
+        }
+
+        div.deadline-input-container
+        {
+            input[type="date"]
+            {
+                font-size: 2.25em;
+                text-align: center;
+                width: 50%;
+
+                @media only screen and (max-width: 1000px)
+                {
+                    width: 60%;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    width: 70%;
+                }
+
+                @media only screen and (max-width: 700px)
+                {
+                    width: 80%;
+                }
+            }
+        }
+
+        div.buttons-container
+        {
+            bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            
+            button.manual-progress-updater-button, button.shift-dates-updater-button
+            {
+                background-color: $light-blue;
+                display: inline-block;
+
+                &:hover
+                {
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+                }
+            }
+        }
+    }
+}
