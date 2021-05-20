@@ -359,12 +359,6 @@ div.app-container
             width: 95%;
         }
 
-        &:hover > a.create-hover, &:hover > ol > a.create-hover
-        {
-            text-decoration: none;
-            text-shadow: 1px 1px $white;
-        }
-
         h3
         {
             border-bottom: $thin-border solid $light-grey;
@@ -440,6 +434,18 @@ div.app-container
                 margin-left: 2.5%;
                 width: 95%;
             }
+
+            a.create-hover
+            {
+                color: $white;
+                text-decoration: none;
+
+                &:hover
+                {
+                    text-decoration: none;
+                    text-shadow: 1px 1px $white;
+                }
+            }
         }
     }
 
@@ -450,20 +456,9 @@ div.app-container
             margin-top: 2.5%;
         }
 
-        a.create-hover
+        a
         {
             text-decoration: none;
-
-            li
-            {
-                text-decoration: none;
-            }
-
-            &:hover > li
-            {
-                text-decoration: none;
-                text-shadow: 1px 1px $white;
-            }
         }
     }
 
@@ -515,7 +510,7 @@ div.app-container
         a.create-hover
         {
             text-decoration: none;
-            
+
             p
             {
                 text-decoration: none;
