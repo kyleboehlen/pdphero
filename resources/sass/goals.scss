@@ -523,7 +523,12 @@ div.app-container
             }
         }
 
-        label.habit-strength, label.time-period, label.manual-times, label.custom-times
+        label.habit-strength, label.time-period, label.manual-times
+        {
+            margin-left: 0;
+        }
+
+        label.custom-times
         {
             margin-left: 0;
         }
