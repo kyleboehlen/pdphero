@@ -232,6 +232,7 @@ class JournalController extends Controller
                 ->where('type_id', TodoType::TODO_ITEM)
                 ->where('completed', 1)
                 ->whereBetween('updated_at', $between_array)
+                ->orderBy('updated_at', 'asc')
                 ->get();
 
         // Get goals
@@ -239,6 +240,7 @@ class JournalController extends Controller
             Goal::where('user_id', $user->id)
                 ->where('achieved', 1)
                 ->whereBetween('updated_at', $between_array)
+                ->orderBy('updated_at', 'asc')
                 ->get();
 
         // Get action items
@@ -246,12 +248,14 @@ class JournalController extends Controller
             GoalActionItem::whereIn('goal_id', $goal_ids)
                 ->where('achieved', 1)
                 ->whereBetween('updated_at', $between_array)
+                ->orderBy('updated_at', 'asc')
                 ->get();
 
         // Get entries
         $journal_entries =
             JournalEntry::where('user_id', $user->id)
                 ->whereBetween('created_at', $between_array)
+                ->orderBy('created_at', 'asc')
                 ->get();
 
         // Build the filter dropdown
