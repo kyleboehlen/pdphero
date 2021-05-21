@@ -21,6 +21,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "marvinlabs/laravel-discord-logger": "^1.1",
+        "monicahq/laravel-cloudflare": "^1.8",
         "silviolleite/laravelpwa": "^2.0"
     },
     "require-dev": {
