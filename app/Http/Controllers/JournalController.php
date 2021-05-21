@@ -11,6 +11,7 @@ use DB;
 use App\Helpers\Constants\Habits\Type as HabitType;
 use App\Helpers\Constants\Habits\HistoryType as HabitHistoryType;
 use App\Helpers\Constants\User\Setting;
+use App\Helpers\Constants\ToDo\Type as ToDoType;
 
 // Jobs
 use App\Jobs\CalculateHabitStrength;
@@ -114,20 +115,22 @@ class JournalController extends Controller
             // Set array and date
             $array = [
                 'display_date' => $carbon->format('n/j/y'),
-                // 'display_date' => $start_timestamp . '||' . $end_timestamp,
                 'route_date' => $carbon->format('Y-m-d'),
             ];
 
             // Get Todos
             $array['todo_count'] =
                 ToDo::where('user_id', $user->id)
+                    ->where('type_id', TodoType::TODO_ITEM)
                     ->where('completed', 1)
                     ->whereBetween('updated_at', $between_array)
                     ->get()->count();
 
             // Get habits
             $array['habit_count'] =
-                HabitHistory::whereIn('habit_id', $habit_ids)
+                HabitHistory::select('habit_id')
+                    ->whereIn('habit_id', $habit_ids)
+                    ->groupBy('habit_id')
                     ->where('type_id', HabitHistoryType::COMPLETED)
                     ->where('day', $carbon->format('Y-m-d'))
                     ->get()->count();
@@ -226,6 +229,7 @@ class JournalController extends Controller
         // Get Todos
         $todos =
             ToDo::where('user_id', $user->id)
+                ->where('type_id', TodoType::TODO_ITEM)
                 ->where('completed', 1)
                 ->whereBetween('updated_at', $between_array)
                 ->get();
