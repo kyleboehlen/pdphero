@@ -15,25 +15,6 @@ header.app
     display: none;
 }
 
-nav.app
-{
-    ul.list
-    {
-        &.settings
-        {
-            a
-            {
-                font-size: 1.25em;
-
-                @media only screen and (max-width: 800px)
-                {
-                    font-size: 1em;
-                }
-            }
-        }
-    }
-}
-
 div.app-container
 {
     @extend %flex-container;
