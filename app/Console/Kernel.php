@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('cloudflare:reload')->daily();
         $schedule->command('purge:profile-pictures --silent')->daily();
     }
 
