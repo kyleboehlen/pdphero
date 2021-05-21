@@ -303,7 +303,10 @@ class Goal extends Model
         elseif(!is_null($this->parent_id))
         {
             $this->load('parent');
-            return $this->parent->defaultPushTodo();
+            if(!is_null($this->parent))
+            {
+                return $this->parent->defaultPushTodo();
+            }
         }
 
         return false;
