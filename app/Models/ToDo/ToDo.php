@@ -5,6 +5,7 @@ namespace App\Models\ToDo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use JamesMills\Uuid\HasUuidTrait;
 use Carbon\Carbon;
 use Log;
@@ -12,6 +13,9 @@ use Log;
 // Constants
 use App\Helpers\Constants\Habits\HistoryType;
 use App\Helpers\Constants\ToDo\Type;
+
+// Jobs
+use App\Jobs\CalculateHabitStrength;
 
 // Models
 use App\Models\Goal\GoalActionItem;
@@ -22,7 +26,7 @@ use App\Models\Relationships\GoalActionItemsToDo;
 
 class ToDo extends Model
 {
-    use HasFactory, HasUuidTrait, SoftDeletes;
+    use DispatchesJobs, HasFactory, HasUuidTrait, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -57,6 +61,7 @@ class ToDo extends Model
                 $now = new Carbon('now', $timezone);
                 $day = $now->startOfDay()->setTimezone('UTC')->format('Y-m-d');
                 $habit = $this->habits->first();
+                $queued_habit_strength = new CalculateHabitStrength($habit);
                 $history_entry = HabitHistory::where('habit_id', $habit->id)->where('day', $day)->first();
 
                 // Increment/Decrement habit history it references (Refreshing of the actual todo items happens in index)
@@ -68,7 +73,12 @@ class ToDo extends Model
                     // If we're back to 0, just delete the entry
                     if($history_entry->times <= 0)
                     {
-                        return $history_entry->delete();
+                        $success = $history_entry->delete();
+
+                        // Dispatch update strength job
+                        $this->dispatch($queued_habit_strength);
+
+                        return $success;
                     }
                 }
                 else // Not completed
@@ -109,6 +119,9 @@ class ToDo extends Model
                     $saved = ($saved && $this->save());
                 }
 
+                // Dispatch update strength job
+                $this->dispatch($queued_habit_strength);
+
                 // Return success based on if everything saved or not
                 return $saved;
                 break;
@@ -121,6 +134,10 @@ class ToDo extends Model
                 $this->load('actionItem');
                 $this->actionItem->achieved = $this->completed;
                 $this->actionItem->save();
+
+                // Update progress
+                $this->actionItem->load('goal');
+                $this->actionItem->goal->calculateProgress();
                 break;
 
             default: // including Type::TODO_ITEM
