@@ -16,6 +16,16 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
 
+        {{-- Reload when browser back button is pressed --}}
+        <script>
+            window.onpageshow = function(event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            };
+        </script>
+
+
         <!-- Styles -->
         <link href="@isset($stylesheet) {{ asset("css/$stylesheet.css") }} @else {{ asset('css/app.css') }} @endisset" rel="stylesheet">
 
