@@ -354,8 +354,11 @@ class Goal extends Model
                 default:
                     break;
             }
+
+            $carbon->subDay();
             $end_date = $carbon->format('Y-m-d');
             $array['end_date'] = $carbon->format('n/j/y');
+            $carbon->addDay();
 
             // Get action items
             $array['action_items'] = $this->actionItems()->whereBetween('deadline', [$start_date, $end_date])->get();
