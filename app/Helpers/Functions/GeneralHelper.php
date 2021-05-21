@@ -14,7 +14,7 @@ use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\GoalActionItemsToDo;
 use App\Models\Relationships\HabitsToDo;
-use App\Models\Todo\ToDo;
+use App\Models\ToDo\ToDo;
 
 if(!function_exists('buildSocialUrl'))
 {
