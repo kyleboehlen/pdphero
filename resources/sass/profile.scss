@@ -448,6 +448,11 @@ div.app-container
             width: 95%;
         }
 
+        @media only screen and (max-width: 450px)
+        {
+            padding-left: 5%;
+        }
+
         ol
         {
             padding: 0;
@@ -474,6 +479,7 @@ div.app-container
                     font-size: 1.3em;
                     padding-left: 0%;
                     padding-right: 0%;
+                    text-align: left;
                 }
             }
         }
