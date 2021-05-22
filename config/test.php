@@ -12,6 +12,7 @@ return [
             'motorheadmods@gmail.com', // Me, testing
             'sebweeks@gmail.com', // Sebastian Weeks
             'sijiezhai@gmail.com', // siege/Siegester
+            'skylerfarmer@yahoo.com', // Skyler Farmer
             'steven.day.2010@gmail.com', // Steven Day
             'tavish.monroe@gmail.com', // Tavish Monroe
             'zachenf2b@gmail.com', // Zach Vasquez
