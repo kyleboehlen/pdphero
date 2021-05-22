@@ -168,7 +168,7 @@
                         <p>Completed</p>
                         <div class="manual-completed-container">
                             <img id="manual-completed-decrement" src="{{ asset('icons/minus-white.png') }}" />
-                            <input type="number" name="manual-completed" value={{ $goal->manual_completed }} id="manual-completed-input" min="1" max="{{ $goal->custom_times + config('goals.manual_goal_buffer') }}" />
+                            <input type="number" name="manual-completed" value={{ $goal->manual_completed }} id="manual-completed-input" min="0" max="{{ $goal->custom_times + config('goals.manual_goal_buffer') }}" />
                             <img id="manual-completed-increment" src="{{ asset('icons/plus-white.png') }}" />
                         </div>
                         @error('manual-completed')
