@@ -2,6 +2,7 @@
 return [
     'alpha' => [
         'emails' => [
+            'basicpixels@gmail.com', // Chad Stevenson
             'flare.shadow.echo.calm@gmail.com', // Erik Tammienmslkdjfsl
             'darthzombie@gmail.com', // Randy Riches
             'jessicafootball@live.com', // Jessie Christensen
