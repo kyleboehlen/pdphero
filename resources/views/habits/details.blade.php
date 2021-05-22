@@ -30,8 +30,8 @@
 
             {{-- Offset history --}}
             <div class="stats">
-                <p>Current Streak: {{ $habit->getCurrentStreak() }} days</p>
-                <p>Longest Streak: {{ $habit->getLongestStreak() }} days</p>
+                <p><b>Current Streak: </b><i>{{ $habit->getCurrentStreak() }} days</i></p>
+                <p><b>Longest Streak: </b><i>{{ $habit->getLongestStreak() }} days</i></p>
             </div>
             <div class="history-container">
                 <a href="{{ route('habits.view', ['habit' => $habit->uuid, 'history-offset' => $history_offset + 1]) }}" @if($history_offset >= 52) class="disabled" @endif>

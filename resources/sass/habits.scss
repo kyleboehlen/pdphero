@@ -791,6 +791,12 @@ div.app-container
                 margin-top: 5%;
             }
 
+            @media only screen and (max-width: 600px)
+            {
+                flex-direction: column;
+                margin-bottom: 3%;
+            }
+
             p
             {
                 @media only screen and (max-width: 1300px)
@@ -811,16 +817,6 @@ div.app-container
                 @media only screen and (max-width: 900px)
                 {
                     font-size: 1.35em;
-                }
-
-                @media only screen and (max-width: 450px)
-                {
-                    font-size: 1.2em;
-                }
-
-                @media only screen and (max-width: 375px)
-                {
-                    font-size: 1em;
                 }
             }
         }
