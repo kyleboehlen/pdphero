@@ -415,13 +415,6 @@ div.app-container
             width: 95%;
         }
 
-        // @media only screen and (max-width: 900px)
-        // {
-        //     margin-left: 0;
-        //     margin-right: 0;
-        //     width: 95%;
-        // }
-
         @media only screen and (max-width: 1000px)
         {            
             width: 100%;
@@ -934,6 +927,13 @@ div.app-container
                 text-align: left;
                 width: 95%;
             }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.25em;
+                margin-left: 1%;
+                width: 96.5%;
+            }
         }
 
         #show-todo-options
@@ -942,12 +942,27 @@ div.app-container
             {
                 margin-left: 55px;
 
-                // Todo: add mobile styles that change margin based on when checkbox width changes
+                @media only screen and (max-width: 485px)
+                {
+                    margin-top: 1.5%;
+                    margin-left: 0;
+                }
             }
 
             #days-before-due-input
             {
                 margin-left: 110px;
+
+                @media only screen and (max-width: 485px)
+                {
+                    margin-top: 2.5%;
+                    margin-left: 55px;
+                }
+
+                @media only screen and (max-width: 455px)
+                {
+                    margin-left: 0px;
+                }
             }
         }
 
