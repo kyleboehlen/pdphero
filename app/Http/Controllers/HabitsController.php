@@ -45,7 +45,6 @@ class HabitsController extends Controller
         $habits = 
             Habits::where('user_id', $user->id)
                 ->with('history')
-                ->orderBy('type_id')
                 ->orderBy('custom_order')
                 ->orderBy('name')->get();
 
