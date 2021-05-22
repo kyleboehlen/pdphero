@@ -210,7 +210,7 @@ class GoalController extends Controller
 
         if($goal->type_id == Type::FUTURE_GOAL)
         {
-            $nav_show .= '|convert-active';
+            $nav_show .= '|edit|convert-active';
         }
         else
         {
