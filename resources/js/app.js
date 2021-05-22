@@ -231,8 +231,8 @@ $(document).ready(function(){
 
     // Goal change push todo
     $('#goal-show-todo').change(function(){
-        var span = $('#days-before-due-label');
-        var num = $('#days-before-due-input');
+        var span = $('#default-days-before-due-label');
+        var num = $('#default-days-before-due-input');
         if($(this).is(":checked"))
         {
             num.prop('disabled', false);

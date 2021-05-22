@@ -187,7 +187,7 @@
     @if(in_array($type_id, [$type::ACTION_AD_HOC, $type::ACTION_DETAILED, $type::PARENT_GOAL]))
         <span class="show-todo" title="If this is selected your goal action items will automatically show up in your to-do list">
             <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @endisset /> List action items on To-Do<br/>
-            <input id="days-before-due-input" type="number" name="show-todo-days-before"
+            <input id="default-days-before-due-input" type="number" name="show-todo-days-before"
                 @isset($edit_goal)
                     @if(!is_null($edit_goal->default_todo_days_before))
                         value="{{ $edit_goal->default_todo_days_before }}"
@@ -198,14 +198,15 @@
 
                     @if(!$edit_goal->default_show_todo)
                         disabled>
-                        <span id="days-before-due-label" class="disabled">
+                        <span id="default-days-before-due-label" class="disabled">
                     @else
-                        <span id="days-before-due-label">
+                        >
+                        <span id="default-days-before-due-label">
                     @endif
                 @else
                     disabled
                     value="7">
-                    <span id="days-before-due-label" class="disabled">
+                    <span id="default-days-before-due-label" class="disabled">
                 @endisset days before due </span>
         </span><br/><br/>
     @endif
