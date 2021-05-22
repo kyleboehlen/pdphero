@@ -40,9 +40,16 @@ p.error
     font-size: 2em;
     margin: 0;
 
-    @media screen and (max-width: 550px)
+    @media screen and (max-width: 1300px)
     {
         font-size: 1.75em;
+    }
+
+    @media screen and (max-width: 650px)
+    {
+        font-size: 1.5em;
+        padding-left: 2.5%;
+        padding-right: 2.5%;
     }
 }
 
