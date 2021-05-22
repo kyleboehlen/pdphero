@@ -57,10 +57,10 @@ class Habits extends Model
     public function calculateStrength()
     {
         // Clear cache values
-        Cache::forget("habit-$this->id-longest-streak");
-        Cache::forget("habit-$this->id-current-streak");
-        Cache::forget("habit-$this->id-history-asc");
-        Cache::forget("habit-$this->id-longest-desc");
+        Cache::put("habit-$this->id-longest-streak", null, -5);
+        Cache::put("habit-$this->id-current-streak", null, -5);
+        Cache::put("habit-$this->id-history-asc", null, -5);
+        Cache::put("habit-$this->id-history-desc", null, -5);
 
         // Get current user
         $user = $this->user;
@@ -543,16 +543,16 @@ class Habits extends Model
         // Check cache
         if($asc)
         {
-            $cached_history = Cache::get("habit-$this->id-history-asc");
+            $cache_key = "habit-$this->id-history-asc";
         }
         else
         {
-            $cached_history = Cache::get("habit-$this->id-history-desc");
+            $cache_key = "habit-$this->id-history-desc";
         }
 
-        if(!is_null($cached_history))
+        if(Cache::has($cache_key))
         {
-            return $cached_history;
+            return Cache::get($cache_key);
         }
 
         // Get current user
@@ -629,14 +629,7 @@ class Habits extends Model
             $history->push(new HabitHistory($history_log));
         }
 
-        if($asc)
-        {
-            Cache::put("habit-$this->id-history-asc", $history);
-        }
-        else
-        {
-            Cache::put("habit-$this->id-history-desc", $history);
-        }
+        Cache::put($cache_key, $history);
 
         return $history;
     }
@@ -651,16 +644,16 @@ class Habits extends Model
         // Check cache
         if($asc)
         {
-            $cached_history = Cache::get("habit-$this->id-history-asc");
+            $cache_key = "habit-$this->id-history-asc";
         }
         else
         {
-            $cached_history = Cache::get("habit-$this->id-history-desc");
+            $cache_key = "habit-$this->id-history-desc";
         }
 
-        if(!is_null($cached_history))
+        if(Cache::has($cache_key))
         {
-            return $cached_history;
+            return Cache::get($cache_key);
         }
 
         // Get current user
@@ -737,14 +730,7 @@ class Habits extends Model
             $history->push(new HabitHistory($history_entry));
         }
 
-        if($asc)
-        {
-            Cache::put("habit-$this->id-history-asc", $history);
-        }
-        else
-        {
-            Cache::put("habit-$this->id-history-desc", $history);
-        }
+        Cache::put($cache_key, $history);
 
         return $history;
     }

@@ -10,6 +10,9 @@ use Log;
 use App\Helpers\Constants\User\Setting;
 use App\Helpers\Constants\Habits\Type as HabitType;
 
+// Jobs
+use App\Jobs\CalculateHabitStrength;
+
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
@@ -188,7 +191,9 @@ class AffirmationsController extends Controller
             $habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::AFFIRMATIONS_HABIT)->first();
             if(!is_null($habit))
             {
-                $habit->calculateStrength();
+                // Queue building strength habit
+                $queued_habit_strength = new CalculateHabitStrength($habit);
+                $this->dispatch($queued_habit_strength);
             }
         }
 
