@@ -615,6 +615,11 @@ div.app-container
         #goal-habit-strength-label
         {
             display: none;
+
+            @media only screen and (max-width: 600px)
+            {
+                margin-top: 2%;
+            }
         }
 
         input[type="file"]
