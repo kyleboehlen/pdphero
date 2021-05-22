@@ -35,12 +35,17 @@
         <input type="text" name="title" placeholder="Title" maxlength="255" 
             @isset($item)
                 value="{{ $item->title }}"
-                @if($item->type_id == $type::RECURRING_HABIT_ITEM || $item->type_id == $type::SINGULAR_HABIT_ITEM)
+                @if(in_array($item->type_id, [$type::RECURRING_HABIT_ITEM, $type::SINGULAR_HABIT_ITEM, $type::ACTION_ITEM]))
                     disabled
                 @endif
             @else
                 value="{{ old('title') }}" 
             @endisset required />
+
+        @if(isset($item) && $item->type_id == $type::ACTION_ITEM)
+            <input type="hidden" name="title" value="{{ $item->title }}" />
+        @endif
+
         @error('title')
             <p class="error">{{ $message }}</p>
         @enderror

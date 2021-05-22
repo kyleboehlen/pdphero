@@ -264,7 +264,10 @@ class ToDoController extends Controller
     public function update(UpdateRequest $request, ToDo $todo)
     {
         // Set title
-        $todo->title = $request->get('title');
+        if($todo->type_id == Type::TODO_ITEM)
+        {
+            $todo->title = $request->get('title');
+        }
 
         // Set priority
         foreach(config('todo.priorities') as $id => $priority)

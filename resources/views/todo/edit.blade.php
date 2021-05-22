@@ -13,7 +13,7 @@
             @break
         @case($type::ACTION_ITEM)
             {{-- Side Nav --}}
-            <x-todo.nav show="list|create-from-goal|delete" />
+            <x-todo.nav show="list|create-from-goal" />
             @break
         @default
             {{-- Side Nav --}}

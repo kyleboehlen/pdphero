@@ -13,7 +13,7 @@
             <x-todo.nav show="list|toggle-complete|create-from-habit|color-key|edit|delete" :item="$item" />
             @break
         @case($type::ACTION_ITEM)
-            <x-todo.nav show="list|toggle-complete|color-key|delete" :item="$item" />
+            <x-todo.nav show="list|toggle-complete|color-key|edit" :item="$item" />
             @break
         @default
             <x-todo.nav show="list|toggle-complete|create|edit|delete" :item="$item"/>
