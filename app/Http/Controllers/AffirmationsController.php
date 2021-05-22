@@ -157,7 +157,7 @@ class AffirmationsController extends Controller
         // Second: check if how long it went to click through the affirmations 
         // to make sure they didn't just click through it w/o reading it
         $miliseconds =
-            Carbon::parse($user->affirmationsRead->first()->updated_at)->diffInRealMilliseconds($user->affirmationsRead->last()->updated_at);
+            Carbon::parse($user->affirmationsRead->first()->updated_at)->diffInRealMilliseconds(Carbon::now());
         if($miliseconds < ($user->affirmationsRead->count() * config('affirmations.filter_time')))
         {
             // Start the user over, and remind them to read the affirmations
