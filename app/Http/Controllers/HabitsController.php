@@ -199,9 +199,13 @@ class HabitsController extends Controller
     public function update(UpdateRequest $request, Habits $habit)
     {
         // Update values
-        $habit->name = $request->get('title');
+        if($habit->type_id == Type::USER_GENERATED)
+        {
+            $habit->name = $request->get('title');
+            $habit->show_todo = $request->has('show-todo');
+        }
+
         $habit->times_daily = $request->get('times-daily');
-        $habit->show_todo = $request->has('show-todo');
 
         // Determine how the required on days is set
         if($request->has('days-of-week'))

@@ -59,9 +59,6 @@
             <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
         <![endif]-->
     </head>
-    
-    {{-- Overlay for opaqueness fun stuffs --}}
-    <div class="overlay"></div>
 
     @yield('body')
 </html>

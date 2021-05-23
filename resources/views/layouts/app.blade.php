@@ -3,6 +3,9 @@
 @section('body')
     <body>
 
+        {{-- Overlay for opaqueness fun stuffs --}}
+        <div class="overlay"></div>
+
         {{-- Mobile install prompt --}}
         @if(\Auth::check() && \Auth::user()->hasVerifiedEmail())
             <div id="install-prompt" @if(config('app.env') == 'local') class="local" @endif>

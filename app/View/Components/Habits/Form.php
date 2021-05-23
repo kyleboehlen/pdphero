@@ -6,6 +6,9 @@ use Illuminate\View\Component;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
+// Constants
+use App\Helpers\Constants\Habits\Type;
+
 class Form extends Component
 {
     // Holds the carbon period to iterate through for the days of week input
@@ -13,6 +16,9 @@ class Form extends Component
 
     // Holds the habit we're editing, if we're editing
     public $habit;
+
+    // Habit types
+    public $type;
 
     /**
      * Create a new component instance.
@@ -32,6 +38,9 @@ class Form extends Component
             (clone $now)->startOfWeek()->format('Y-m-d'),
             (clone $now)->endOfWeek()->format('Y-m-d'),
         );
+
+        // Habit types class
+        $this->type = Type::class;
     }
 
     /**

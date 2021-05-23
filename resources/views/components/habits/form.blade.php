@@ -5,7 +5,13 @@
     <h2>@isset($habit) Edit Habit @else Create New Habit @endisset</h2>
 
     {{-- Habit title --}}
-    <input type="text" name="title" placeholder="Title" maxlength="255" @isset($habit) value="{{ $habit->name }}" @else value="{{ old('title') }}" @endisset required />
+    <input type="text" name="title" placeholder="Title" maxlength="255" 
+        @isset($habit) value="{{ $habit->name }}" @else value="{{ old('title') }}" @endisset
+        @if($habit->type_id != $type::USER_GENERATED) disabled @endif
+    required />
+    @if($habit->type_id != $type::USER_GENERATED)
+        <input type="hidden" name="title" value="{{ $habit->name }}" />
+    @endif
     @error('title')
         <p class="error">{{ $message }}</p>
     @enderror
@@ -64,9 +70,13 @@
     </span><br/><br/>
 
     {{-- Show todo checkbox --}}
-    <span class="show-todo" title="If this is selected your habit will automatically show up in your to-do list">
-        <input class="show-todo" type="checkbox" name="show-todo" @isset($habit) @if($habit->show_todo) checked @endif @else checked @endif /> Show on To-Do List
-    </span><br/><br/><br/>
+    @if($habit->type_id == $type::USER_GENERATED)
+        <span class="show-todo" title="If this is selected your habit will automatically show up in your to-do list">
+            <input class="show-todo" type="checkbox" name="show-todo" @isset($habit) @if($habit->show_todo) checked @endif @else checked @endif /> Show on To-Do List
+        </span><br/><br/>
+    @endif
+
+    <br/>
 
     {{-- Notes --}}
     <textarea name="notes" placeholder="Any notes for your habit go here!">@isset($habit){{ $habit->notes }}@else{{ old('notes') }}@endisset</textarea>
