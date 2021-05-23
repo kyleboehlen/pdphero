@@ -32,6 +32,10 @@ Route::get('/', [HomeController::class, 'index'])->name('root');
 // Main about page
 Route::get('about', [AboutController::class, 'index'])->name('about');
 
+// Privacy policy/tos
+Route::get('privacy', [AboutController::class, 'privacy'])->name('privacy');
+Route::get('tos', [AboutController::class, 'tos'])->name('tos');
+
 // Home route
 Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], function(){
     // View tools page

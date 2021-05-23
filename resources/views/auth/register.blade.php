@@ -51,6 +51,17 @@
                 </div>
             </div><br/>
 
+            <div>
+                <input type="checkbox" name="agree-tos" id="agree-tos" {{ old('agree-tos') ? 'checked' : '' }} value="1" />
+                &nbsp;
+                <label class="checkbox" for="agree-tos">
+                    {{ __('I Agree to') }} <a href="{{ route('tos') }}" target="_blank">ToS</a>
+                </label>
+                @error('agree-tos')
+                    <p class="error">{{ $message }}</p>
+                @enderror
+            </div><br/><br/>
+
             <button type="submit">
                 {{ __('Register') }}
             </button><br/>

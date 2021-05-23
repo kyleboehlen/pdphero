@@ -490,6 +490,43 @@ div.container
                 }
             }
         }
+
+        &.policy
+        {
+            margin-left: 17.5%;
+            padding-top: 12vh;
+
+            @media only screen and (max-width: 1300px)
+            {
+                margin-left: 0;
+            }
+
+            h2
+            {
+                font-size: 2.75em;
+                line-height: normal;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 2.25em;
+                }
+
+                @media only screen and (max-width: 600px)
+                {
+                    font-size: 2em;
+                }
+            }
+
+            a
+            {
+                color: $white;
+                
+                &:hover
+                {
+                    text-shadow: 1.5px 1px $white;
+                }
+            }
+        }
     }
 }
 

@@ -105,6 +105,17 @@ div.card
             margin-top: 0;
             padding-top: 0;
             vertical-align: middle;
+            
+            a
+            {
+                font-size: 1em;
+                text-decoration: underline;
+                
+                &:hover
+                {
+                    text-shadow: 1.5px 1px $white;
+                }
+            }
         }
     }
 

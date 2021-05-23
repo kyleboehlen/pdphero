@@ -58,6 +58,9 @@ class RegisterController extends Controller
             'password' => [
                 'required', 'string', 'min:8', 'confirmed'
             ],
+            'agree-tos' => [
+                'required',
+            ],
         ];
 
         // Add alpha email guard
