@@ -17,7 +17,7 @@
         @if(config('app.env') == 'local')
             <script src="{{ asset('js/app.js') }}"></script>
         @else
-            <script src="{{ asset(mix('js/app.js'), true) }}"></script>
+            <script src="{{ asset(mix('assets/js/app.js'), true) }}"></script>
         @endif
 
         {{-- Reload when browser back button is pressed --}}
@@ -34,7 +34,7 @@
         @if(config('app.env') == 'local')
             <link href="@isset($stylesheet) {{ asset("css/$stylesheet.css") }} @else {{ asset('css/app.css') }} @endisset" rel="stylesheet">
         @else
-            <link href="@isset($stylesheet) {{ asset(mix("css/$stylesheet.css", true)) }} @else {{ asset(mix('css/app.css', true)) }} @endisset" rel="stylesheet">
+            <link href="@isset($stylesheet) {{ asset(mix("assets/css/$stylesheet.css", true)) }} @else {{ asset(mix('assets/css/app.css', true)) }} @endisset" rel="stylesheet">
         @endif
 
         <!-- Icons -->
