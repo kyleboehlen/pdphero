@@ -15,6 +15,9 @@ class TimelineItem extends Component
     public $bold_content;
     public $italic_content;
 
+    // For holding the todo priority
+    public $priority;
+
 
     /**
      * Create a new component instance.
@@ -31,6 +34,7 @@ class TimelineItem extends Component
             $this->class = 'summary-show-todo-item';
             $this->bold_content = 'Completed To-Do:';
             $this->italic_content = $item->title;
+            $this->priority = strtolower(config('todo.priorities')[$item->priority_id]['name']);
         }
         elseif($item instanceof \App\Models\Goal\Goal)
         {

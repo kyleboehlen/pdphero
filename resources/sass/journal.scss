@@ -623,6 +623,67 @@ div.app-container
                     }
                 }
             }
+            
+            &.todo-item
+            {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                padding: 0;
+                text-align: left;
+                width: 60%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    width: 98%;
+                }
+                
+                @media only screen and (max-width: 800px)
+                {
+                    width: 96.5%;
+                }
+
+                ul
+                {
+                    margin-top: 1.75%;
+                    margin-bottom: 1.75%;
+                }
+
+                div.priority
+                {
+                    align-self: flex-end;
+                    border-left: $thin-border solid $light-grey;
+                    border-radius: 0 7.5px 7.5px 0;
+                    flex-basis: 15px;
+                    flex-grow: 0;
+                    height: 100%;
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        flex-basis: 15px;
+                    }
+        
+                    &.default
+                    {
+                        background-color: $brown;
+                    }
+
+                    &.low
+                    {
+                        background-color: $green;
+                    }
+        
+                    &.medium
+                    {
+                        background-color: $yellow;
+                    }
+        
+                    &.high
+                    {
+                        background-color: $red;
+                    }
+                }
+            }
 
             &.summary-journal-entry
             {
