@@ -286,3 +286,120 @@ button.swal2-cancel.swal2-styled
     text-align: center;
     width: 100%;
 }
+
+#install-prompt
+{
+    background-color: $dark-grey;
+    display: none;
+    height: 100vh;
+    left: -1%;
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 101%;
+    z-index: 999;
+
+    @media only screen and (max-width: 800px) and (display-mode: browser)
+    {
+        display: block;
+    }
+
+    @media only screen and (max-width: 800px) and (display-mode: minimal-ui)
+    {
+        display: block;
+    }
+
+    @media only screen and (display-mode: standalone)
+    {
+        display: none;
+    }
+
+    @media only screen and (display-mode: fullscreen)
+    {
+        display: none;
+    }
+
+    h1
+    {
+        color: $white;
+        font-family: $header-font;
+        margin-top: 5vh;
+        text-align: center;
+        width: 100%;
+    }
+
+    p
+    {
+        color: $white;
+        font-family: $body-font;
+        font-size: 1.25em;
+        margin-left: 5%;
+        margin-right: 5%;
+        text-align: center;
+    }
+
+    h2
+    {
+        color: $white;
+        font-family: $header-font;
+        margin-left: 3%;
+        margin-top: 7.5%;
+    }
+
+    ol
+    {
+        color: $white;
+        font-family: $body-font;
+        font-size: 1.25em;
+        padding-right: 2%;
+
+        li
+        {
+            margin-bottom: 2%;
+        }
+    }
+
+    p.center-text
+    {
+        font-size: 1.5em;
+        margin: 0;
+        margin-bottom: 1.5%;;
+        text-align: center;
+        width: 85%;
+    }
+
+    img.apple-add-to-home-icon
+    {
+        margin-left: 30%;
+        width: 25%;
+    }
+
+    img.apple-add-to-home-option
+    {
+        margin-bottom: 1.5%;
+        width: 90%;
+    }
+
+    img.android-add-to-home-prompt
+    {
+        margin-top: 2%;
+        width: 90%;
+    }
+
+    img.android-options
+    {
+        position: relative;
+        top: 5px;
+    }
+
+    img.android-add-to-home-option
+    {
+        margin-top: 2.5%;
+        width: 90%;
+    }
+
+    &.local
+    {
+        display: none;
+    }
+}
