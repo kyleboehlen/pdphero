@@ -574,7 +574,7 @@ class Habits extends Model
                 return $history;
             }
 
-            $start_date = Carbon::parse($affirmation_logs->last()->read_at)->subDay();
+            $start_date = Carbon::parse($affirmation_logs->first()->read_at)->subDay();
             $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
         }
         else
@@ -675,7 +675,7 @@ class Habits extends Model
                 return $history;
             }
 
-            $start_date = Carbon::parse($journal_entries->last()->created_at)->subDay();
+            $start_date = Carbon::parse($journal_entries->first()->created_at)->subDay();
             $carbon_period = CarbonPeriod::create($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
         }
         else
