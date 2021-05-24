@@ -53,6 +53,9 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('profile.*', 'App\View\Composers\ProfileComposer');
         View::composer('profile.edit.settings', 'App\View\Composers\SettingsComposer');
 
+        // Support
+        View::composer('support.*', 'App\View\Composers\SupportComposer');
+
         // ToDo
         View::composer('todo.*', 'App\View\Composers\ToDoComposer');
     }

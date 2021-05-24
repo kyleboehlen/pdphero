@@ -11,4 +11,5 @@ class Home
     const SETTINGS = 5;
     const TODO = 6;
     const AFFIRMATIONS = 7;
+    const EMAIL_SUPPORT = 8;
 }

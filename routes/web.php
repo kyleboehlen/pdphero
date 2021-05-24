@@ -10,6 +10,7 @@ use App\Http\Controllers\HabitsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ToDoController;
 
 /*
@@ -297,4 +298,13 @@ Route::prefix('todo')->group(function(){
 
     // Toggle a to do item's completed status
     Route::post('toggle-completed/{todo}/{view_details?}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
+});
+
+// Support
+Route::prefix('support')->group(function(){
+    // Email support form
+    Route::get('/', [SupportController::class, 'showEmailForm'])->name('support.email.form');
+
+    // Submit email form
+    Route::post('submit', [SupportController::class, 'submitEmailForm'])->name('support.email.submit');
 });

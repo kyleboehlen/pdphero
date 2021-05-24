@@ -45,4 +45,10 @@ return [
         'img' => 'icons/smile-white.png',
         'route' => 'affirmations',
     ],
+    HOME::EMAIL_SUPPORT => [
+        'name' => 'Email Support',
+        'desc' => 'Send a message to our email support.',
+        'img' => 'icons/email-support-white.png',
+        'route' => 'support.email.form',
+    ],
 ];

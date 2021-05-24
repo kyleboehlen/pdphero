@@ -1,0 +1,58 @@
+@import 'app';
+
+header.app
+{
+    @extend %app-header;
+
+    #title
+    {
+        @include title-font;
+    }
+}
+
+div.app-container
+{
+    @extend %flex-container;
+
+    align-items: center;
+    overflow-y: scroll;
+    padding: 0;
+    text-align: center;
+
+    form.email
+    {
+        @extend %base-form;
+
+        h2
+        {
+            @include form-title;
+        }
+
+        textarea
+        {
+            min-height: 375px;
+
+            @media only screen and (max-height: 850px)
+            {
+                min-height: 350px;
+            }
+
+            @media only screen and (max-height: 750px)
+            {
+                min-height: 275px;
+            }
+
+            @media only screen and (max-height: 600px)
+            {
+                min-height: 175px;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+        }
+    }
+}
