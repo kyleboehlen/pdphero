@@ -24,4 +24,10 @@ return [
         'id' => env('YOUTUBE_CHANNEL_ID'),
         'url' => 'https://www.youtube.com/channel/{id}',
     ],
+    'email' => [
+        'icon_name' => 'mail',
+        'icon_type' => '.png',
+        'email' => 'info@pdphero.com',
+        'url' => 'mailto:{email}',
+    ],
 ];
