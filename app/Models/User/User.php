@@ -20,6 +20,7 @@ use App\Models\FirstVisit\FirstVisitDisplayed;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalCategory;
 use App\Models\Journal\JournalCategory;
+use App\Models\Journal\JournalEntry;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\UsersHideHome;
 use App\Models\ToDo\ToDo;
@@ -137,6 +138,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function journalCategories()
     {
         return $this->hasMany(JournalCategory::class, 'user_id', 'id')->orderBy('name');
+    }
+
+    public function journalEntries()
+    {
+        return $this->hasMany(JournalEntry::class, 'user_id', 'id');
     }
 
     public function firstVisitMessage($route_name)

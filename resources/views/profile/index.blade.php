@@ -27,11 +27,14 @@
                 {{-- Items completed --}}
                 <li>To-Do Items Completed: <span class="highlight">{{ $user->completedTodos->count() }}</span></li>
 
-                {{-- To-Do: Goals accomplished --}}
+                {{-- Goals accomplished --}}
                 <li>Goals Accomplished: <span class="highlight">{{ $user->accomplishedGoals->count() }}</span></li>
 
-                {{-- To-Do: Habits created --}}
+                {{-- Habits created --}}
                 <li>Habits Created: <span class="highlight">{{ $user->completedHabits->count() }}</span></li>
+
+                {{-- Journal Entries --}}
+                <li>Journal Entries: <span class="highlight">{{ $user->journalEntries->count() }}</span></li>
             </ul>
         </div>
 
