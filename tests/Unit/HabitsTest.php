@@ -111,7 +111,7 @@ class HabitsTest extends TestCase
         // Check for various important parts of the form
         $response->assertSee('<h2> Create New Habit </h2>', false);
         $response->assertSee('<form class="habit"  action="' . route('habits.store') . '"  method="POST">', false);
-        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value=""  required />', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"', false);
         $response->assertSee('<div class="required-on">', false);
         $response->assertSee('<div class="day-of-week-container">', false);
         $response->assertSee('<p class="every-x-days  disabled " required>', false);
@@ -240,7 +240,8 @@ class HabitsTest extends TestCase
         // Check for various important parts of the form
         $response->assertSee('<h2> Edit Habit </h2>', false);
         $response->assertSee('<form class="habit"  action="' . route('habits.update', ['habit' => $days_of_week_habit->uuid]) . '"  method="POST">', false);
-        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $days_of_week_habit->name . '"  required />', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"', false);
+        $response->assertSee($days_of_week_habit->name);
         $response->assertSee('<div class="required-on">', false);
         $response->assertSee('<div class="day-of-week-container">', false);
         $response->assertSee('<p class="every-x-days   disabled  " required>', false);
@@ -256,7 +257,8 @@ class HabitsTest extends TestCase
         // Check for various important parts of the form
         $response->assertSee('<h2> Edit Habit </h2>', false);
         $response->assertSee('<form class="habit"  action="' . route('habits.update', ['habit' => $every_x_days_habit->uuid]) . '"  method="POST">', false);
-        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"  value="' . $every_x_days_habit->name . '"  required />', false);
+        $response->assertSee('<input type="text" name="title" placeholder="Title" maxlength="255"', false);
+        $response->assertSee($every_x_days_habit->name);
         $response->assertSee('<div class="required-on">', false);
         $response->assertSee('<div class="day-of-week-container">', false);
         $response->assertSee('<p class="every-x-days   " required>', false);

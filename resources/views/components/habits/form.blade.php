@@ -6,10 +6,14 @@
 
     {{-- Habit title --}}
     <input type="text" name="title" placeholder="Title" maxlength="255" 
-        @isset($habit) value="{{ $habit->name }}" @else value="{{ old('title') }}" @endisset
-        @if($habit->type_id != $type::USER_GENERATED) disabled @endif
+        @isset($habit)
+            value="{{ $habit->name }}"
+            @if($habit->type_id != $type::USER_GENERATED) disabled @endif
+        @else
+            value="{{ old('title') }}"
+        @endisset
     required />
-    @if($habit->type_id != $type::USER_GENERATED)
+    @if(!is_null($habit) && $habit->type_id != $type::USER_GENERATED)
         <input type="hidden" name="title" value="{{ $habit->name }}" />
     @endif
     @error('title')
@@ -70,7 +74,7 @@
     </span><br/><br/>
 
     {{-- Show todo checkbox --}}
-    @if($habit->type_id == $type::USER_GENERATED)
+    @if(!is_null($habit) && $habit->type_id == $type::USER_GENERATED)
         <span class="show-todo" title="If this is selected your habit will automatically show up in your to-do list">
             <input class="show-todo" type="checkbox" name="show-todo" @isset($habit) @if($habit->show_todo) checked @endif @else checked @endif /> Show on To-Do List
         </span><br/><br/>
