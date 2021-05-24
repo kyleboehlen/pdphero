@@ -18,12 +18,26 @@
             <a href="{{ route('goals.view.goal', ['goal' => $goal->parent->uuid, 'selected-dropdown' => 'sub-goals']) }}"><li>Back To Parent</li></a>
         @endif
 
+        @if(in_array('remove-parent', $show))
+            <form id="remove-parent-form" action="{{ route('goals.remove-parent', ['goal' => $goal->uuid]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('goals.remove-parent', ['goal' => $goal->uuid]) }}"
+                onclick="event.preventDefault(); verifyRemoveForm('Remove From Parent?', '#remove-parent-form')">
+                <li>Remove From Parent</li>
+            </a>
+        @endif
+
         @if(in_array('create', $show))
             <a href="{{ route('goals.create.goal') }}"><li>Create New Goal</li></a>
         @endif
 
         @if(in_array('edit', $show))
             <a href="{{ route('goals.edit.goal', ['goal' => $goal->uuid]) }}"><li>Edit Goal</li></a>
+        @endif
+
+        @if(in_array('convert-sub', $show))
+            <a href="{{ route('goals.convert-sub.form', ['goal' => $goal->uuid]) }}"><li>Convert to Sub-Goal</li></a>
         @endif
 
         @if(in_array('convert-active', $show))

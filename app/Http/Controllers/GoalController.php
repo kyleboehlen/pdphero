@@ -21,6 +21,7 @@ use App\Models\Habits\Habits;
 use App\Models\Relationships\GoalsHabits;
 
 // Requests
+use App\Http\Requests\Goal\ConvertSubRequest;
 use App\Http\Requests\Goal\CreateRequest;
 use App\Http\Requests\Goal\ManualProgressRequest;
 use App\Http\Requests\Goal\ShiftDatesRequest;
@@ -232,6 +233,11 @@ class GoalController extends Controller
         if(!is_null($goal->parent_id))
         {
             $nav_show = str_replace('back', 'parent-back', $nav_show);
+            $nav_show .= '|remove-parent';
+        }
+        else
+        {
+            $nav_show .= '|convert-sub';
         }
 
         // Build dropdown nav
@@ -1072,5 +1078,48 @@ class GoalController extends Controller
         }
 
         return redirect()->route('goals.view.goal', ['goal' => $action_item->goal->uuid, 'selected-dropdown' => $selected_dropdown]);
+    }
+
+    public function removeParent(Goal $goal)
+    {
+        $goal->parent_id = null;
+
+        if(!$goal->save())
+        {
+            Log::error('Failed to remove parent from goal', $goal->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
+    }
+
+    public function convertSubForm(Request $request, Goal $goal)
+    {
+        $parent_goals = Goal::where('user_id', $request->user()->id)->where('type_id', Type::PARENT_GOAL)->where('id', '!=', $goal->id)->orderBy('name')->get();
+        
+        return view('goals.parent-selector')->with([
+            'parent_goals' => $parent_goals,
+            'goal' => $goal,
+        ]);
+    }
+
+    public function convertSubSubmit(ConvertSubRequest $request, Goal $goal)
+    {
+        $parent_goal_uuid = $request->get('parent-goal');
+        if($parent_goal_uuid != $goal->uuid)
+        {
+            $goal->parent_id = Goal::where('uuid', $parent_goal_uuid)->first()->id;
+
+            if(!$goal->save())
+            {
+                Log::error('Failed convert goal to sub-goal', [
+                    'goal' => $goal->toArray(),
+                    'parent_goal_uuid' => $parent_goal_uuid,
+                ]);
+                return redirect()->back();
+            }
+        }
+
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
     }
 }

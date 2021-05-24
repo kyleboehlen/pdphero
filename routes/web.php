@@ -107,6 +107,11 @@ Route::prefix('goals')->group(function(){
     // Shift dates route
     Route::post('shift-dates/{goal}', [GoalController::class, 'shiftDates'])->name('goals.shift-dates');
 
+    // Remove parent/convert to sub goal
+    Route::post('remove-parent/{goal}', [GoalController::class, 'removeParent'])->name('goals.remove-parent');
+    Route::get('convert-sub/{goal}', [GoalController::class, 'convertSubForm'])->name('goals.convert-sub.form');
+    Route::post('convert-sub/{goal}', [GoalController::class, 'convertSubSubmit'])->name('goals.convert-sub.submit');
+
     // Ad Hoc Deadlines
     Route::prefix('ad-hoc-deadline')->group(function(){
         Route::post('set/{action_item}', [GoalController::class, 'setAdHocDeadline'])->name('goals.ad-hoc-deadline.set');

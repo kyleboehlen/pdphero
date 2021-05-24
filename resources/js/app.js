@@ -440,3 +440,23 @@ window.verifyDeleteForm = function (message, formID){
         }
     });
 }
+
+window.verifyRemoveForm = function (message, formID){
+    swal.fire({
+        title: `<span class="swal-title" style="color:#ffffff">${message}</span>`,
+        text: 'You are about to remove this sub-goal from it\'s current parent goal.',
+        icon: 'warning',
+        iconColor: '#d12828',
+        padding: '.5rem',
+        showCancelButton: true,
+        confirmButtonColor: '#d12828',
+        cancelButtonColor: '#155466',
+        confirmButtonText: 'Yes, remove it!',
+        background: '#3b3b3b',
+    }).then((result) => {
+        if(result.isConfirmed)
+        {
+            $(formID).submit();
+        }
+    });
+}

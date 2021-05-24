@@ -690,4 +690,57 @@ class GoalTest extends TestCase
         $category = GoalCategory::where('user_id', $user->id)->first();
         $this->assertNull($category);
     }
+
+    /**
+     * Tests removing a goals parent
+     *
+     * @return void
+     * @test
+     */
+    public function testRemoveParent()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a parent goal
+        $goal = Goal::factory()->parent()->create(['user_id' => $user->id]);
+
+        // Get one of the sub goals
+        $sub_goal = Goal::where('parent_id', $goal->id)->first();
+
+        // Remove from parent
+        $response = $this->actingAs($user)->post(route('goals.remove-parent', ['goal' => $sub_goal->uuid]), [
+            '_token' => csrf_token(),
+        ]);
+
+        $sub_goal->refresh();
+        $this->assertNull($sub_goal->parent_id);
+    }
+
+    /**
+     * Tests converting a goal to a sub goal
+     *
+     * @return void
+     * @test
+     */
+    public function testConvertSub()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a parent goal
+        $goal = Goal::factory()->parent()->create(['user_id' => $user->id]);
+
+        // Create goal to assign
+        $sub_goal = Goal::factory()->manual()->create(['user_id' => $user->id]);
+
+        // Remove from parent
+        $response = $this->actingAs($user)->post(route('goals.convert-sub.submit', ['goal' => $sub_goal->uuid]), [
+            '_token' => csrf_token(),
+            'parent-goal' => $goal->uuid,
+        ]);
+
+        $sub_goal->refresh();
+        $this->assertEquals($sub_goal->parent_id, $goal->id);
+    }
 }
