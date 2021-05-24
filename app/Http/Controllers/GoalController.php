@@ -8,6 +8,7 @@ use Image;
 use Log;
 
 // Constants
+use App\Helpers\Constants\User\Setting;
 use App\Helpers\Constants\Goal\Status;
 use App\Helpers\Constants\Goal\Type;
 use App\Helpers\Constants\Goal\TimePeriod;
@@ -181,6 +182,9 @@ class GoalController extends Controller
 
     public function viewGoal(Request $request, Goal $goal)
     {
+        // Get user
+        $user = $request->user();
+
         // Verify proper status
         if(!$goal->determineStatus())
         {
@@ -303,6 +307,8 @@ class GoalController extends Controller
             'selected_dropdown' => $selected_dropdown,
             'status' => Status::class,
             'type' => Type::class,
+            'user' => $user,
+            'setting' => Setting::class,
         ]);
     }
 

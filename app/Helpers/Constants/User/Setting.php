@@ -13,6 +13,9 @@ class Setting
     const HABITS_START_OF_WEEK = 6;
     const PROFILE_SHOW_RULES = 7;
     const HABITS_SHOW_JOURNALING_HABIT = 8;
+    const SHOW_EMPTY_TODO_ITEM = 9;
+    const SHOW_EMPTY_ACTION_ITEM = 10;
+    const SHOW_EMPTY_AD_HOC_ITEM = 11;
 
     // Settings options
     const HABITS_ROLLING_SEVEN_DAYS = 'rolling_seven_days';
@@ -20,4 +23,8 @@ class Setting
 
     const HABITS_SUNDAY = 0;
     const HABITS_MONDAY = 1;
+
+    const DO_NOT_SHOW = 0;
+    const TOP_OF_LIST = 1;
+    const BOTTOM_OF_LIST = 2;
 }

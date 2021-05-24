@@ -94,6 +94,8 @@ class ToDoController extends Controller
         // Return to-do view
         return view('todo.list')->with([
             'to_do_items' => $to_do_items,
+            'user' => $user,
+            'setting' => Setting::class,
         ]);
     }
 

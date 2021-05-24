@@ -14,6 +14,7 @@ use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
 use App\Models\User\User;
 use App\Models\User\UsersSettings;
@@ -516,5 +517,110 @@ class SettingsTest extends TestCase
         $response = $this->actingAs($user)->get(route('profile'));
         $response->assertStatus(200);
         $response->assertSee('<h3>Personal Rules</h3>', false);
+    }
+
+    /**
+     * Tests showing the add todo entry
+     *
+     * @return void
+     * @test
+     */
+    public function testShowAddToDoItem()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::SHOW_EMPTY_TODO_ITEM;
+
+        // Create test todo item
+        $todo = ToDo::factory()->create(['user_id' => $user->id]);
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Verify it shows up on list
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $response->assertSee('Create a new To-Do Item');
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::DO_NOT_SHOW,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $this->assertTrue(!strpos('Create a new To-Do Item', $response->getContent()));
+    }
+
+    /**
+     * Tests show the add action plan item
+     *
+     * @return void
+     * @test
+     */
+    public function testShowActionPlanItem()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::SHOW_EMPTY_ACTION_ITEM;
+
+        // Create test goal
+        $goal = Goal::factory()->actionPlan()->create(['user_id' => $user->id, 'achieved' => false]);
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Verify it does not show up on list
+        $response = $this->actingAs($user)->get(route('goals.view.goal', ['goal' => $goal->uuid]));
+        $response->assertStatus(200);
+        $this->assertTrue(!strpos('Add an Action Item', $response->getContent()));
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::TOP_OF_LIST,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('goals.view.goal', ['goal' => $goal->uuid]));
+        $response->assertStatus(200);
+        $response->assertSee('Add an Action Item');
+    }
+
+    /**
+     * Tests the show add ad hoc item
+     *
+     * @return void
+     * @test
+     */
+    public function testShowAdHocItem()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::SHOW_EMPTY_AD_HOC_ITEM;
+
+        // Create test goal
+        $goal = Goal::factory()->adHoc()->create(['user_id' => $user->id, 'achieved' => false]);
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Verify it shows up on list
+        $response = $this->actingAs($user)->get(route('goals.view.goal', ['goal' => $goal->uuid]));
+        $response->assertStatus(200);
+        $response->assertSee('Add an Ad Hoc Item');
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::DO_NOT_SHOW,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('goals.view.goal', ['goal' => $goal->uuid]));
+        $response->assertStatus(200);
+        $this->assertTrue(!strpos('Add an Ad Hoc Item', $response->getContent()));
     }
 }

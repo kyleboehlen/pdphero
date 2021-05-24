@@ -12,6 +12,9 @@ return [
         Setting::HABITS_START_OF_WEEK => Setting::HABITS_SUNDAY, // Like a normal person...
         Setting::PROFILE_SHOW_RULES => '0', // False
         Setting::HABITS_SHOW_JOURNALING_HABIT => '0', // False
+        Setting::SHOW_EMPTY_TODO_ITEM => Setting::TOP_OF_LIST, // Top of list
+        Setting::SHOW_EMPTY_ACTION_ITEM => Setting::DO_NOT_SHOW, // Don't show
+        Setting::SHOW_EMPTY_AD_HOC_ITEM => Setting::BOTTOM_OF_LIST, // Bottom of list
     ],
 
     'options' => [
@@ -24,6 +27,24 @@ return [
             // Key => display name
             Setting::HABITS_SUNDAY => 'Sunday', 
             Setting::HABITS_MONDAY => 'Monday',
+        ],
+        Setting::SHOW_EMPTY_TODO_ITEM => [
+            // Key => display name
+            Setting::DO_NOT_SHOW => 'Don\'t Show',
+            Setting::TOP_OF_LIST => 'Top',
+            Setting::BOTTOM_OF_LIST => 'Bottom',
+        ],
+        Setting::SHOW_EMPTY_ACTION_ITEM => [
+            // Key => display name
+            Setting::DO_NOT_SHOW => 'Don\'t Show',
+            Setting::TOP_OF_LIST => 'Top',
+            Setting::BOTTOM_OF_LIST => 'Bottom',
+        ],
+        Setting::SHOW_EMPTY_AD_HOC_ITEM => [
+            // Key => display name
+            Setting::DO_NOT_SHOW => 'Don\'t Show',
+            Setting::TOP_OF_LIST => 'Top',
+            Setting::BOTTOM_OF_LIST => 'Bottom',
         ],
     ],
 
@@ -52,6 +73,15 @@ return [
         Setting::HABITS_SHOW_JOURNALING_HABIT => [
             'desc' => 'Display the journaling habit.',
         ],
+        Setting::SHOW_EMPTY_TODO_ITEM => [
+            'desc' => 'How to show the add todo entry on the todo list.',
+        ],
+        Setting::SHOW_EMPTY_ACTION_ITEM => [
+            'desc' => 'How to show the add action plan item on a goals action plan.',
+        ],
+        Setting::SHOW_EMPTY_AD_HOC_ITEM => [
+            'desc' => 'How to show the add ad hoc item on a gols ad hoc list.',
+        ],
     ],
 
     'types' => [
@@ -63,5 +93,8 @@ return [
         Setting::HABITS_START_OF_WEEK => 'options', // Based on config('settings.options)
         Setting::PROFILE_SHOW_RULES => 'toggle', // True or false
         Setting::HABITS_SHOW_JOURNALING_HABIT => 'toggle', // True or false
+        Setting::SHOW_EMPTY_TODO_ITEM => 'options', // Based on config('settings.options)
+        Setting::SHOW_EMPTY_ACTION_ITEM => 'options', // Based on config('settings.options)
+        Setting::SHOW_EMPTY_AD_HOC_ITEM => 'options', // Based on config('settings.options)
     ]
 ];

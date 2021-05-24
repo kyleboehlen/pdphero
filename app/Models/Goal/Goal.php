@@ -483,6 +483,6 @@ class Goal extends Model
 
     public function subGoals()
     {
-        return $this->hasMany(Goal::class, 'parent_id', 'id');
+        return $this->hasMany(Goal::class, 'parent_id', 'id')->orderBy('end_date', 'asc');
     }
 }

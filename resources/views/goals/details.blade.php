@@ -115,9 +115,17 @@
                     @endforeach
                 @else
                     @if($goal->actionItems->count() > 0)
+                        @if(!$goal->achieved && $user->getSettingValue($setting::SHOW_EMPTY_ACTION_ITEM) == $setting::TOP_OF_LIST)
+                            <x-goals.empty-action-item :goal="$goal" />
+                        @endif
+
                         @foreach($goal->actionItems as $action_item)
                             <x-goals.action-item :item="$action_item" />
                         @endforeach
+
+                        @if(!$goal->achieved && $user->getSettingValue($setting::SHOW_EMPTY_ACTION_ITEM) == $setting::BOTTOM_OF_LIST)
+                            <x-goals.empty-action-item :goal="$goal" />
+                        @endif
                     @else
                         <x-goals.empty-action-item :goal="$goal" />
                     @endif
@@ -145,9 +153,17 @@
             <h3 class="goal-section-title">Ad Hoc List</h3>
             <div id="goal-ad-hoc-list-div" class="goal-nav-div hidden">
                 @if($goal->adHocItems->count() > 0)
+                    @if(!$goal->achieved && $user->getSettingValue($setting::SHOW_EMPTY_AD_HOC_ITEM) == $setting::TOP_OF_LIST)
+                        <x-goals.empty-ad-hoc-list-item :goal="$goal" />
+                    @endif
+
                     @foreach($goal->adHocItems as $ad_hoc_item)
                         <x-goals.ad-hoc-list-item :item="$ad_hoc_item" />
                     @endforeach
+
+                    @if(!$goal->achieved && $user->getSettingValue($setting::SHOW_EMPTY_AD_HOC_ITEM) == $setting::BOTTOM_OF_LIST)
+                        <x-goals.empty-ad-hoc-list-item :goal="$goal" />
+                    @endif
                 @else
                     <x-goals.empty-ad-hoc-list-item :goal="$goal" />
                 @endif

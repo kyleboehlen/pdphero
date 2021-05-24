@@ -14,6 +14,12 @@
         {{-- Setting that handles whether or not the affirmations read page is shown --}}
         <x-settings.checkbox-setting :id="$setting::AFFIRMATIONS_SHOW_READ" text="Display the 'Good Job!' page after finishing reading affirmations" />
 
+        <h2 id="goals-settings-header" class="settings">Goals</h2>
+
+        {{-- Empty action plan item/ad hoc item settings --}}
+        <x-settings.options-setting :id="$setting::SHOW_EMPTY_ACTION_ITEM" text="Show add action plan item at the | of action plans" />
+        <x-settings.options-setting :id="$setting::SHOW_EMPTY_AD_HOC_ITEM" text="Show add ad-hoc item at the | of ad-hoc lists" />
+
         <h2 id="habits-setttings-header" class="settings">Habits</h2>
 
         {{-- Setting that handles whether or not the affirmations habit is shown --}}
@@ -42,6 +48,9 @@
 
         {{-- Setting that handles how long completed todo items stay visible on the todo list --}}
         <x-settings.numeric-setting :id="$setting::TODO_SHOW_COMPLETED_FOR" text="Show completed items on the list for | hours" />
+
+        {{-- Empty todo setting --}}
+        <x-settings.options-setting :id="$setting::SHOW_EMPTY_TODO_ITEM" text="Show add todo item at the | of the todo list" />
 
         <br/>
     </div>
