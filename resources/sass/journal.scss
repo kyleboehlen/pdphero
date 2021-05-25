@@ -847,11 +847,6 @@ div.app-container
                     font-size: 1.25em;
                 }
 
-                @media only screen and (min-height: 900px)
-                {
-                    max-height: 80%;
-                }
-
                 @media only screen and (max-height: 800px)
                 {
                     max-height: 70%;
