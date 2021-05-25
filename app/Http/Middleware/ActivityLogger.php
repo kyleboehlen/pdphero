@@ -25,10 +25,14 @@ class ActivityLogger
         {
             $user_id = $request->user()->id;
             $route_name =  $request->route()->getName();
-            Activity::create([
-                'user_id' => $user_id,
-                'route' => $route_name,
-            ]);
+
+            if(!is_null($route_name) && strpos($route_name, 'generated') === false)
+            {
+                Activity::create([
+                    'user_id' => $user_id,
+                    'route' => $route_name,
+                ]);
+            }
         }
 
         return $response;
