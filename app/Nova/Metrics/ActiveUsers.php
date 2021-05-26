@@ -18,7 +18,7 @@ class ActiveUsers extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, User::class, 'activity_at');
+        return $this->count($request, User::class, 'last_activity_in_user_timezone');
     }
 
     /**

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddActivityAtToUsers extends Migration
+class AddLastActivityInUserTimezoneToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddActivityAtToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('activity_at')->nullable();
+            $table->timestamp('last_activity_in_user_timezone')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddActivityAtToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('activity_at');
+            $table->dropColumn('last_activity_in_user_timezone');
         });
     }
 }
