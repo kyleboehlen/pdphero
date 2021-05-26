@@ -156,46 +156,6 @@ class Goal extends Model
             // And then determine ahead/lagging based on goal
             switch($this->type_id)
             {
-                case Type::ACTION_DETAILED:
-                    // Get the action item with the earliest deadline
-                    $action_item = $this->actionItems()->where('achieved', 0)->first();
-
-                    // Check if deadline is already past
-                    if(!is_null($action_item))
-                    {
-                        $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
-                        if($deadline->lessThan($user_date)) // Lagging
-                        {
-                            // Check if it's above the threshold that triggers lagging
-                            $diff_in_days = $deadline->diffInDays($user_date);
-                            if($diff_in_days > config('goals.lagging_buffer.days'))
-                            {
-                                $this->status_id = Status::LAGGING;
-                            }
-                        }
-                        else // Possibly ahead of schedule
-                        {
-                            // Get the last completed action item
-                            $action_item = $this->actionItems('desc')->where('achieved', 1)->first();
-
-                            // See if it has been completed before the deadline
-                            if(!is_null($action_item))
-                            {
-                                $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
-                                if($deadline->greaterThan($user_date))
-                                {
-                                    // Check if it's above the threshold that triggers ahead
-                                    $diff_in_days = $deadline->diffInDays($user_date);
-                                    if($diff_in_days > config('goals.ahead_buffer.days'))
-                                    {
-                                        $this->status_id = Status::AHEAD;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-
                 case Type::HABIT_BASED:
                     // Run strength evaluations on goal habit
                     $this->load('habit');
@@ -240,6 +200,48 @@ class Goal extends Model
                         }
                     }
                     break;
+
+                // Attempt to set status based on due date of action, fall back to percentage otherwise
+                case Type::ACTION_AD_HOC:
+                case Type::ACTION_DETAILED:
+                    // Get the action item with the earliest deadline
+                    $action_item = $this->actionItems()->where('achieved', 0)->first();
+
+                    // Check if deadline is already past
+                    if(!is_null($action_item))
+                    {
+                        $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
+                        if($deadline->lessThan($user_date)) // Lagging
+                        {
+                            // Check if it's above the threshold that triggers lagging
+                            $diff_in_days = $deadline->diffInDays($user_date);
+                            if($diff_in_days > config('goals.lagging_buffer.days'))
+                            {
+                                $this->status_id = Status::LAGGING;
+                            }
+                        }
+                        else // Possibly ahead of schedule
+                        {
+                            // Get the last completed action item
+                            $action_item = $this->actionItems('desc')->where('achieved', 1)->first();
+
+                            // See if it has been completed before the deadline
+                            if(!is_null($action_item))
+                            {
+                                $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
+                                if($deadline->greaterThan($user_date))
+                                {
+                                    // Check if it's above the threshold that triggers ahead
+                                    $diff_in_days = $deadline->diffInDays($user_date);
+                                    if($diff_in_days > config('goals.ahead_buffer.days'))
+                                    {
+                                        $this->status_id = Status::AHEAD;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
 
                 case Type::PARENT_GOAL:
                 case Type::ACTION_AD_HOC:
