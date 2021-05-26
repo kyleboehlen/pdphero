@@ -1,1 +1,5 @@
-<p>{{ $body }}</p>
+@component('mail::message')
+
+{!! $body !!}
+
+@endcomponent

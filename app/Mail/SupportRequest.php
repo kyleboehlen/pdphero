@@ -39,7 +39,7 @@ class SupportRequest extends Mailable
             ->replyTo($this->user->email, $this->user->name)
             ->cc($this->user->email, $this->user->name)
             ->subject('Support Request For: ' . $this->user->name)
-            ->view('support.mail.html.support-request')
+            ->markdown('support.mail.html.support-request')
             ->text('support.mail.text.support-request');
     }
 }

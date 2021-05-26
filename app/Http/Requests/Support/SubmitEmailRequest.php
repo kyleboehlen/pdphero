@@ -4,6 +4,9 @@ namespace App\Http\Requests\Support;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Rules
+use App\Rules\DeclarationOfIndependence;
+
 class SubmitEmailRequest extends FormRequest
 {
     /**
@@ -24,7 +27,7 @@ class SubmitEmailRequest extends FormRequest
     public function rules()
     {
         return [
-            'message' => 'required|string|max:5000',
+            'message' => ['required', 'string', 'max:10000', new DeclarationOfIndependence(), ],
         ];
     }
 }
