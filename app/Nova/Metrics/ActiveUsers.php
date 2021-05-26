@@ -35,7 +35,7 @@ class ActiveUsers extends Value
     public function ranges()
     {
         return [
-            1 => __('Today'),
+            1 => __('24 Hours'),
             30 => __('30 Days'),
             60 => __('60 Days'),
             365 => __('365 Days'),
