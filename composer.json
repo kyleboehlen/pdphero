@@ -6,10 +6,21 @@
         "framework",
         "laravel"
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Total"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3",
         "aws/aws-sdk-php": "~3.0",
+        "dniccum/custom-email-sender": "^3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "genealabs/laravel-caffeine": "^8.0",
@@ -17,12 +28,15 @@
         "intervention/image": "^2.5",
         "jamesmills/eloquent-uuid": "^1.6",
         "jamesmills/laravel-timezone": "^1.9",
+        "kabbouchi/nova-logs-tool": "^0.3.0",
         "laravel/framework": "^8.0",
+        "laravel/nova": "~3.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "marvinlabs/laravel-discord-logger": "^1.1",
         "monicahq/laravel-cloudflare": "^1.8",
-        "silviolleite/laravelpwa": "^2.0"
+        "silviolleite/laravelpwa": "^2.0",
+        "User/Total": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
