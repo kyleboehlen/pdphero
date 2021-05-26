@@ -4,9 +4,10 @@ namespace App\Nova\Metrics;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Carbon\Carbon;
 
 // Models
-use App\Models\User\User;
+use App\Models\User\Activity;
 
 class ActiveUsers extends Value
 {
@@ -18,7 +19,12 @@ class ActiveUsers extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, User::class, 'last_activity_in_user_timezone');
+        $carbon = Carbon::now();
+        $carbon->subDays($request->range);
+        $result = Activity::select('user_id')->where('created_at', '>=', $carbon->toDateTimeString())->groupBy('user_id')->get()->count();
+        $previous = Activity::select('user_id')->whereBetween('created_at', [(clone $carbon)->subDays($request->range)->toDateTimeString(), $carbon->toDateTimeString()])->groupBy('user_id')->get()->count();
+
+        return $this->result($result)->previous($previous);
     }
 
     /**
@@ -29,13 +35,10 @@ class ActiveUsers extends Value
     public function ranges()
     {
         return [
-            'TODAY' => __('Today'),
+            1 => __('Today'),
             30 => __('30 Days'),
             60 => __('60 Days'),
             365 => __('365 Days'),
-            'MTD' => __('Month To Date'),
-            'QTD' => __('Quarter To Date'),
-            'YTD' => __('Year To Date'),
         ];
     }
 

@@ -35,13 +35,6 @@ class ActivityLogger
                     'route' => $route_name,
                 ]);
             }
-
-            // Update activity_at
-            $carbon = Carbon::now();
-            $timezone = $user->timezone ?? 'America/Denver';
-            $carbon->setTimezone($timezone);
-            $user->last_activity_in_user_timezone = $carbon->toDateTimeString();
-            $user->save();
         }
 
         return $response;
