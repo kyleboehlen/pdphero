@@ -6,10 +6,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Carbon\Carbon;
 
-// Models
-use App\Models\User\Activity;
+// Constants
+use App\Helpers\Constants\Habits\HistoryType;
 
-class ActiveUsers extends Value
+// Models
+use App\Models\Habits\Habits;
+use App\Models\Habits\HabitHistory;
+
+class UsersPerformedHabits extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -19,22 +23,22 @@ class ActiveUsers extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $result = Activity::select('user_id');
-        $previous = Activity::select('user_id');
+        $result = HabitHistory::select('habit_id')->where('type_id', HistoryType::COMPLETED);
+        $previous = HabitHistory::select('habit_id')->where('type_id', HistoryType::COMPLETED);
 
         if($request->range != 'ALL')
         {
             $carbon = Carbon::now();
             $carbon->subDays($request->range);
-            $result = $result->where('created_at', '>=', $carbon->toDateTimeString());
-            $previous = $previous->whereBetween('created_at', [
+            $result = $result->where('day', '>=', $carbon->toDateTimeString());
+            $previous = $previous->whereBetween('day', [
                 (clone $carbon)->subDays($request->range)->toDateTimeString(),
                 $carbon->toDateTimeString()
             ]);
         }
 
-        $result = $result->groupBy('user_id')->get()->count();
-        $previous = $previous->groupBy('user_id')->get()->count();
+        $result = Habits::select('user_id')->whereIn('id', $result->groupBy('habit_id')->get()->pluck('habit_id')->toArray())->groupBy('user_id')->count();
+        $previous = Habits::select('user_id')->whereIn('id', $previous->groupBy('habit_id')->get()->pluck('habit_id')->toArray())->groupBy('user_id')->count();
 
         return $this->result($result)->previous($previous);
     }
@@ -72,6 +76,6 @@ class ActiveUsers extends Value
      */
     public function uriKey()
     {
-        return 'active-users';
+        return 'users-performed-habits';
     }
 }

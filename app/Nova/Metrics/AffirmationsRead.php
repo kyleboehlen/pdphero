@@ -7,9 +7,9 @@ use Laravel\Nova\Metrics\Value;
 use Carbon\Carbon;
 
 // Models
-use App\Models\User\Activity;
+use App\Models\Affirmations\AffirmationsReadLog;
 
-class ActiveUsers extends Value
+class AffirmationsRead extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -19,22 +19,22 @@ class ActiveUsers extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $result = Activity::select('user_id');
-        $previous = Activity::select('user_id');
+        $result = AffirmationsReadLog::where('user_id', '>', 0);
+        $previous = AffirmationsReadLog::where('user_id', '>', 0);
 
         if($request->range != 'ALL')
         {
             $carbon = Carbon::now();
             $carbon->subDays($request->range);
-            $result = $result->where('created_at', '>=', $carbon->toDateTimeString());
-            $previous = $previous->whereBetween('created_at', [
+            $result = $result->where('read_at', '>=', $carbon->toDateTimeString());
+            $previous = $previous->whereBetween('read_at', [
                 (clone $carbon)->subDays($request->range)->toDateTimeString(),
                 $carbon->toDateTimeString()
             ]);
         }
 
-        $result = $result->groupBy('user_id')->get()->count();
-        $previous = $previous->groupBy('user_id')->get()->count();
+        $result = $result->get()->count();
+        $previous = $previous->get()->count();
 
         return $this->result($result)->previous($previous);
     }
@@ -72,6 +72,6 @@ class ActiveUsers extends Value
      */
     public function uriKey()
     {
-        return 'active-users';
+        return 'affirmations-read';
     }
 }

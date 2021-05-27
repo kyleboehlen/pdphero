@@ -8,8 +8,23 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 // Metrics
+use App\Nova\Metrics\AchievedActionItems;
+use App\Nova\Metrics\AchievedGoals;
 use App\Nova\Metrics\ActiveUsers;
+use App\Nova\Metrics\AffirmationsRead;
+use App\Nova\Metrics\AverageHabitStrength;
+use App\Nova\Metrics\AverageGoalProgress;
+use App\Nova\Metrics\CompletedToDos;
+use App\Nova\Metrics\HabitsPerformed;
+use App\Nova\Metrics\NewActionItems;
+use App\Nova\Metrics\NewAffirmations;
+use App\Nova\Metrics\NewGoals;
+use App\Nova\Metrics\NewHabits;
+use App\Nova\Metrics\NewJournalEntries;
+use App\Nova\Metrics\NewToDos;
 use App\Nova\Metrics\NewUsers;
+use App\Nova\Metrics\UsersPerformedHabits;
+use App\Nova\Metrics\UsersReadAffirmations;
 
 // Tools
 use Dniccum\CustomEmailSender\CustomEmailSender;
@@ -34,10 +49,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function routes()
     {
-        Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+        Nova::routes()->withAuthenticationRoutes()->register();
     }
 
     /**
@@ -62,7 +74,34 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new NewUsers, new ActiveUsers,
+            // Users
+            new NewUsers,
+            new ActiveUsers,
+
+            // To-Dos
+            new NewToDos,
+            new CompletedToDos,
+
+            // Habits
+            new NewHabits,
+            new UsersPerformedHabits,
+            new HabitsPerformed,
+            new AverageHabitStrength,
+
+            // Journal Entries
+            new NewJournalEntries,
+
+            // Affirmations
+            new NewAffirmations,
+            new UsersReadAffirmations,
+            new AffirmationsRead,
+
+            // Goals/ActionItems
+            new NewGoals,
+            new AchievedGoals,
+            new AverageGoalProgress,
+            new NewActionItems,
+            new AchievedActionItems,
         ];
     }
 

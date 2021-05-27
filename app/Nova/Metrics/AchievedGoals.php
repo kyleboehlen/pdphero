@@ -7,9 +7,9 @@ use Laravel\Nova\Metrics\Value;
 use Carbon\Carbon;
 
 // Models
-use App\Models\User\Activity;
+use App\Models\Goal\Goal;
 
-class ActiveUsers extends Value
+class AchievedGoals extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -19,22 +19,22 @@ class ActiveUsers extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $result = Activity::select('user_id');
-        $previous = Activity::select('user_id');
+        $result = Goal::where('achieved', 1);
+        $previous = Goal::where('achieved', 1);
 
         if($request->range != 'ALL')
         {
             $carbon = Carbon::now();
             $carbon->subDays($request->range);
-            $result = $result->where('created_at', '>=', $carbon->toDateTimeString());
-            $previous = $previous->whereBetween('created_at', [
+            $result = $result->where('updated_at', '>=', $carbon->toDateTimeString());
+            $previous = $previous->whereBetween('updated_at', [
                 (clone $carbon)->subDays($request->range)->toDateTimeString(),
                 $carbon->toDateTimeString()
             ]);
         }
 
-        $result = $result->groupBy('user_id')->get()->count();
-        $previous = $previous->groupBy('user_id')->get()->count();
+        $result = $result->get()->count();
+        $previous = $previous->get()->count();
 
         return $this->result($result)->previous($previous);
     }
@@ -47,10 +47,10 @@ class ActiveUsers extends Value
     public function ranges()
     {
         return [
-            1 => __('24 Hours'),
             30 => __('1 Month'),
             60 => __('60 Days'),
             365 => __('1 Year'),
+            1 => __('24 Hours'),
             'ALL' => __('All Time'),
         ];
     }
@@ -72,6 +72,6 @@ class ActiveUsers extends Value
      */
     public function uriKey()
     {
-        return 'active-users';
+        return 'achieved-goals';
     }
 }
