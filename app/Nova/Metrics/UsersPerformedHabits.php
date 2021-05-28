@@ -29,10 +29,11 @@ class UsersPerformedHabits extends Value
         if($request->range != 'ALL')
         {
             $carbon = Carbon::now();
+	    $carbon->setTimezone($request->user()->timezone);
             $carbon->subDays($request->range);
-            $result = $result->where('day', '>=', $carbon->toDateTimeString());
+            $result = $result->where('day', '>=', $carbon->format('Y-m-d'));
             $previous = $previous->whereBetween('day', [
-                (clone $carbon)->subDays($request->range)->toDateTimeString(),
+                (clone $carbon)->subDays($request->range)->format('Y-m-d'),
                 $carbon->toDateTimeString()
             ]);
         }
