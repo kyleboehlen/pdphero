@@ -527,10 +527,12 @@ class GoalController extends Controller
         }
 
         // Habit options
+        $calculate_habit_progress = false;
         if($type_id == Type::HABIT_BASED && !is_null($habit_strength) && !is_null($habit))
         {
             $goal->habit_strength = $habit_strength;
             $goal->habit_id = $habit->id;
+            $calculate_habit_progress = true;
         }
         
         // Dates and shit
@@ -646,6 +648,15 @@ class GoalController extends Controller
                     'goal->id' => $goal->id,
                     'future_goal->id' => $future_goal->id,
                 ]);
+            }
+        }
+
+        // Calculate strength if it's a habit based goal
+        if($calculate_habit_progress)
+        {
+            if(!$goal->calculateProgress())
+            {
+                Log::error("Failed to calculate progress after storing habit based goal.", $goal->toArray());
             }
         }
         
