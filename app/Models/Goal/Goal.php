@@ -43,7 +43,7 @@ class Goal extends Model
                 $this->load('subGoals');
                 if($this->subGoals->count() > 0)
                 {
-                    $progress = ($this->subGoals->sum('progress') / ($this->subGoals->count() * 100)) * 100;
+                    $progress = ($this->subGoals->sum('progressMax100') / ($this->subGoals->count() * 100)) * 100;
                 }
                 else
                 {
@@ -450,6 +450,16 @@ class Goal extends Model
         }
 
         return $success;
+    }
+
+    public function getProgressMax100Attribute()
+    {
+        if($this->progress > 100)
+        {
+            return 100;
+        }
+
+        return $this->progress;
     }
 
     // RELATIONSHIPS
