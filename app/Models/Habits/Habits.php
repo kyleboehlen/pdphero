@@ -806,7 +806,14 @@ class Habits extends Model
                     $history_entry = $history[$key];
                 }
 
-                if(is_null($history_entry) || $history_entry->type_id == HistoryType::MISSED)
+                if(is_null($history_entry))
+                {
+                    if(!$search_day->isToday())
+                    {
+                        break;
+                    }
+                }
+                elseif($history_entry->type_id == HistoryType::MISSED)
                 {
                     break;
                 }
@@ -905,6 +912,11 @@ class Habits extends Model
                     $current_streak++;
                 }
             }
+        }
+
+        if($current_streak > $longest_streak)
+        {
+            $longest_streak = $current_streak;
         }
 
         $seconds_left_in_day = $now->diffInSeconds((clone $now)->endOfDay());
