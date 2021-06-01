@@ -26,12 +26,8 @@ class BlackLabel
             // Check if they're black label
             if(!$user->subscribed(config('membership.black_label.slug')))
             {
-                // Check free trial period
-                if($user->getTrialDaysLeft() > 0)
-                {
-                    return redirect()->route('stripe')->withErrors(['info' => 'This feature requires a Black Label subscription, you will retain any days left in your free trial if you subscribe.']);
-                }
-                elseif($user->subscribed(config('membership.basic.slug')))
+                // Check if user is basic
+                if($user->subscribed(config('membership.basic.slug')))
                 {
 		            // Check if user has upgraded
                     if($user->subscription(config('membership.basic.slug'))->stripe_plan == config('membership.black_label.stripe_price_id'))
@@ -41,6 +37,10 @@ class BlackLabel
                     }
 
                     return redirect()->back()->withErrors(['black-label-upgrade' => $user->billingPortalUrl(route($request->route()->getName()))]);
+                }
+                elseif($user->getTrialDaysLeft() > 0) // Check free trial period
+                {
+                    return redirect()->route('stripe')->withErrors(['info' => 'This feature requires a Black Label subscription, you will retain any days left in your free trial if you subscribe.']);
                 }
                 else
                 {
