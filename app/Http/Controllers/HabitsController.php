@@ -33,7 +33,7 @@ class HabitsController extends Controller
         $this->middleware('auth');
         $this->middleware('habits.uuid');
         $this->middleware('verified');
-        // To-do: Add subscription middleware
+        $this->middleware('membership');
     }
 
     public function index(Request $request)

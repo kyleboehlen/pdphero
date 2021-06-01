@@ -1,9 +1,10 @@
 <?php
 return [
     'alpha' => [
+        'trial_bonus' => env('ALPHA_USER_TRIAL_BONUS', 30),
         'emails' => [
             'basicpixels@gmail.com', // Chad Stevenson
-	    'chojolann@hotmail.com', // Nefi Chojolan
+	        'chojolann@hotmail.com', // Nefi Chojolan
             'flare.shadow.echo.calm@gmail.com', // Erik Tammienmslkdjfsl
             'darthzombie@gmail.com', // Randy Riches
             'jessicafootball@live.com', // Jessie Christensen
@@ -12,7 +13,7 @@ return [
             'kyleboehlen@gmail.com', // Me, obviously
             'lioness_melinda@hotmail.com', // Aunt Melinda Boehlen
             'motorheadmods@gmail.com', // Me, testing
-	    'nitrohtrace@gmail.com', // Trent Hortin
+	        'nitrohtrace@gmail.com', // Trent Hortin
             'sebweeks@gmail.com', // Sebastian Weeks
             'sijiezhai@gmail.com', // siege/Siegester
             'skylerfarmer@yahoo.com', // Skyler Farmer

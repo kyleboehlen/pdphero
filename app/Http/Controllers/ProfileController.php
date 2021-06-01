@@ -36,6 +36,7 @@ class ProfileController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('verified');
+        $this->middleware('membership');
     }
 
     public function index()
