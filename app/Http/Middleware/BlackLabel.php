@@ -33,6 +33,12 @@ class BlackLabel
                 }
                 elseif($user->subscribed(config('membership.basic.slug')))
                 {
+		    // Check if user has upgraded
+                    if($user->subscription(config('membership.basic.slug'))->stripe_plan == config('membership.black_label.stripe_price_id'))
+                    {
+                        $user->subscription(config('membership.basic.slug'))->update(['name' => config('membership.black_label.slug')]);
+                        return redirect()->route($request->route()->getName());
+                    }
                     return redirect()->back()->withErrors(['black-label-upgrade' => $user->billingPortalUrl(route($request->route()->getName()))]);
                 }
                 else
@@ -40,6 +46,15 @@ class BlackLabel
                     return redirect()->route('stripe');
                 }
             }
+            else
+	    {
+		// Check if user has downgraded
+                if($user->subscription(config('membership.black_label.slug'))->stripe_plan == config('membership.basic.stripe_price_id'))
+                {
+                    $user->subscription(config('membership.black_label.slug'))->update(['name' => config('membership.basic.slug')]);
+                    return redirect()->route($request->route()->getName());
+                }
+             }
         }
 
         return $response;
