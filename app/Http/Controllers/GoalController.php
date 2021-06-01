@@ -51,7 +51,7 @@ class GoalController extends Controller
         $this->middleware('goal.action_item.uuid');
         $this->middleware('goal.category.uuid');
         $this->middleware('verified');
-        // To-do: Add subscription middleware
+        $this->middleware('membership');
     }
 
     public function index($scope = 'active', GoalCategory $category = null)

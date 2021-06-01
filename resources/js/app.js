@@ -402,6 +402,14 @@ $(document).ready(function(){
                 break;
         }
     });
+
+    // Stripe selector
+    $('#subscription-select').change(function(){
+        $('.sub-desc').hide();
+        $('.checkout-button').hide();
+        var show = $(this).find(':selected').val();
+        $('.' + show).show();
+    });
 });
 
 // Replaces custom alert pop-up boxes
@@ -457,6 +465,27 @@ window.verifyRemoveForm = function (message, formID){
         if(result.isConfirmed)
         {
             $(formID).submit();
+        }
+    });
+}
+
+// For informing an upgrade is needed -- uses sweetalert2
+window.blackLabelUpgrade = function (url){
+    swal.fire({
+        title: 'Black Label Upgrade',
+        text: 'You need upgrade to a Black Label membership to use this feature.',
+        icon: 'info',
+        iconColor: '#d12828',
+        padding: '.5rem',
+        showCancelButton: true,
+        confirmButtonColor: '#d12828',
+        cancelButtonColor: '#155466',
+        confirmButtonText: 'Upgrade',
+        background: '#3b3b3b',
+    }).then((result) => {
+        if(result.isConfirmed)
+        {
+            location.href = url;
         }
     });
 }

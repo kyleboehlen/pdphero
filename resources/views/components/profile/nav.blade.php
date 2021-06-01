@@ -49,8 +49,8 @@
             <a href="{{ route('profile.edit.rules') }}"><li>Edit Rules</li></a>
         @endif
 
-        @if(in_array('edit-membership', $show))
-            <a href="{{ route('profile.edit.memebership') }}"><li>Manage Membership</li></a>
+        @if(in_array('manage-membership', $show))
+            <a href="{{ route('stripe') }}"><li>Manage Membership</li></a>
         @endif
 
         {{-- To-Do: View stats option if user has black label memebership --}}

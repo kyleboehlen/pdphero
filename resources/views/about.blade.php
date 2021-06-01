@@ -56,7 +56,7 @@
 
                     <h4>Basic Membership</h4>
 
-                    <p class="pricing-label">${{ config('membership.basic_price') }} monthly</p>
+                    <p class="pricing-label">${{ config('membership.basic.price') }} monthly</p>
 
                     <p>Comes with all the features you need for creating smart goals, managing to-do items, building habits, journaling, and personal development planning.</p>
                 </div>
@@ -66,7 +66,7 @@
 
                     <h4>Black Label Membership</h4>
 
-                    <p class="pricing-label">${{ config('membership.black_label_price') }} monthly</p>
+                    <p class="pricing-label">${{ config('membership.black_label.price') }} monthly</p>
 
                     <p>Also includes YNAB integration for financial goals, and access to vote for which features are built next. A great way to support the app :)</p>
                 </div>

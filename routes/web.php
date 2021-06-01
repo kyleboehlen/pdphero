@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\ToDoController;
 
 /*
@@ -239,9 +240,6 @@ Route::prefix('profile')->group(function(){
 
         // Show edit rules page
         Route::get('rules', [ProfileController::class, 'editRules'])->name('profile.edit.rules');
-
-        // Show manage memebership page
-        Route::get('membership', [ProfileController::class, 'editMembership'])->name('profile.edit.membership');
     });
 
     // Update routes
@@ -313,3 +311,6 @@ Route::prefix('support')->group(function(){
     // Submit email form
     Route::post('submit', [SupportController::class, 'submitEmailForm'])->name('support.email.submit');
 });
+
+// Stripe
+Route::get('stripe', [StripeController::class, 'index'])->name('stripe');

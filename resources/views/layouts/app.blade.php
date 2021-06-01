@@ -68,6 +68,13 @@
             </script>
         @enderror
 
+        {{-- Black Label Upgrade --}}
+        @error('black-label-upgrade')
+            <script>
+                blackLabelUpgrade('{{ $message }}');
+            </script>
+        @enderror
+
         {{-- Stack scripts that bubble up --}}
         @stack('scripts')
 

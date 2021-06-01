@@ -33,6 +33,7 @@ class AffirmationsController extends Controller
         $this->middleware('auth');
         $this->middleware('affirmations.uuid');
         $this->middleware('verified');
+        $this->middleware('membership');
     }
     
     // Redirects to create/show depending on if user has affirmations

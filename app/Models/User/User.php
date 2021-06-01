@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Cashier\Billable; // Stripe
+use Carbon\Carbon;
 
 // Constants
 use App\Helpers\Constants\Habits\Type as HabitsType;
@@ -27,7 +29,8 @@ use App\Models\ToDo\ToDo;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes,
+        Billable; // Stripe
 
     /**
      * The attributes that are mass assignable.
@@ -82,6 +85,28 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Return the value for that user's setting
         return $user_setting->value;
+    }
+
+    public function getTrialDaysLeft()
+    {
+        $timezone = $this->timezone ?? 'America/Denver';
+        $carbon = Carbon::parse($this->created_at)->setTimezone($timezone);
+
+        $diff_in_days = Carbon::now($timezone)->diffInDays($carbon);
+
+        $trial_length = config('membership.trial_length');
+
+        if(in_array($this->email, config('test.alpha.emails')))
+        {
+            $trial_length += config('test.alpha.trial_bonus');
+        }
+
+        if($diff_in_days < $trial_length)
+        {
+            return $trial_length - $diff_in_days;
+        }
+
+        return 0;
     }
 
     // Relationships

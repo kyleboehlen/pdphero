@@ -35,7 +35,7 @@ class ToDoController extends Controller
         $this->middleware('first_visit.messages');
         $this->middleware('todo.uuid');
         $this->middleware('verified');
-        // To-do: Add subscription middleware
+        $this->middleware('membership');
     }
 
     /**

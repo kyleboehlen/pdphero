@@ -45,7 +45,7 @@ class JournalController extends Controller
         $this->middleware('journal.entry.uuid');
         $this->middleware('journal.category.uuid');
         $this->middleware('verified');
-        // To-do: Add subscription middleware
+        $this->middleware('membership');
     }
 
     public function index()

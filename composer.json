@@ -10,10 +10,6 @@
         {
             "type": "composer",
             "url": "https://nova.laravel.com"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/Total"
         }
     ],
     "license": "MIT",
@@ -29,6 +25,7 @@
         "jamesmills/eloquent-uuid": "^1.6",
         "jamesmills/laravel-timezone": "^1.9",
         "kabbouchi/nova-logs-tool": "^0.3.0",
+        "laravel/cashier": "^12.14",
         "laravel/framework": "^8.0",
         "laravel/nova": "~3.0",
         "laravel/tinker": "^2.0",
