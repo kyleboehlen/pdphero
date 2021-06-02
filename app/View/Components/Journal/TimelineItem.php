@@ -18,6 +18,8 @@ class TimelineItem extends Component
     // For holding the todo priority
     public $priority;
 
+    // If it's a linkable item
+    public $link;
 
     /**
      * Create a new component instance.
@@ -27,6 +29,7 @@ class TimelineItem extends Component
     public function __construct($item)
     {
         $this->time = $item->display_time;
+        $this->link = null;
 
         // And set the content
         if($item instanceof \App\Models\ToDo\ToDo)
@@ -35,6 +38,7 @@ class TimelineItem extends Component
             $this->bold_content = 'Completed To-Do:';
             $this->italic_content = $item->title;
             $this->priority = strtolower(config('todo.priorities')[$item->priority_id]['name']);
+            $this->link = route('journal.view.todo', ['todo' => $item->uuid]);
         }
         elseif($item instanceof \App\Models\Goal\Goal)
         {

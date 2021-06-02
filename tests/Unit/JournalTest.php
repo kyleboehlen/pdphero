@@ -49,8 +49,15 @@ class JournalTest extends TestCase
         $journal_category_uuid = $fake_journal_category->uuid;
         $this->assertTrue($fake_journal_category->delete());
 
-        // Test view route
+        // Generate a fake todo item and grab the UUID for testing
+        $fake_todo_item = Todo::factory()->create();
+        $todo_item_uuid = $fake_todo_item->uuid;
+        $this->assertTrue($fake_todo_item->delete());
+
+        // Test view routes
         $response = $this->actingAs($user)->get(route('journal.view.entry', ['journal_entry' => $journal_entry_uuid]));
+        $response->assertStatus(404);
+        $response = $this->actingAs($user)->get(route('journal.view.todo', ['todo' => $todo_item_uuid]));
         $response->assertStatus(404);
 
         // Test edit route
@@ -96,8 +103,16 @@ class JournalTest extends TestCase
         ]);
         $journal_category_uuid = $journal_category->uuid;
 
-        // Test view route
+        // Get a forbidden todo item uuid
+        $todo_item = ToDo::factory()->create([
+            'user_id' => $forbidden_user->id,
+        ]);
+        $todo_item_uuid = $todo_item->uuid;
+
+        // Test view routes
         $response = $this->actingAs($test_user)->get(route('journal.view.entry', ['journal_entry' => $journal_entry_uuid]));
+        $response->assertStatus(403);
+        $response = $this->actingAs($test_user)->get(route('journal.view.todo', ['todo' => $todo_item_uuid]));
         $response->assertStatus(403);
 
         // Test edit route
@@ -215,7 +230,7 @@ class JournalTest extends TestCase
         }
         foreach($to_dos as $to_do)
         {
-            $response->assertSee("<b>Completed To-Do:</b> <i>$to_do->title</i>", false);
+            $response->assertSee('<b>Completed To-Do:</b> <i>' . '<a class="preview" href="' . route('journal.view.todo', ['todo' => $to_do->uuid]) .'">' . $to_do->title . '</a></i>', false);
         }
         foreach($journal_entries as $journal_entry)
         {

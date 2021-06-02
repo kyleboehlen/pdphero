@@ -70,6 +70,9 @@ Route::prefix('journal')->group(function(){
 
         // Entry view
         Route::get('entry/{journal_entry}', [JournalController::class, 'viewEntry'])->name('journal.view.entry');
+
+        // ToDo view
+        Route::get('todo/{todo}', [JournalController::class, 'viewToDo'])->name('journal.view.todo');
     });
 
     // Search functionality

@@ -44,6 +44,7 @@ class JournalController extends Controller
         $this->middleware('auth');
         $this->middleware('journal.entry.uuid');
         $this->middleware('journal.category.uuid');
+        $this->middleware('todo.uuid');
         $this->middleware('verified');
         $this->middleware('membership');
     }
@@ -406,6 +407,13 @@ class JournalController extends Controller
     {
         return view('journal.entry')->with([
             'journal_entry' => $journal_entry,
+        ]);
+    }
+
+    public function viewToDo(ToDo $todo)
+    {
+        return view('journal.todo')->with([
+            'todo' => $todo,
         ]);
     }
 
