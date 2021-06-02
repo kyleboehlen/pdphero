@@ -23,6 +23,7 @@ use App\Nova\Metrics\NewHabits;
 use App\Nova\Metrics\NewJournalEntries;
 use App\Nova\Metrics\NewToDos;
 use App\Nova\Metrics\NewUsers;
+use App\Nova\Metrics\UsersJournaled;
 use App\Nova\Metrics\UsersPerformedHabits;
 use App\Nova\Metrics\UsersReadAffirmations;
 
@@ -90,6 +91,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             // Journal Entries
             new NewJournalEntries,
+            new UsersJournaled,
 
             // Affirmations
             new NewAffirmations,

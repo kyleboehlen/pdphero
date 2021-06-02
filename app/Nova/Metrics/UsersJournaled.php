@@ -6,14 +6,10 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Carbon\Carbon;
 
-// Constants
-use App\Helpers\Constants\Habits\HistoryType;
-
 // Models
-use App\Models\Habits\Habits;
-use App\Models\Habits\HabitHistory;
+use App\Models\Journal\JournalEntry;
 
-class UsersPerformedHabits extends Value
+class UsersJournaled extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -23,23 +19,23 @@ class UsersPerformedHabits extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $result = HabitHistory::select('habit_id')->where('type_id', HistoryType::COMPLETED);
-        $previous = HabitHistory::select('habit_id')->where('type_id', HistoryType::COMPLETED);
+        $result = JournalEntry::select('user_id');
+        $previous = JournalEntry::select('user_id');
 
         if($request->range != 'ALL')
         {
             $carbon = Carbon::now();
 	        $carbon->setTimezone($request->user()->timezone);
             $carbon->subDays($request->range);
-            $result = $result->where('day', '>=', $carbon->format('Y-m-d'));
-            $previous = $previous->whereBetween('day', [
-                (clone $carbon)->subDays($request->range)->format('Y-m-d'),
-                $carbon->format('Y-m-d')
+            $result = $result->where('created_at', '>=', $carbon->toDateTimeString());
+            $previous = $previous->whereBetween('created_at', [
+                (clone $carbon)->subDays($request->range)->toDateTimeString(),
+                $carbon->toDateTimeString()
             ]);
         }
 
-        $result = Habits::select('user_id')->whereIn('id', $result->groupBy('habit_id')->get()->pluck('habit_id')->toArray())->groupBy('user_id')->count();
-        $previous = Habits::select('user_id')->whereIn('id', $previous->groupBy('habit_id')->get()->pluck('habit_id')->toArray())->groupBy('user_id')->count();
+        $result = $result->groupBy('user_id')->get()->count();
+        $previous = $previous->groupBy('user_id')->get()->count();
 
         return $this->result($result)->previous($previous);
     }
@@ -77,6 +73,6 @@ class UsersPerformedHabits extends Value
      */
     public function uriKey()
     {
-        return 'users-performed-habits';
+        return 'users-journaled';
     }
 }
