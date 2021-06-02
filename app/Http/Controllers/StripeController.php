@@ -20,6 +20,8 @@ class StripeController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $user->createOrGetStripeCustomer();
+        
         if(!$user->subscribed(config('membership.basic.slug')) && !$user->subscribed(config('membership.black_label.slug')))
         {
             // Check trial days left

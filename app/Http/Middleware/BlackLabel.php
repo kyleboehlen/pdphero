@@ -21,7 +21,6 @@ class BlackLabel
         if(!is_null($request->user()))
         {
             $user = $request->user();
-            $user->createOrGetStripeCustomer();
 
             // Check if they're black label
             if(!$user->subscribed(config('membership.black_label.slug')))
