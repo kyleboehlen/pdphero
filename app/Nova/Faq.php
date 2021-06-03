@@ -49,7 +49,7 @@ class Faq extends Resource
 
             Text::make('Answer')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required', 'max:5000'),
         ];
     }
 
