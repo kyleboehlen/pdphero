@@ -1085,7 +1085,7 @@ class GoalController extends Controller
         $action_item->load('goal');
 
         // Set selected dropdown
-        if($goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
+        if($action_item->goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
         {
             $selected_dropdown = 'action-plan';
         }
