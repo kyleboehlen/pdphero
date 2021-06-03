@@ -13,7 +13,7 @@ use App\Models\User\User;
 use App\Notifications\FreeTrial\ThirtyDays;
 use App\Notifications\FreeTrial\ThreeDays;
 
-class PurgeProfilePictures extends Command
+class FreeTrialSendNotifications extends Command
 {
     /**
      * The name and signature of the console command.
