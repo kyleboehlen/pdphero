@@ -7,7 +7,7 @@
         <div class="overlay"></div>
 
         {{-- Mobile install prompt --}}
-        @if(\Auth::check() && \Auth::user()->hasVerifiedEmail() && !in_array(\Request::route()->getName(), ['about', 'tos', 'privacy']))
+        @if(\Auth::check() && \Auth::user()->hasVerifiedEmail() && !in_array(\Request::route()->getName(), config('general.exempt_mobile_install_routes')))
             <div id="install-prompt" @if(config('app.env') == 'local') class="local" @endif>
                 <h1>Add PDPHero</h1>
                 <p>PDPHero does not require any special permissions, however to use it on mobile it must be launched in standalone mode.</p>
