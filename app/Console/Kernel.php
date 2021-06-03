@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('cloudflare:reload')->daily();
+        $schedule->command('free-trial:send-notifications')->dailyAt('16:00');
         $schedule->command('purge:profile-pictures --silent')->daily();
     }
 
