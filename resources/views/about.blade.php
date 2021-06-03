@@ -15,7 +15,7 @@
             <img class="left" src="{{ asset('images/about.jpg') }}" />
             <p>When was the last time you lost motivation to complete a goal because it didn't feel like you were making any progress?</p>
             <p>PDPHero, the all-in-one personal development plan app, to the rescue! The best way to track S.M.A.R.T. goals, accomplish to-do items, write journal entries, and create long term habits.</p>
-            <p>Not only are all the tools you need in one app, but all the features of PDPHero are tightly coupled and integrated to make personal development planning a breeze</p>
+            <p>Not only are all the tools you need in one app, but all the features of PDPHero are tightly coupled and integrated to make personal development planning a breeze.</p>
         </div>
 
         {{-- Features --}}
@@ -40,7 +40,7 @@
             <h2>Why?</h2>
             <img class="right" src="{{ asset('images/why.jpg') }}" />
             <p>While working on several personal goals and software projects myself I noticed I really needed a better way of tracking everything I was trying to achieve.</p>
-            <p>Unfortunately most of the personal development software available was designed for coporations, and the only S.M.A.R.T. goal software available lacked features and integrations I desperatly wanted. A lot of people use paper soltutions, but it makes too hard to adjust goal details or automatically calculate progress.</p>
+            <p>Unfortunately most of the personal development software available was designed for coporations, and the only S.M.A.R.T. goal software available lacked features and integrations I desperatly wanted. A lot of people use paper solutions, but it makes it too hard to adjust goal details or automatically calculate progress.</p>
             <p>For the last couple of years I've had my personal development plan spread out between 3-4 different apps, and I decided it was time to create one piece of software to manage it all.</p>
         </div>
 
