@@ -14,7 +14,7 @@
         {{-- Change to tutorials --}}
         <a href="#tutorials"><li>Tutorials</li></a>
         {{-- Change to FAQs page --}}
-        <a href="#faqs"><li>FAQs</li></a>
+        <a href="{{ route('faqs') }}"><li>FAQs</li></a>
         <a href="{{ route('privacy') }}"><li>Privacy</li></a>
     </ul>
 </nav>
