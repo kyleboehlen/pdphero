@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('cloudflare:reload')->daily();
         $schedule->command('free-trial:send-notifications')->dailyAt('16:00');
         $schedule->command('purge:profile-pictures --silent')->daily();
+        $schedule->command('mysql:dump')->daily();
     }
 
     /**
