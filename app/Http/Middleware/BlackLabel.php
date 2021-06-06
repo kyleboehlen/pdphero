@@ -18,7 +18,7 @@ class BlackLabel
     {
         $response = $next($request);
 
-        if(!is_null($request->user()))
+        if(!is_null($request->user()) && config('app.env') != 'local')
         {
             $user = $request->user();
 

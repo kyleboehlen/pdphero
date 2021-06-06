@@ -66,6 +66,8 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('cache'));
         $this->assertTrue(Schema::hasTable('activities'));
         $this->assertTrue(Schema::hasTable('faqs'));
+        $this->assertTrue(Schema::hasTable('features'));
+        $this->assertTrue(Schema::hasTable('feature_votes'));
     }
 
     /**

@@ -410,6 +410,13 @@ $(document).ready(function(){
         var show = $(this).find(':selected').val();
         $('.' + show).show();
     });
+
+    // Feature vote checkboxes
+    $('.vote-checkbox').change(function(){
+        $('.vote-checkbox').prop('checked', false);
+        $(this).prop('checked', true);
+        event.target.closest('form').submit();
+    });
 });
 
 // Replaces custom alert pop-up boxes

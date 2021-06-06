@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AffirmationsController;
+use App\Http\Controllers\FeatureVoteController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\HabitsController;
 use App\Http\Controllers\HomeController;
@@ -320,3 +321,15 @@ Route::prefix('support')->group(function(){
 
 // Stripe
 Route::get('stripe', [StripeController::class, 'index'])->name('stripe');
+
+// Feature vote
+Route::prefix('feature-vote')->group(function(){
+    // Index
+    Route::get('/', [FeatureVoteController::class, 'index'])->name('feature.list');
+
+    // Details
+    Route::get('/{feature}', [FeatureVoteController::class, 'details'])->name('feature.details');
+
+    // Vote
+    Route::post('/{feature}', [FeatureVoteController::class, 'vote'])->name('feature.vote');
+});

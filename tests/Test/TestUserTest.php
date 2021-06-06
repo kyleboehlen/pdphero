@@ -10,6 +10,7 @@ use App\Helpers\Constants\Goal\Type as GoalType;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Feature\Feature;
 use App\Models\Habits\Habits;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalCategory;
@@ -34,6 +35,18 @@ class TestUserTest extends TestCase
         $this->assertNotNull(User::find($user->id));
 
         return $user;
+    }
+
+    /**
+     * Generate features
+     * 
+     * @test
+     */
+    public function featuresTest()
+    {
+        Feature::factory(rand(4, 10))->create();
+
+        $this->assertTrue(Feature::all()->count() >= 4);
     }
 
     /**
