@@ -26,11 +26,11 @@
             <ul>
                 <li>Flexible habit tracking with accurate strength indication</li>
                 <li>Various S.M.A.R.T. goal tracking types to suit any of your goal needs</li>
-                <li>Integration with YNAB for financial based goals</li>
-                <li>A personal profile so you don't lose sight of your personal values and rules</li>
-                <li>An affirmations system</li>
-                <li>Compadibliity with all devices</li>
                 <li>A To-Do list that automatically updates with your habits and action items</li>
+                <li>A journaling system that automatically pulls in all your accomplishments for the day and auto updating habit</li>
+                <li>A personal profile so you don't lose sight of your personal values and rules</li>
+                <li>An affirmations system with auto updating habit</li>
+                <li>Compadibliity with all devices</li>
             </ul>
         </div>
 
@@ -68,7 +68,7 @@
 
                     <p class="pricing-label">${{ config('membership.black_label.price') }} monthly</p>
 
-                    <p>Also includes YNAB integration for financial goals, and access to vote for which features are built next. A great way to support the app :)</p>
+                    <p>Allows you to vote for which features are built next. A great way to support the app if you feel so inclined :)</p>
                 </div>
             </div>
         </div>

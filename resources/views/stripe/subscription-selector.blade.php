@@ -28,7 +28,7 @@
             </select>
 
             <p class="sub-desc basic">Comes with all the features you need for creating smart goals, managing to-do items, building habits, journaling, and personal development planning.</p>
-            <p class="sub-desc black-label">Also includes YNAB integration for financial goals, and access to vote for which features are built next. A great way to support the app :)</p>
+            <p class="sub-desc black-label">Allows you to vote for which features are built next. A great way to support the app if you feel so inclined :)</p>
 
             {{-- Subscribe buttons --}}
             {{ $basic_checkout->button('Subscribe', ['class' => 'checkout-button basic']) }}
