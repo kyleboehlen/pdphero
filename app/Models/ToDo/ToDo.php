@@ -78,6 +78,14 @@ class ToDo extends Model
                         // Dispatch update strength job
                         $this->dispatch($queued_habit_strength);
 
+                        if($this->type_id == Type::SINGULAR_HABIT_ITEM)
+                        {
+                            $this->completed = !$this->completed;
+        
+                            // Save this, and modify saved if it fails
+                            return ($success && $this->save());
+                        }
+
                         return $success;
                     }
                 }
