@@ -197,10 +197,11 @@ class Habits extends Model
                         break;
                 }
 
-                // If the strength is above the strength buffer set it back to the strength buffer
-                if($strength > config('habits.strength.buffer'))
+                // If the strength is above the max strength allowed by the strength buffer
+                $max_strength = 100 + config('habits.strength.buffer');
+                if($strength > $max_strength)
                 {
-                    $strength = config('habits.strength.buffer');
+                    $strength = $max_strength;
                 }
                 elseif($strength < 0) // And make sure we don't have negative strength
                 {
