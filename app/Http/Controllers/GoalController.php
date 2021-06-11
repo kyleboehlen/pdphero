@@ -20,6 +20,7 @@ use App\Models\Goal\GoalCategory;
 use App\Models\Goal\GoalType;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\GoalsHabits;
+use App\Models\ToDo\ToDo;
 
 // Requests
 use App\Http\Requests\Goal\ConvertSubRequest;
@@ -1053,6 +1054,23 @@ class GoalController extends Controller
 
     public function destroyGoal(Goal $goal)
     {
+        // Delete any associated to-dos
+        $goal->load('actionItems');
+        if(!is_null($goal->actionItems))
+        {
+            foreach($goal->actionItems as $action_item)
+            {
+                $action_item->load('todo');
+                if(!is_null($action_item->todo))
+                {
+                    if(!$action_item->todo->delete())
+                    {
+                        Log::error('Failed to delete To-Do item associated with goal action item when deleting goal.', $action_item->toArray());
+                    }
+                }
+            }
+        }
+
         // Delete goal
         if(!$goal->delete())
         {
@@ -1074,10 +1092,20 @@ class GoalController extends Controller
 
     public function destroyActionItem(GoalActionItem $action_item)
     {
+        // Delete associated To-Do item
+        $action_item->load('todo');
+        if(!is_null($action_item->todo))
+        {
+            if(!$action_item->todo->delete())
+            {
+                Log::error('Failed to delete To-Do item associated with deleted action item.', $action_item->toArray());
+            }
+        }
+
         // Delete action item
         if(!$action_item->delete())
         {
-            Log::error('Failed to delete goal action item', $action_item->toArray());
+            Log::error('Failed to delete goal action item.', $action_item->toArray());
             return redirect()->back();
         }
 
