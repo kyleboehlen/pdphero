@@ -57,4 +57,10 @@ return [
         'img' => 'icons/feature-vote-white.png',
         'route' => 'feature.list',
     ],
+    HOME::TUTORIALS => [
+        'name' => 'Tutorials',
+        'desc' => 'Watch PDPHero tutorials.',
+        'img' => 'icons/tutorials-white.png',
+        'route' => 'tutorials',
+    ],
 ];

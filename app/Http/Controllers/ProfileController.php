@@ -35,6 +35,7 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('first_visit.messages');
         $this->middleware('verified');
         $this->middleware('membership');
     }

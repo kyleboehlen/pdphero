@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\ToDoController;
+use App\Http\Controllers\TutorialsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,9 @@ Route::get('tos', [AboutController::class, 'tos'])->name('tos');
 
 // FAQ
 Route::get('faqs', [AboutController::class, 'faqs'])->name('faqs');
+
+// Tutorials
+Route::get('tutorials', [TutorialsController::class, 'index'])->name('tutorials');
 
 // Home route
 Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], function(){
