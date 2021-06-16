@@ -809,7 +809,7 @@ class Habits extends Model
 
                 if(is_null($history_entry))
                 {
-                    if(!$search_day->isToday())
+                    if(!$user_date->isToday())
                     {
                         break;
                     }
