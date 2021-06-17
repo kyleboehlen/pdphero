@@ -25,7 +25,7 @@
                 <li>Affirmations Read: <span class="highlight">{{ $user->affirmationsReadLog->count() }}</span></li>
 
                 {{-- Items completed --}}
-                <li>To-Do Items Completed: <span class="highlight">{{ $user->completedTodos->count() }}</span></li>
+                <li>To-Dos Completed: <span class="highlight">{{ $user->completedTodos->count() }}</span></li>
 
                 {{-- Goals accomplished --}}
                 <li>Goals Accomplished: <span class="highlight">{{ $user->accomplishedGoals->count() }}</span></li>
