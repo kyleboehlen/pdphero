@@ -373,7 +373,8 @@ class ProfileController extends Controller
         $user = $request->user();
 
         // Delete all user settings
-        if(!UsersSettings::where('user_id', $user->id)->delete())
+        $users_settings = UsersSettings::where('user_id', $user->id);
+        if($users_settings->get()->count() > 0 && !$users_settings->delete())
         {
             Log::error("Failed to delete user's settings", [
                 'user->id' => $user->id,
