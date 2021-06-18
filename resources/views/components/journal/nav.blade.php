@@ -62,7 +62,7 @@
         <h2>Search Journal Entries</h2><br/>
         
         {{-- Search Entries Form --}}
-        <form action="{{ route('journal.search') }}" method="POST">
+        <form action="{{ route('journal.search') }}" method="GET">
             @csrf
 
             <p>Search For:</p>

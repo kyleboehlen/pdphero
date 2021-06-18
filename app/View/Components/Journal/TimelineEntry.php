@@ -15,6 +15,11 @@ class TimelineEntry extends Component
     public $matching_text;
     public $after_body;
 
+    // For creating a search title
+    public $before_title;
+    public $matching_title;
+    public $after_title;
+
     // Mood class
     public $mood;
 
@@ -32,29 +37,48 @@ class TimelineEntry extends Component
             $timezone = $user->timezone ?? 'America/Denver';
             $entry->display_time = Carbon::parse($entry->created_at)->setTimezone($timezone)->format('n/j/y g:i A');
 
-            // Match text
+            // Match Body
             $length = strlen($search);
             $index = stripos($entry->body, $search);
-            $chars_before = 25;
-            if($chars_before >= $index)
+            if($index !== false) // Search string doesn't match body
             {
-                $start_index = 0;
-                $start_length = $index;
+                $chars_before = 25;
+                if($chars_before >= $index)
+                {
+                    $start_index = 0;
+                    $start_length = $index;
+                }
+                else
+                {
+                    $start_index = $index - $chars_before;
+                    $start_length = $chars_before;
+                }
+                $this->before_body = substr($entry->body, $start_index, $start_length);
+                $this->matching_text = substr($entry->body, $index, $length);
+                $this->after_body = substr($entry->body, $index + $length);
             }
             else
             {
-                $start_index = $index - $chars_before;
-                $start_length = $chars_before;
+                $this->before_body = null;
+                $this->matching_text = null;
+                $this->after_body = null;
             }
-            $this->before_body = substr($entry->body, $start_index, $start_length);
-            $this->matching_text = substr($entry->body, $index, $length);
-            $this->after_body = substr($entry->body, $index + $length);
-        }
-        else
-        {
-            $this->before_body = null;
-            $this->matching_text = null;
-            $this->after_body = null;
+
+            // Search title
+            $index = stripos($entry->title, $search);
+            if($index !== false) // Search string doesn't match title
+            {
+                $index = stripos($entry->title, $search);
+                $this->before_title = substr($entry->title, 0, $index);
+                $this->matching_title = substr($entry->title, $index, $length);
+                $this->after_title = substr($entry->title, $index + $length);
+            }
+            else
+            {
+                $this->before_title = null;
+                $this->matching_title = null;
+                $this->after_title = null;
+            }
         }
 
         $this->journal_entry = $entry;

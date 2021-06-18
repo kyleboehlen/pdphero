@@ -84,7 +84,7 @@ Route::prefix('journal')->group(function(){
     });
 
     // Search functionality
-    Route::post('search', [JournalController::class, 'search'])->name('journal.search');
+    Route::get('search', [JournalController::class, 'search'])->name('journal.search');
 
     // Create Entry
     Route::get('create/entry', [JournalController::class, 'createEntry'])->name('journal.create.entry');
