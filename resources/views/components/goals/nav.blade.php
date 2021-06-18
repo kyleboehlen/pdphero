@@ -7,7 +7,7 @@
 
     <ul class="list">
         @if(in_array('back', $show))
-            <a href="{{ route('goals') }}"><li>Back To Goals</li></a>
+            <a href="{{ route('goals', ['scope' => $scope]) }}"><li>Back To Goals</li></a>
         @endif
 
         @if(in_array('back-goal', $show))

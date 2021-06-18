@@ -4,6 +4,9 @@ namespace App\View\Components\Goals;
 
 use Illuminate\View\Component;
 
+// Constants
+use App\Helpers\Constants\Goal\Type;
+
 class Nav extends Component
 {
     // And array of which goal menu options to show
@@ -11,6 +14,9 @@ class Nav extends Component
 
     // If Nav is showing up on a goal view/edit page the goal is passed
     public $goal;
+
+    // For keeping the selected scope when clicking back to goals
+    public $scope;
 
     /**
      * Create a new component instance.
@@ -21,6 +27,22 @@ class Nav extends Component
     {
         $this->show = explode('|', $show);
         $this->goal = $goal;
+
+        if(!is_null($goal))
+        {
+            if($goal->achieved)
+            {
+                $this->scope = 'achieved';
+            }
+            elseif($goal->type_id == Type::FUTURE_GOAL)
+            {
+                $this->scope = 'future';
+            }
+            else
+            {
+                $this->scope = 'active';
+            }
+        }
     }
 
     /**
