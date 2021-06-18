@@ -14,6 +14,7 @@
                 <p>Follow these instructions and you'll be planning your personal development in no time!</p>
                 <h2>On Apple:</h2>
                 <ol>
+                    <li>Make sure to open PDPHero in Safari.</li>
                     <li><img class="apple-share" src="{{ asset('icons/apple-share-white.png') }}"> Click on the share icon in your browser window</li>
                     <li>Click the 'Add to Home Screen' option that you see
                         <br/>
@@ -25,6 +26,7 @@
                 </ol>
                 <h2>On Android:</h2>
                 <ol>
+                    <li>Make sure to open PDPHero in Chrome.</li>
                     <li>If you recieve an 'Add To Home Screen' prompt like this one:<br/><img class="android-add-to-home-prompt" src="{{ asset('images/android-add-to-home.jpg') }}" /><br/>just click that and you're done!</li>
                     <li><img class="android-options" src="{{ asset('icons/android-options-white.png') }}"> Otherwise click the options icon in your browser window</li>
                     <li>Select the 'Add to Home screen' option<br/><img class="android-add-to-home-option" src="{{ asset('images/android-add-to-home-option.png') }}"/></li>
