@@ -19,8 +19,9 @@ use App\Jobs\CalculateHabitStrength;
 
 // Models
 use App\Models\Goal\GoalActionItem;
-use App\Models\Habits\HabitHistory;
 use App\Models\Habits\Habits;
+use App\Models\Habits\HabitHistory;
+use App\Models\Relationships\HabitsToDo;
 use App\Models\ToDo\ToDoPriority;
 use App\Models\Relationships\GoalActionItemsToDo;
 
@@ -60,7 +61,7 @@ class ToDo extends Model
                 $timezone = $user->timezone ?? 'America/Denver'; // Again... weird default
                 $now = new Carbon('now', $timezone);
                 $day = $now->startOfDay()->setTimezone('UTC')->format('Y-m-d');
-                $habit = $this->habits->first();
+                $habit = $this->habit;
                 $queued_habit_strength = new CalculateHabitStrength($habit);
                 $history_entry = HabitHistory::where('habit_id', $habit->id)->where('day', $day)->first();
 
@@ -189,8 +190,8 @@ class ToDo extends Model
     }
 
     // Create the habit relationship
-    public function habits()
+    public function habit()
     {
-        return $this->belongsToMany(Habits::class);
+        return $this->hasOneThrough(Habits::class, HabitsToDo::class, 'to_do_id', 'id', 'id', 'habits_id');
     }
 }

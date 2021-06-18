@@ -303,17 +303,31 @@ class ToDoController extends Controller
 
     public function updateHabit(UpdateHabitRequest $request, ToDo $todo)
     {
+        // Get completed To-Do
+        $todo->load('habit');
+        $completed_todo = $todo->habit->todos()->where('to_do_id', '!=', $todo->id)->first();
+
         // Set priority
         foreach(config('todo.priorities') as $id => $priority)
         {
             if($request->has("priority-$id"))
             {
                 $todo->priority_id = $id;
+
+                if(!is_null($completed_todo))
+                {
+                    $completed_todo->priority_id = $id;
+                }
             }
         }
 
         // Set notes
         $todo->notes = $request->get('notes');
+
+        if(!is_null($completed_todo))
+        {
+            $completed_todo->notes = $request->get('notes');
+        }
 
         if(!$todo->save())
         {
@@ -321,6 +335,21 @@ class ToDoController extends Controller
             $user = \Auth::user();
             Log::error('Failed to update recurring habit To-Do item.', [
                 'todo' => $todo->toArray(),
+                'request_values' => $request->all(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong updating To-Do item, please try again.'
+            ]);
+        }
+
+        if(!is_null($completed_todo) && !$completed_todo->save())
+        {
+            // Log error
+            $user = \Auth::user();
+            Log::error('Failed to update completed recurring habit To-Do item.', [
+                'completed_todo' => $completed_todo->toArray(),
                 'request_values' => $request->all(),
             ]);
 
@@ -367,6 +396,30 @@ class ToDoController extends Controller
 
         if($view_details)
         {
+            // If it's a habit
+            if($todo->type_id == Type::RECURRING_HABIT_ITEM)
+            {
+                // Get the other todo associated with the habit
+                $todo->load('habit');
+                $other_todo = $todo->habit->todos()->where('to_do_id', '!=', $todo->id)->first();
+
+                // Rebuild recurring habit todos
+                $user = \Auth::user();
+                $build_habit_todos = buildRecurringHabitToDos($user);
+                if($build_habit_todos !== true)
+                {
+                    // Log error
+                    Log::error('Failed to rebuild habit to-do items for user when toggling complete.', [
+                        'todo' => $todo->toArray(),
+                        'other_todo' => $other_todo->toArray(),
+                        '# of failures' => $build_habit_todos,
+                    ]);
+                }
+
+                // And return it's detail page instead
+                return redirect()->route('todo.view.details', ['todo' => $other_todo->uuid]);
+            }
+
             return redirect()->route('todo.view.details', ['todo' => $todo->uuid]);
         }
 
