@@ -243,7 +243,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return redirect()->route('profile.edit.settings', ["#$id"]);
+        return redirect()->to(route('profile.edit.settings') . "#anchor-$id");
     }
 
     public function updatePicture(UpdatePictureRequest $request)
