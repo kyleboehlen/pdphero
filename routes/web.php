@@ -124,6 +124,10 @@ Route::prefix('goals')->group(function(){
     Route::get('convert-sub/{goal}', [GoalController::class, 'convertSubForm'])->name('goals.convert-sub.form');
     Route::post('convert-sub/{goal}', [GoalController::class, 'convertSubSubmit'])->name('goals.convert-sub.submit');
 
+    // Transfer ad hoc items
+    Route::get('transfer-ad-hoc-items/{goal}', [GoalController::class, 'transferAdHocItemsForm'])->name('goals.transfer-ad-hoc-items.form');
+    Route::post('transfer-ad-hoc-items/{goal}', [GoalController::class, 'transferAdHocItemsSubmit'])->name('goals.transfer-ad-hoc-items.submit');
+
     // Ad Hoc Deadlines
     Route::prefix('ad-hoc-deadline')->group(function(){
         Route::post('set/{action_item}', [GoalController::class, 'setAdHocDeadline'])->name('goals.ad-hoc-deadline.set');

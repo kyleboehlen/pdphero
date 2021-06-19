@@ -52,6 +52,10 @@
             <a href="{{ route('goals.create.action-item', ['goal' => $goal->uuid]) }}"><li>Add Action Item</li></a>
         @endif
 
+        @if(in_array('transfer-ad-hoc-items', $show))
+            <a href="{{ route('goals.transfer-ad-hoc-items.form', ['goal' => $goal->uuid]) }}"><li>Move Ad Hoc Items</li></a>
+        @endif
+
         @if(in_array('shift-dates', $show))
             <a id="show-shift-dates" href="#"><li>Shift Dates</li></a>
         @endif
