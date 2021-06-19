@@ -312,6 +312,10 @@ Route::prefix('todo')->group(function(){
 
     // Toggle a to do item's completed status
     Route::post('toggle-completed/{todo}/{view_details?}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
+
+    // Move a to-do item to the top of the list
+    // Toggle a to do item's completed status
+    Route::post('move-to-top/{todo}', [ToDoController::class, 'moveToTop'])->name('todo.move-to-top');
 });
 
 // Support

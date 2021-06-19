@@ -89,7 +89,7 @@ class ToDoController extends Controller
         }
         
         // Default ordering
-        $to_do_items = $to_do_items->orderBy('priority_id', 'desc')->orderBy('title')->get();
+        $to_do_items = $to_do_items->orderBy('priority_id', 'desc')->orderBy('updated_at', 'desc')->get();
 
         // Return to-do view
         return view('todo.list')->with([
@@ -424,6 +424,17 @@ class ToDoController extends Controller
         }
 
         return redirect()->route('todo.list');
+    }
+
+    public function moveToTop(ToDo $todo)
+    {
+        if(!$todo->touch())
+        {
+            Log::error('Failed to move to-do item to top.', $todo->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('todo.view.details', ['todo' => $todo->uuid]);
     }
 
     public function colorGuide()
