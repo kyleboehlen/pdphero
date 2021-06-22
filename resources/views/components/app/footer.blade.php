@@ -1,4 +1,11 @@
 <footer class="app">
+    {{-- Home --}}
+    @if($home)
+        <a class="hover-white" href="{{ route('home') }}">
+            <img @if($highlight == 'home') src="{{ asset('icons/home-white.png') }}" @else src="{{ asset('icons/home-black.png') }}" @endif />
+        </a>
+    @endif
+
     {{-- Journal --}}
     <a class="hover-white" href="{{ route('journal') }}">
         <img @if($highlight == 'journal') src="{{ asset('icons/journal-white.png') }}" @else src="{{ asset('icons/journal-black.png') }}" @endif />

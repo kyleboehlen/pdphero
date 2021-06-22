@@ -15,6 +15,7 @@ return [
         Setting::SHOW_EMPTY_TODO_ITEM => Setting::TOP_OF_LIST, // Top of list
         Setting::SHOW_EMPTY_ACTION_ITEM => Setting::DO_NOT_SHOW, // Don't show
         Setting::SHOW_EMPTY_AD_HOC_ITEM => Setting::BOTTOM_OF_LIST, // Bottom of list
+        Setting::SHOW_HOME_ICON => '1', // True
     ],
 
     'options' => [
@@ -82,6 +83,9 @@ return [
         Setting::SHOW_EMPTY_AD_HOC_ITEM => [
             'desc' => 'How to show the add ad hoc item on a gols ad hoc list.',
         ],
+        Setting::SHOW_HOME_ICON => [
+            'desc' => 'Determines whether or not the home icon is shown in the footer nav.',
+        ],
     ],
 
     'types' => [
@@ -96,5 +100,6 @@ return [
         Setting::SHOW_EMPTY_TODO_ITEM => 'options', // Based on config('settings.options)
         Setting::SHOW_EMPTY_ACTION_ITEM => 'options', // Based on config('settings.options)
         Setting::SHOW_EMPTY_AD_HOC_ITEM => 'options', // Based on config('settings.options)
+        Setting::SHOW_HOME_ICON => 'toggle', // True or false
     ]
 ];

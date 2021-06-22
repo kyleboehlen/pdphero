@@ -14,6 +14,11 @@
         {{-- Setting that handles whether or not the affirmations read page is shown --}}
         <x-settings.checkbox-setting :id="$setting::AFFIRMATIONS_SHOW_READ" text="Display the 'Good Job!' page after finishing reading affirmations" />
 
+        <h2 id="general-settings-header" class="settings">General</h2>
+
+        {{-- Determines whether or not we show the home icon in the bottom nav --}}
+        <x-settings.checkbox-setting :id="$setting::SHOW_HOME_ICON" text="Show the Home icon in the bottom nav" />
+
         <h2 id="goals-settings-header" class="settings">Goals</h2>
 
         {{-- Empty action plan item/ad hoc item settings --}}
