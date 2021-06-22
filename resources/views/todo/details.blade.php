@@ -15,6 +15,12 @@
         @case($type::ACTION_ITEM)
             <x-todo.nav show="list|toggle-complete|move-to-top|color-key|edit" :item="$item" />
             @break
+        @case($type::JOURNAL_HABIT_ITEM)
+            <x-todo.nav show="list|create-journal-entry|move-to-top|create-from-habit|color-key|edit" :item="$item" />
+            @break
+        @case($type::AFFIRMATIONS_HABIT_ITEM)
+            <x-todo.nav show="list|read-affirmations|move-to-top|create-from-habit|color-key|edit" :item="$item" />
+            @break
         @default
             <x-todo.nav show="list|toggle-complete|move-to-top|create|edit|delete" :item="$item"/>
     @endswitch

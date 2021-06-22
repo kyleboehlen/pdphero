@@ -114,7 +114,7 @@ if(!function_exists('buildRecurringHabitToDos'))
         $now = new Carbon('now', $timezone);
 
         // Get all of the user's (user generate) habits with it's todo relationship loaded
-        $habits = Habits::where('user_id', $user->id)->where('type_id', HabitsType::USER_GENERATED)->with('recurringTodos')->get();
+        $habits = Habits::where('user_id', $user->id)->with('recurringTodos')->get();
 
         // Iterate through the habits
         foreach($habits as $habit)
@@ -128,13 +128,27 @@ if(!function_exists('buildRecurringHabitToDos'))
                 $history_entry = $history_array[$now->format('w')];
                 if($history_entry['required'])
                 {
+                    // Determine what type of To-Do it will be
+                    if($habit->type_id == HabitsType::USER_GENERATED)
+                    {
+                        $insert_type_id = ToDoType::RECURRING_HABIT_ITEM;
+                    }
+                    elseif($habit->type_id == HabitsType::AFFIRMATIONS_HABIT)
+                    {
+                        $insert_type_id = ToDoType::AFFIRMATIONS_HABIT_ITEM;
+                    }
+                    elseif($habit->type_id == HabitsType::JOURNALING_HABIT)
+                    {
+                        $insert_type_id = ToDoType::JOURNAL_HABIT_ITEM;
+                    }
+
                     // Create the todo items if they don't exsist
                     if($habit->recurringTodos->count() < 2)
                     {
                         $completed_todo = new ToDo([
                             'user_id' => $user->id,
                             'title' => $habit->name,
-                            'type_id' => ToDoType::RECURRING_HABIT_ITEM,
+                            'type_id' => $insert_type_id,
                             'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . PHP_EOL . $habit->notes,
                             'completed' => true,
                         ]);
@@ -157,7 +171,7 @@ if(!function_exists('buildRecurringHabitToDos'))
                         $pending_todo = new ToDo([
                             'user_id' => $user->id,
                             'title' => $habit->name,
-                            'type_id' => ToDoType::RECURRING_HABIT_ITEM,
+                            'type_id' => $insert_type_id,
                             'notes' => "Automatically generated To-Do item for $habit->name" . PHP_EOL . PHP_EOL . $habit->notes,
                             'completed' => false,
                         ]);

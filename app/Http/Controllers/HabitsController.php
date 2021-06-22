@@ -203,10 +203,10 @@ class HabitsController extends Controller
         if($habit->type_id == Type::USER_GENERATED)
         {
             $habit->name = $request->get('title');
-            $habit->show_todo = $request->has('show-todo');
         }
 
         $habit->times_daily = $request->get('times-daily');
+        $habit->show_todo = $request->has('show-todo');
 
         // Determine how the required on days is set
         if($request->has('days-of-week'))

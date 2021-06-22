@@ -3,6 +3,8 @@
         @switch($item->type_id)
             @case($type::RECURRING_HABIT_ITEM)
             @case($type::SINGULAR_HABIT_ITEM)
+            @case($type::JOURNAL_HABIT_ITEM)
+            @case($type::AFFIRMATIONS_HABIT_ITEM)
                 action="{{ route('todo.update.habit', ['todo' => $item->uuid]) }}"
                 @break
             @default
@@ -35,7 +37,7 @@
         <input type="text" name="title" placeholder="Title" maxlength="255" 
             @isset($item)
                 value="{{ $item->title }}"
-                @if(in_array($item->type_id, [$type::RECURRING_HABIT_ITEM, $type::SINGULAR_HABIT_ITEM, $type::ACTION_ITEM]))
+                @if(in_array($item->type_id, [$type::RECURRING_HABIT_ITEM, $type::SINGULAR_HABIT_ITEM, $type::ACTION_ITEM, $type::JOURNAL_HABIT_ITEM, $type::AFFIRMATIONS_HABIT_ITEM]))
                     disabled
                 @endif
             @else

@@ -953,7 +953,11 @@ class Habits extends Model
     // ToDo relationship
     public function recurringTodos()
     {
-        return $this->belongsToMany(ToDo::class)->where('type_id', ToDoType::RECURRING_HABIT_ITEM)->withTrashed();
+        return $this->belongsToMany(ToDo::class)->whereIn('type_id', [
+            ToDoType::RECURRING_HABIT_ITEM,
+            ToDoType::JOURNAL_HABIT_ITEM,
+            ToDoType::AFFIRMATIONS_HABIT_ITEM
+        ])->withTrashed();
     }
 
     // User relationship

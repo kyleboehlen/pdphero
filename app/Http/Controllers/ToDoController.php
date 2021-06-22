@@ -387,6 +387,16 @@ class ToDoController extends Controller
 
     public function toggleCompleted(ToDo $todo, $view_details = false)
     {
+        // Redirect journal and affirmations To-Do items
+        if($todo->type_id == Type::JOURNAL_HABIT_ITEM)
+        {
+            return redirect()->route('journal.create.entry');
+        }
+        elseif($todo->type_id == Type::AFFIRMATIONS_HABIT_ITEM)
+        {
+            return redirect()->route('affirmations');
+        }
+
         if(!$todo->toggleCompleted())
         {
             // Log error

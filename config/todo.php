@@ -32,5 +32,11 @@ return [
         Type::ACTION_ITEM => [
             'name' => 'Action Item',
         ],
+        Type::JOURNAL_HABIT_ITEM => [
+            'name' => 'Journal Habit Item',
+        ],
+        Type::AFFIRMATIONS_HABIT_ITEM => [
+            'name' => 'Affirmations Habit Item',
+        ],
     ],
 ];
