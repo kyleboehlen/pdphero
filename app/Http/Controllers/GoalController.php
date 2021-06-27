@@ -715,6 +715,11 @@ class GoalController extends Controller
                 'request_values' => $request->all(),
             ]);
         }
+        else
+        {
+            // Recalculate progress with the new item
+            $goal->calculateProgress();
+        }
 
         if($goal->type_id == Type::ACTION_DETAILED)
         {
