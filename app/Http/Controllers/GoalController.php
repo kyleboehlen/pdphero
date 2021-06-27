@@ -98,17 +98,7 @@ class GoalController extends Controller
         $categories = $user->goalCategories;
 
         // Verify status and refresh
-        foreach($goals as $goal)
-        {
-            if(!$goal->determineStatus())
-            {
-                Log::error('Failed to determine status for goal when viewing goal index', $goal->toArray());
-            }
-            else
-            {
-                $goal->refresh();
-            }
-        }
+        $this->recursivelyUpdateGoalsStatus($goals, true);
 
         return view('goals.index')->with([
             'goals' => $goals,
@@ -1227,5 +1217,27 @@ class GoalController extends Controller
         }
 
         return redirect()->route('goals.view.goal', ['goal' => $ad_hoc_goal->uuid]);
+    }
+
+    private function recursivelyUpdateGoalsStatus(&$goals, $refresh_goals)
+    {
+        foreach($goals as $goal)
+        {
+            if(!$goal->determineStatus())
+            {
+                Log::error('Failed to recursively determine status for goal.', $goal->toArray());
+            }
+            elseif($refresh_goals)
+            {
+                $goal->refresh();
+            }
+
+            // Refresh sub goals
+            $goal->load('subGoals');
+            if(!is_null($goal->subGoals) && $goal->subGoals->count() > 0)
+            {
+                $this->recursivelyUpdateGoalsStatus($goal->subGoals, false);
+            }
+        }
     }
 }
