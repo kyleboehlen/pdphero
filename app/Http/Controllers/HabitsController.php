@@ -14,6 +14,7 @@ use App\Helpers\Constants\User\Setting;
 // Models
 use App\Models\Habits\Habits;
 use App\Models\Habits\HabitHistory;
+use App\Models\Goal\Goal;
 
 // Requests
 use App\Http\Requests\Habits\HistoryRequest;
@@ -202,10 +203,10 @@ class HabitsController extends Controller
         if($habit->type_id == Type::USER_GENERATED)
         {
             $habit->name = $request->get('title');
-            $habit->show_todo = $request->has('show-todo');
         }
 
         $habit->times_daily = $request->get('times-daily');
+        $habit->show_todo = $request->has('show-todo');
 
         // Determine how the required on days is set
         if($request->has('days-of-week'))
@@ -258,14 +259,25 @@ class HabitsController extends Controller
         {
             if(!$todo->delete())
             {
-                Log::error('Failed to delete habit to-do item', $todo->toArray());
+                Log::error('Failed to delete habit to-do item.', $todo->toArray());
+                return redirect()->back();
+            }
+        }
+
+        // Delete any corresponding goals
+        $goals = Goal::where('habit_id', $habit->id)->get();
+        foreach($goals as $goal)
+        {
+            if(!$goal->delete())
+            {
+                Log::error('Failed to delete goal when deleting habit.', $goal->toArray());
                 return redirect()->back();
             }
         }
 
         if(!$habit->delete())
         {
-            Log::error('Failed to delete habit', $habit->toArray());
+            Log::error('Failed to delete habit.', $habit->toArray());
             return redirect()->back();
         }
 

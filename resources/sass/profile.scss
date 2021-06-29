@@ -15,6 +15,20 @@ header.app
     display: none;
 }
 
+nav.app
+{
+    ul
+    {
+        a
+        {
+            &.destructive-option
+            {
+                top: 15%;
+            }
+        }
+    }
+}
+
 div.app-container
 {
     @extend %flex-container;

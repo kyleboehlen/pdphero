@@ -23,7 +23,7 @@ class Nav extends Component
      *
      * @return void
      */
-    public function __construct($show, $entry = null, $date = null)
+    public function __construct($show, $entry = null, $date = null, $todo = null)
     {
         $this->show = explode('|', $show);
         $this->journal_entry = $entry;
@@ -32,9 +32,21 @@ class Nav extends Component
         // Handles parsing and creating back route params
         $user = \Auth::user();
         $timezone = $user->timezone ?? 'America/Denver';
-        if(in_array('back', $this->show) && !is_null($date))
+        if(in_array('back', $this->show) && (!is_null($date) || !is_null($entry) || !is_null($todo)))
         {
-            $carbon = Carbon::parse($date);
+            if(!is_null($date))
+            {
+                $carbon = Carbon::parse($date);
+            }
+            elseif(!is_null($entry))
+            {
+                $carbon = Carbon::parse($entry->created_at)->setTimezone($timezone);
+            }
+            else
+            {
+                $carbon = Carbon::parse($todo->updated_at)->setTimezone($timezone);
+            }
+
             $this->month = strtolower($carbon->format('F'));
             $this->year = $carbon->format('Y');
         }
@@ -44,9 +56,18 @@ class Nav extends Component
             $this->year = null;
         }
 
-        if(in_array('back-day', $this->show) && !is_null($entry))
+        if(in_array('back-day', $this->show) && (!is_null($entry) || !is_null($todo)))
         {
-            $carbon = Carbon::parse($entry->created_at)->setTimezone($timezone);
+            if(!is_null($entry))
+            {
+                $carbon = Carbon::parse($entry->created_at);
+            }
+            else
+            {
+                $carbon = Carbon::parse($todo->updated_at);
+            }
+
+            $carbon->setTimezone($timezone);
             $this->date = $carbon->format('Y-m-d');
         }
     }

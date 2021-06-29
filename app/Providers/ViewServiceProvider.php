@@ -31,11 +31,17 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('tos', 'App\View\Composers\AboutComposer');
         View::composer('privacy', 'App\View\Composers\AboutComposer');
 
+        // FAQs
+        View::composer('faqs', 'App\View\Composers\AboutComposer');
+
         // Affirmations
         View::composer('affirmations.*', 'App\View\Composers\AffirmationsComposer');
 
         // Auth
         View::composer('auth.*', 'App\View\Composers\AuthComposer');
+
+        // Feature Vote
+        View::composer('feature.*', 'App\View\Composers\FeatureVoteComposer');
 
         // Goals
         View::composer('goals.*', 'App\View\Composers\GoalsComposer');

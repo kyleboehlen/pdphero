@@ -3,7 +3,7 @@
     <img id="close-nav" class="close hover-white" src="{{ asset('icons/close-black.png') }}" />
     
     {{-- Logo --}}
-    <img class="logo" src="{{ asset('logos/logo-white.png') }}" onclick="location.href='{{ route('home') }}'"/>
+    <x-app.nav-logo />
 
     <ul class="list">
         @if(in_array('back', $show))
@@ -62,7 +62,7 @@
         <h2>Search Journal Entries</h2><br/>
         
         {{-- Search Entries Form --}}
-        <form action="{{ route('journal.search') }}" method="POST">
+        <form action="{{ route('journal.search') }}" method="GET">
             @csrf
 
             <p>Search For:</p>

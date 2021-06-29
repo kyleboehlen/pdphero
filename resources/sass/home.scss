@@ -14,6 +14,7 @@ div.app-container
 {
     align-content: center;
     align-items: center;
+    flex-shrink: 1;
     flex-wrap: wrap;
     justify-content: space-around;
 
@@ -26,12 +27,21 @@ div.app-container
 
         @media only screen and (max-width: 500px)
         {
-            max-width: 33%;
+            margin-bottom: 2.5%;
+            max-height: 20%;
+            max-width: 26%;
+            overflow: visible;
+            white-space: normal;
         }
 
         img
         {
             max-width: 75%;
+
+            @media only screen and (max-width: 500px)
+            {
+                max-width: 60%;
+            }
         }
 
         p
@@ -53,6 +63,16 @@ div.app-container
             @media only screen and (max-width: 600px)
             {
                 font-size: 1em;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1em;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                margin-top: 1%;
             }
 
             @media only screen and (max-width: 400px)

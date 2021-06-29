@@ -116,10 +116,12 @@ Add credentials for mailtrap if email testing is required
 - MAILTRAP_PASSWORD=
 
 <br/>
-Set the super admin details
+Fill out the stripe API creds and pricing IDs
 
-- SUPER_ADMIN_EMAIL="admin_email@domain.com"
-- SUPER_ADMIN_PASSWORD=password
+STRIPE_KEY=
+STRIPE_SECRET=
+BASIC_STRIPE_PRICE_ID=
+BLACK_LABEL_STRIPE_PRICE_ID=
 
 <br/>
 Run the database migration, use the local phpunit
@@ -177,3 +179,4 @@ Optimize route loading
 - Jira Cloud (issue tracking)
 - Bitbucket (code repo host)
 - Stripe (payment processing)
+- Kamatera Express (VPS hosting)

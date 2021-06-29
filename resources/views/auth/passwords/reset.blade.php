@@ -41,9 +41,10 @@
                 </div>
             </div>
 
-            <button type="submit">
+            <br/><br/>
+            <button type="submit" class="reset">
                 {{ __('Reset Password') }}
-            </button>
+            </button><br/>
         </form>
     </div>
 @endsection

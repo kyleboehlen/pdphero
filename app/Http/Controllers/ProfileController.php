@@ -35,6 +35,7 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('first_visit.messages');
         $this->middleware('verified');
         $this->middleware('membership');
     }
@@ -242,7 +243,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return redirect()->route('profile.edit.settings', ["#$id"]);
+        return redirect()->to(route('profile.edit.settings') . "#anchor-$id");
     }
 
     public function updatePicture(UpdatePictureRequest $request)
@@ -372,7 +373,8 @@ class ProfileController extends Controller
         $user = $request->user();
 
         // Delete all user settings
-        if(!UsersSettings::where('user_id', $user->id)->delete())
+        $users_settings = UsersSettings::where('user_id', $user->id);
+        if($users_settings->get()->count() > 0 && !$users_settings->delete())
         {
             Log::error("Failed to delete user's settings", [
                 'user->id' => $user->id,

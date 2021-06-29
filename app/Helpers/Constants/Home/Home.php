@@ -12,4 +12,6 @@ class Home
     const TODO = 6;
     const AFFIRMATIONS = 7;
     const EMAIL_SUPPORT = 8;
+    const FEATURE_VOTE = 9;
+    const TUTORIALS = 10;
 }

@@ -51,4 +51,16 @@ return [
         'img' => 'icons/email-support-white.png',
         'route' => 'support.email.form',
     ],
+    HOME::FEATURE_VOTE => [
+        'name' => 'Feature Vote',
+        'desc' => 'Vote for which features you want to see built out next.',
+        'img' => 'icons/feature-vote-white.png',
+        'route' => 'feature.list',
+    ],
+    HOME::TUTORIALS => [
+        'name' => 'Tutorials',
+        'desc' => 'Watch PDPHero tutorials.',
+        'img' => 'icons/tutorials-white.png',
+        'route' => 'tutorials',
+    ],
 ];

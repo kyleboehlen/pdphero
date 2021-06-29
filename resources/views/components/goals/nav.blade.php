@@ -3,11 +3,11 @@
     <img id="close-nav" class="close hover-white" src="{{ asset('icons/close-black.png') }}" />
     
     {{-- Logo --}}
-    <img class="logo" src="{{ asset('logos/logo-white.png') }}" onclick="location.href='{{ route('home') }}'"/>
+    <x-app.nav-logo />
 
     <ul class="list">
         @if(in_array('back', $show))
-            <a href="{{ route('goals') }}"><li>Back To Goals</li></a>
+            <a href="{{ route('goals', ['scope' => $scope]) }}"><li>Back To Goals</li></a>
         @endif
 
         @if(in_array('back-goal', $show))
@@ -50,6 +50,10 @@
 
         @if(in_array('create-action-item', $show))
             <a href="{{ route('goals.create.action-item', ['goal' => $goal->uuid]) }}"><li>Add Action Item</li></a>
+        @endif
+
+        @if(in_array('transfer-ad-hoc-items', $show))
+            <a href="{{ route('goals.transfer-ad-hoc-items.form', ['goal' => $goal->uuid]) }}"><li>Move Ad Hoc Items</li></a>
         @endif
 
         @if(in_array('shift-dates', $show))

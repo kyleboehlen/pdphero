@@ -74,11 +74,9 @@
     </span><br/><br/>
 
     {{-- Show todo checkbox --}}
-    @if(!is_null($habit) && $habit->type_id == $type::USER_GENERATED)
-        <span class="show-todo" title="If this is selected your habit will automatically show up in your to-do list">
-            <input class="show-todo" type="checkbox" name="show-todo" @isset($habit) @if($habit->show_todo) checked @endif @else checked @endif /> Show on To-Do List
-        </span><br/><br/>
-    @endif
+    <span class="show-todo" title="If this is selected your habit will automatically show up in your to-do list">
+        <input class="show-todo" type="checkbox" name="show-todo" @isset($habit) @if($habit->show_todo) checked @endif @else checked @endif /> Show on To-Do List
+    </span><br/><br/>
 
     <br/>
 

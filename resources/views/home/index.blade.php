@@ -19,5 +19,5 @@
     </div>
 
     {{-- Navigation Footer --}}
-    <x-app.footer />
+    <x-app.footer highlight="home" />
 @endsection

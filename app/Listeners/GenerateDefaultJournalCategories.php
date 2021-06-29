@@ -19,6 +19,7 @@ class GenerateDefaultJournalCategories
     public function __construct()
     {
         // I know that you still worry, but I'm okay. If you're not happy, please don't stay.
+        // What kind of sad boi shit is this??
     }
 
     /**

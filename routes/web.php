@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AffirmationsController;
+use App\Http\Controllers\FeatureVoteController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\HabitsController;
 use App\Http\Controllers\HomeController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\ToDoController;
+use App\Http\Controllers\TutorialsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,12 @@ Route::get('about', [AboutController::class, 'index'])->name('about');
 // Privacy policy/tos
 Route::get('privacy', [AboutController::class, 'privacy'])->name('privacy');
 Route::get('tos', [AboutController::class, 'tos'])->name('tos');
+
+// FAQ
+Route::get('faqs', [AboutController::class, 'faqs'])->name('faqs');
+
+// Tutorials
+Route::get('tutorials', [TutorialsController::class, 'index'])->name('tutorials');
 
 // Home route
 Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], function(){
@@ -70,10 +78,13 @@ Route::prefix('journal')->group(function(){
 
         // Entry view
         Route::get('entry/{journal_entry}', [JournalController::class, 'viewEntry'])->name('journal.view.entry');
+
+        // ToDo view
+        Route::get('todo/{todo}', [JournalController::class, 'viewToDo'])->name('journal.view.todo');
     });
 
     // Search functionality
-    Route::post('search', [JournalController::class, 'search'])->name('journal.search');
+    Route::get('search', [JournalController::class, 'search'])->name('journal.search');
 
     // Create Entry
     Route::get('create/entry', [JournalController::class, 'createEntry'])->name('journal.create.entry');
@@ -112,6 +123,10 @@ Route::prefix('goals')->group(function(){
     Route::post('remove-parent/{goal}', [GoalController::class, 'removeParent'])->name('goals.remove-parent');
     Route::get('convert-sub/{goal}', [GoalController::class, 'convertSubForm'])->name('goals.convert-sub.form');
     Route::post('convert-sub/{goal}', [GoalController::class, 'convertSubSubmit'])->name('goals.convert-sub.submit');
+
+    // Transfer ad hoc items
+    Route::get('transfer-ad-hoc-items/{goal}', [GoalController::class, 'transferAdHocItemsForm'])->name('goals.transfer-ad-hoc-items.form');
+    Route::post('transfer-ad-hoc-items/{goal}', [GoalController::class, 'transferAdHocItemsSubmit'])->name('goals.transfer-ad-hoc-items.submit');
 
     // Ad Hoc Deadlines
     Route::prefix('ad-hoc-deadline')->group(function(){
@@ -301,6 +316,10 @@ Route::prefix('todo')->group(function(){
 
     // Toggle a to do item's completed status
     Route::post('toggle-completed/{todo}/{view_details?}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
+
+    // Move a to-do item to the top of the list
+    // Toggle a to do item's completed status
+    Route::post('move-to-top/{todo}', [ToDoController::class, 'moveToTop'])->name('todo.move-to-top');
 });
 
 // Support
@@ -314,3 +333,15 @@ Route::prefix('support')->group(function(){
 
 // Stripe
 Route::get('stripe', [StripeController::class, 'index'])->name('stripe');
+
+// Feature vote
+Route::prefix('feature-vote')->group(function(){
+    // Index
+    Route::get('/', [FeatureVoteController::class, 'index'])->name('feature.list');
+
+    // Details
+    Route::get('/{feature}', [FeatureVoteController::class, 'details'])->name('feature.details');
+
+    // Vote
+    Route::post('/{feature}', [FeatureVoteController::class, 'vote'])->name('feature.vote');
+});

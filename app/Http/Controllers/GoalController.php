@@ -20,6 +20,7 @@ use App\Models\Goal\GoalCategory;
 use App\Models\Goal\GoalType;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\GoalsHabits;
+use App\Models\ToDo\ToDo;
 
 // Requests
 use App\Http\Requests\Goal\ConvertSubRequest;
@@ -30,6 +31,7 @@ use App\Http\Requests\Goal\SetDeadlineRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
+use App\Http\Requests\Goal\TransferAdHocRequest;
 use App\Http\Requests\Goal\UpdateRequest;
 use App\Http\Requests\Goal\UpdateActionItemRequest;
 
@@ -96,17 +98,7 @@ class GoalController extends Controller
         $categories = $user->goalCategories;
 
         // Verify status and refresh
-        foreach($goals as $goal)
-        {
-            if(!$goal->determineStatus())
-            {
-                Log::error('Failed to determine status for goal when viewing goal index', $goal->toArray());
-            }
-            else
-            {
-                $goal->refresh();
-            }
-        }
+        $this->recursivelyUpdateGoalsStatus($goals, true);
 
         return view('goals.index')->with([
             'goals' => $goals,
@@ -206,6 +198,11 @@ class GoalController extends Controller
         if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::ACTION_AD_HOC)
         {
             $nav_show .= '|create-action-item';
+        }
+
+        if($goal->type_id == Type::ACTION_AD_HOC)
+        {
+            $nav_show .= '|transfer-ad-hoc-items';
         }
 
         if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::PARENT_GOAL)
@@ -708,6 +705,11 @@ class GoalController extends Controller
                 'request_values' => $request->all(),
             ]);
         }
+        else
+        {
+            // Recalculate progress with the new item
+            $goal->calculateProgress();
+        }
 
         if($goal->type_id == Type::ACTION_DETAILED)
         {
@@ -1053,6 +1055,23 @@ class GoalController extends Controller
 
     public function destroyGoal(Goal $goal)
     {
+        // Delete any associated to-dos
+        $goal->load('actionItems');
+        if(!is_null($goal->actionItems))
+        {
+            foreach($goal->actionItems as $action_item)
+            {
+                $action_item->load('todo');
+                if(!is_null($action_item->todo))
+                {
+                    if(!$action_item->todo->delete())
+                    {
+                        Log::error('Failed to delete To-Do item associated with goal action item when deleting goal.', $action_item->toArray());
+                    }
+                }
+            }
+        }
+
         // Delete goal
         if(!$goal->delete())
         {
@@ -1074,10 +1093,20 @@ class GoalController extends Controller
 
     public function destroyActionItem(GoalActionItem $action_item)
     {
+        // Delete associated To-Do item
+        $action_item->load('todo');
+        if(!is_null($action_item->todo))
+        {
+            if(!$action_item->todo->delete())
+            {
+                Log::error('Failed to delete To-Do item associated with deleted action item.', $action_item->toArray());
+            }
+        }
+
         // Delete action item
         if(!$action_item->delete())
         {
-            Log::error('Failed to delete goal action item', $action_item->toArray());
+            Log::error('Failed to delete goal action item.', $action_item->toArray());
             return redirect()->back();
         }
 
@@ -1085,7 +1114,7 @@ class GoalController extends Controller
         $action_item->load('goal');
 
         // Set selected dropdown
-        if($goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
+        if($action_item->goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
         {
             $selected_dropdown = 'action-plan';
         }
@@ -1138,5 +1167,77 @@ class GoalController extends Controller
         }
 
         return redirect()->route('goals.view.goal', ['goal' => $goal->uuid]);
+    }
+
+    public function transferAdHocItemsForm(Request $request, Goal $goal)
+    {
+        $ad_hoc_goals = Goal::where('user_id', $request->user()->id)->where('type_id', Type::ACTION_AD_HOC)->where('id', '!=', $goal->id)->orderBy('name')->get();
+        
+        return view('goals.ad-hoc-selector')->with([
+            'ad_hoc_goals' => $ad_hoc_goals,
+            'goal' => $goal,
+        ]);
+    }
+
+    public function transferAdHocItemsSubmit(TransferAdHocRequest $request, Goal $goal)
+    {
+        $ad_hoc_goal_uuid = $request->get('ad-hoc-goal');
+        if($ad_hoc_goal_uuid != $goal->uuid)
+        {
+            // Get action items for the old goal
+            $goal->load('adHocItems');
+
+            // Get goal to transfer ad hoc items to
+            $ad_hoc_goal = Goal::where('uuid', $ad_hoc_goal_uuid)->first();
+
+            // Assign all ad hoc items to new goal
+            $failures = array();
+            foreach($goal->adHocItems as $ad_hoc_item)
+            {
+                $ad_hoc_item->goal_id = $ad_hoc_goal->id;
+                if(!$ad_hoc_item->save())
+                {
+                    array_push($failures, $ad_hoc_item->id);
+                    Log::error('Failed convert goal to sub-goal', [
+                        'goal' => $goal->toArray(),
+                        'parent_goal_uuid' => $parent_goal_uuid,
+                    ]);
+                }
+            }
+
+            // Log failures
+            if(count($failures) > 0)
+            {
+                Log::error('Failed move some ad hoc items to new goal.', [
+                    'goal' => $goal->toArray(),
+                    'ad_hoc_goal' => $ad_hoc_goal->toArray(),
+                    'failures' => $failures,
+                ]);
+            }
+        }
+
+        return redirect()->route('goals.view.goal', ['goal' => $ad_hoc_goal->uuid]);
+    }
+
+    private function recursivelyUpdateGoalsStatus(&$goals, $refresh_goals)
+    {
+        foreach($goals as $goal)
+        {
+            if(!$goal->determineStatus())
+            {
+                Log::error('Failed to recursively determine status for goal.', $goal->toArray());
+            }
+            elseif($refresh_goals)
+            {
+                $goal->refresh();
+            }
+
+            // Refresh sub goals
+            $goal->load('subGoals');
+            if(!is_null($goal->subGoals) && $goal->subGoals->count() > 0)
+            {
+                $this->recursivelyUpdateGoalsStatus($goal->subGoals, false);
+            }
+        }
     }
 }

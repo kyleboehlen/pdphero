@@ -16,6 +16,7 @@ class Setting
     const SHOW_EMPTY_TODO_ITEM = 9;
     const SHOW_EMPTY_ACTION_ITEM = 10;
     const SHOW_EMPTY_AD_HOC_ITEM = 11;
+    const SHOW_HOME_ICON = 12;
 
     // Settings options
     const HABITS_ROLLING_SEVEN_DAYS = 'rolling_seven_days';

@@ -197,10 +197,11 @@ class Habits extends Model
                         break;
                 }
 
-                // If the strength is above the strength buffer set it back to the strength buffer
-                if($strength > config('habits.strength.buffer'))
+                // If the strength is above the max strength allowed by the strength buffer
+                $max_strength = 100 + config('habits.strength.buffer');
+                if($strength > $max_strength)
                 {
-                    $strength = config('habits.strength.buffer');
+                    $strength = $max_strength;
                 }
                 elseif($strength < 0) // And make sure we don't have negative strength
                 {
@@ -808,7 +809,7 @@ class Habits extends Model
 
                 if(is_null($history_entry))
                 {
-                    if(!$search_day->isToday())
+                    if(!$user_date->isToday())
                     {
                         break;
                     }
@@ -952,7 +953,11 @@ class Habits extends Model
     // ToDo relationship
     public function recurringTodos()
     {
-        return $this->belongsToMany(ToDo::class)->where('type_id', ToDoType::RECURRING_HABIT_ITEM)->withTrashed();
+        return $this->belongsToMany(ToDo::class)->whereIn('type_id', [
+            ToDoType::RECURRING_HABIT_ITEM,
+            ToDoType::JOURNAL_HABIT_ITEM,
+            ToDoType::AFFIRMATIONS_HABIT_ITEM
+        ])->withTrashed();
     }
 
     // User relationship

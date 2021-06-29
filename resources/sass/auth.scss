@@ -130,6 +130,13 @@ div.card
         margin-right: auto;
         width: 50%;
 
+        &.reset
+        {
+            font-size: 1.4em;
+            margin-left: 20%;
+            width: 60%;
+        }
+
         @media screen and (max-width: 600px)
         {
             font-size: 1.35em;

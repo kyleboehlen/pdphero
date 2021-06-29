@@ -3,7 +3,7 @@
     <img id="close-nav" class="close hover-white" src="{{ asset('icons/close-black.png') }}" />
     
     {{-- Logo --}}
-    <img class="logo" src="{{ asset('logos/logo-white.png') }}" onclick="location.href='{{ route('home') }}'"/>
+    <x-app.nav-logo />
 
     <ul class="list">
         @if(in_array('list', $show))
@@ -30,9 +30,27 @@
             </a>
         @endif
 
+        @if(in_array('read-affirmations', $show))
+            <a href="{{ route('affirmations') }}"><li>Read Affirmations</li></a>
+        @endif
+
+        @if(in_array('create-journal-entry', $show))
+            <a href="{{ route('journal.create.entry') }}"><li>Create Journal Entry</li></a>
+        @endif
+
         @if(in_array('edit', $show))
             <a href="{{ route('todo.edit', ['todo' => $item->uuid]) }}"><li>Edit To-Do Item</li></a>
         @endif
+
+        @if(in_array('move-to-top', $show))
+        <form id="move-to-top-form" action="{{ route('todo.move-to-top', ['todo' => $item->uuid]) }}" method="POST">
+            @csrf
+        </form>
+        <a href="{{ route('todo.move-to-top', ['todo' => $item->uuid]) }}"
+            onclick="event.preventDefault(); document.getElementById('move-to-top-form').submit();">
+            <li>Move To Top</li>
+        </a>
+    @endif
 
         @if(in_array('create', $show))
             <a href="{{ route('todo.create') }}"><li class="top">Create New To-Do Item</li></a>

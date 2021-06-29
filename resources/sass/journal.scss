@@ -601,6 +601,17 @@ div.app-container
                     {
                         font-size: 1.25em;
                     }
+
+                    a.preview
+                    {
+                        color: $white;
+                        text-decoration: none;
+
+                        &:hover
+                        {
+                            text-shadow: 1px 1px $white;
+                        }
+                    }
                 }
 
                 &.timeline-item
@@ -651,12 +662,11 @@ div.app-container
 
                 div.priority
                 {
-                    align-self: flex-end;
+                    align-self: stretch;
                     border-left: $thin-border solid $light-grey;
                     border-radius: 0 7.5px 7.5px 0;
                     flex-basis: 15px;
                     flex-grow: 0;
-                    height: 100%;
         
                     @media only screen and (max-width: 800px)
                     {
@@ -754,12 +764,11 @@ div.app-container
 
                 div.mood
                 {
-                    align-self: flex-end;
+                    align-self: stretch;
                     border-left: $thin-border solid $light-grey;
                     border-radius: 0 7.5px 7.5px 0;
                     flex-basis: 15px;
                     flex-grow: 0;
-                    height: 100%;
         
                     @media only screen and (max-width: 800px)
                     {
@@ -878,7 +887,7 @@ div.app-container
             text-align: center;
         }
 
-        h3.mood
+        h3.mood, h3.priority
         {
             font-family: $body-font;
             font-size: 2.5em;
@@ -912,17 +921,17 @@ div.app-container
                 color: $brown;
             }
 
-            &.positive
+            &.positive, &.low
             {
                 color: $green;
             }
 
-            &.neutral
+            &.neutral, &.medium
             {
                 color: $yellow;
             }
 
-            &.negative
+            &.negative, &.high
             {   
                 color: $red;
             }

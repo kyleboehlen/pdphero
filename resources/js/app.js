@@ -410,6 +410,13 @@ $(document).ready(function(){
         var show = $(this).find(':selected').val();
         $('.' + show).show();
     });
+
+    // Feature vote checkboxes
+    $('.vote-checkbox').change(function(){
+        $('.vote-checkbox').prop('checked', false);
+        $(this).prop('checked', true);
+        event.target.closest('form').submit();
+    });
 });
 
 // Replaces custom alert pop-up boxes
@@ -472,14 +479,14 @@ window.verifyRemoveForm = function (message, formID){
 // For informing an upgrade is needed -- uses sweetalert2
 window.blackLabelUpgrade = function (url){
     swal.fire({
-        title: 'Black Label Upgrade',
+        title: `<span class="swal-title" style="color:#ffffff">Black Label Upgrade</span>`,
         text: 'You need upgrade to a Black Label membership to use this feature.',
         icon: 'info',
         iconColor: '#d12828',
         padding: '.5rem',
         showCancelButton: true,
-        confirmButtonColor: '#d12828',
-        cancelButtonColor: '#155466',
+        confirmButtonColor: '#155466',
+        cancelButtonColor: '#d12828',
         confirmButtonText: 'Upgrade',
         background: '#3b3b3b',
     }).then((result) => {

@@ -22,7 +22,6 @@ class Membership
         if(!is_null($request->user()))
         {
             $user = $request->user();
-            $user->createOrGetStripeCustomer();
 
             // Check free trial period
             if($user->getTrialDaysLeft() == 0)

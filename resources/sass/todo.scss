@@ -170,11 +170,11 @@ div.app-container
 
         div.priority
         {
+            align-self: stretch;
             border-left: $thin-border solid $light-grey;
             border-radius: 0 7.5px 7.5px 0;
             flex-basis: 25px;
             flex-grow: 0;
-            height: 100%;
 
             @media only screen and (max-width: 800px)
             {
