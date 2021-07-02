@@ -26,6 +26,7 @@ use App\Models\Journal\JournalEntry;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\UsersHideHome;
 use App\Models\ToDo\ToDo;
+use App\Models\ToDo\ToDoCategory;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -143,6 +144,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function todos()
     {
         return $this->hasMany(ToDo::class, 'user_id', 'id');
+    }
+
+    public function todoCategories()
+    {
+        return $this->hasMany(ToDoCategory::class, 'user_id', 'id')->orderBy('name');
     }
 
     public function completedTodos()

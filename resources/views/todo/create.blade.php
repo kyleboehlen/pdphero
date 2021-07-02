@@ -5,7 +5,7 @@
     <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-todo.nav page="list|create-from-habit|create-from-goal|color-key" />
+    <x-todo.nav page="list|create-from-habit|create-from-goal|edit-categories|color-key" />
 
     <div class="app-container">
         @isset($create_type)

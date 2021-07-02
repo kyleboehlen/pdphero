@@ -73,6 +73,64 @@ div.app-container
     flex-direction: column;
     overflow-y: scroll;
 
+    div.selector
+    {
+        align-self: flex-start;
+        color: $white;
+        font-family: $header-font;
+        font-size: 2em;
+        margin-bottom: 1%;
+        margin-top: 1%;
+        text-align: center;
+        width: 99%;
+
+        @media only screen and (max-width: 800px)
+        {
+            margin-top: 0;
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1em;
+            min-width: 40%;
+            text-align: center;
+            padding-left: .5%;
+            padding-right: .5%;
+
+            &:focus
+            {
+                outline: none;
+            }
+
+            @media only screen and (max-width: 1200px)
+            {
+                font-size: .8em;
+                min-width: 60%;
+            }
+
+            @media only screen and (max-width: 700px)
+            {
+                font-size: .75em;
+                min-width: 80%;
+            }
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: .7em;
+                min-width: 80%;
+            }
+
+            @media only screen and (max-width: 500px)
+            {
+                font-size: .65em;
+                min-width: 80%;
+            }
+        }
+    }
+
     div.to-do-item
     {
         align-items: center;
@@ -225,6 +283,34 @@ div.app-container
         }
     }
 
+    &.categories-list
+    {
+        @extend %flex-container;
+
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0;
+        text-align: center;
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+            width: 50%;
+        }
+
+        div.category
+        {
+            @include add-delete-list-item;
+        }
+    }
+
     form.to-do
     {
         @extend %base-form;
@@ -232,6 +318,8 @@ div.app-container
         h2
         {
             @include form-title;
+
+            margin-top: 0;
         }
 
         select
@@ -432,6 +520,18 @@ div.app-container
             @media only screen and (max-height: 725px)
             {
                 max-height: 45%;
+            }
+
+            &.todo-category
+            {
+                border: none;
+                margin: 0;
+                margin-bottom: -1%;
+                margin-top: .5%;
+                overflow-y: hidden;
+                padding: 0;
+                text-align: center;
+                width: 100%;
             }
         }
 

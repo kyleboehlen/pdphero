@@ -21,6 +21,9 @@ class Form extends Component
     // For holding the user's habits if we're creating a singular habit item
     public $habits;
 
+    // For holding a user's todo categories
+    public $categories;
+
     /**
      * Create a new component instance.
      *
@@ -38,6 +41,10 @@ class Form extends Component
             $user = \Auth::user();
             $this->habits = $user->habits;
         }
+
+        // Get todo categories
+        $user = \Auth::user();
+        $this->categories = $user->todoCategories()->get();
     }
 
     /**

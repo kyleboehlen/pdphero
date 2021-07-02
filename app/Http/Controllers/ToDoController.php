@@ -15,9 +15,11 @@ use App\Models\Habits\Habits;
 use App\Models\Relationships\HabitsToDo;
 use App\Models\Relationships\GoalActionItemsToDo;
 use App\Models\ToDo\ToDo;
+use App\Models\ToDo\ToDoCategory;
 
 // Requests
 use App\Http\Requests\ToDo\StoreRequest;
+use App\Http\Requests\ToDo\StoreCategoryRequest;
 use App\Http\Requests\ToDo\StoreHabitRequest;
 use App\Http\Requests\ToDo\UpdateRequest;
 use App\Http\Requests\ToDo\UpdateHabitRequest;
@@ -34,6 +36,7 @@ class ToDoController extends Controller
         $this->middleware('auth');
         $this->middleware('first_visit.messages');
         $this->middleware('todo.uuid');
+        $this->middleware('todo.category.uuid');
         $this->middleware('verified');
         $this->middleware('membership');
     }
@@ -71,7 +74,7 @@ class ToDoController extends Controller
         }
 
         // Load user's to-do items
-        $to_do_items = Todo::where('user_id', $user->id)->with('priority'); // This is going to need to be rewritten with constrained eager loads (habits/goals): https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
+        $to_do_items = Todo::where('user_id', $user->id)->with('category')->with('priority'); // It didn't need to be rewritten, shut the fuck up
 
         // Constrain by how far back user wants to see completed to do items
         $completed_at = Carbon::now()->subHours($user->getSettingValue(Setting::TODO_SHOW_COMPLETED_FOR))->toDatetimeString();
@@ -91,16 +94,27 @@ class ToDoController extends Controller
         // Default ordering
         $to_do_items = $to_do_items->orderBy('priority_id', 'desc')->orderBy('updated_at', 'desc')->get();
 
+        // Get all the users categories
+        $categories = $user->todoCategories()->get();
+
+        // Build filter drop down
+        $category_filter_array = $to_do_items->whereNotNull('category')->pluck('category')->unique()->pluck('id')->toArray();
+
         // Return to-do view
         return view('todo.list')->with([
             'to_do_items' => $to_do_items,
             'user' => $user,
             'setting' => Setting::class,
+            'categories' => $categories,
+            'category_filter_array' => $category_filter_array,
         ]);
     }
 
     public function viewDetails(ToDo $todo)
     {
+        // Load category
+        $todo->load('category');
+
         // Return the completed view if to-do item is completed
         if($todo->completed)
         {
@@ -144,6 +158,13 @@ class ToDoController extends Controller
 
         // Set title
         $todo->title = $request->get('title');
+
+        // Set category
+        $category_uuid = $request->get('category');
+        if($category_uuid != 'no-category')
+        {
+            $todo->category_id = ToDoCategory::where('uuid', $category_uuid)->first()->id;
+        }
 
         // Set priority
         foreach(config('todo.priorities') as $id => $priority)
@@ -192,6 +213,13 @@ class ToDoController extends Controller
         // Set title
         $todo->title = $habit->name;
 
+        // Set category
+        $category_uuid = $request->get('category');
+        if($category_uuid != 'no-category')
+        {
+            $todo->category_id = ToDoCategory::where('uuid', $category_uuid)->first()->id;
+        }
+        
         // Set priority
         foreach(config('todo.priorities') as $id => $priority)
         {
@@ -254,12 +282,41 @@ class ToDoController extends Controller
         return redirect()->route('todo.list');
     }
 
+    public function storeCategory(StoreCategoryRequest $request)
+    {
+        // Create category
+        $category = new ToDoCategory([
+            'name' => $request->get('name'),
+            'user_id' => $request->user()->id,
+        ]);
+
+        // Save/log errors
+        if(!$category->save())
+        {
+            Log::error('Failed to save todo category', $category->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('todo.edit.categories');
+    }
+
     public function edit(ToDo $todo)
     {
         // Return view to edit title, pri, notes with the todo item
         return view('todo.edit')->with([
             'item' => $todo,
             'type' => Type::class,
+        ]);
+    }
+
+    public function editCategories(Request $request)
+    {
+        // Get users categories
+        $categories = $request->user()->todoCategories()->get();
+
+        // Return edit view
+        return view('todo.categories')->with([
+            'categories' => $categories,
         ]);
     }
 
@@ -283,6 +340,17 @@ class ToDoController extends Controller
         // Set notes
         $todo->notes = $request->get('notes');
 
+        // Set category
+        $category_uuid = $request->get('category');
+        if($category_uuid != 'no-category')
+        {
+            $todo->category_id = ToDoCategory::where('uuid', $category_uuid)->first()->id;
+        }
+        else
+        {
+            $todo->category_id = null;
+        }
+        
         if(!$todo->save())
         {
             // Log error
@@ -324,6 +392,17 @@ class ToDoController extends Controller
         // Set notes
         $todo->notes = $request->get('notes');
 
+        // Set category
+        $category_uuid = $request->get('category');
+        if($category_uuid != 'no-category')
+        {
+            $todo->category_id = ToDoCategory::where('uuid', $category_uuid)->first()->id;
+        }
+        else
+        {
+            $todo->category_id = null;
+        }
+        
         if(!is_null($completed_todo))
         {
             $completed_todo->notes = $request->get('notes');
@@ -383,6 +462,21 @@ class ToDoController extends Controller
         }
 
         return redirect()->route('todo.list');
+    }
+
+    public function destroyCategory(Request $request, ToDoCategory $category)
+    {
+        // Remove category from entries
+        ToDo::where('user_id', $request->user()->id)->where('category_id', $category->id)->update(['category_id' => null]);
+
+        // Delete category
+        if(!$category->delete())
+        {
+            Log::error('Failed to delete todo category', $category->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('todo.edit.categories');
     }
 
     public function toggleCompleted(ToDo $todo, $view_details = false)

@@ -24,10 +24,17 @@ class StoreHabitRequest extends FormRequest
      */
     public function rules()
     {
+        // Get habit uuids
         $user = \Auth::user();
         $uuids = $user->habits->pluck('uuid')->toArray();
+
+        // Get category uuids
+        $category_uuids = $user->todoCategories()->get()->pluck('uuid')->toArray();
+        array_push($category_uuids, 'no-category');
+
         return [
             'habit' => ['required', Rule::in($uuids)],
+            'category' => ['required', Rule::in($category_uuids), ],
             'notes' => 'nullable',
         ];
     }

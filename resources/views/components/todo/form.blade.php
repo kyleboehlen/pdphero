@@ -54,6 +54,24 @@
     @endif
     <br/><br/>
 
+    <select name="category" required>
+        <option @if(is_null($item) && is_null(old('category'))) selected @endif value="no-category">No Category</option>
+
+        @foreach($categories as $category)
+            <option value="{{ $category->uuid }}"
+                @if(!is_null($item) && $item->category_id == $category->id)
+                    selected
+                @elseif(old('category') == $category->uuid)
+                    selected
+                @endif
+            >{{ $category->name }}</option>
+        @endforeach
+    </select>
+    @error('category')
+        <p class="error">{{ $message }}</p>
+    @enderror
+
+    <br/><br/>
     @isset($item)
         <x-todo.priority-selector :selected="$item->priority->id" />
     @else

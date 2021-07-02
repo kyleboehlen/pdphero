@@ -303,6 +303,10 @@ Route::prefix('todo')->group(function(){
     // Submit the create to do item form
     Route::post('store', [ToDoController::class, 'store'])->name('todo.store');
     Route::post('store-habit', [ToDoController::class, 'storeHabit'])->name('todo.store.habit');
+    Route::post('store/category', [ToDoController::class, 'storeCategory'])->name('todo.store.category');
+
+    // Show the form to edit categories (make sure this stays above todo.edit)
+    Route::get('edit/categories', [ToDoController::class, 'editCategories'])->name('todo.edit.categories');
 
     // Show the edit to do item form
     Route::get('edit/{todo}', [ToDoController::class, 'edit'])->name('todo.edit');
@@ -310,6 +314,9 @@ Route::prefix('todo')->group(function(){
     // Submit the edit to do item form
     Route::post('update/{todo}', [ToDoController::class, 'update'])->name('todo.update');
     Route::post('update-habit/{todo}', [ToDoController::class, 'updateHabit'])->name('todo.update.habit');
+
+    // Delete a to do category (make sure this stays above todo.destroy)
+    Route::post('destroy/category/{category}', [ToDoController::class, 'destroyCategory'])->name('todo.destroy.category');
 
     // Delete a to do item
     Route::post('destroy/{todo}', [ToDoController::class, 'destroy'])->name('todo.destroy');

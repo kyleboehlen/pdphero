@@ -13,6 +13,7 @@ use App\Helpers\Constants\ToDo\Type;
 // Models
 use App\Models\User\User;
 use App\Models\ToDo\ToDo;
+use App\Models\ToDo\ToDoCategory;
 
 class ToDoTest extends TestCase
 {
@@ -55,6 +56,15 @@ class ToDoTest extends TestCase
 
         // Test toggle completed route
         $response = $this->actingAs($user)->post(route('todo.toggle-completed', ['todo' => $uuid]));
+        $response->assertStatus(404);
+
+        // Generate a fake todo category and test uuid
+        $fake_todo_category = ToDoCategory::factory()->create();
+        $uuid = $fake_todo_category->uuid;
+        $this->assertTrue($fake_todo_category->delete());
+
+        // Test destroy route
+        $response = $this->actingAs($user)->post(route('todo.destroy.category', ['category' => $uuid]));
         $response->assertStatus(404);
     }
 
@@ -151,6 +161,16 @@ class ToDoTest extends TestCase
         $response->assertStatus(403);
 
         $response = $this->actingAs($test_user)->post(route('todo.update.habit', ['todo' => $todo->uuid]));
+        $response->assertStatus(403);
+
+        // Generate a forbidden todo category and test uuid
+        $forbidden_todo_category = ToDoCategory::factory()->create([
+            'user_id' => $forbidden_user->id
+        ]);
+        $uuid = $forbidden_todo_category->uuid;
+
+        // Test destroy route
+        $response = $this->actingAs($test_user)->post(route('todo.destroy.category', ['category' => $uuid]));
         $response->assertStatus(403);
     }
 
@@ -314,6 +334,7 @@ class ToDoTest extends TestCase
         $response = $this->actingAs($user)->post(route('todo.update', ['todo' => $item->uuid]), [
             '_token' => csrf_token(),
             'title' => 'Test Item',
+            'category' => 'no-category',
             'priority-3' => 'on',
             'notes' => 'This item is testing the update route.'
         ]);
@@ -344,6 +365,7 @@ class ToDoTest extends TestCase
         $response = $this->actingAs($user)->post(route('todo.store'), [
             '_token' => csrf_token(),
             'title' => 'Test Item',
+            'category' => 'no-category',
             'priority-6' => 'on',
             'notes' => 'This item is testing the store route.'
         ]);

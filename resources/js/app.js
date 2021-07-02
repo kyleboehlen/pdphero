@@ -417,6 +417,20 @@ $(document).ready(function(){
         $(this).prop('checked', true);
         event.target.closest('form').submit();
     });
+
+    // Feature vote checkboxes
+    $('#todo-category-selector').change(function(){
+        var category_uuid = $(this).find(':selected').val();
+        $('.filter-category').hide();
+        if(category_uuid == 'all-categories')
+        {
+            $('.filter-category').show();
+        }
+        else
+        {
+            $('.category-' + category_uuid).show();
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes

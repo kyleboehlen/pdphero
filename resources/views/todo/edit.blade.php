@@ -6,7 +6,7 @@
 
     @switch($item->type_id)
         @case($type::RECURRING_HABIT_ITEM)
-            <x-todo.nav show="list|create-from-habit|color-key" />
+            <x-todo.nav show="list|create-from-habit|edit-categories|color-key" />
             @break
         @case($type::SINGULAR_HABIT_ITEM)
             <x-todo.nav show="list|create-from-habit|color-key|delete" :item="$item" />

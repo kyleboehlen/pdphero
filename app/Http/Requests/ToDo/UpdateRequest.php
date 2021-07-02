@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ToDo;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -23,8 +24,14 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        // Get category uuids
+        $user = \Auth::user();
+        $category_uuids = $user->todoCategories()->get()->pluck('uuid')->toArray();
+        array_push($category_uuids, 'no-category');
+
         return [
             'title' => 'required|string|max:255',
+            'category' => ['required', Rule::in($category_uuids), ],
             'notes' => 'nullable',
         ];
     }

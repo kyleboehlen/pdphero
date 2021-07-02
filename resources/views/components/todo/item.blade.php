@@ -1,4 +1,4 @@
-<div class="to-do-item">
+<div class="to-do-item filter-category {{ is_null($item->category) ? '' : 'category-' .$item->category->uuid }}">
     <form action="{{ route('todo.toggle-completed', ['todo' => $item->uuid]) }}" method="POST">
         @csrf
         <input class="submit-completed" name="completed" type="checkbox" @if($item->completed) checked @endif />

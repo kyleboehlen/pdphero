@@ -22,6 +22,7 @@ use App\Models\Goal\GoalActionItem;
 use App\Models\Habits\Habits;
 use App\Models\Habits\HabitHistory;
 use App\Models\Relationships\HabitsToDo;
+use App\Models\ToDo\ToDoCategory;
 use App\Models\ToDo\ToDoPriority;
 use App\Models\Relationships\GoalActionItemsToDo;
 
@@ -187,6 +188,11 @@ class ToDo extends Model
     public function actionItem()
     {
         return $this->hasOneThrough(GoalActionItem::class, GoalActionItemsToDo::class, 'to_do_id', 'id', 'id', 'action_item_id');
+    }
+
+    public function category()
+    {
+        return $this->hasOne(ToDoCategory::class, 'id', 'category_id');
     }
 
     // Create the habit relationship

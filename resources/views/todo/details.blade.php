@@ -27,8 +27,14 @@
 
     <div class="app-container">
         <div class="todo-details">
+            {{-- Category --}}
+            @if(!is_null($item->category))
+                <p class="todo-category">{{ $item->category->name }}</p>
+            @else
+                <br/><br/>
+            @endif
+
             {{-- Header name --}}
-            <br/><br/>
             <h2>{{ $item->title }}</h2>
 
             {{-- Priority --}}

@@ -5,7 +5,7 @@ namespace App\Http\Requests\ToDo;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class StoreCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,10 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
-        // Get category uuids
         $user = \Auth::user();
-        $category_uuids = $user->todoCategories()->get()->pluck('uuid')->toArray();
-        array_push($category_uuids, 'no-category');
-
+        $array = $user->todoCategories->pluck('name')->toArray() ?? array();
         return [
-            'title' => 'required|string|max:255',
-            'category' => ['required', Rule::in($category_uuids), ],
-            'notes' => 'nullable',
+            'name' => ['required', 'string', 'max:255', Rule::notIn($array)],
         ];
     }
 }

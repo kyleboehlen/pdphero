@@ -2,20 +2,20 @@
 
 @section('template')
     {{-- Header --}}
-    <x-app.header title="Journal" />
+    <x-app.header title="To-Do" />
 
     {{-- Side Nav --}}
-    <x-journal.nav show="create|search|color-key" />
+    <x-todo.nav show="create|create-from-habit|color-key" />
 
     <div class="app-container categories-list">
         <h2>Edit Categories</h2>
         
         @foreach($categories as $category)
-            <x-journal.category :category="$category" />
+            <x-todo.category :category="$category" />
         @endforeach
 
         {{-- Add form --}}
-        <x-journal.category />
+        <x-todo.category />
 
         {{-- Errors --}}
         @error('name')
@@ -28,5 +28,5 @@
     </div>
 
     {{-- Navigation Footer --}}
-    <x-app.footer highlight="journal" />
+    <x-app.footer highlight="todo" />
 @endsection
