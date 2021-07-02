@@ -234,7 +234,7 @@ class JournalTest extends TestCase
         }
         foreach($journal_entries as $journal_entry)
         {
-            $response->assertSee("<b>$journal_entry->title: </b>", false);
+            $response->assertSee("<b>$journal_entry->title |</b>", false);
             $response->assertSee($journal_entry->uuid);
             $response->assertSee($journal_entry->body);
         }
