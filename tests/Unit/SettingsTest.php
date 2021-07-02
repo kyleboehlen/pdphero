@@ -75,7 +75,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh model
         $user->refresh();
@@ -127,7 +127,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh model
         $user->refresh();
@@ -165,7 +165,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh model
         $user->refresh();
@@ -228,7 +228,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh model
         $user->refresh();
@@ -277,7 +277,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh model
         $user->refresh();
@@ -327,7 +327,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Also, might as well update the timezone before we refresh the model
         $user->timezone = 'America/Denver';
@@ -363,7 +363,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh models
         $user->refresh();
@@ -416,7 +416,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Also, might as well update the timezone before we refresh the model
         $user->timezone = 'America/Denver';
@@ -454,7 +454,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh models
         $user->refresh();
@@ -505,7 +505,7 @@ class SettingsTest extends TestCase
         ]);
 
         // Verify redirected back properly
-        $response->assertRedirect("/profile/edit/settings?#$setting_id");
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
 
         // Refresh model
         $user->refresh();
