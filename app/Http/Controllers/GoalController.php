@@ -945,6 +945,19 @@ class GoalController extends Controller
         if($request->has('name'))
         {
             $action_item->name = $request->get('name');
+
+            $action_item->load('todo');
+            if(!is_null($action_item->todo))
+            {
+                $action_item->todo->title = $action_item->name;
+                if(!$action_item->todo->save())
+                {
+                    // Log error
+                    Log::error('Failed to update todo title when updating action item name', [
+                        'action_item' => $action_item->toArray(),
+                    ]);
+                }
+            }
         }
 
         if($request->has('notes'))
