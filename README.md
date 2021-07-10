@@ -105,6 +105,12 @@ Add the AWS Simple Email Service api details
 - SES_REGION=
 
 <br/>
+Add the details for the cloudflare api
+
+- CLOUDFLARE_ZONE_ID=
+- CLOUDFLARE_API_KEY=
+
+<br/>
 Add the discord web hook url for logging
 
 - LOG_DISCORD_WEBHOOK_URL=
