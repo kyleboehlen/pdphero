@@ -968,11 +968,11 @@ class GoalController extends Controller
         {
             $action_item->name = $request->get('name');
 
-            $action_item->load('todo');
-            if(!is_null($action_item->todo))
+            $action_item_todo = $action_item->todo()->withTrashed()->first();
+            if(!is_null($action_item_todo))
             {
-                $action_item->todo->title = $action_item->name;
-                if(!$action_item->todo->save())
+                $action_item_todo->title = $action_item->name;
+                if(!$action_item_todo->save())
                 {
                     // Log error
                     Log::error('Failed to update todo title when updating action item name', [
