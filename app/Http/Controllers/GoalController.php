@@ -402,6 +402,17 @@ class GoalController extends Controller
             // Log error
             Log::error('Failed to clear action item deadline', $action_item->toArray());
         }
+	else // Delete any associated To-do items
+        {
+            $action_item->load('todo');
+            if(!is_null($action_item->todo))
+            {
+                if(!$action_item->todo->delete())
+                {
+                    Log::error('Failed to delete To-Do item associated when clearing Ad Hoc action item deadline', $action_item->toArray());
+                }
+            }
+        }
 
         // Return detail view
         return redirect()->route('goals.view.action-item', ['action_item' => $action_item->uuid]);
