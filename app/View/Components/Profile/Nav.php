@@ -12,6 +12,9 @@ class Nav extends Component
     // And array of which profile menu options to show
     public $show;
 
+    // Whether or not the user has verified their SMS number
+    public $sms_verified;
+
     /**
      * Create a new component instance.
      *
@@ -31,6 +34,14 @@ class Nav extends Component
                 $key = array_search('edit-rules', $this->show);
                 unset($this->show[$key]);
             }
+        }
+
+        // Determine wording for sms number nav option
+        if(in_array('sms-number', $this->show))
+        {
+            $user = \Auth::user();
+
+            $this->sms_verified = !is_null($user->sms_verified_at);
         }
     }
 

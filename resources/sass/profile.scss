@@ -524,7 +524,7 @@ div.app-container
             @include form-title;
         }
 
-        &.name > h2
+        &.single-text > h2
         {
             margin-top: 10%;
 
@@ -548,6 +548,49 @@ div.app-container
             {
                 font-size: 2em;
                 width: 95%;
+            }
+        }
+
+        p.verification
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.5em;
+
+            @media only screen and (max-width: 850px)
+            {
+                font-size: 1.25em;
+            }
+        }
+
+        span.verification
+        {
+            p
+            {
+                color: $white;
+                display: inline-block;
+                font-family: $body-font;
+                font-size: 3em;
+
+                @media only screen and (max-width: 850px)
+                {
+                    font-size: 2em;
+                }
+            }
+
+            input[type="text"]
+            {
+                width: 10%;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    width: 15%;
+                }
+    
+                @media only screen and (max-width: 850px)
+                {
+                    width: 20%;
+                }
             }
         }
 

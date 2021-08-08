@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 use DB;
 use Image;
 use Log;
@@ -16,6 +17,9 @@ use App\Helpers\Constants\User\Setting;
 // Models
 use App\Models\User\UsersSettings;
 
+// Notifications
+use App\Notifications\SMSConfirmation;
+
 // Requests
 use App\Http\Requests\Profile\DestroyRuleRequest;
 use App\Http\Requests\Profile\DestroyValueRequest;
@@ -23,7 +27,9 @@ use App\Http\Requests\Profile\UpdateNameRequest;
 use App\Http\Requests\Profile\UpdateNutshellRequest;
 use App\Http\Requests\Profile\UpdatePictureRequest;
 use App\Http\Requests\Profile\UpdateRulesRequest;
+use App\Http\Requests\Profile\UpdateSMSRequest;
 use App\Http\Requests\Profile\UpdateValuesRequest;
+use App\Http\Requests\Profile\VerifySMSRequest;
 
 class ProfileController extends Controller
 {
@@ -382,5 +388,120 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile.edit.settings');
+    }
+
+    // SMS verification functions
+    public function editSMS(Request $request)
+    {
+        $user = $request->user();
+
+        return view('profile.sms.update')->with([
+            'user' => $user,
+        ]);
+    }
+
+    public function updateSMS(UpdateSMSRequest $request)
+    {
+        $user = $request->user();
+        $now = Carbon::now();
+        $timeout = true;
+        
+        if(!is_null($user->sms_code_created_at))
+        {
+            $minutes = $now->diffInMinutes(Carbon::parse($user->sms_code_created_at));
+            if($minutes < config('sms.timeout'))
+            {
+                $timeout = false;
+                $minutes = config('sms.timeout') - $minutes;
+            }
+        }
+
+        $phone_number = $request->get('phone-number');
+
+        if($user->sms_number != $phone_number)
+        {
+            if(!$timeout)
+            {
+                return redirect()->back()->withErrors([
+                    'phone-number' => "We just updated your phone number, please wait $minutes minutes before trying again.",
+                ]);
+            }
+
+            $user->sms_number = $phone_number;
+            $user->sms_verified_at = null;
+        }
+        elseif(!is_null($user->sms_verified_at))
+        {
+            return redirect()->route('profile');
+        }
+
+        if($timeout)
+        {
+            $user->sms_verify_code = rand(100, 999) . rand(100, 999);
+            $user->sms_code_created_at = $now->toDateTimeString();
+
+            if(!$user->save())
+            {
+                Log::error("Failed to save user after setting sms verification code created at.", [
+                    'user' => $user->toArray(),
+                ]);
+            }
+
+            // Send nexmo sms confirmation alert
+            $user->notify(new SMSConfirmation());
+        }
+
+        return redirect()->route('profile.sms.verify.show');
+    }
+
+    public function showVerifySMS(Request $request)
+    {
+        $user = $request->user();
+
+        if(is_null($user->sms_code_created_at) || strlen($user->sms_verify_code) == 0)
+        {
+            dd('fuck');
+            return redirect()->route('profile.sms.edit');
+        }
+
+        return view('profile.sms.verify');
+    }
+
+    public function verifySMS(VerifySMSRequest $request)
+    {
+        $user = $request->user();
+
+        $now = Carbon::now();
+        if(is_null($user->sms_code_created_at) || $now->diffInMinutes(Carbon::parse($user->sms_code_created_at)) > config('sms.timeout'))
+        {
+            return redirect()->route('profile.sms.edit')->withErrors([
+                'phone-number' => "SMS verification timed out, please try again.",
+            ]);
+        }
+
+        if($request->get('verify-part-one') != substr($user->sms_verify_code, 0, 3))
+        {
+            return redirect()->route('profile.sms.edit')->withErrors([
+                'verify-part-one' => "Invalid verification code.",
+            ]);
+        }
+
+        if($request->get('verify-part-two') != substr($user->sms_verify_code, 3))
+        {
+            return redirect()->route('profile.sms.edit')->withErrors([
+                'verify-part-two' => "Invalid verification code.",
+            ]);
+        }
+
+        $user->sms_verified_at = $now->toDateTimeString();
+
+        if(!$user->save())
+        {
+            Log::error("Failed to save sms verified at after verifying sms code.", [
+                'user' => $user->toArray(),
+            ]);
+        }
+
+        return redirect()->route('profile');
     }
 }

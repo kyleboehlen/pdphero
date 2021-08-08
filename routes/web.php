@@ -283,6 +283,17 @@ Route::prefix('profile')->group(function(){
         // Sets all settings to default
         Route::post('settings', [ProfileController::class, 'destroySettings'])->name('profile.destroy.settings');
     });
+
+    // SMS routes
+    Route::prefix('sms')->group(function(){
+        // Edit/update
+        Route::get('edit', [ProfileController::class, 'editSMS'])->name('profile.sms.edit');
+        Route::post('update', [ProfileController::class, 'updateSMS'])->name('profile.sms.update');
+
+        // Verification
+        Route::get('verify', [ProfileController::class, 'showVerifySMS'])->name('profile.sms.verify.show');
+        Route::post('verify', [ProfileController::class, 'verifySMS'])->name('profile.sms.verify');
+    });
 });
 
 // To-Do routes

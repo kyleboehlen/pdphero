@@ -431,6 +431,15 @@ $(document).ready(function(){
             $('.category-' + category_uuid).show();
         }
     });
+
+    // SMS verification auto tab
+    $('#verify-part-one').on('input', function(){
+        var length = $(this).val().length;
+        if(length == $(this).prop('maxlength'))
+        {
+            $('#verify-part-two').focus();
+        }
+    });
 });
 
 // Replaces custom alert pop-up boxes

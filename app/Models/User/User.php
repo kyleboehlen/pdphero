@@ -67,6 +67,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
+     * Route notifications for the Nexmo channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForNexmo($notification)
+    {
+        return $this->sms_number;
+    }
+
+    /**
      * Returns the value set for the user
      * of the specified setting
      *

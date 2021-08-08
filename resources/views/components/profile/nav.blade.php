@@ -49,17 +49,19 @@
             <a href="{{ route('profile.edit.rules') }}"><li>Edit Rules</li></a>
         @endif
 
+        @if(in_array('sms-number', $show))
+            <a href="{{ route('profile.sms.edit') }}"><li>{{ $sms_verified ? 'Update' : 'Add'}} Phone #</li></a>
+        @endif
+
         @if(in_array('manage-membership', $show))
             <a href="{{ route('stripe') }}"><li>Manage Membership</li></a>
         @endif
-
-        {{-- To-Do: View stats option if user has black label memebership --}}
 
         @if(in_array('log-out', $show))
             <form id="log-out-form" action="{{ route('logout') }}" method="POST">
                 @csrf
             </form>
-            <a href="{{ route('logout') }}" class="destructive-option"
+            <a href="{{ route('logout') }}" class="destructive-option" style="top: 15px;"
                 onclick="event.preventDefault(); document.getElementById('log-out-form').submit();">
                 <li>Log Out</li>
             </a>

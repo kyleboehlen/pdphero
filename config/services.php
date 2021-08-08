@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'nexmo' => [
+        'sms_from' => env('NEXMO_SMS_FROM'),
+        'sms_code_expire' => env('SMS_CODE_EXPIRE_MINUTES', 5),
+    ],
 ];
