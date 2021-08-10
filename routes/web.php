@@ -46,6 +46,9 @@ Route::get('faqs', [AboutController::class, 'faqs'])->name('faqs');
 // Tutorials
 Route::get('tutorials', [TutorialsController::class, 'index'])->name('tutorials');
 
+// Referal sign up link
+Route::get('refer/{slug}', [HomeController::class, 'refer']);
+
 // Home route
 Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], function(){
     // View tools page

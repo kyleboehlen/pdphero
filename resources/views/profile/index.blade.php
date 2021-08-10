@@ -5,7 +5,7 @@
     <x-app.header title="Profile"  icon="settings" route="profile.edit.settings" />
 
     {{-- Side Nav --}}
-    <x-profile.nav show="edit-name|edit-picture|add-affirmation|edit-nutshell|edit-values|edit-rules|manage-membership|log-out" />
+    <x-profile.nav show="edit-name|edit-picture|add-affirmation|edit-nutshell|edit-values|edit-rules|sms-number|manage-membership|log-out" />
 
     <div class="app-container">
         <h2>{{ $user->name }}</h2>

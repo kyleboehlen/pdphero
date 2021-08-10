@@ -116,6 +116,13 @@ Add credentials for mailtrap if email testing is required
 - MAILTRAP_PASSWORD=
 
 <br/>
+Add nexmo api credentials for SMS notifications
+
+- NEXMO_KEY=
+- NEXMO_SECRET=
+- NEXMO_SMS_FROM=
+
+<br/>
 Fill out the stripe API creds and pricing IDs
 
 STRIPE_KEY=

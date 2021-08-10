@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSmsToUsersTable extends Migration
+class AddReferSlugToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class AddSmsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('sms_number')->nullable();
-            $table->timestamp('sms_verified_at')->nullable();
-            $table->string('sms_verify_code')->nullable();
-            $table->timestamp('sms_code_created_at')->nullable();
+            $table->string('refer_slug')->nullable();
         });
     }
 
@@ -29,10 +26,7 @@ class AddSmsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('sms_number');
-            $table->dropColumn('sms_verified_at');
-            $table->dropColumn('sms_verify_code');
-            $table->dropColumn('sms_code_created_at');
+            $table->dropColumn('refer_slug');
         });
     }
 }

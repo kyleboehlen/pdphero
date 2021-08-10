@@ -29,6 +29,20 @@ class HomeController extends Controller
     }
 
     /**
+     * Sets the refer slug to the session and redirects back to the index
+     *
+     * @return \Illuminate\Support\Facades\Redirect
+     */
+    public function refer($slug)
+    {
+        // Set the refer slug to the session
+        session(['refer_slug' => strtoupper($slug)]);
+
+        // Redirect to the root index
+        return redirect()->route('root');
+    }
+
+    /**
      * Sends the user to the default landing to-do page if redirected from root
      * or returns the home view if directed from anywhere else
      *
