@@ -11,6 +11,7 @@ use App\Http\Controllers\HabitsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PushController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\ToDoController;
@@ -48,6 +49,9 @@ Route::get('tutorials', [TutorialsController::class, 'index'])->name('tutorials'
 
 // Referal sign up link
 Route::get('refer/{slug}', [HomeController::class, 'refer']);
+
+// Web push store subscribtion
+Route::post('push', [PushController::class, 'store']);
 
 // Home route
 Route::group(['prefix' => 'home', 'middleware' => ['auth', 'verified']], function(){

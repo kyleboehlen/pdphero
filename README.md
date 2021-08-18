@@ -2,7 +2,7 @@
 
 ## Installation
 Before installing the site the following tools need to be installed:
-- php7.4 or higher with the extensions (including php-memcached)
+- php7.4 or higher with the extensions (including php-memcached and php-gmp)
 - apache2
 - MySQL (MariaDB)
 - git
@@ -138,10 +138,19 @@ Run the database migration, use the local phpunit
 `vendor_phpunit --filter Deploy`
 
 <br/>
+Generate the vapid webpush keys
+
+`php artisan webpush:vapid`
+
+<br/>
 Change the php.ini file to let Laravel handle file upload sizes
 
 `upload_max_filesize = 0`
 `post_max_size = 0`
+
+As well as enable the gmp extension
+
+`extension=gmp`
 
 <br/>
 Run crontab -e and add the following line

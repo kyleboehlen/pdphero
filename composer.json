@@ -25,6 +25,7 @@
         "jamesmills/eloquent-uuid": "^1.6",
         "jamesmills/laravel-timezone": "^1.9",
         "kabbouchi/nova-logs-tool": "^0.3.0",
+        "laravel-notification-channels/webpush": "^5.1",
         "laravel/cashier": "^12.14",
         "laravel/framework": "^8.0",
         "laravel/nexmo-notification-channel": "^2.5",

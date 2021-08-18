@@ -8,6 +8,11 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <!-- Vapid public key -->
+        @auth
+            <meta name="vapid-public" content="{{ config('webpush.vapid.public_key') }}">
+        @endauth
+
         <title>{{ config('app.name', 'PDPHero') }}</title>
 
         {{-- Laravel PWA Directive --}}

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use Laravel\Cashier\Billable; // Stripe
 use Carbon\Carbon;
 
@@ -31,7 +32,8 @@ use App\Models\ToDo\ToDoCategory;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes,
-        Billable; // Stripe
+        Billable, // Stripe
+        HasPushSubscriptions; // Web Push notifications
 
     /**
      * The attributes that are mass assignable.
