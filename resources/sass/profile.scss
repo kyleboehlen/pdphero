@@ -825,6 +825,39 @@ div.app-container
                     outline: none;
                 }
             }
+
+            div.anchor
+            {
+                display: block;
+                position: relative;
+                top: -1vh;
+                visibility: hidden;
+    
+                @media only screen and (max-width: 1300px)
+                {
+                    top: -2vh;
+                }
+            }
+
+            span.action-needed
+            {
+                font-weight: bolder;
+                margin-top: 1%;
+            }
+
+            a
+            {
+                color: $white;
+                text-decoration: underline;
+                text-decoration-color: $red;
+                
+                &:hover
+                {
+                    color: $green;
+                    text-decoration-color: $green;
+                    text-shadow: 1.5px 1px $green;
+                }
+            }
         }
     }
 }

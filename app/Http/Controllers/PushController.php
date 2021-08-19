@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Notifications
+use App\Notifications\WebPushConfirmation;
+
 class PushController extends Controller
 {
     /**
@@ -37,7 +40,7 @@ class PushController extends Controller
             $request->keys['auth'],
         );
 
-        $request->user()->notify(new \App\Notifications\Test());
+        $request->user()->notify(new WebPushConfirmation());
         
         return response()->json(['success' => true], 200);
     }

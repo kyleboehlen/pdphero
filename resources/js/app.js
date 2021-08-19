@@ -442,6 +442,22 @@ $(document).ready(function(){
     });
 
     // Web push shit
+    $.fn.checkPushNotificationsPermission = function(){
+        // If the browser doesn't support push notifications
+        if(!("Notification" in window))
+        {
+            console.log("This browser does not support desktop notifications");
+            $('.request-webpush').hide();
+            return;
+        }
+
+        // Or if it's already been granted for this browser
+        if(Notification.permission === "granted")
+        {
+            $('.request-webpush').hide();
+        }
+    }
+    $.fn.checkPushNotificationsPermission();
     $('#request-webpush').click(function(){
         requestPushPermission();
     });
@@ -594,6 +610,7 @@ window.storePushSubscription = function(pushSubscription){
         return res.json();
     }).then((res) => {
         console.log(res)
+        $.fn.checkPushNotificationsPermission();
     }).catch((err) => {
         console.log(err)
     });

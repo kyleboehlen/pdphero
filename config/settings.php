@@ -16,36 +16,41 @@ return [
         Setting::SHOW_EMPTY_ACTION_ITEM => Setting::DO_NOT_SHOW, // Don't show
         Setting::SHOW_EMPTY_AD_HOC_ITEM => Setting::BOTTOM_OF_LIST, // Bottom of list
         Setting::SHOW_HOME_ICON => '1', // True
+        Setting::NOTIFICATION_CHANNEL => Setting::NOTIFICATION_EMAIL,
     ],
 
     'options' => [
+        /** setting id => [
+         *  key => display name,
+         * ],
+         */
         Setting::HABITS_DAYS_TO_DISPLAY => [
-            // Key => display name
             Setting::HABITS_ROLLING_SEVEN_DAYS => 'Rolling 7 Days', 
             Setting::HABITS_CURRENT_WEEK => 'Current Week',
         ],
         Setting::HABITS_START_OF_WEEK => [
-            // Key => display name
             Setting::HABITS_SUNDAY => 'Sunday', 
             Setting::HABITS_MONDAY => 'Monday',
         ],
         Setting::SHOW_EMPTY_TODO_ITEM => [
-            // Key => display name
             Setting::DO_NOT_SHOW => 'Don\'t Show',
             Setting::TOP_OF_LIST => 'Top',
             Setting::BOTTOM_OF_LIST => 'Bottom',
         ],
         Setting::SHOW_EMPTY_ACTION_ITEM => [
-            // Key => display name
             Setting::DO_NOT_SHOW => 'Don\'t Show',
             Setting::TOP_OF_LIST => 'Top',
             Setting::BOTTOM_OF_LIST => 'Bottom',
         ],
         Setting::SHOW_EMPTY_AD_HOC_ITEM => [
-            // Key => display name
             Setting::DO_NOT_SHOW => 'Don\'t Show',
             Setting::TOP_OF_LIST => 'Top',
             Setting::BOTTOM_OF_LIST => 'Bottom',
+        ],
+        Setting::NOTIFICATION_CHANNEL => [
+            Setting::NOTIFICATION_EMAIL => 'Email',
+            Setting::NOTIFICATION_SMS => 'SMS Text',
+            Setting::NOTIFICATION_WEBPUSH => 'Push Notifications',
         ],
     ],
 
@@ -86,6 +91,9 @@ return [
         Setting::SHOW_HOME_ICON => [
             'desc' => 'Determines whether or not the home icon is shown in the footer nav.',
         ],
+        Setting::NOTIFICATION_CHANNEL => [
+            'desc' => 'Determines whether reminders and notifications are sent via email, sms, or webpush.',
+        ],
     ],
 
     'types' => [
@@ -101,5 +109,6 @@ return [
         Setting::SHOW_EMPTY_ACTION_ITEM => 'options', // Based on config('settings.options)
         Setting::SHOW_EMPTY_AD_HOC_ITEM => 'options', // Based on config('settings.options)
         Setting::SHOW_HOME_ICON => 'toggle', // True or false
-    ]
+        Setting::NOTIFICATION_CHANNEL => 'options', // Based on config('settings.options)
+    ],
 ];

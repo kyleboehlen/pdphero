@@ -12,12 +12,15 @@
         <h2 id="affirmations-settings-header" class="settings">Affirmations</h2>
 
         {{-- Setting that handles whether or not the affirmations read page is shown --}}
-        <x-settings.checkbox-setting :id="$setting::AFFIRMATIONS_SHOW_READ" text="Display the 'Good Job!' page after finishing reading affirmations" />
+        <x-settings.checkbox-setting :id="$setting::AFFIRMATIONS_SHOW_READ" text="Display the 'Good Job!' page after reading affirmations" />
 
         <h2 id="general-settings-header" class="settings">General</h2>
 
         {{-- Determines whether or not we show the home icon in the bottom nav --}}
         <x-settings.checkbox-setting :id="$setting::SHOW_HOME_ICON" text="Show the Home icon in the bottom nav" />
+
+        {{-- Determines the notification channel that is used --}}
+        <x-settings.options-setting :id="$setting::NOTIFICATION_CHANNEL" text="Sends notifications via | " />
 
         <h2 id="goals-settings-header" class="settings">Goals</h2>
 
