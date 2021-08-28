@@ -663,11 +663,35 @@ div.app-container
                 p
                 {
                     font-size: 2em;
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+
+                    @media only screen and (max-width: 500px)
+                    {
+                        font-size: 1.25em;
+                        max-width: 90%;
+                        overflow-x: hidden;
+                        padding-bottom: 1%;
+                        padding-top: 1%;
+                    }
                 }
 
                 input[type="text"]
                 {
                     font-size: 1.75em;
+
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.5em;
+                    }
+
+                    @media only screen and (max-width: 500px)
+                    {
+                        font-size: 1.25em;
+                    }
                 }
 
                 img
@@ -677,6 +701,12 @@ div.app-container
                     position: absolute;
                     max-height: 72.5%;
                     right: 2px;
+
+                    @media only screen and (max-width: 500px)
+                    {
+                        max-height: 75%;
+                        padding-top: 1%;
+                    }
                 }
 
                 button
@@ -700,6 +730,11 @@ div.app-container
                     @media only screen and (max-width: 800px)
                     {
                         font-size: 1.5em;
+                    }
+
+                    @media only screen and (max-width: 500px)
+                    {
+                        font-size: 1.25em;
                     }
                 }
             }
