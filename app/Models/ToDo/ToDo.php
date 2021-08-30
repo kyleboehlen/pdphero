@@ -24,6 +24,7 @@ use App\Models\Habits\HabitHistory;
 use App\Models\Relationships\HabitsToDo;
 use App\Models\ToDo\ToDoCategory;
 use App\Models\ToDo\ToDoPriority;
+use App\Models\ToDo\ToDoReminder;
 use App\Models\Relationships\GoalActionItemsToDo;
 
 class ToDo extends Model
@@ -199,5 +200,11 @@ class ToDo extends Model
     public function habit()
     {
         return $this->hasOneThrough(Habits::class, HabitsToDo::class, 'to_do_id', 'id', 'id', 'habits_id');
+    }
+
+    // Reminders relationship
+    public function reminders()
+    {
+        return $this->hasMany(ToDoReminder::class, 'to_do_id', 'id')->orderBy('remind_at');
     }
 }

@@ -5,7 +5,7 @@
     <x-app.header title="Habits" />
 
     {{-- Side Nav --}}
-    <x-habits.nav show="back|edit|delete" :habit="$habit" />
+    <x-habits.nav show="back|edit|reminders|delete" :habit="$habit" />
 
     <div class="app-container">
         <div class="habit-details">
@@ -51,7 +51,16 @@
                 </a>
             </div><br/>
 
-            {{-- TODO: Reminders collapsible box --}}
+            @if(count($habit->reminders) > 0)
+                <div class="reminders-container">
+                    <h3>Reminders</h3>
+                    <ol>
+                        @foreach($habit->reminders as $reminder)
+                            <li>{{ $reminder->remind_at_formatted }}</li>
+                        @endforeach
+                    <ol>
+                </div>
+            @endif
         </div>
     </div>
 

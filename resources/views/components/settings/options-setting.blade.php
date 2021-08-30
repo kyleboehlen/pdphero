@@ -15,12 +15,14 @@
     @isset($sms_verified)
         {{-- Webpush button --}}
         @if($selected_option_key == 'webpush')
-            <span class="action-needed request-webpush">Please <a href="#" id="request-webpush">allow push notifications</a></span>
+            <span class="action-needed request-webpush">Action Required: <a href="#" id="request-webpush">Allow push notifications</a></span>
         @endif
 
         {{-- Confirm SMS button --}}
         @if($selected_option_key == 'sms' && !$sms_verified)
-            <span class="action-needed">Please <a href="{{ route('profile.sms.edit') }}">verify your SMS number</a> to use SMS notifications</span>
+            <span class="action-needed">Action Required: <a href="{{ route('profile.sms.edit') }}">Verify SMS number</a></span>
+        @else
+            {{-- To-Do: add the x out of y sms sent message --}}
         @endif
     @endisset
 </div>

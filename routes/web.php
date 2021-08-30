@@ -164,6 +164,7 @@ Route::prefix('goals')->group(function(){
         Route::post('goal', [GoalController::class, 'storeGoal'])->name('goals.store.goal');
         Route::post('action-item/{goal}', [GoalController::class, 'storeActionItem'])->name('goals.store.action-item');
         Route::post('category', [GoalController::class, 'storeCategory'])->name('goals.store.category');
+        Route::post('reminder/{action_item}', [GoalController::class, 'storeReminder'])->name('goals.store.reminder');
     });
     
     // Edit routes
@@ -171,6 +172,7 @@ Route::prefix('goals')->group(function(){
         Route::get('goal/{goal}', [GoalController::class, 'editGoal'])->name('goals.edit.goal');
         Route::get('action-item/{action_item}', [GoalController::class, 'editActionItem'])->name('goals.edit.action-item');
         Route::get('categories', [GoalController::class, 'editCategories'])->name('goals.edit.categories');
+        Route::get('reminders/{action_item}', [GoalController::class, 'editReminders'])->name('goals.edit.reminders');
     });
 
     // Update routes
@@ -185,6 +187,7 @@ Route::prefix('goals')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'destroyGoal'])->name('goals.destroy.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'destroyActionItem'])->name('goals.destroy.action-item');
         Route::post('category/{category}', [GoalController::class, 'destroyCategory'])->name('goals.destroy.category');
+        Route::post('reminder/{reminder}', [GoalController::class, 'destroyReminder'])->name('goals.destroy.reminder');
     });
 
     // Root -- at the end of the prefix so scope/category don't block other routes
@@ -215,6 +218,11 @@ Route::prefix('habits')->group(function(){
 
     // Update habit history
     Route::post('history/{habit}', [HabitsController::class, 'history'])->name('habits.history');
+
+    // Manage reminders
+    Route::get('edit/reminders/{habit}', [HabitsController::class, 'editReminders'])->name('habits.edit.reminders');
+    Route::post('store/reminder/{habit}', [HabitsController::class, 'storeReminder'])->name('habits.store.reminder');
+    Route::post('destroy/reminder/{reminder}', [HabitsController::class, 'destroyReminder'])->name('habits.destroy.reminder');
 
     // Get soonest a strength can be hit on a habit
     Route::post('soonest/{habit}/{strength?}', [HabitsController::class, 'soonest'])->name('habits.soonest');
@@ -343,8 +351,12 @@ Route::prefix('todo')->group(function(){
     Route::post('toggle-completed/{todo}/{view_details?}', [ToDoController::class, 'toggleCompleted'])->name('todo.toggle-completed');
 
     // Move a to-do item to the top of the list
-    // Toggle a to do item's completed status
     Route::post('move-to-top/{todo}', [ToDoController::class, 'moveToTop'])->name('todo.move-to-top');
+
+    // Manage to-do reminders
+    Route::get('edit/reminders/{todo}', [ToDoController::class, 'editReminders'])->name('todo.edit.reminders');
+    Route::post('store/reminder/{todo}', [ToDoController::class, 'storeReminder'])->name('todo.store.reminder');
+    Route::post('destroy/reminder/{reminder}', [ToDoController::class, 'destroyReminder'])->name('todo.destroy.reminder');
 });
 
 // Support

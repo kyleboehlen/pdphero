@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Storage;
 use Image;
 use Log;
@@ -16,6 +17,7 @@ use App\Helpers\Constants\Goal\TimePeriod;
 // Models
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;
+use App\Models\Goal\GoalActionItemReminder;
 use App\Models\Goal\GoalCategory;
 use App\Models\Goal\GoalType;
 use App\Models\Habits\Habits;
@@ -31,6 +33,7 @@ use App\Http\Requests\Goal\SetDeadlineRequest;
 use App\Http\Requests\Goal\StoreRequest;
 use App\Http\Requests\Goal\StoreActionItemRequest;
 use App\Http\Requests\Goal\StoreCategoryRequest;
+use App\Http\Requests\Goal\StoreReminderRequest;
 use App\Http\Requests\Goal\TransferAdHocRequest;
 use App\Http\Requests\Goal\UpdateRequest;
 use App\Http\Requests\Goal\UpdateActionItemRequest;
@@ -52,6 +55,7 @@ class GoalController extends Controller
         $this->middleware('goal.uuid');
         $this->middleware('goal.action_item.uuid');
         $this->middleware('goal.category.uuid');
+        $this->middleware('goal.reminder.uuid');
         $this->middleware('verified');
         $this->middleware('membership');
     }
@@ -314,8 +318,11 @@ class GoalController extends Controller
         // Load goal for nav and forms
         $action_item->load('goal');
 
+        // Load reminders
+        $action_item->load('reminders');
+
         // Build nav
-        $show = 'back-goal|delete';
+        $show = 'back-goal|reminders|delete';
         if($action_item->achieved)
         {
             $show .= '|toggle-unachieved';
@@ -1217,6 +1224,75 @@ class GoalController extends Controller
         }
 
         return redirect()->route('goals.view.goal', ['goal' => $ad_hoc_goal->uuid]);
+    }
+
+    public function editReminders(GoalActionItem $action_item)
+    {
+        // Load reminders
+        $action_item->load('reminders');
+
+        // Return edit reminders page
+        return view('goals.reminders')->with([
+            'action_item' => $action_item,
+        ]);
+    }
+
+    public function storeReminder(StoreReminderRequest $request, GoalActionItem $action_item)
+    {
+        // Get user timezone
+        $timezone = $request->user()->timezone ?? 'America/Denver';
+
+        // Create carbon obj for remind at
+        $carbon = Carbon::createFromFormat('Y-m-d H:i', $request->get('date') . ' ' . $request->get('time'), $timezone)->setTimezone('UTC');
+
+        // Check for exsisting reminder
+        $reminder = GoalActionItemReminder::where('action_item_id', $action_item->id)->where('remind_at', $carbon->toDatetimeString())->first();
+        if(!is_null($reminder))
+        {
+            return redirect()->back()->withErrors([
+                'date' => 'Reminder already exists',
+            ]);
+        }
+        elseif($carbon->lessThan(Carbon::now())) // Verify reminder is in the future
+        {
+            return redirect()->back()->withErrors([
+                'date' => 'Reminder must be in the future',
+            ]);
+        }
+
+        // Create reminder
+        $reminder = new GoalActionItemReminder([
+            'action_item_id' => $action_item->id,
+            'remind_at' => $carbon->toDatetimeString(),
+        ]);
+
+        // Save and log errors
+        if(!$reminder->save())
+        {
+            Log::error('Failed to save goal action item reminder.', [
+                'action_item' => $action_item->toArray(),
+                'reminder' => $reminder->toArray(),
+                'request_values' => $request->all(),
+            ]);    
+        }
+
+        return redirect()->route('goals.edit.reminders', ['action_item' => $action_item->uuid]);
+    }
+
+    public function destroyReminder(GoalActionItemReminder $reminder)
+    {
+        // Load todo item
+        $reminder->load('actionItem');
+        $action_item = $reminder->actionItem;
+
+        // Delete reminder
+        if(!$reminder->delete())
+        {
+            Log::error('Failed to delete goal action item reminder', $reminder->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('goals.edit.reminders', ['action_item' => $action_item->uuid]);
     }
 
     private function recursivelyUpdateGoalsStatus(&$goals, $refresh_goals)

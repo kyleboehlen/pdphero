@@ -14,11 +14,13 @@ use App\Helpers\Constants\User\Setting;
 // Models
 use App\Models\Habits\Habits;
 use App\Models\Habits\HabitHistory;
+use App\Models\Habits\HabitReminder;
 use App\Models\Goal\Goal;
 
 // Requests
 use App\Http\Requests\Habits\HistoryRequest;
 use App\Http\Requests\Habits\StoreRequest;
+use App\Http\Requests\Habits\StoreReminderRequest;
 use App\Http\Requests\Habits\UpdateRequest;
 use App\Http\Requests\Habits\ViewRequest;
 
@@ -33,6 +35,7 @@ class HabitsController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('habits.uuid');
+        $this->middleware('habits.reminder.uuid');
         $this->middleware('verified');
         $this->middleware('membership');
     }
@@ -101,6 +104,7 @@ class HabitsController extends Controller
         {
             $required_on_label .= "$habit->times_daily times ";
         }
+
         if(!is_null($habit->days_of_week))
         {
             $required_on_label .= 'on:';
@@ -121,6 +125,9 @@ class HabitsController extends Controller
         {
             $required_on_label .= "every day";
         }
+
+        // Load reminders
+        $habit->load('reminders');
 
         // Return detail view
         return view('habits.details')->with([
@@ -374,6 +381,64 @@ class HabitsController extends Controller
 
         // Return the date
         return $carbon->format('n/j/y');
+    }
+
+    public function editReminders(Habits $habit)
+    {
+        // Load reminders
+        $habit->load('reminders');
+
+        // Return edit reminders page
+        return view('habits.reminders')->with([
+            'habit' => $habit,
+        ]);
+    }
+
+    public function storeReminder(StoreReminderRequest $request, Habits $habit)
+    {
+        // Check for exsisting reminder
+        $time = $request->get('time');
+        $reminder = HabitReminder::where('habit_id', $habit->id)->where('remind_at', $time)->first();
+        if(!is_null($reminder))
+        {
+            return redirect()->back()->withErrors([
+                'time' => 'Reminder already exists',
+            ]);
+        }
+
+        // Create reminder
+        $reminder = new HabitReminder([
+            'habit_id' => $habit->id,
+            'remind_at' => $time,
+        ]);
+
+        // Save and log errors
+        if(!$reminder->save())
+        {
+            Log::error('Failed to save habit reminder.', [
+                'habit' => $habit->toArray(),
+                'reminder' => $reminder->toArray(),
+                'request_values' => $request->all(),
+            ]);    
+        }
+
+        return redirect()->route('habits.edit.reminders', ['habit' => $habit->uuid]);
+    }
+
+    public function destroyReminder(HabitReminder $reminder)
+    {
+        // Load habit
+        $reminder->load('habit');
+        $habit = $reminder->habit;
+
+        // Delete reminder
+        if(!$reminder->delete())
+        {
+            Log::error('Failed to delete habit reminder', $reminder->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('habits.edit.reminders', ['habit' => $habit->uuid]);
     }
 
     /**

@@ -10,6 +10,10 @@
             <a href="{{ route('habits') }}"><li>Back To Habits</li></a>
         @endif
 
+        @if(in_array('back-habit', $show))
+            <a href="{{ route('habits.view', ['habit' => $habit->uuid]) }}"><li>Back To Habit</li></a>
+        @endif
+
         @if(in_array('create', $show))
             <a href="{{ route('habits.create') }}"><li>Create New Habit</li></a>
         @endif
@@ -20,6 +24,10 @@
 
         @if(in_array('edit', $show))
             <a href="{{ route('habits.edit', ['habit' => $habit->uuid]) }}"><li>Edit Habit</li></a>
+        @endif
+
+        @if(in_array('reminders', $show))
+            <a href="{{ route('habits.edit.reminders', ['habit' => $habit->uuid]) }}"><li>Edit Reminders</li></a>
         @endif
 
         @if(in_array('delete', $show))

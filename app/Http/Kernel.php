@@ -63,8 +63,10 @@ class Kernel extends HttpKernel
         'goal.uuid' => \App\Http\Middleware\Goal\UUID::class,
         'goal.action_item.uuid' => \App\Http\Middleware\Goal\ActionItemUUID::class,
         'goal.category.uuid' => \App\Http\Middleware\Goal\CategoryUUID::class,
+        'goal.reminder.uuid' => \App\Http\Middleware\Goal\CategoryUUID::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'habits.uuid' => \App\Http\Middleware\Habits\UUID::class,
+        'habits.reminder.uuid' => \App\Http\Middleware\Habits\ReminderUUID::class,
         'journal.entry.uuid' => \App\Http\Middleware\Journal\EntryUUID::class,
         'journal.category.uuid' => \App\Http\Middleware\Journal\CategoryUUID::class,
         'membership' => \App\Http\Middleware\Membership::class,
@@ -73,6 +75,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'todo.category.uuid' => \App\Http\Middleware\ToDo\CategoryUUID::class,
+        'todo.reminder.uuid' => \App\Http\Middleware\ToDo\ReminderUUID::class,
         'todo.uuid' => \App\Http\Middleware\ToDo\UUID::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];

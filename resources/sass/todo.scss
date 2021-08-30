@@ -283,7 +283,7 @@ div.app-container
         }
     }
 
-    &.categories-list
+    &.categories-list, &.reminders-list
     {
         @extend %flex-container;
 
@@ -308,6 +308,18 @@ div.app-container
         div.category
         {
             @include add-delete-list-item;
+        }
+
+        div.reminder
+        {
+            @include add-delete-list-item;
+
+            input
+            {
+                max-width: 45%;
+                padding-bottom: 0;
+                width: auto;
+            }
         }
     }
 
@@ -440,6 +452,7 @@ div.app-container
             font-family: $body-font;
             font-size: 2.5em;
             font-weight: bolder;
+            margin-bottom: 0;
             margin-left: 12.5%;
             margin-top: 0;
             width: 75%;
@@ -532,6 +545,66 @@ div.app-container
                 padding: 0;
                 text-align: center;
                 width: 100%;
+            }
+        }
+
+        div.reminders-container
+        {
+            h3
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2.5em;
+                font-weight: bolder;
+                margin-bottom: 0;
+                margin-top: 0;
+                text-align: center;
+                width: 100%;
+                word-wrap: break-word;
+    
+                @media only screen and (max-height: 850px)
+                {
+                    font-size: 2.25em;
+                }
+    
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 2em;
+                }
+    
+                @media only screen and (max-width: 350px)
+                {
+                    font-size: 1.75em;
+                }
+            }
+
+            ol
+            {
+                margin-top: 0;
+                text-align: center;
+                padding-left: 0;
+
+                li
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 1.75em;
+        
+                    @media only screen and (max-height: 850px)
+                    {
+                        font-size: 1.75em;
+                    }
+        
+                    @media only screen and (max-width: 900px)
+                    {
+                        font-size: 1.5em;
+                    }
+        
+                    @media only screen and (max-width: 350px)
+                    {
+                        font-size: 1.25em;
+                    }
+                }
             }
         }
 

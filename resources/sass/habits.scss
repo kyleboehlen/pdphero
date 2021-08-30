@@ -820,6 +820,101 @@ div.app-container
                 }
             }
         }
+
+        div.reminders-container
+        {
+            h3
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 2.5em;
+                font-weight: bolder;
+                margin-bottom: 0;
+                margin-top: 0;
+                text-align: center;
+                width: 100%;
+                word-wrap: break-word;
+    
+                @media only screen and (max-height: 850px)
+                {
+                    font-size: 2.25em;
+                }
+    
+                @media only screen and (max-width: 900px)
+                {
+                    font-size: 2em;
+                }
+    
+                @media only screen and (max-width: 350px)
+                {
+                    font-size: 1.75em;
+                }
+            }
+
+            ol
+            {
+                margin-top: 0;
+                text-align: center;
+                padding-left: 0;
+
+                li
+                {
+                    color: $white;
+                    font-family: $body-font;
+                    font-size: 1.75em;
+        
+                    @media only screen and (max-height: 850px)
+                    {
+                        font-size: 1.75em;
+                    }
+        
+                    @media only screen and (max-width: 900px)
+                    {
+                        font-size: 1.5em;
+                    }
+        
+                    @media only screen and (max-width: 350px)
+                    {
+                        font-size: 1.25em;
+                    }
+                }
+            }
+        }
+    }
+
+    &.reminders-list
+    {
+        @extend %flex-container;
+
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0;
+        text-align: center;
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+            width: 50%;
+        }
+
+        div.reminder
+        {
+            @include add-delete-list-item;
+
+            input
+            {
+                text-align: center;
+                padding-bottom: 0;
+                width: auto;
+            }
+        }
     }
 }
 

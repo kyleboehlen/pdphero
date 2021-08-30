@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 // Models
 use App\Models\Goal\Goal;
+use App\Models\Goal\GoalActionItemReminder;
 use App\Models\Relationships\GoalActionItemsToDo;
 use App\Models\ToDo\ToDo;
 
@@ -50,5 +51,11 @@ class GoalActionItem extends Model
     public function todo()
     {
         return $this->hasOneThrough(ToDo::class, GoalActionItemsToDo::class, 'action_item_id', 'id', 'id', 'to_do_id');
+    }
+
+    // Reminders relationship
+    public function reminders()
+    {
+        return $this->hasMany(GoalActionItemReminder::class, 'action_item_id', 'id')->orderBy('remind_at');
     }
 }

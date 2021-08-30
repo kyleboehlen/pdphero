@@ -6,18 +6,18 @@
 
     @switch($item->type_id)
         @case($type::RECURRING_HABIT_ITEM)
-            <x-todo.nav show="list|create-from-habit|edit-categories|color-key" />
+            <x-todo.nav show="back|create-from-habit|edit-categories|color-key" />
             @break
         @case($type::SINGULAR_HABIT_ITEM)
-            <x-todo.nav show="list|create-from-habit|color-key|delete" :item="$item" />
+            <x-todo.nav show="back|create-from-habit|color-key|delete" :item="$item" />
             @break
         @case($type::ACTION_ITEM)
             {{-- Side Nav --}}
-            <x-todo.nav show="list|create-from-goal" />
+            <x-todo.nav show="back|create-from-goal" />
             @break
         @default
             {{-- Side Nav --}}
-            <x-todo.nav show="list|create|edit|delete" :item="$item"/>
+            <x-todo.nav show="back|create|delete" :item="$item" />
     @endswitch
 
     <div class="app-container">

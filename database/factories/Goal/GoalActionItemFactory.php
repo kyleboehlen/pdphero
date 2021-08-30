@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 // Models
 use App\Models\Goal\Goal;
+use App\Models\Goal\GoalActionItemReminder;
 
 class GoalActionItemFactory extends Factory
 {
@@ -17,6 +18,23 @@ class GoalActionItemFactory extends Factory
      * @var string
      */
     protected $model = GoalActionItem::class;
+
+    public function configure()
+    {
+        return $this->afterCreating(function (GoalActionItem $action_item){
+            // Create reminders for the action item
+            $num_reminders = rand(0, 2);
+            for($i = 0; $i < $num_reminders; $i++)
+            {
+                $carbon = Carbon::now()->addDays(rand(2, 10))->addHours(rand(2, 14))->addMinutes(rand(2, 40));
+                $action_item_reminder = new GoalActionItemReminder([
+                    'action_item_id' => $action_item->id,
+                    'remind_at' => $carbon->toDatetimeString(),
+                ]);
+                $action_item_reminder->save();
+            }
+        });
+    }
 
     /**
      * Define the model's default state.

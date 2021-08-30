@@ -16,11 +16,13 @@ use App\Models\Relationships\HabitsToDo;
 use App\Models\Relationships\GoalActionItemsToDo;
 use App\Models\ToDo\ToDo;
 use App\Models\ToDo\ToDoCategory;
+use App\Models\ToDo\ToDoReminder;
 
 // Requests
 use App\Http\Requests\ToDo\StoreRequest;
 use App\Http\Requests\ToDo\StoreCategoryRequest;
 use App\Http\Requests\ToDo\StoreHabitRequest;
+use App\Http\Requests\ToDo\StoreReminderRequest;
 use App\Http\Requests\ToDo\UpdateRequest;
 use App\Http\Requests\ToDo\UpdateHabitRequest;
 
@@ -37,6 +39,7 @@ class ToDoController extends Controller
         $this->middleware('first_visit.messages');
         $this->middleware('todo.uuid');
         $this->middleware('todo.category.uuid');
+        $this->middleware('todo.reminder.uuid');
         $this->middleware('verified');
         $this->middleware('membership');
     }
@@ -114,6 +117,9 @@ class ToDoController extends Controller
     {
         // Load category
         $todo->load('category');
+
+        // Load reminders
+        $todo->load('reminders');
 
         // Return the completed view if to-do item is completed
         if($todo->completed)
@@ -544,5 +550,75 @@ class ToDoController extends Controller
     public function colorGuide()
     {
         return view('todo.colors');
+    }
+
+    // Reminders
+    public function editReminders(ToDo $todo)
+    {
+        // Load reminders
+        $todo->load('reminders');
+
+        // Return edit reminders page
+        return view('todo.reminders')->with([
+            'item' => $todo,
+        ]);
+    }
+
+    public function storeReminder(StoreReminderRequest $request, ToDo $todo)
+    {
+        // Get user timezone
+        $timezone = $request->user()->timezone ?? 'America/Denver';
+
+        // Create carbon obj for remind at
+        $carbon = Carbon::createFromFormat('Y-m-d H:i', $request->get('date') . ' ' . $request->get('time'), $timezone)->setTimezone('UTC');
+
+        // Check for exsisting reminder
+        $reminder = ToDoReminder::where('to_do_id', $todo->id)->where('remind_at', $carbon->toDatetimeString())->first();
+        if(!is_null($reminder))
+        {
+            return redirect()->back()->withErrors([
+                'date' => 'Reminder already exists',
+            ]);
+        }
+        elseif($carbon->lessThan(Carbon::now())) // Verify reminder is in the future
+        {
+            return redirect()->back()->withErrors([
+                'date' => 'Reminder must be in the future',
+            ]);
+        }
+
+        // Create reminder
+        $reminder = new ToDoReminder([
+            'to_do_id' => $todo->id,
+            'remind_at' => $carbon->toDatetimeString(),
+        ]);
+
+        // Save and log errors
+        if(!$reminder->save())
+        {
+            Log::error('Failed to save To-Do reminder.', [
+                'todo' => $todo->toArray(),
+                'reminder' => $reminder->toArray(),
+                'request_values' => $request->all(),
+            ]);    
+        }
+
+        return redirect()->route('todo.edit.reminders', ['todo' => $todo->uuid]);
+    }
+
+    public function destroyReminder(ToDoReminder $reminder)
+    {
+        // Load todo item
+        $reminder->load('todo');
+        $todo = $reminder->todo;
+
+        // Delete reminder
+        if(!$reminder->delete())
+        {
+            Log::error('Failed to delete todo reminder', $reminder->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('todo.edit.reminders', ['todo' => $todo->uuid]);
     }
 }

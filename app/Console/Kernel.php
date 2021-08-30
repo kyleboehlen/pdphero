@@ -28,6 +28,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('free-trial:send-notifications')->dailyAt('16:00');
         $schedule->command('purge:profile-pictures --silent')->daily();
         $schedule->command('mysql:dump')->daily();
+
+        // Reminders
+        $schedule->command('reminders:goal-action-items')->everyMinute();
+        $schedule->command('reminders:habits')->everyMinute();
+        $schedule->command('reminders:to-do')->everyMinute();
     }
 
     /**

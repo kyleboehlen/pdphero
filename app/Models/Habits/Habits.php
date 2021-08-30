@@ -22,6 +22,7 @@ use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Goal\Goal;
 use App\Models\Habits\HabitHistory;
 use App\Models\Habits\HabitHistoryTypes;
+use App\Models\Habits\HabitReminder;
 use App\Models\Relationships\HabitsToDo;
 use App\Models\Journal\JournalEntry;
 use App\Models\ToDo\ToDo;
@@ -411,6 +412,19 @@ class Habits extends Model
             'actual_days' => $actual_days,
             'days_to_progress_cap' => $days_to_cap,
         ];
+    }
+
+    /**
+     * This is a public function to allow checking if a notif is required
+     * 
+     * @return array
+     */
+    public function notificationRequired($now)
+    {
+        $timezone = $now->getTimezone()->getName();
+        $search_day = (clone $now)->setTimezone('UTC');
+
+        return $this->isRequired($now, $search_day, $timezone, $now);
     }
 
     /**
@@ -942,6 +956,12 @@ class Habits extends Model
     public function historyAsc()
     {
         return $this->hasMany(HabitHistory::class, 'habit_id', 'id')->orderBy('day');
+    }
+
+    // Reminders relationship
+    public function reminders()
+    {
+        return $this->hasMany(HabitReminder::class, 'habit_id', 'id')->orderBy('remind_at');
     }
 
     // ToDo relationship

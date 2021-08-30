@@ -37,6 +37,19 @@
         @else
             <p class="notes">No notes for this action item!</p>
         @endif
+
+        {{-- Reminders --}}
+        @if(count($action_item->reminders) > 0)
+            <br/><br/>
+            <div class="reminders-container">
+                <h3>Reminders</h3>
+                <ol>
+                    @foreach($action_item->reminders as $reminder)
+                        <li>{{ $reminder->remind_at_formatted }}</li>
+                    @endforeach
+                <ol>
+            </div><br/><br/>
+        @endif
     </div>
 
     {{-- Navigation Footer --}}

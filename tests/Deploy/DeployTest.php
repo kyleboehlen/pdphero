@@ -68,6 +68,11 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('faqs'));
         $this->assertTrue(Schema::hasTable('features'));
         $this->assertTrue(Schema::hasTable('feature_votes'));
+        $this->assertTrue(Schema::hasTable('to_do_categories'));
+        $this->assertTrue(Schema::hasTable('push_subscriptions'));
+        $this->assertTrue(Schema::hasTable('habit_reminders'));
+        $this->assertTrue(Schema::hasTable('goal_action_item_reminders'));
+        $this->assertTrue(Schema::hasTable('to_do_reminders'));
     }
 
     /**

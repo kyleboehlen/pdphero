@@ -7,13 +7,13 @@
     {{-- Side Nav --}}
     @switch($item->type_id)
         @case($type::RECURRING_HABIT_ITEM)
-            <x-todo.nav show="list|toggle-complete|move-to-top|create-from-habit|color-key|edit" :item="$item" />
+            <x-todo.nav show="list|toggle-complete|move-to-top|create-from-habit|color-key|edit|reminders" :item="$item" />
             @break
         @case($type::SINGULAR_HABIT_ITEM)
-            <x-todo.nav show="list|toggle-complete|move-to-top|create-from-habit|color-key|edit|delete" :item="$item" />
+            <x-todo.nav show="list|toggle-complete|move-to-top|create-from-habit|color-key|edit|reminders|delete" :item="$item" />
             @break
         @case($type::ACTION_ITEM)
-            <x-todo.nav show="list|toggle-complete|move-to-top|color-key|edit" :item="$item" />
+            <x-todo.nav show="list|toggle-complete|move-to-top|color-key|edit|reminders" :item="$item" />
             @break
         @case($type::JOURNAL_HABIT_ITEM)
             <x-todo.nav show="list|create-journal-entry|move-to-top|create-from-habit|color-key|edit" :item="$item" />
@@ -22,7 +22,7 @@
             <x-todo.nav show="list|read-affirmations|move-to-top|create-from-habit|color-key|edit" :item="$item" />
             @break
         @default
-            <x-todo.nav show="list|toggle-complete|move-to-top|create|edit|delete" :item="$item"/>
+            <x-todo.nav show="list|toggle-complete|move-to-top|create|edit|reminders|delete" :item="$item"/>
     @endswitch
 
     <div class="app-container">
@@ -31,7 +31,7 @@
             @if(!is_null($item->category))
                 <p class="todo-category">{{ $item->category->name }}</p>
             @else
-                <br/><br/>
+                <br/>
             @endif
 
             {{-- Header name --}}
@@ -52,6 +52,17 @@
             @else
                 <div class="notes-container">
                     <p>No notes</p>
+                </div>
+            @endif
+
+            @if(count($item->reminders) > 0)
+                <div class="reminders-container">
+                    <h3>Reminders</h3>
+                    <ol>
+                        @foreach($item->reminders as $reminder)
+                            <li>{{ $reminder->remind_at_formatted }}</li>
+                        @endforeach
+                    <ol>
                 </div>
             @endif
         </div>

@@ -18,6 +18,10 @@
             <a href="{{ route('goals.edit.action-item', ['action_item' => $action_item->uuid]) }}"><li>Edit Action Item</li></a>
         @endif
 
+        @if(in_array('reminders', $show))
+            <a href="{{ route('goals.edit.reminders', ['action_item' => $action_item->uuid]) }}"><li>Edit Reminders</li></a>
+        @endif
+
         @if(in_array('clear-deadline', $show))
             <form id="clear-deadline-form" action="{{ route('goals.ad-hoc-deadline.clear', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
                 @csrf
