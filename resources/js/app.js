@@ -400,6 +400,9 @@ $(document).ready(function(){
             case 'journal-entry':
                 $('.summary-show-journal-entry').show();
                 break;
+            case 'bucketlist-item':
+                $('.summary-show-bucketlist-item').show();
+                break;
         }
     });
 

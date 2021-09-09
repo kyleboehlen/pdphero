@@ -23,5 +23,8 @@
         @if($affirmations_count > 0)
             <li><b>{{ $affirmations_count }}</b> <i>Affirmations Read</i></li>
         @endif
+        @if($bucketlist_item_count > 0)
+            <li><b>{{ $bucketlist_item_count }}</b> <i>Bucketlist Items Completed</i></li>
+        @endif
     </ul>
 </div>

@@ -18,6 +18,7 @@ use App\Jobs\CalculateHabitStrength;
 
 // Models
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;
 use App\Models\Habits\Habits;
@@ -162,6 +163,12 @@ class JournalController extends Controller
                     ->whereBetween('read_at', $between_array)
                     ->get()->count();
 
+            $array['bucketlist_item_count'] =
+                BucketlistItem::where('user_id', $user->id)
+                    ->where('completed', 1)
+                    ->whereBetween('updated_at', $between_array)
+                    ->get()->count();
+
             foreach($array as $key => $value)
             {
                 if(strpos($key, 'count') !== false)
@@ -259,6 +266,14 @@ class JournalController extends Controller
                 ->orderBy('created_at', 'asc')
                 ->get();
 
+        // Get bucketlist items
+        $bucketlist_items =
+            BucketlistItem::where('user_id', $user->id)
+                ->where('completed', 1)
+                ->whereBetween('updated_at', $between_array)
+                ->orderBy('updated_at', 'asc')
+                ->get();
+
         // Build the filter dropdown
         $filter_dropdown = array();
 
@@ -292,6 +307,11 @@ class JournalController extends Controller
             $filter_dropdown['journal-entry'] = 'Journal Entries';
         }
 
+        if($bucketlist_items->count() > 0)
+        {
+            $filter_dropdown['bucketlist-item'] = 'Bucketlist Items';
+        }
+
         if(count($filter_dropdown) > 1)
         {
             $filter_dropdown = array_merge(['all' => 'Show All'], $filter_dropdown);
@@ -303,7 +323,8 @@ class JournalController extends Controller
             $todos->count() > 0 ||
             $goals->count() > 0 ||
             $action_items->count() > 0 ||
-            $journal_entries->count() > 0)
+            $journal_entries->count() > 0 ||
+            $bucketlist_items->count() > 0)
         {
             $obj = null;
 
@@ -383,6 +404,26 @@ class JournalController extends Controller
                         $obj = $journal_entries->first();
                         $obj_carbon = $compare_carbon;
                         $obj_collection = $journal_entries;
+                    }
+                }
+            }
+
+            if($bucketlist_items->count() > 0)
+            {
+                if(is_null($obj))
+                {
+                    $obj = $bucketlist_items->first();
+                    $obj_carbon = Carbon::parse($obj->updated_at)->setTimezone($timezone);
+                    $obj_collection = $bucketlist_items;
+                }
+                else
+                {
+                    $compare_carbon = Carbon::parse($bucketlist_items->first()->updated_at)->setTimezone($timezone);
+                    if($compare_carbon->lessThan($obj_carbon))
+                    {
+                        $obj = $bucketlist_items->first();
+                        $obj_carbon = $compare_carbon;
+                        $obj_collection = $bucketlist_items;
                     }
                 }
             }

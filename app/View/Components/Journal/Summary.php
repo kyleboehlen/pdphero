@@ -17,6 +17,7 @@ class Summary extends Component
     public $action_item_count;
     public $journal_entry_count;
     public $affirmations_count;
+    public $bucketlist_item_count;
 
     /**
      * Create a new component instance.
@@ -33,6 +34,7 @@ class Summary extends Component
         $this->action_item_count = $array['action_item_count'];
         $this->journal_entry_count = $array['journal_entry_count'];
         $this->affirmations_count = $array['affirmations_count'];
+        $this->bucketlist_item_count = $array['bucketlist_item_count'];
     }
 
     /**

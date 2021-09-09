@@ -4,7 +4,6 @@ namespace App\View\Components\Journal;
 
 use Illuminate\View\Component;
 
-
 class TimelineItem extends Component
 {
     // For holding the time for the time label
@@ -50,6 +49,12 @@ class TimelineItem extends Component
         {
             $this->class = 'summary-show-action-item';
             $this->bold_content = 'Achieved Action Item:';
+            $this->italic_content = $item->name;
+        }
+        elseif($item instanceof \App\Models\Bucketlist\BucketlistItem)
+        {
+            $this->class = 'summary-show-bucketlist-item';
+            $this->bold_content = 'Completed Bucketlist Item:';
             $this->italic_content = $item->name;
         }
     }
