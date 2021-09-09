@@ -63,4 +63,10 @@ return [
         'img' => 'icons/tutorials-white.png',
         'route' => 'tutorials',
     ],
+    HOME::BUCKET_LIST => [
+        'name' => 'Bucket List',
+        'desc' => 'Track your bucket list items.',
+        'img' => 'icons/bucketlist-white.png',
+        'route' => 'bucketlist',
+    ],
 ];

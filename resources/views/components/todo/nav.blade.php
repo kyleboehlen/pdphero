@@ -33,15 +33,7 @@
                 <li>Mark Incomplete</li>
             </a>
         @endif
-
-        @if(in_array('read-affirmations', $show))
-            <a href="{{ route('affirmations') }}"><li>Read Affirmations</li></a>
-        @endif
-
-        @if(in_array('create-journal-entry', $show))
-            <a href="{{ route('journal.create.entry') }}"><li>Create Journal Entry</li></a>
-        @endif
-
+        
         @if(in_array('edit', $show))
             <a href="{{ route('todo.edit', ['todo' => $item->uuid]) }}"><li>Edit To-Do Item</li></a>
         @endif

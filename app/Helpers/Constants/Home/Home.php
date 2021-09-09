@@ -14,4 +14,5 @@ class Home
     const EMAIL_SUPPORT = 8;
     const FEATURE_VOTE = 9;
     const TUTORIALS = 10;
+    const BUCKET_LIST = 11;
 }

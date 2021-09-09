@@ -57,6 +57,8 @@ class Kernel extends HttpKernel
         'affirmations.uuid' => \App\Http\Middleware\Affirmations\UUID::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bucketlist.uuid' => \App\Http\Middleware\Bucketlist\UUID::class,
+        'bucketlist.category.uuid' => \App\Http\Middleware\Bucketlist\CategoryUUID::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'first_visit.messages' => \App\Http\Middleware\FirstVisit\Messages::class,

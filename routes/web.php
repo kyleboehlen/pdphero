@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AffirmationsController;
+use App\Http\Controllers\BucketListController;
 use App\Http\Controllers\FeatureVoteController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\HabitsController;
@@ -381,4 +382,34 @@ Route::prefix('feature-vote')->group(function(){
 
     // Vote
     Route::post('/{feature}', [FeatureVoteController::class, 'vote'])->name('feature.vote');
+});
+
+// Bucketlist
+Route::prefix('bucketlist')->group(function(){
+    // Index (incomplete items)
+    Route::get('/', [BucketListController::class, 'index'])->name('bucketlist');
+
+    // Completed timeline view
+    Route::get('completed', [BucketListController::class, 'viewCompleted'])->name('bucketlist.view.completed');
+
+    // Create/edit
+    Route::get('create', [BucketlistController::class, 'create'])->name('bucketlist.create');
+    Route::get('edit/{bucketlist_item}', [BucketlistController::class, 'edit'])->name('bucketlist.edit');
+    Route::post('store', [BucketlistController::class, 'store'])->name('bucketlist.store');
+    Route::post('update/{bucketlist_item}', [BucketlistController::class, 'update'])->name('bucketlist.update');
+
+    // Edit/create/delete categories
+    Route::get('categories', [BucketlistController::class, 'editCategories'])->name('bucketlist.edit.categories');
+    Route::post('store/category', [BucketlistController::class, 'storeCategory'])->name('bucketlist.store.category');
+    Route::post('destroy/category/{category}', [BucketlistController::class, 'destroyCategory'])->name('bucketlist.destroy.category');
+
+    // Toggle a bucketlist item's completed status
+    Route::post('mark-completed/{bucketlist_item}/{view_details?}', [BucketListController::class, 'markCompleted'])->name('bucketlist.mark-completed');
+    Route::post('mark-incomplete/{bucketlist_item}/{view_details?}', [BucketListController::class, 'markIncomplete'])->name('bucketlist.mark-incomplete');
+
+    // View details
+    Route::get('view/{bucketlist_item}', [BucketListController::class, 'viewDetails'])->name('bucketlist.view.details');
+
+    // Destroy
+    Route::post('destroy/{bucketlist_item}', [BucketlistController::class, 'destroy'])->name('bucketlist.destroy');
 });

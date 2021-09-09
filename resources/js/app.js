@@ -418,8 +418,8 @@ $(document).ready(function(){
         event.target.closest('form').submit();
     });
 
-    // Feature vote checkboxes
-    $('#todo-category-selector').change(function(){
+    // Todo/bucketlist filter categories
+    $('#todo-category-selector, #bucketlist-category-selector').change(function(){
         var category_uuid = $(this).find(':selected').val();
         $('.filter-category').hide();
         if(category_uuid == 'all-categories')

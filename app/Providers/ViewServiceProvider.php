@@ -40,6 +40,9 @@ class ViewServiceProvider extends ServiceProvider
         // Auth
         View::composer('auth.*', 'App\View\Composers\AuthComposer');
 
+        // Bucketlist
+        View::composer('bucketlist.*', 'App\View\Composers\BucketlistComposer');
+
         // Feature Vote
         View::composer('feature.*', 'App\View\Composers\FeatureVoteComposer');
 

@@ -18,6 +18,7 @@ use App\Helpers\Constants\ToDo\Type as ToDoType;
 // Models
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
+use App\Models\Bucketlist\BucketlistCategory;
 use App\Models\FirstVisit\FirstVisitMessages;
 use App\Models\FirstVisit\FirstVisitDisplayed;
 use App\Models\Goal\Goal;
@@ -138,6 +139,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function affirmationsReadLog()
     {
         return $this->hasMany(AffirmationsReadLog::class, 'user_id', 'id');
+    }
+
+    public function bucketlistCategories()
+    {
+        return $this->hasMany(BucketlistCategory::class, 'user_id', 'id')->orderBy('name');
     }
 
     public function goals()

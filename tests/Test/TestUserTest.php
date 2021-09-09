@@ -10,6 +10,7 @@ use App\Helpers\Constants\Goal\Type as GoalType;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Feature\Feature;
 use App\Models\Habits\Habits;
 use App\Models\Goal\Goal;
@@ -47,6 +48,21 @@ class TestUserTest extends TestCase
         Feature::factory(rand(4, 10))->create();
 
         $this->assertTrue(Feature::all()->count() >= 4);
+    }
+
+    /**
+     * Give test user Bucketlist items
+     * 
+     * @depends userTest
+     * @test
+     */
+    public function bucketlistTest(User $user)
+    {
+        BucketlistItem::factory(rand(10, 30))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(BucketlistItem::where('user_id', $user->id)->get()->count() >= 5);
     }
 
     /**

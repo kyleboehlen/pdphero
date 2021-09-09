@@ -20,10 +20,15 @@ div.app-container
 
     div.home-icon
     {
-        max-width: 25%;
+        max-width: 15%;
         overflow: hidden;
         text-align: center;
         white-space: nowrap;
+
+        @media only screen and (max-width: 1200px)
+        {
+            max-width: 22%;
+        }
 
         @media only screen and (max-width: 500px)
         {
@@ -48,16 +53,16 @@ div.app-container
         {
             color: $white;
             font-family: $header-font;
-            font-size: 1.75em;
+            font-size: 1.5em;
 
             @media only screen and (max-width: 1200px)
             {
-                font-size: 1.5em;
+                font-size: 1.15em;
             }
 
             @media only screen and (max-width: 1000px)
             {
-                font-size: 1.25em;
+                font-size: 1.15em;
             }
 
             @media only screen and (max-width: 600px)

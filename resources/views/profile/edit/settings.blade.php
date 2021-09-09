@@ -14,6 +14,11 @@
         {{-- Setting that handles whether or not the affirmations read page is shown --}}
         <x-settings.checkbox-setting :id="$setting::AFFIRMATIONS_SHOW_READ" text="Display the 'Good Job!' page after reading affirmations" />
 
+        <h2 id="bucketlist-settings-header" class="settings">Bucketlist</h2>
+
+        {{-- Empty bucketlist item setting --}}
+        <x-settings.options-setting :id="$setting::SHOW_EMPTY_BUCKETLIST_ITEM" text="Show the add bucketlist item at the | of bucketlist" />
+
         <h2 id="general-settings-header" class="settings">General</h2>
 
         {{-- Determines whether or not we show the home icon in the bottom nav --}}

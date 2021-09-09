@@ -17,6 +17,7 @@ return [
         Setting::SHOW_EMPTY_AD_HOC_ITEM => Setting::BOTTOM_OF_LIST, // Bottom of list
         Setting::SHOW_HOME_ICON => '1', // True
         Setting::NOTIFICATION_CHANNEL => Setting::NOTIFICATION_EMAIL,
+        Setting::SHOW_EMPTY_BUCKETLIST_ITEM => Setting::DO_NOT_SHOW, // Don't show
     ],
 
     'options' => [
@@ -51,6 +52,11 @@ return [
             Setting::NOTIFICATION_EMAIL => 'Email',
             Setting::NOTIFICATION_SMS => 'SMS Text',
             Setting::NOTIFICATION_WEBPUSH => 'Push Notifications',
+        ],
+        Setting::SHOW_EMPTY_BUCKETLIST_ITEM => [
+            Setting::DO_NOT_SHOW => 'Don\'t Show',
+            Setting::TOP_OF_LIST => 'Top',
+            Setting::BOTTOM_OF_LIST => 'Bottom',
         ],
     ],
 
@@ -94,6 +100,9 @@ return [
         Setting::NOTIFICATION_CHANNEL => [
             'desc' => 'Determines whether reminders and notifications are sent via email, sms, or webpush.',
         ],
+        Setting::SHOW_EMPTY_BUCKETLIST_ITEM => [
+            'desc' => 'How to show the add bucketlist entry on the imcomplete bucketlist.',
+        ],
     ],
 
     'types' => [
@@ -110,5 +119,6 @@ return [
         Setting::SHOW_EMPTY_AD_HOC_ITEM => 'options', // Based on config('settings.options)
         Setting::SHOW_HOME_ICON => 'toggle', // True or false
         Setting::NOTIFICATION_CHANNEL => 'options', // Based on config('settings.options)
+        Setting::SHOW_EMPTY_BUCKETLIST_ITEM => 'options', // Based on config('settings.options)
     ],
 ];

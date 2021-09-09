@@ -7,6 +7,7 @@
 
     <ul class="list settings">
         <a class="close-nav" href="#affirmations-settings-header"><li>Affirmations</li></a>
+        <a class="close-nav" href="#bucketlist-settings-header"><li>Bucketlist</li></a>
         <a class="close-nav" href="#general-settings-header"><li>General</li></a>
         <a class="close-nav" href="#goals-settings-header"><li>Goals</li></a>
         <a class="close-nav" href="#habits-settings-header"><li>Habits</li></a>
