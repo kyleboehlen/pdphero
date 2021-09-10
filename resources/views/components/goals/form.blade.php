@@ -128,6 +128,8 @@
         <input type="date" name="end-date" required
             @isset($edit_goal)
                 value="{{ $edit_goal->end_date }}"
+            @else
+                value="{{ old('end-date') }}"
             @endisset />
         @if($type_id == $type::HABIT_BASED)
             {{-- Habit strength script/label --}}
@@ -161,14 +163,14 @@
     @endif
 
     {{-- Goal image --}}
-    <label for="image">Goal image:</label>
+    <label for="goal-image">Goal image:</label>
     <input type="file" name="goal-image" accept="image/png, image/jpeg, image/jpg" />
     @isset($future_goal)
         @if($future_goal->use_custom_img)
             <p id="future-goal-image-label">If no image is selected one for future goal '{{ $future_goal->name }}' will be used</p>
         @endif
     @endisset
-    @error('image')
+    @error('goal-image')
         <p class="error">{{ $message }}</p>
     @else
     @enderror
@@ -186,14 +188,17 @@
     {{-- Action plan goals push to todo options --}}
     @if(in_array($type_id, [$type::ACTION_AD_HOC, $type::ACTION_DETAILED, $type::PARENT_GOAL]))
         <span class="show-todo" title="If this is selected your goal action items will automatically show up in your to-do list">
-            <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @endisset /> List action items on To-Do<br/>
+            <input id="goal-show-todo" class="show-todo" type="checkbox" name="show-todo" @isset($edit_goal) @if($edit_goal->default_show_todo) checked @endif @else @if(!is_null(old('show-todo'))) checked @endif @endisset /> List action items on To-Do<br/>
             <input id="default-days-before-due-input" type="number" name="show-todo-days-before"
                 @isset($edit_goal)
                     @if(!is_null($edit_goal->default_todo_days_before))
                         value="{{ $edit_goal->default_todo_days_before }}"
                     @else
-                        {{-- Maybe check for a parent goal value here --}}
-                        value="7" 
+                        @if(!is_null(old('show-todo-days-before')))
+                            value="{{ old('show-todo-days-before') }}"
+                        @else
+                            value="7" 
+                        @endif
                     @endif
 
                     @if(!$edit_goal->default_show_todo)
@@ -204,8 +209,16 @@
                         <span id="default-days-before-due-label">
                     @endif
                 @else
-                    disabled
-                    value="7">
+                    @if(is_null(old('show-todo')))
+                        disabled
+                    @endif
+                    
+                    @if(!is_null(old('show-todo-days-before')))
+                        value="{{ old('show-todo-days-before') }}">
+                    @else
+                        value="7">
+                    @endif
+                    
                     <span id="default-days-before-due-label" class="disabled">
                 @endisset days before due </span>
         </span><br/><br/>
