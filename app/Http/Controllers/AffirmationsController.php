@@ -214,12 +214,27 @@ class AffirmationsController extends Controller
         return view('affirmations.read');
     }
 
-    public function destroy(Affirmations $affirmation)
+    public function destroy(Request $request, Affirmations $affirmation)
     {
+        // Get affirmations
+        $affirmations = $request->user()->affirmations;
+
         if(!$affirmation->delete())
         {
             Log::error('Failed to delete affirmation', $affirmation->toArray());
             return redirect()->back();
+        }
+
+        if($affirmations->count() > 1)
+        {
+            $affirmations = $affirmations->takeUntil(function ($a) use ($affirmation){
+                return $a->uuid == $affirmation->uuid;
+            })->all();
+
+            if(count($affirmations) > 0)
+            {
+                return redirect()->route('affirmations.show', ['affirmation' => collect($affirmations)->last()->uuid]);
+            }
         }
 
         return redirect()->route('affirmations');
