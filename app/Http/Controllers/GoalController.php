@@ -1094,6 +1094,10 @@ class GoalController extends Controller
                 'selected-dropdown' => 'sub-goals',
             ]);
         }
+        elseif($goal->type_id == Type::FUTURE_GOAL)
+        {
+            return redirect()->route('goals', ['scope' => 'future']);
+        }
 
         return redirect()->route('goals');
     }
