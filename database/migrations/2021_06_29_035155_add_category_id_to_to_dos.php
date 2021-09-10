@@ -14,7 +14,11 @@ class AddCategoryIdToToDos extends Migration
     public function up()
     {
         Schema::table('to_dos', function (Blueprint $table) {
+            // Column
             $table->bigInteger('category_id')->unsigned()->nullable();
+
+            // Constraint
+            $table->foreign('category_id')->references('id')->on('to_do_categories');
         });
     }
 
