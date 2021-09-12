@@ -91,5 +91,9 @@ return [
             'name' => 'Manual Goal',
             'desc' => 'A manual goal allows you to specify due dates for hitting certain progress amounts on the goal and update the progress manually.',
         ],
+        Type::BUCKETLIST => [
+            'name' => 'Bucketlist Goal',
+            'desc' => 'A bucketlist goal allows you to create an ad hoc action plan around completing items in your bucketlist.',
+        ],
     ],
 ];

@@ -54,6 +54,7 @@ class GoalFactory extends Factory
                                 break;
             
                             case Type::ACTION_AD_HOC:
+                            case Type::BUCKETLIST: // we don't really want to be generating actual bucketlist goals
                                 Goal::factory()->adHoc()->create($attr);
                                 break;
                             

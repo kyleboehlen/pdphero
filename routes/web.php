@@ -141,17 +141,25 @@ Route::prefix('goals')->group(function(){
         Route::post('set/{action_item}', [GoalController::class, 'setAdHocDeadline'])->name('goals.ad-hoc-deadline.set');
         Route::post('clear/{action_item}', [GoalController::class, 'clearAdHocDeadline'])->name('goals.ad-hoc-deadline.clear');
     });
+
+    // Bucketlist Deadline
+    Route::prefix('bucketlist-deadline')->group(function(){
+        Route::post('set/{bucketlist_item}/{goal}', [GoalController::class, 'setBucketlistDeadline'])->name('goals.bucketlist-deadline.set');
+        Route::post('clear/{bucketlist_item}', [GoalController::class, 'clearBucketlistDeadline'])->name('goals.bucketlist-deadline.clear');
+    });
     
     // Toggle Completed routes
     Route::prefix('toggle-achieved')->group(function(){
         Route::post('goal/{goal}', [GoalController::class, 'toggleAchievedGoal'])->name('goals.toggle-achieved.goal');
         Route::post('action-item/{action_item}', [GoalController::class, 'toggleAchievedActionItem'])->name('goals.toggle-achieved.action-item');
+        Route::post('bucketlist-item/{bucketlist_item}', [GoalController::class, 'toggleAchievedBucketlistItem'])->name('goals.toggle-achieved.bucketlist-item');
     });
 
     // View routes
     Route::prefix('view')->group(function(){
         Route::get('goal/{goal}', [GoalController::class, 'viewGoal'])->name('goals.view.goal');
         Route::get('action-item/{action_item}', [GoalController::class, 'viewActionItem'])->name('goals.view.action-item');
+        Route::get('bucketlist-item/{bucketlist_item}/{goal?}', [GoalController::class, 'viewBucketlistItem'])->name('goals.view.bucketlist-item');
     });
 
     // Create routes

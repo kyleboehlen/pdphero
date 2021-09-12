@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 // Models
 use App\Models\Bucketlist\BucketlistCategory;
+use App\Models\Goal\Goal;
 
 class BucketlistItem extends Model
 {
@@ -21,7 +22,7 @@ class BucketlistItem extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'details', 'user_id',
+        'name', 'notes', 'user_id',
     ];
 
     public function category()
@@ -31,6 +32,12 @@ class BucketlistItem extends Model
 
     public function formattedCompletedAt()
     {
-        return Carbon::parse($this->updated_at)->format('D, M jS Y, g:i A');
+        $timezone = \Auth::user()->timezone ?? 'America/Denver';
+        return Carbon::parse($this->updated_at)->setTimezone($timezone)->format('D, M jS Y, g:i A');
+    }
+
+    public function goal()
+    {
+        return $this->hasOne(Goal::class, 'id', 'goal_id');
     }
 }

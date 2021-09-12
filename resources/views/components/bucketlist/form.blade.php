@@ -41,8 +41,8 @@
     @enderror
     <br/><br/>
 
-    <textarea name="details"placeholder="Any extra details for your bucketlist item go here!"
-        >@isset($item){{ $item->details }}@else{{ old('details') }}@endisset</textarea>
+    <textarea name="details" placeholder="Any extra details for your bucketlist item go here!"
+        >@isset($item){{ $item->notes }}@else{{ old('details') }}@endisset</textarea>
 
     @error('details')
         <p class="error">{{ $message }}</p>

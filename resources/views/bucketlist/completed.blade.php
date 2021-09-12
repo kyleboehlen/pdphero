@@ -23,5 +23,5 @@
     </div>
 
     {{-- Navigation Footer --}}
-    <x-app.footer highlight="journal" />
+    <x-app.footer />
 @endsection

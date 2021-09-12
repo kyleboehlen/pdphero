@@ -30,6 +30,7 @@ class AddCategoryIdToToDos extends Migration
     public function down()
     {
         Schema::table('to_dos', function (Blueprint $table) {
+            $table->dropForeign('to_dos_category_id_foreign');
             $table->dropColumn('category_id');
         });
     }

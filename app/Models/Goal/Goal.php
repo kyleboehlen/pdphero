@@ -15,6 +15,7 @@ use App\Helpers\Constants\Goal\Type;
 use App\Helpers\Constants\Goal\TimePeriod;
 
 // Models
+use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Goal\GoalActionItem;
 use App\Models\Goal\GoalCategory;
 use App\Models\Goal\GoalStatus;
@@ -52,6 +53,7 @@ class Goal extends Model
                 break;
 
             case Type::ACTION_AD_HOC:
+            case Type::BUCKETLIST:
                 // Set vars
                 $achieved_count = 0;
                 $total_count = 0;
@@ -204,6 +206,7 @@ class Goal extends Model
                 // Attempt to set status based on due date of action, fall back to percentage otherwise
                 case Type::ACTION_AD_HOC:
                 case Type::ACTION_DETAILED:
+                case Type::BUCKETLIST:
                     // Get the action item with the earliest deadline
                     $action_item = $this->actionItems()->where('achieved', 0)->first();
 
@@ -246,6 +249,7 @@ class Goal extends Model
                 case Type::PARENT_GOAL:
                 case Type::ACTION_AD_HOC:
                 case Type::MANUAL_GOAL:
+                case Type::BUCKETLIST:
                     // Get carbon objects for goal start/end dates
                     $start_date = Carbon::parse($this->start_date)->setTimezone($timezone);
                     $end_date = Carbon::parse($this->end_date)->setTimezone($timezone);
@@ -462,15 +466,30 @@ class Goal extends Model
         return $this->progress;
     }
 
+    public function loadBucketlistActionItems()
+    {
+        $this->actionItems = $this->actionItems()->get();
+    }
+
     // RELATIONSHIPS
     public function actionItems($order = 'asc')
     {
+        if($this->type_id == Type::BUCKETLIST)
+        {
+            return $this->hasMany(BucketlistItem::class, 'goal_id', 'id')->whereNotNull('deadline')->orderBy('deadline', $order);
+        }
+
         return $this->hasMany(GoalActionItem::class, 'goal_id', 'id')->whereNotNull('deadline')->orderBy('deadline', $order);
+    }
+
+    public function loadBucketlistAdHocItems()
+    {
+        $this->adHocItems = BucketlistItem::whereNull('goal_id')->whereNull('deadline')->where('achieved', 0)->orderBy('name')->get();
     }
 
     public function adHocItems()
     {
-        return $this->hasMany(GoalActionItem::class, 'goal_id', 'id')->whereNull('deadline')->orderBy('deadline');
+        return $this->hasMany(GoalActionItem::class, 'goal_id', 'id')->whereNull('deadline')->orderBy('name');
     }
 
     public function category()

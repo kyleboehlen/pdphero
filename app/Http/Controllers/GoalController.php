@@ -15,6 +15,7 @@ use App\Helpers\Constants\Goal\Type;
 use App\Helpers\Constants\Goal\TimePeriod;
 
 // Models
+use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;
 use App\Models\Goal\GoalActionItemReminder;
@@ -52,6 +53,7 @@ class GoalController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('bucketlist.uuid');
         $this->middleware('goal.uuid');
         $this->middleware('goal.action_item.uuid');
         $this->middleware('goal.category.uuid');
@@ -176,6 +178,38 @@ class GoalController extends Controller
         ]);
     }
 
+    public function toggleAchievedBucketlistItem(Request $request, BucketlistItem $bucketlist_item)
+    {
+        // Toggle bucketlist item achieved and save
+        $bucketlist_item->achieved = !$bucketlist_item->achieved;
+
+        if(!$bucketlist_item->save())
+        {
+            Log::error('Failed to toggle achieved on goal bucketlist item', $bucketlist_item->toArray());
+        }
+        else
+        {
+            // Recalculate progress for the goal
+            if(!$bucketlist_item->goal->calculateProgress())
+            {
+                Log::error('Failed to calculate progress when toggling achieved bucketlist item', $bucketlist_item->toArray());
+            }
+        }
+
+        // Redirect back to action item details or not by checking show_details
+        if($request->has('view_details') && $request->get('view_details'))
+        {
+            return redirect()->route('goals.view.bucketlist-item', [
+                'bucketlist_item' => $bucketlist_item->uuid,
+            ]);
+        }
+
+        return redirect()->route('goals.view.goal', [
+            'goal' => $bucketlist_item->goal->uuid,
+            'selected-dropdown' => 'action-plan',
+        ]);
+    }
+
     public function viewGoal(Request $request, Goal $goal)
     {
         // Get user
@@ -261,12 +295,12 @@ class GoalController extends Controller
             $dropdown_nav['sub-goals'] = 'Sub Goals';
         }
 
-        if($goal->type_id == Type::ACTION_DETAILED || $goal->type_id == Type::ACTION_AD_HOC)
+        if(in_array($goal->type_id, [Type::ACTION_DETAILED, Type::ACTION_AD_HOC, Type::BUCKETLIST]))
         {
             $dropdown_nav['action-plan'] = 'Action Plan';
         }
 
-        if($goal->type_id == Type::ACTION_AD_HOC)
+        if($goal->type_id == Type::ACTION_AD_HOC || $goal->type_id == Type::BUCKETLIST)
         {
             $dropdown_nav['ad-hoc-list'] = 'Ad Hoc List';
         }
@@ -289,10 +323,18 @@ class GoalController extends Controller
         {
             $goal->load('actionItems');
         }
+        elseif($goal->type_id == Type::BUCKETLIST)
+        {
+            $goal->loadBucketlistActionItems();
+        }
 
         if($goal->type_id == Type::ACTION_AD_HOC)
         {
             $goal->load('adHocItems');
+        }
+        elseif($goal->type_id == Type::BUCKETLIST)
+        {
+            $goal->loadBucketlistAdHocItems();
         }
 
         if(!is_null($goal->parent_id))
@@ -329,17 +371,63 @@ class GoalController extends Controller
         }
         else
         {
-            $show .= '|edit|toggle-achieved';
-
-            if(!is_null($action_item->deadline) && $action_item->goal->type_id == Type::ACTION_AD_HOC)
+            if($action_item->goal->type_id == Type::ACTION_AD_HOC)
             {
-                $show .= '|clear-deadline';
+                $show .= '|edit';
+
+                if(!is_null($action_item->deadline))
+                {
+                    $show .= '|toggle-achieved|clear-deadline';
+                }
+            }
+            else
+            {
+                $show .= '|edit|toggle-achieved';
             }
         }
 
         // Return detail view
         return view('goals.action-item-details')->with([
             'action_item' => $action_item,
+            'show' => $show,
+        ]);
+    }
+
+    public function viewBucketlistItem(Request $request, BucketlistItem $bucketlist_item, Goal $goal = null)
+    {
+        // If it's not assigned to a goal, redirect to the bucketlist view
+        if(is_null($bucketlist_item->goal_id) && is_null($goal))
+        {
+            return redirect()->route('bucketlist.view.details', ['bucketlist_item' => $bucketlist_item->uuid]);
+        }
+
+        // Load goal for nav and forms
+        if(!is_null($goal))
+        {
+            $bucketlist_item->goal = $goal;
+        }
+        else
+        {
+            $bucketlist_item->load('goal');
+        }
+
+        // Set reminders
+        $bucketlist_item->reminders = array();
+
+        // Build nav
+        $show = 'back-goal';
+        if($bucketlist_item->achieved)
+        {
+            $show .= '|toggle-unachieved';
+        }
+        elseif(!is_null($bucketlist_item->deadline))
+        {
+            $show .= '|toggle-achieved|clear-deadline';
+        }
+
+        // Return detail view
+        return view('goals.action-item-details')->with([
+            'action_item' => $bucketlist_item,
             'show' => $show,
         ]);
     }
@@ -441,6 +529,52 @@ class GoalController extends Controller
         return redirect()->route('goals.view.goal', ['goal' => $action_item->goal->uuid, 'selected-dropdown' => 'ad-hoc-list']);
     }
 
+    public function clearBucketlistDeadline(Request $request, BucketlistItem $bucketlist_item)
+    {
+        // Clear deadline
+        $bucketlist_item->load('goal');
+        $bucketlist_item->deadline = null;
+        $bucketlist_item->goal_id = null;
+
+        // Save
+        if(!$bucketlist_item->save())
+        {
+            // Log error
+            Log::error('Failed to clear bucketlist item deadline', $bucketlist_item->toArray());
+        }
+
+        // Return detail view
+        return redirect()->route('goals.view.bucketlist-item', ['bucketlist_item' => $bucketlist_item->uuid, 'goal' => $bucketlist_item->goal->uuid]);
+    }
+
+    public function setBucketlistDeadline(SetDeadlineRequest $request, BucketlistItem $bucketlist_item, Goal $goal)
+    {
+        // Set deadline
+        $bucketlist_item->deadline = $request->get('deadline');
+        $bucketlist_item->goal_id = $goal->id;
+
+        // Save
+        if(!$bucketlist_item->save())
+        {
+            // Log error
+            Log::error('Failed to set bucketlist item deadline', $bucketlist_item->toArray());
+        }
+
+        // Redirect
+        $view_details = false;
+        if($request->has('view_details'))
+        {
+            $view_details = (bool) $request->get('view_details');
+        }
+
+        if($view_details)
+        {
+            return redirect()->route('goals.view.bucketlist-item', ['bucketlist_item' => $bucketlist_item->uuid]);
+        }
+
+        return redirect()->route('goals.view.goal', ['goal' => $goal->uuid, 'selected-dropdown' => 'ad-hoc-list']);
+    }
+
     public function storeCategory(StoreCategoryRequest $request)
     {
         // Create category
@@ -510,7 +644,7 @@ class GoalController extends Controller
         }
 
         // Ad hoc options
-        if($type_id == Type::ACTION_AD_HOC && $request->has('custom-times'))
+        if(($type_id == Type::ACTION_AD_HOC || $type_id == Type::BUCKETLIST) && $request->has('custom-times'))
         {
             $goal->custom_times = $request->get('custom-times');
             if($request->has('time-period'))

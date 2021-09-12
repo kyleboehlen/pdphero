@@ -22,9 +22,15 @@
                 <p class="deadline">Due: {{ \Carbon\Carbon::parse($action_item->deadline)->format('n/j/y') }}</p>
             @else
                 <p class="deadline"> <a class="deadline" id="set-deadline-link-{{ $action_item->uuid }}" href="#">Set Deadline</a></p>
-                @push('scripts')
-                    <x-goals.ad-hoc-deadline-popup :item="$action_item" details="true" />
-                @endpush
+                @if($action_item instanceof \App\Models\Bucketlist\BucketlistItem)
+                    @push('scripts')
+                        <x-goals.ad-hoc-deadline-popup :item="$action_item" :goal="$action_item->goal" />
+                    @endpush
+                @else
+                    @push('scripts')
+                        <x-goals.ad-hoc-deadline-popup :item="$action_item" />
+                    @endpush
+                @endif
             @endif
         @endif
 

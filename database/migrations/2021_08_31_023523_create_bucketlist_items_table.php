@@ -26,12 +26,15 @@ class CreateBucketlistItemsTable extends Migration
             $table->uuid('uuid')->unique();
             $table->string('name');
             $table->bigInteger('category_id')->unsigned()->nullable();
-            $table->text('details')->nullable();
-            $table->boolean('completed')->default(0);
+            $table->text('notes')->nullable();
+            $table->boolean('achieved')->default(0);
+            $table->bigInteger('goal_id')->unsigned()->nullable();
+            $table->date('deadline')->nullable();
 
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('bucketlist_categories');
+            $table->foreign('goal_id')->references('id')->on('goals');
         });
     }
 

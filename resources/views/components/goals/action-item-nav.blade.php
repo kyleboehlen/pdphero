@@ -23,7 +23,13 @@
         @endif
 
         @if(in_array('clear-deadline', $show))
-            <form id="clear-deadline-form" action="{{ route('goals.ad-hoc-deadline.clear', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
+            <form id="clear-deadline-form"
+                @if($action_item instanceof \App\Models\Bucketlist\BucketlistItem)
+                    action="{{ route('goals.bucketlist-deadline.clear', ['bucketlist_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @else
+                    action="{{ route('goals.ad-hoc-deadline.clear', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @endif
+                method="POST">
                 @csrf
             </form>
             <a href="{{ route('goals.ad-hoc-deadline.clear', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
@@ -33,20 +39,42 @@
         @endif
 
         @if(in_array('toggle-achieved', $show))
-            <form id="toggle-achieved-item-form" action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
+            <form id="toggle-achieved-item-form"
+                @if($action_item instanceof \App\Models\Bucketlist\BucketlistItem)
+                    action="{{ route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @else
+                    action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @endif
+                method="POST">
                 @csrf
             </form>
-            <a href="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+            <a
+                @if($action_item instanceof \App\Models\Bucketlist\BucketlistItem)
+                    href="{{ route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @else
+                    href="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @endif
                 onclick="event.preventDefault(); document.getElementById('toggle-achieved-item-form').submit();">
                 <li>Mark Achieved</li>
             </a>
         @endif
 
         @if(in_array('toggle-unachieved', $show))
-            <form id="toggle-unachieved-item-form" action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}" method="POST">
+            <form id="toggle-unachieved-item-form"
+                @if($action_item instanceof \App\Models\Bucketlist\BucketlistItem)
+                    action="{{ route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @else
+                    action="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @endif
+                method="POST">
                 @csrf
             </form>
-            <a href="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+            <a
+                @if($action_item instanceof \App\Models\Bucketlist\BucketlistItem)
+                    href="{{ route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @else
+                    href="{{ route('goals.toggle-achieved.action-item', ['action_item' => $action_item->uuid, 'view_details' => true]) }}"
+                @endif
                 onclick="event.preventDefault(); document.getElementById('toggle-unachieved-item-form').submit();">
                 <li>Mark Unachieved</li>
             </a>

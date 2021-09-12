@@ -100,7 +100,7 @@
         @if(array_key_exists('action-plan', $dropdown_nav))
             <h3 class="goal-section-title" id="action-plan-section-title">Action Plan</h3>
             <div id="goal-action-plan-div" class="goal-nav-div hidden">
-                @if($goal->type_id == $type::ACTION_AD_HOC)
+                @if($goal->type_id == $type::ACTION_AD_HOC || $goal->type_id == $type::BUCKETLIST)
                     @foreach($goal->getAdHocArray() as $array)
                         <p class="ad-hoc-label">{{ $array['start_date'] }} - {{ $array['end_date'] }}</p>
                         <p class="ad-hoc-label"> {{ $array['action_items']->count() }} out of {{ $goal->custom_times }} scheduled </p>
@@ -158,7 +158,7 @@
                     @endif
 
                     @foreach($goal->adHocItems as $ad_hoc_item)
-                        <x-goals.ad-hoc-list-item :item="$ad_hoc_item" />
+                        <x-goals.ad-hoc-list-item :item="$ad_hoc_item" :goal="$goal" />
                     @endforeach
 
                     @if(!$goal->achieved && $user->getSettingValue($setting::SHOW_EMPTY_AD_HOC_ITEM) == $setting::BOTTOM_OF_LIST)

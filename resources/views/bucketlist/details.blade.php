@@ -24,10 +24,10 @@
             <h2>{{ $item->name }}</h2>
 
             {{-- Notes --}}
-            @if(isset($item->details))
+            @if(isset($item->notes))
                 <div class="details-container">
                     <p>
-                        @foreach(explode(PHP_EOL, $item->details) as $line)
+                        @foreach(explode(PHP_EOL, $item->notes) as $line)
                             {{ $line }}<br/>
                         @endforeach
                     </p>

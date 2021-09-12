@@ -334,10 +334,11 @@ class AffirmationsTest extends TestCase
             '_token' => csrf_token(),
         ]);
 
-        // Verify redirected back to to do list properly
+        // Verify redirected back to affirmations properly
         $response->assertRedirect('/affirmations');
 
         // Verify user doesn't have any affirmations now
+        $user->refresh();
         $this->assertTrue($user->affirmations->count() == 0);
     }
 }

@@ -3,7 +3,13 @@
     <h2>Set {{ $ad_hoc_item->name }} Deadline</h2><br/><br/><br/>
     
     {{-- Set deadline form --}}
-    <form action="{{ route('goals.ad-hoc-deadline.set', ['action_item' => $ad_hoc_item->uuid, 'view_details' => $view_details]) }}" method="POST">
+    <form
+        @if($ad_hoc_item instanceof \App\Models\Bucketlist\BucketlistItem)
+            action="{{ route('goals.bucketlist-deadline.set', ['bucketlist_item' => $ad_hoc_item->uuid, 'goal' => $goal->uuid, 'view_details' => $view_details]) }}" method="POST"
+        @else
+            action="{{ route('goals.ad-hoc-deadline.set', ['action_item' => $ad_hoc_item->uuid, 'view_details' => $view_details]) }}" method="POST"
+        @endif>
+
         @csrf
 
         <p>Due by:</p>

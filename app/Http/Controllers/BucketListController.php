@@ -45,7 +45,7 @@ class BucketListController extends Controller
 
         // Load user's bucketlist
         $bucketlist_items =
-            BucketlistItem::where('user_id', $user->id)->where('completed', 0) // Just incomplete bucketlist items
+            BucketlistItem::where('user_id', $user->id)->where('achieved', 0) // Just incomplete bucketlist items
                 ->with('category')->orderBy('name')->get();
 
         // Get all the users categories
@@ -82,7 +82,7 @@ class BucketListController extends Controller
 
         // Load user's bucketlist
         $bucketlist_items =
-            BucketlistItem::where('user_id', $user->id)->where('completed', 1) // Just completed bucketlist items
+            BucketlistItem::where('user_id', $user->id)->where('achieved', 1) // Just completed bucketlist items
                 ->orderBy('updated_at', 'desc')->get();
 
         // Return to-do view
@@ -102,7 +102,7 @@ class BucketListController extends Controller
         // Create new bucketlist item
         $bucketlist_item = new BucketlistItem([
             'name' => $request->get('name'),
-            'details' => $request->get('details'),
+            'notes' => $request->get('details'),
             'user_id' => $request->user()->id,
         ]);
 
@@ -143,7 +143,7 @@ class BucketListController extends Controller
     {
         // Update bucketlist item
         $bucketlist_item->name = $request->get('name');
-        $bucketlist_item->details = $request->get('details');
+        $bucketlist_item->notes = $request->get('details');
 
         // Set category
         $category_uuid = $request->get('category');
@@ -219,9 +219,7 @@ class BucketListController extends Controller
 
     public function markCompleted(BucketlistItem $bucketlist_item, $view_details = false)
     {
-        $bucketlist_item->completed = true;
-
-        // Todo: need to complete out any associated ad hoc goal action items
+        $bucketlist_item->achieved = true;
 
         if(!$bucketlist_item->save())
         {
@@ -240,9 +238,7 @@ class BucketListController extends Controller
 
     public function markIncomplete(BucketlistItem $bucketlist_item, $view_details = false)
     {
-        $bucketlist_item->completed = false;
-
-        // Todo: need to incomplete out any associated ad hoc goal action items
+        $bucketlist_item->achieved = false;
 
         if(!$bucketlist_item->save())
         {

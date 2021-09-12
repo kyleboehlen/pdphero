@@ -27,8 +27,8 @@ class BucketlistItemFactory extends Factory
         return [
             'name' => $this->faker->words(rand(3, 8), true),
             'user_id' => User::inRandomOrder()->first()->id,
-            'details' => (rand() % 2 == 0 ? $this->faker->paragraph() : null),
-            'completed' => (bool) rand(0, 1),
+            'notes' => (rand() % 2 == 0 ? $this->faker->paragraph() : null),
+            'achieved' => (bool) rand(0, 1),
         ];
     }
 }

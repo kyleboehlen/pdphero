@@ -165,7 +165,7 @@ class JournalController extends Controller
 
             $array['bucketlist_item_count'] =
                 BucketlistItem::where('user_id', $user->id)
-                    ->where('completed', 1)
+                    ->where('achieved', 1)
                     ->whereBetween('updated_at', $between_array)
                     ->get()->count();
 
@@ -269,7 +269,7 @@ class JournalController extends Controller
         // Get bucketlist items
         $bucketlist_items =
             BucketlistItem::where('user_id', $user->id)
-                ->where('completed', 1)
+                ->where('achieved', 1)
                 ->whereBetween('updated_at', $between_array)
                 ->orderBy('updated_at', 'asc')
                 ->get();

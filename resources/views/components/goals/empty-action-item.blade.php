@@ -1,7 +1,8 @@
 <div class="action-item empty">
-    <form action="{{ route($route, ['goal' => $goal->uuid, 'selected-dropdown' => 'ad-hoc-list']) }}" method="GET">
-        @csrf
-        <input class="submit-completed" name="achieved" type="checkbox" />
+    <form action="{{ route($route, ['goal' => $goal->uuid]) }}" method="GET">
+        {{-- @csrf --}}
+        <input type="hidden" name="selected-dropdown" value="ad-hoc-list" />
+        <input class="submit-completed" type="checkbox" />
     </form>
     &nbsp;
     <a href="{{ route($route, ['goal' => $goal->uuid, 'selected-dropdown' => 'ad-hoc-list']) }}">

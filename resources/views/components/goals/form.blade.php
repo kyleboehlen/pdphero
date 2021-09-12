@@ -79,15 +79,15 @@
     <br/><br/>
 
     {{-- Ad-hoc/manaul goal options --}}
-    @if($type_id == $type::ACTION_AD_HOC || $type_id == $type::MANUAL_GOAL)
+    @if(in_array($type_id, [$type::ACTION_AD_HOC, $type::MANUAL_GOAL, $type::BUCKETLIST]))
         {{-- How many manual/action items  --}}
         <label for="custom-times" @if($type_id == $type::MANUAL_GOAL) class="manual-times" @else style="margin-left: 0;" @endif >Complete </label><input class="{{ $type_id == $type::MANUAL_GOAL ? 'manual-times' : 'ad-hoc-times' }}" name="custom-times" type="number"
         @isset($edit_goal)
             value="{{ $edit_goal->custom_times }}"
         @else
             value="1"
-        @endisset><label class="time-period" for="time-period"> {{ $type_id == $type::ACTION_AD_HOC ? 'action' : 'manual' }} items</label>
-        @if($type_id == $type::ACTION_AD_HOC)
+        @endisset><label class="time-period" for="time-period">@if($type_id == $type::ACTION_AD_HOC) action @elseif($type_id == $type::BUCKETLIST) bucketlist @else manual @endif items</label>
+        @if($type_id == $type::ACTION_AD_HOC || $type_id == $type::BUCKETLIST)
             <br/><br/>
             <select name="time-period">
                 @foreach($time_periods as $value => $time_period)

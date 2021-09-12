@@ -12,13 +12,17 @@ class AdHocDeadlinePopup extends Component
     // To determine redirect
     public $view_details;
 
+    // To hold the goal we're assigning bucketlist items to
+    public $goal;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($item, $details = false)
+    public function __construct($item, $details = false, $goal = null)
     {
+        $this->goal = $goal;
         $this->ad_hoc_item = $item;
         $this->view_details = (bool) $details;
     }
