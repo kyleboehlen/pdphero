@@ -61,7 +61,6 @@ class Goal extends Model
                 // Iterate through ad hoc array to set vars
                 foreach($this->getAdHocArray() as $array)
                 {
-                    
                     $achieved_count += $array['action_items']->sum('achieved');
                     $total_count += $this->custom_times;
                 }

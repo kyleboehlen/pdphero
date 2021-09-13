@@ -1255,8 +1255,14 @@ class GoalController extends Controller
             return redirect()->back();
         }
 
-        // Load goal for redirect
+        // Load goal for redirect/recaculating progress
         $action_item->load('goal');
+
+        // Recalculate progress for the goal
+        if(!$action_item->goal->calculateProgress())
+        {
+            Log::error('Failed to calculate progress when deleting achieved action item', $action_item->toArray());
+        }
 
         // Set selected dropdown
         if($action_item->goal->type_id == Type::ACTION_DETAILED || !is_null($action_item->deadline))
