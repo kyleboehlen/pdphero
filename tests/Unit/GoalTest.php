@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Helpers\Constants\Goal\Type;
 
 // Models
+use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Goal\Goal;
 use App\Models\Goal\GoalActionItem;
 use App\Models\Goal\GoalCategory;
@@ -44,11 +45,20 @@ class GoalTest extends TestCase
             'goal_id' => $goals->random()->id,
         ]);
 
-
         // Generate a action item and grab the UUID for testing
-        $fake_action_item = GoalActionItem::factory()->create();
+        do
+        {
+            $fake_action_item = GoalActionItem::factory()->create();
+        } while($fake_action_item->reminders->count() < 1);
+        $fake_reminder = $fake_action_item->reminders->first();
+        $reminder_uuid = $fake_reminder->uuid;
+        $this->assertTrue($fake_reminder->delete());
         $action_item_uuid = $fake_action_item->uuid;
         $this->assertTrue($fake_action_item->delete());
+
+        // Test delete reminder route
+        $response = $this->actingAs($user)->post(route('goals.destroy.reminder', ['reminder' => $reminder_uuid]));
+        $response->assertStatus(404);
 
         // Test toggle completed routes
         $response = $this->actingAs($user)->post(route('goals.toggle-achieved.goal', ['goal' => $goal_uuid]));
@@ -78,6 +88,23 @@ class GoalTest extends TestCase
         $response = $this->actingAs($user)->post(route('goals.destroy.goal', ['goal' => $goal_uuid]));
         $response->assertStatus(404);
         $response = $this->actingAs($user)->post(route('goals.destroy.action-item', ['action_item' => $action_item_uuid]));
+        $response->assertStatus(404);
+
+        // Create a bucketlist item and test the bucketlist routes
+        $bucketlist_item = BucketlistItem::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $bucketlist_item_uuid = $bucketlist_item->uuid;
+        $this->assertTrue($bucketlist_item->delete());
+
+        // Test bucketlist routes
+        $response = $this->actingAs($user)->post(route('goals.bucketlist-deadline.set', ['bucketlist_item' => $bucketlist_item_uuid, 'goal' => $goal_uuid]));
+        $response->assertStatus(404);
+        $response = $this->actingAs($user)->post(route('goals.bucketlist-deadline.clear', ['bucketlist_item' => $bucketlist_item_uuid]));
+        $response->assertStatus(404);
+        $response = $this->actingAs($user)->post(route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $bucketlist_item_uuid]));
+        $response->assertStatus(404);
+        $response = $this->actingAs($user)->get(route('goals.view.bucketlist-item', ['bucketlist_item' => $bucketlist_item_uuid]));
         $response->assertStatus(404);
     }
 
@@ -109,7 +136,20 @@ class GoalTest extends TestCase
         ]);
 
         // Get a forbidden UUID
-        $action_item_uuid = $action_items->random()->uuid;
+        do
+        {
+            $action_item = $action_items->random();
+            $action_item_uuid = $action_item->uuid;
+            if($action_item->reminders->count() > 0)
+            {
+                $reminder_uuid = $action_item->reminders->first()->uuid;
+            }
+
+        } while($action_item->reminders->count() < 1);
+
+        // Test delete reminder route
+        $response = $this->actingAs($test_user)->post(route('goals.destroy.reminder', ['reminder' => $reminder_uuid]));
+        $response->assertStatus(403);
 
         // Test toggle completed routes
         $response = $this->actingAs($test_user)->post(route('goals.toggle-achieved.goal', ['goal' => $goal_uuid]));
@@ -139,6 +179,22 @@ class GoalTest extends TestCase
         $response = $this->actingAs($test_user)->post(route('goals.destroy.goal', ['goal' => $goal_uuid]));
         $response->assertStatus(403);
         $response = $this->actingAs($test_user)->post(route('goals.destroy.action-item', ['action_item' => $action_item_uuid]));
+        $response->assertStatus(403);
+
+        // Create a bucketlist item and test the bucketlist routes
+        $bucketlist_item = BucketlistItem::factory()->create([
+            'user_id' => $forbidden_user->id,
+        ]);
+        $bucketlist_item_uuid = $bucketlist_item->uuid;
+
+        // Test bucketlist routes
+        $response = $this->actingAs($test_user)->post(route('goals.bucketlist-deadline.set', ['bucketlist_item' => $bucketlist_item_uuid, 'goal' => $goal_uuid]));
+        $response->assertStatus(403);
+        $response = $this->actingAs($test_user)->post(route('goals.bucketlist-deadline.clear', ['bucketlist_item' => $bucketlist_item_uuid]));
+        $response->assertStatus(403);
+        $response = $this->actingAs($test_user)->post(route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $bucketlist_item_uuid]));
+        $response->assertStatus(403);
+        $response = $this->actingAs($test_user)->get(route('goals.view.bucketlist-item', ['bucketlist_item' => $bucketlist_item_uuid]));
         $response->assertStatus(403);
     }
 
@@ -742,5 +798,188 @@ class GoalTest extends TestCase
 
         $sub_goal->refresh();
         $this->assertEquals($sub_goal->parent_id, $goal->id);
+    }
+
+    /**
+     * Tests creating action item reminder
+     *
+     * @return void
+     * @test
+     */
+    public function testReminders()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a goal
+        $goal = Goal::factory()->actionPlan()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Create an action item
+        do
+        {
+            $action_item = GoalActionItem::factory()->create([
+                'goal_id' => $goal->id,
+            ]);
+        } while($action_item->reminders->count() < 1);
+
+        // Delete reminders
+        foreach($action_item->reminders as $reminder)
+        {
+            // Send data to delete to-do item
+            $response = $this->actingAs($user)->post(route('goals.destroy.reminder', ['reminder' => $reminder->uuid]), [
+                '_token' => csrf_token(),
+            ]);
+
+            // Verify redirected back to to do list properly
+            $response->assertRedirect('/goals/edit/reminders/' . $action_item->uuid);
+        }
+
+        $action_item->refresh();
+        $this->assertTrue($action_item->reminders->count() == 0);
+
+        // Call the edit reminders route
+        $response = $this->actingAs($user)->get(route('goals.edit.reminders', ['action_item' => $action_item->uuid]));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2>Edit Reminders</h2>', false);
+        $response->assertSee('action="' . route('goals.store.reminder', ['action_item' => $action_item->uuid]), false);
+        $response->assertSee('<button class="add" type="submit">Add</button>', false);
+
+        // Create a reminder
+        $response = $this->actingAs($user)->post(route('goals.store.reminder', ['action_item' => $action_item->uuid]), [
+            '_token' => csrf_token(),
+            'date' => '2021-09-24',
+            'time' => '14:17',
+        ]);
+
+        // Verify redirected back to the reminders page properly
+        $response->assertRedirect('/goals/edit/reminders/' . $action_item->uuid);
+
+        // Verify it shows up on the edit categories page now
+        $response = $this->actingAs($user)->get(route('goals.edit.reminders', ['action_item' => $action_item->uuid]));
+        $response->assertStatus(200);
+        $response->assertSee('Fri, Sep 24 @ 2:17 PM');
+
+        // Refresh to check the reminder is there now
+        $action_item->refresh();
+        $this->assertTrue($action_item->reminders->count() > 0);
+    }
+
+    /**
+     * Tests the goal bucketlist item view
+     *
+     * @return void
+     * @test
+     */
+    public function testViewBucketlistItem()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a goal
+        $goal = Goal::factory()->adHoc()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Create a bucketlist item with a goal id
+        $bucketlist_item = BucketlistItem::factory()->create([
+            'user_id' => $user->id,
+            'goal_id' => $goal->id,
+            'deadline' => '2021-10-01',
+            'achieved' => false,
+        ]);
+
+        // Call the view bucketlist item route
+        $response = $this->actingAs($user)->get(route('goals.view.bucketlist-item', ['bucketlist_item' => $bucketlist_item->uuid]));
+        $response->assertStatus(200);
+        $response->assertSee($bucketlist_item->name);
+        $response->assertSee('Notes', false);
+        $response->assertSee('10/1/21');
+    }
+
+    /**
+     * Tests toggling achieved on a bucketlist item
+     *
+     * @return void
+     * @test
+     */
+    public function testToggleBucketlistItem()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create goal
+        $goal = Goal::factory()->adHoc()->create(['user_id' => $user->id]);
+
+        // Create a bucketlist item with a goal id
+        $bucketlist_item = BucketlistItem::factory()->create([
+            'user_id' => $user->id,
+            'goal_id' => $goal->id,
+            'deadline' => '2021-10-01',
+            'achieved' => false,
+        ]);
+
+        // Toggle action item
+        $response = $this->actingAs($user)->post(route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $bucketlist_item->uuid, 'view_details' => true]));
+        $response->assertRedirect("/goals/view/bucketlist-item/$bucketlist_item->uuid");
+
+        // Check if it's toggled
+        $bucketlist_item->refresh();
+        $this->assertTrue((bool) $bucketlist_item->achieved);
+
+        // Check if we get the proper redirect without details
+        $response = $this->actingAs($user)->post(route('goals.toggle-achieved.bucketlist-item', ['bucketlist_item' => $bucketlist_item->uuid]));
+        $response->assertRedirect("/goals/view/goal/$goal->uuid?selected-dropdown=action-plan");
+
+        // Check if it's toggled
+        $bucketlist_item->refresh();
+        $this->assertFalse((bool) $bucketlist_item->achieved);
+    }
+
+    /**
+     * Tests setting and clearing a deadline for a bucketlist item
+     *
+     * @return void
+     * @test
+     */
+    public function testBucketlistItemDeadline()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create goal
+        $goal = Goal::factory()->adHoc()->create(['user_id' => $user->id]);
+
+        // Create a bucketlist item with a goal id
+        $bucketlist_item = BucketlistItem::factory()->create([
+            'user_id' => $user->id,
+            'goal_id' => $goal->id,
+            'deadline' => null,
+            'achieved' => false,
+        ]);
+
+        // Set deadline
+        $response = $this->actingAs($user)->post(route('goals.bucketlist-deadline.set', ['bucketlist_item' => $bucketlist_item->uuid, 'goal' => $goal->uuid]), [
+            '_token' => csrf_token(),
+            'deadline' => '2021-10-01',
+        ]);
+        $response->assertRedirect("/goals/view/goal/$goal->uuid?selected-dropdown=ad-hoc-list");
+
+        // Check if it has a deadline
+        $bucketlist_item->refresh();
+        $this->assertEquals($bucketlist_item->deadline, '2021-10-01');
+
+        // Clear deadline
+        $response = $this->actingAs($user)->post(route('goals.bucketlist-deadline.clear', ['bucketlist_item' => $bucketlist_item->uuid, 'view_details' => true]), [
+            '_token' => csrf_token(),
+        ]);
+        $response->assertRedirect("/goals/view/bucketlist-item/$bucketlist_item->uuid/$goal->uuid");
+
+        // Check if it's toggled
+        $bucketlist_item->refresh();
+        $this->assertNull($bucketlist_item->deadline);
     }
 }

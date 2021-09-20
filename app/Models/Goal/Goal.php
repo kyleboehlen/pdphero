@@ -483,7 +483,10 @@ class Goal extends Model
 
     public function loadBucketlistAdHocItems()
     {
-        $this->adHocItems = BucketlistItem::whereNull('goal_id')->whereNull('deadline')->where('achieved', 0)->orderBy('name')->get();
+        $this->adHocItems =
+            BucketlistItem::whereNull('goal_id')->whereNull('deadline')
+                ->where('user_id', $this->user_id)->where('achieved', 0)
+                ->orderBy('name')->get();
     }
 
     public function adHocItems()

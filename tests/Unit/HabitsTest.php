@@ -33,10 +33,20 @@ class HabitsTest extends TestCase
         ]);
 
         // Generate a todo and grab the UUID for testing
-        $fake_habit = Habits::factory()->create();
+        do
+        {
+            $fake_habit = Habits::factory()->create();
+        } while($fake_habit->reminders->count() < 1);
         $uuid = $fake_habit->uuid;
+        $fake_reminder = $fake_habit->reminders->first();
+        $reminder_uuid = $fake_reminder->uuid;
+        $this->assertTrue($fake_reminder->delete());
         $this->assertTrue($fake_habit->delete());
 
+        // Test delete reminder route
+        $response = $this->actingAs($user)->post(route('habits.destroy.reminder', ['reminder' => $reminder_uuid]));
+        $response->assertStatus(404);
+        
         // Test edit route
         $response = $this->actingAs($user)->get(route('habits.edit', ['habit' => $uuid]));
         $response->assertStatus(404);
@@ -73,7 +83,20 @@ class HabitsTest extends TestCase
         ]);
 
         // Get a forbidden UUID
-        $uuid = Habits::where('user_id', $forbidden_user->id)->first()->uuid;
+        $habits = Habits::where('user_id', $forbidden_user->id)->get();
+        foreach($habits as $f_h)
+        {
+            $uuid = $f_h->uuid;
+            if($f_h->reminders->count() > 0)
+            {
+                $reminder_uuid = $f_h->reminders->first()->uuid;
+                break;
+            }
+        }
+
+        // Test delete reminder route
+        $response = $this->actingAs($test_user)->post(route('habits.destroy.reminder', ['reminder' => $reminder_uuid]));
+        $response->assertStatus(403);
 
         // Test edit route
         $response = $this->actingAs($test_user)->get(route('habits.edit', ['habit' => $uuid]));
@@ -657,5 +680,67 @@ class HabitsTest extends TestCase
         $response = $this->actingAs($user)->get(route('todo.list'));
         $response->assertStatus(200);
         $response->assertSee("$habit->name");
+    }
+
+    /**
+     * Tests creating a habits reminder
+     *
+     * @return void
+     * @test
+     */
+    public function testReminders()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a habit
+        do
+        {
+            $habit = Habits::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        } while($habit->reminders->count() < 1);
+
+        // Delete reminders
+        foreach($habit->reminders as $reminder)
+        {
+            // Send data to delete to-do item
+            $response = $this->actingAs($user)->post(route('habits.destroy.reminder', ['reminder' => $reminder->uuid]), [
+                '_token' => csrf_token(),
+            ]);
+
+            // Verify redirected back to to do list properly
+            $response->assertRedirect('/habits/edit/reminders/' . $habit->uuid);
+        }
+
+        $habit->refresh();
+        $this->assertTrue($habit->reminders->count() == 0);
+
+        // Call the edit reminders route
+        $response = $this->actingAs($user)->get(route('habits.edit.reminders', ['habit' => $habit->uuid]));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2>Edit Reminders</h2>', false);
+        $response->assertSee('action="' . route('habits.store.reminder', ['habit' => $habit->uuid]), false);
+        $response->assertSee('<button class="add" type="submit">Add</button>', false);
+
+        // Create a reminder
+        $response = $this->actingAs($user)->post(route('habits.store.reminder', ['habit' => $habit->uuid]), [
+            '_token' => csrf_token(),
+            'time' => '14:17',
+        ]);
+
+        // Verify redirected back to the reminders page properly
+        $response->assertRedirect('/habits/edit/reminders/' . $habit->uuid);
+
+        // Verify it shows up on the edit categories page now
+        $response = $this->actingAs($user)->get(route('habits.edit.reminders', ['habit' => $habit->uuid]));
+        $response->assertStatus(200);
+        $response->assertSee('On required days @ 2:17 PM');
+
+        // Refresh to check the reminder is there now
+        $habit->refresh();
+        $this->assertTrue($habit->reminders->count() > 0);
     }
 }

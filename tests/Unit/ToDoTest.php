@@ -8,9 +8,11 @@ use Tests\TestCase;
 use Carbon\Carbon;
 
 // Constants
+use App\Helpers\Constants\Habits\Type as HabitType;
 use App\Helpers\Constants\ToDo\Type;
 
 // Models
+use App\Models\Habits\Habits;
 use App\Models\User\User;
 use App\Models\ToDo\ToDo;
 use App\Models\ToDo\ToDoCategory;
@@ -34,9 +36,19 @@ class ToDoTest extends TestCase
         ]);
 
         // Generate a todo and grab the UUID for testing
-        $fake_todo = ToDo::factory()->create();
+        do
+        {
+            $fake_todo = ToDo::factory()->create();
+        } while($fake_todo->reminders->count() < 1);
         $uuid = $fake_todo->uuid;
+        $fake_reminder = $fake_todo->reminders->first();
+        $reminder_uuid = $fake_reminder->uuid;
+        $this->assertTrue($fake_reminder->delete());
         $this->assertTrue($fake_todo->delete());
+
+        // Test delete reminder route
+        $response = $this->actingAs($user)->post(route('todo.destroy.reminder', ['reminder' => $reminder_uuid]));
+        $response->assertStatus(404);
 
         // Test edit route
         $response = $this->actingAs($user)->get(route('todo.edit', ['todo' => $uuid]));
@@ -116,7 +128,20 @@ class ToDoTest extends TestCase
             ]);
 
         // Get a forbidden UUID
-        $uuid = ToDo::where('user_id', $forbidden_user->id)->first()->uuid;
+        $todos = ToDo::where('user_id', $forbidden_user->id)->get();
+        foreach($todos as $f_t)
+        {
+            $uuid = $f_t->uuid;
+            if($f_t->reminders->count() > 0)
+            {
+                $reminder_uuid = $f_t->reminders->first()->uuid;
+                break;
+            }
+        }
+
+        // Test delete reminder route
+        $response = $this->actingAs($test_user)->post(route('todo.destroy.reminder', ['reminder' => $reminder_uuid]));
+        $response->assertStatus(403);
 
         // Test edit route
         $response = $this->actingAs($test_user)->get(route('todo.edit', ['todo' => $uuid]));
@@ -456,5 +481,194 @@ class ToDoTest extends TestCase
 
         // Assert it's no longer completed
         $this->assertFalse((bool) $item->completed);
+    }
+
+    /**
+     * Tests creating, assigning, and displaying a todo category
+     *
+     * @return void
+     * @test
+     */
+    public function testCreateCategory()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a todo items
+        $todo_item = ToDo::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Call the edit categories route
+        $response = $this->actingAs($user)->get(route('todo.edit.categories'));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2>Edit Categories</h2>', false);
+        $response->assertSee('<input type="text" name="name" placeholder="Add a new category" maxlength="255" />', false);
+        $response->assertSee('<button class="add" type="submit">Add</button>', false);
+
+        // Create a category
+        $response = $this->actingAs($user)->post(route('todo.store.category'), [
+            '_token' => csrf_token(),
+            'name' => 'Test Category',
+        ]);
+
+        // Verify redirected back to the categories page properly
+        $response->assertRedirect('/todo/edit/categories');
+
+        // Verify it shows up on the edit categories page now
+        $response = $this->actingAs($user)->get(route('todo.edit.categories'));
+        $response->assertStatus(200);
+        $response->assertSee('Test Category');
+
+        // Refresh use to get the category id
+        $user->refresh();
+        $category = $user->todoCategories()->first();
+
+        // Assign it to a todo item
+        $todo_item->category_id = $category->id;
+        $this->assertTrue($todo_item->save());
+
+        // Check the todo page to see if the category select shows up
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $response->assertSee($category->uuid);
+    }
+
+    /**
+     * Tests that the delete category route works
+     *
+     * @return void
+     * @test
+     */
+    public function testDestroyCategory()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Give it a to do category
+        $category = ToDoCategory::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Verify it has a category
+        $this->assertEquals($user->todoCategories()->get()->count(), 1);
+
+        // Send data to delete to-do category
+        $response = $this->actingAs($user)->post(route('todo.destroy.category', ['category' => $category->uuid]), [
+            '_token' => csrf_token(),
+        ]);
+
+        // Verify redirected back to the manage todo categories page properly
+        $response->assertRedirect('/todo/edit/categories');
+
+        // Refresh user and get todo categories
+        $user->refresh();
+        $category = $user->todoCategories()->first();
+
+        // Verify it's not returned now
+        $this->assertNull($category);
+    }
+
+    /**
+     * Tests that the affirmations/journaling habits push to the todo list
+     *
+     * @return void
+     * @test
+     */
+    public function testShowSpecialHabits()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Generate affirmations habit
+        $response = $this->actingAs($user)->get(route('habits'));
+        $response->assertRedirect('/habits');
+        $affirmations_habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::AFFIRMATIONS_HABIT)->first();
+        $this->assertIsObject($affirmations_habit);
+
+        // Generate journaling habit
+        $response = $this->actingAs($user)->get(route('habits'));
+        $response->assertRedirect('/habits');
+        $journaling_habit = Habits::where('user_id', $user->id)->where('type_id', HabitType::JOURNALING_HABIT)->first();
+        $this->assertIsObject($journaling_habit);
+
+        // Set affirmations habit to show up on todo list
+        $affirmations_habit->show_todo = true;
+        $this->assertTrue($affirmations_habit->save());
+
+        // Set journling habit to show up on todo list
+        $journaling_habit->show_todo = true;
+        $this->assertTrue($journaling_habit->save());
+
+        // Check todo list for both affirmations and journaling habit todos
+        $response = $this->actingAs($user)->get(route('todo.list'));
+        $response->assertStatus(200);
+        $response->assertSee('Journaling Habit');
+        $response->assertSee('Affirmations Habit (9 more times)');
+    }
+
+    /**
+     * Tests creating a todo reminder
+     *
+     * @return void
+     * @test
+     */
+    public function testReminders()
+    {
+        // Create test user
+        $user = User::factory()->create();
+
+        // Create a todo item
+        do
+        {
+            $todo_item = ToDo::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        } while($todo_item->reminders->count() < 1);
+
+        // Delete reminders
+        foreach($todo_item->reminders as $reminder)
+        {
+            // Send data to delete to-do item
+            $response = $this->actingAs($user)->post(route('todo.destroy.reminder', ['reminder' => $reminder->uuid]), [
+                '_token' => csrf_token(),
+            ]);
+
+            // Verify redirected back to to do list properly
+            $response->assertRedirect('/todo/edit/reminders/' . $todo_item->uuid);
+        }
+
+        $todo_item->refresh();
+        $this->assertTrue($todo_item->reminders->count() == 0);
+
+        // Call the edit reminders route
+        $response = $this->actingAs($user)->get(route('todo.edit.reminders', ['todo' => $todo_item->uuid]));
+        $response->assertStatus(200);
+
+        // Check for various important parts of the form
+        $response->assertSee('<h2>Edit Reminders</h2>', false);
+        $response->assertSee('action="' . route('todo.store.reminder', ['todo' => $todo_item->uuid]), false);
+        $response->assertSee('<button class="add" type="submit">Add</button>', false);
+
+        // Create a reminder
+        $response = $this->actingAs($user)->post(route('todo.store.reminder', ['todo' => $todo_item->uuid]), [
+            '_token' => csrf_token(),
+            'date' => '2021-09-24',
+            'time' => '14:17',
+        ]);
+
+        // Verify redirected back to the reminders page properly
+        $response->assertRedirect('/todo/edit/reminders/' . $todo_item->uuid);
+
+        // Verify it shows up on the edit categories page now
+        $response = $this->actingAs($user)->get(route('todo.edit.reminders', ['todo' => $todo_item->uuid]));
+        $response->assertStatus(200);
+        $response->assertSee('Fri, Sep 24 @ 2:17 PM');
+
+        // Refresh to check the reminder is there now
+        $todo_item->refresh();
+        $this->assertTrue($todo_item->reminders->count() > 0);
     }
 }

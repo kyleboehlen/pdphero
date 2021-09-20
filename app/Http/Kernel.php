@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
         'goal.uuid' => \App\Http\Middleware\Goal\UUID::class,
         'goal.action_item.uuid' => \App\Http\Middleware\Goal\ActionItemUUID::class,
         'goal.category.uuid' => \App\Http\Middleware\Goal\CategoryUUID::class,
-        'goal.reminder.uuid' => \App\Http\Middleware\Goal\CategoryUUID::class,
+        'goal.reminder.uuid' => \App\Http\Middleware\Goal\ReminderUUID::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'habits.uuid' => \App\Http\Middleware\Habits\UUID::class,
         'habits.reminder.uuid' => \App\Http\Middleware\Habits\ReminderUUID::class,

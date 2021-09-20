@@ -33,7 +33,7 @@ class GoalActionItemReminder extends Model
         $timezone = \Auth::user()->timezone ?? 'America/Denver';
         $carbon = Carbon::parse($this->remind_at)->setTimezone('UTC')->setTimezone($timezone);
 
-        return $carbon->format('D, M j, g:i A');
+        return $carbon->format('D, M j @ g:i A');
     }
 
     // Action item relationship

@@ -14,6 +14,7 @@ use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Affirmations\Affirmations;
+use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
 use App\Models\User\User;
@@ -622,5 +623,87 @@ class SettingsTest extends TestCase
         $response = $this->actingAs($user)->get(route('goals.view.goal', ['goal' => $goal->uuid]));
         $response->assertStatus(200);
         $this->assertTrue(!strpos('Add an Ad Hoc Item', $response->getContent()));
+    }
+
+    /**
+     * Tests the show home icon setting
+     *
+     * @return void
+     * @test
+     */
+    public function testShowHomeIcon()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::SHOW_HOME_ICON;
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Call settings and verify it can be seen
+        $response = $this->actingAs($user)->get(route('profile.edit.settings'));
+        $response->assertStatus(200);
+        $response->assertSee('Home icon');
+
+        // Verify home icon shows up
+        $response = $this->actingAs($user)->get(route('profile'));
+        $response->assertStatus(200);
+        $response->assertSee('/assets/icons/home-black.png', false);
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+        ]);
+
+        // Verify redirected back properly
+        $response->assertRedirect("/profile/edit/settings#anchor-$setting_id");
+
+        // Refresh model
+        $user->refresh();
+
+        // And double check the user is returning the new value
+        $this->assertFalse((bool) $user->getSettingValue($setting_id));
+
+        // Call profile and verify it's gone
+        $response = $this->actingAs($user)->get(route('profile'));
+        $response->assertStatus(200);
+        $this->assertTrue(!strpos('/assets/icons/home-black.png', $response->getContent()));
+    }
+
+    /**
+     * Tests the show empty bucketlist item setting
+     *
+     * @return void
+     * @test
+     */
+    public function testShowEmptyBucketlistItem()
+    {
+        // Create test user and set setting id
+        $user = User::factory()->create();
+        $setting_id = Setting::SHOW_EMPTY_BUCKETLIST_ITEM;
+
+        // Create test bucketlist item
+        BucketlistItem::factory()->create(['user_id' => $user->id, 'achieved' => false]);
+
+        // Double check default setting
+        $default = config('settings.default');
+        $this->assertEquals($default[$setting_id], $user->getSettingValue($setting_id));
+
+        // Verify it doesn't show up
+        $response = $this->actingAs($user)->get(route('bucketlist'));
+        $response->assertStatus(200);
+        $this->assertFalse(strpos('Create a new Bucketlist Item', $response->getContent()));
+
+        // Check the edit form actually works to update it
+        $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
+            '_token' => csrf_token(),
+            'value' => Setting::TOP_OF_LIST,
+        ]);
+
+        // Verify it shows up on list
+        $response = $this->actingAs($user)->get(route('bucketlist'));
+        $response->assertStatus(200);
+        $response->assertSee('Create a new Bucketlist Item');
     }
 }
