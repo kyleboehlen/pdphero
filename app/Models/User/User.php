@@ -10,8 +10,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Laravel\Cashier\Billable; // Stripe
 use Carbon\Carbon;
+use Log;
 
 // Constants
+use App\Helpers\Constants\User\Setting;
 use App\Helpers\Constants\Habits\Type as HabitsType;
 use App\Helpers\Constants\ToDo\Type as ToDoType;
 
@@ -29,6 +31,15 @@ use App\Models\Habits\Habits;
 use App\Models\Relationships\UsersHideHome;
 use App\Models\ToDo\ToDo;
 use App\Models\ToDo\ToDoCategory;
+use App\Models\User\SMSLimits;
+
+// Notifications
+use App\Notifications\SMSLimit\Basic;
+use App\Notifications\SMSLimit\BlackLabel;
+use App\Notifications\SMSLimit\Trial;
+
+// Notification Channels
+use NotificationChannels\WebPush\WebPushChannel;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -78,7 +89,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function routeNotificationForNexmo($notification)
     {
-        return $this->sms_number;
+        return '1' . substr($this->sms_number, -10);
     }
 
     /**
@@ -212,5 +223,128 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hideHomeArray()
     {
         return $this->hasMany(UsersHideHome::class, 'user_id', 'id')->get()->pluck('home_id')->toArray();
+    }
+
+    public function getNotificationChannel()
+    {
+        // Check memebership
+        if($this->getTrialDaysLeft() == 0 && !$this->subscribed(config('membership.basic.slug')) && !$this->subscribed(config('membership.black_label.slug')))
+        {
+            return null;
+        }
+
+        // Return notification channel
+        $notification_channel = $this->getSettingValue(Setting::NOTIFICATION_CHANNEL);
+        switch($notification_channel)
+        {
+            case Setting::NOTIFICATION_EMAIL:
+                return ['mail'];
+                break;
+
+            case Setting::NOTIFICATION_SMS:
+                if(!$this->checkSMSLimit())
+                {
+                    return null;   
+                }
+                return ['nexmo'];
+                break;
+
+            case Setting::NOTIFICATION_WEBPUSH:
+                return [WebPushChannel::class];
+                break;
+
+            default:
+                return null;
+                break;
+        }
+    }
+
+    private function checkSMSLimit()
+    {
+        $carbon = Carbon::now();
+        $month = $carbon->format('n');
+        $year = $carbon->format('Y');
+
+        // Get/create SMS limit for the month
+        $sms_limit = SMSLimit::where('user_id', $this->id)->where('month', $month)->where('year', $year)->first();
+        if(is_null($sms_limit))
+        {
+            $data = [
+                'user_id' => $this->id,
+                'month' => $month,
+                'year' => $year,
+            ];
+
+            $sms_limit = new SMSLimit($data);
+
+            if(!$sms_limit->save())
+            {
+                Log::error('Failed to create SMSLimits model when checking user SMS limits', $data);
+                return true;
+            }
+        }
+
+        // Check user membership
+        if($this->subscribed(config('membership.basic.slug')))
+        {
+            // Check if user has upgraded
+            if($this->subscription(config('membership.basic.slug'))->stripe_plan == config('membership.black_label.stripe_price_id'))
+            {
+                $this->subscription(config('membership.basic.slug'))->update(['name' => config('membership.black_label.slug')]);
+                return $this->checkSMSLimit();
+            }
+
+            $sms_limit = config('sms.basic_limit');
+            $notification = new Basic();
+            $notify_property = 'notify_basic';
+        }
+        elseif($this->subscribed(config('membership.black_label.slug')))
+        {
+            $sms_limit = config('sms.black_label_limit');
+            $notification = new BlackLabel();
+            $notify_property = 'notify_black_label';
+        }
+        elseif($this->getTrialDaysLeft() > 0)
+        {
+            $sent_limit = config('sms.trial_limit');
+            $notification = new Trial();
+            $notify_property = 'notify_trial';
+        }
+
+        if($sms_limit->sent >= $sent_limit)
+        {
+            if(!$sms_limit->$notify_property)
+            {
+                $this->notify($notification);
+
+                $sms_limit->$notify_property = true;
+                if(!$sms_limit->save())
+                {
+                    $data = [
+                        'user_id' => $this->id,
+                        'month' => $month,
+                        'year' => $year,
+                    ];
+        
+                    Log::error("Failed to set SMSLimit $notify_property sent", $data);
+                }
+            }
+
+            return false;
+        }
+
+        $sms_limit->sent = $sms_limit->sent + 1;
+        if(!$sms_limit->save())
+        {
+            $data = [
+                'user_id' => $this->id,
+                'month' => $month,
+                'year' => $year,
+            ];
+
+            Log::error('Failed to increment SMSLimit sent', $data);
+        }
+
+        return true;
     }
 }

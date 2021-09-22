@@ -41,28 +41,14 @@ class ActionItemReminder extends Notification
      */
     public function via($notifiable)
     {
+        // Get user
         $this->action_item->load('goal');
         $user = User::find($this->action_item->goal->user_id);
-        $notification_channel = $user->getSettingValue(Setting::NOTIFICATION_CHANNEL);
 
-        switch($notification_channel)
-        {
-            case Setting::NOTIFICATION_EMAIL:
-                return ['mail'];
-                break;
+        // Get notification channel array
+        $notification_channel = $user->getNotificationChannel();
 
-            case Setting::NOTIFICATION_SMS:
-                return ['nexmo'];
-                break;
-
-            case Setting::NOTIFICATION_WEBPUSH:
-                return [WebPushChannel::class];
-                break;
-
-            default:
-                return null;
-                break;
-        }
+        return $notification_channel;
     }
 
     /**

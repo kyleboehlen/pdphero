@@ -75,6 +75,7 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('to_do_reminders'));
         $this->assertTrue(Schema::hasTable('bucketlist_categories'));
         $this->assertTrue(Schema::hasTable('bucketlist_items'));
+        $this->assertTrue(Schema::hasTable('sms_limits'));
     }
 
     /**
