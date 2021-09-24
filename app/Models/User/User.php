@@ -294,24 +294,24 @@ class User extends Authenticatable implements MustVerifyEmail
                 return $this->checkSMSLimit();
             }
 
-            $sms_limit = config('sms.basic_limit');
+            $max_sent = config('sms.basic_limit');
             $notification = new Basic();
             $notify_property = 'notify_basic';
         }
         elseif($this->subscribed(config('membership.black_label.slug')))
         {
-            $sms_limit = config('sms.black_label_limit');
+            $max_sent = config('sms.black_label_limit');
             $notification = new BlackLabel();
             $notify_property = 'notify_black_label';
         }
         elseif($this->getTrialDaysLeft() > 0)
         {
-            $sent_limit = config('sms.trial_limit');
+            $max_sent = config('sms.trial_limit');
             $notification = new Trial();
             $notify_property = 'notify_trial';
         }
 
-        if($sms_limit->sent >= $sent_limit)
+        if($sms_limit->sent >= $max_sent)
         {
             if(!$sms_limit->$notify_property)
             {

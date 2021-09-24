@@ -22,7 +22,7 @@ class CreateGoalActionItemRemindersTable extends Migration
             // Other columns
             $table->uuid('uuid')->unique();
             $table->bigInteger('action_item_id')->unsigned();
-            $table->timestamp('remind_at');
+            $table->timestamp('remind_at')->nullable();
 
             // Constraints
             $table->foreign('action_item_id')->references('id')->on('goal_action_items');

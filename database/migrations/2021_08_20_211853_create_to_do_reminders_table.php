@@ -22,7 +22,7 @@ class CreateToDoRemindersTable extends Migration
             // Other columns
             $table->uuid('uuid')->unique();
             $table->bigInteger('to_do_id')->unsigned();
-            $table->timestamp('remind_at');
+            $table->timestamp('remind_at')->nullable();
 
             // Constraints
             $table->foreign('to_do_id')->references('id')->on('to_dos');
