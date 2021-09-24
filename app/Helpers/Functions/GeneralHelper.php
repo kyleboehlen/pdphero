@@ -362,14 +362,11 @@ if(!function_exists('buildActionItemTodos'))
         {
             if($goal->actionItems->count() > 0)
             {
-                // Get current action item todos
-                $action_item_array = GoalActionItemsTodo::whereIn('action_item_id', $goal->actionItems->pluck('id'))->get()->pluck('action_item_id')->toArray();
-
                 // Iterate through the action items
                 foreach($goal->actionItems as $action_item)
                 {
-                    // Skip if it's already been created or if it's already been completed
-                    if(!in_array($action_item->id, $action_item_array) && !$action_item->achieved)
+                    // Skip if it's already been completed
+                    if(!$action_item->achieved)
                     {
                         // Instantiate vars
                         $push_todo = false;
@@ -390,7 +387,7 @@ if(!function_exists('buildActionItemTodos'))
                                 $days_to_deadline = $default_for_goal;
                             }
                         }
-
+                        
                         // Determine if we should create the todo
                         $create_todo = false; // Start by assuming we're not creating the todo
                         if($push_todo)
@@ -416,28 +413,72 @@ if(!function_exists('buildActionItemTodos'))
 
                         if($create_todo)
                         {
-                            // Create the todo and relationship
-                            $action_item_todo = new ToDo([
-                                'user_id' => $user->id,
-                                'title' => $action_item->name,
-                                'type_id' => ToDoType::ACTION_ITEM,
-                                'notes' => "Automatically generated for goal ($goal->name) action item $action_item->name" . PHP_EOL . PHP_EOL . $action_item->notes,
-                                'completed' => false,
-                            ]);
-    
-                            if(!$action_item_todo->save())
+                            // Check if a previously created soft deleted todo exsists
+                            $trashed_todo = $action_item->todo()->withTrashed()->first();
+                            if(!is_null($trashed_todo))
                             {
-                                $failures++;
+                                $trashed_todo->restore(); // And restore it
                             }
-                            else
+                            else // Or create a new one
                             {
-                                if(!GoalActionItemsToDo::create([
-                                    'action_item_id' => $action_item->id,
-                                    'to_do_id' => $action_item_todo->id,
-                                ]))
+                                // Create the todo and relationship
+                                $action_item_todo = new ToDo([
+                                    'user_id' => $user->id,
+                                    'title' => $action_item->name,
+                                    'type_id' => ToDoType::ACTION_ITEM,
+                                    'notes' => "Automatically generated for goal ($goal->name) action item $action_item->name" . PHP_EOL . PHP_EOL . $action_item->notes,
+                                    'completed' => false,
+                                ]);
+        
+                                if(!$action_item_todo->save())
                                 {
                                     $failures++;
                                 }
+                                else
+                                {
+                                    if(!GoalActionItemsToDo::create([
+                                        'action_item_id' => $action_item->id,
+                                        'to_do_id' => $action_item_todo->id,
+                                    ]))
+                                    {
+                                        $failures++;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Determine if we should delete the todo
+                        $delete_todo = false; // Start by assuming we're not deleting the todo
+                        if($push_todo) // If it is supposed to be pushed, let's make sure it's within it's time period
+                        {
+                            // Create deadline carbon
+                            $deadline = Carbon::parse($action_item->deadline)->setTimezone($timezone);
+
+                            // If we're already past the deadline, it doesn't need to be deleted
+                            if(!$user_date->greaterThan($deadline))
+                            {
+                                // If it's outside the days to deadline period, we delete it
+                                $diff_in_days = $deadline->diffInDays($user_date);
+
+                                if($diff_in_days > $days_to_deadline)
+                                {
+                                    $delete_todo = true;
+                                }
+                            }
+                        }
+                        else // It's not supposed to be pushed anymore, and we delete it
+                        {
+                            $delete_todo = true;
+                        }
+
+                        if($delete_todo)
+                        {
+                            $action_item->load('todo');
+                            if(!is_null($action_item->todo) && !$action_item->todo->delete())
+                            {
+                                Log::error('Failed to delete todo item for action item that is no longer eligible to be push to the todo list.', [
+                                    $action_item => $action_item->toArray(),
+                                ]);
                             }
                         }
                     }

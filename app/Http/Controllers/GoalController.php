@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Storage;
 use Image;
@@ -495,6 +496,17 @@ class GoalController extends Controller
         {
             // Log error
             Log::error('Failed to clear action item deadline', $action_item->toArray());
+        }
+	else // Delete any associated To-do items
+        {
+            $action_item->load('todo');
+            if(!is_null($action_item->todo))
+            {
+                if(!$action_item->todo->delete())
+                {
+                    Log::error('Failed to delete To-Do item associated when clearing Ad Hoc action item deadline', $action_item->toArray());
+                }
+            }
         }
 
         // Return detail view
@@ -1060,6 +1072,27 @@ class GoalController extends Controller
                         'goal->id' => $goal->id,
                     ]);
                 }
+                else
+                {
+                    // Purge from cloudflare task
+                    $response = Http::withHeaders([
+                        'X-Auth-Email' => config('cloudflare.auth_email'),
+                        'X-Auth-Key' => config('cloudflare.api_key'),
+                    ])->post(config('cloudflare.api_url') . str_replace('{zone_id}', config('cloudflare.zone_id'), config('cloudflare.cache_endpoint')), [
+                        'files' => [
+                            url(asset("goal-images/$goal->uuid.png")),
+                        ],
+                    ]);
+
+                    $response_body = json_decode($response->body());
+
+                    if(!$response_body->success)
+                    {
+                        Log::error('Failed to purge goal image asset from cloudflare on goal update', [
+                            'errors' => $response_body->errors,
+                        ]);
+                    }
+                }
             }
             catch(\Exception $e)
             {
@@ -1086,6 +1119,19 @@ class GoalController extends Controller
         if($request->has('name'))
         {
             $action_item->name = $request->get('name');
+
+            $action_item_todo = $action_item->todo()->withTrashed()->first();
+            if(!is_null($action_item_todo))
+            {
+                $action_item_todo->title = $action_item->name;
+                if(!$action_item_todo->save())
+                {
+                    // Log error
+                    Log::error('Failed to update todo title when updating action item name', [
+                        'action_item' => $action_item->toArray(),
+                    ]);
+                }
+            }
         }
 
         if($request->has('notes'))
