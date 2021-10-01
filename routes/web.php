@@ -421,3 +421,9 @@ Route::prefix('bucketlist')->group(function(){
     // Destroy
     Route::post('destroy/{bucketlist_item}', [BucketlistController::class, 'destroy'])->name('bucketlist.destroy');
 });
+
+// Addictions
+Route::prefix('addictions')->group(function(){
+    // Index
+    Route::get('/', [AddictionController::class, 'index'])->name('addictions');
+});

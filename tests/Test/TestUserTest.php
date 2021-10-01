@@ -9,6 +9,7 @@ use Tests\TestCase;
 use App\Helpers\Constants\Goal\Type as GoalType;
 
 // Models
+use App\Models\Addictions\Addiction;
 use App\Models\Affirmations\Affirmations;
 use App\Models\Bucketlist\BucketlistItem;
 use App\Models\Feature\Feature;
@@ -213,5 +214,21 @@ class TestUserTest extends TestCase
         ]);
 
         $this->assertTrue(JournalEntry::where('user_id', $user->id)->get()->count() >= 200);
+    }
+
+    /**
+     * Give test user addictions (sorry buddy)
+     * 
+     * @depends userTest
+     * @test
+     */
+    public function addictionsTest(User $user)
+    {
+        // Generate addictions
+        Addiction::factory(rand(1, 5))->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertTrue(Addiction::where('user_id', $user->id)->get()->count() >= 1);
     }
 }

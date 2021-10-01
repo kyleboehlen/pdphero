@@ -10,6 +10,8 @@ use Hash;
 use DB;
 
 // Models
+use App\Models\Addictions\AddictionMethod;
+use App\Models\Addictions\AddictionRelapseType;
 use App\Models\FirstVisit\FirstVisitMessages;
 use App\Models\Goal\GoalTimePeriod;
 use App\Models\Goal\GoalType;
@@ -76,6 +78,11 @@ class DeployTest extends TestCase
         $this->assertTrue(Schema::hasTable('bucketlist_categories'));
         $this->assertTrue(Schema::hasTable('bucketlist_items'));
         $this->assertTrue(Schema::hasTable('sms_limits'));
+        $this->assertTrue(Schema::hasTable('addiction_methods'));
+        $this->assertTrue(Schema::hasTable('addictions'));
+        $this->assertTrue(Schema::hasTable('addiction_relapse_types'));
+        $this->assertTrue(Schema::hasTable('addiction_relapses'));
+        $this->assertTrue(Schema::hasTable('addiction_milestones'));
     }
 
     /**
@@ -120,5 +127,11 @@ class DeployTest extends TestCase
 
         // First visit messages
         $this->assertEquals(configArrayFromSeededCollection(FirstVisitMessages::all()), config('first-visit.messages'));
+
+        // Addiction methods
+        $this->assertEquals(configArrayFromSeededCollection(AddictionMethod::all()), config('addictions.methods'));
+
+        // Addiction relapse types
+        $this->assertEquals(configArrayFromSeededCollection(AddictionRelapseType::all()), config('addictions.relapse.types'));
     }
 }

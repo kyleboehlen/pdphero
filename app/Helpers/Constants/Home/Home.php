@@ -15,4 +15,5 @@ class Home
     const FEATURE_VOTE = 9;
     const TUTORIALS = 10;
     const BUCKET_LIST = 11;
+    const ADDICTIONS = 12;
 }
