@@ -169,10 +169,11 @@ class AffirmationsTest extends TestCase
         {
             $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
             $response->assertStatus(200);
-            usleep(300000);
+            usleep(100);
         }
 
         // Verify that calling the read function returns the read page redirect
+        sleep(2);
         $response = $this->actingAs($user)->post(route('affirmations.read.check'), [
             '_token' => csrf_token(),
         ]);
@@ -184,22 +185,11 @@ class AffirmationsTest extends TestCase
         // And that a read log was added
         $this->assertTrue($user->affirmationsReadLog->count() == 1);
 
-        // Go though all the affirmations and check that the good job page is not shown now
-        foreach($user->affirmations as $affirmation)
-        {
-            $response = $this->actingAs($user)->get(route('affirmations.show', ['affirmation' => $affirmation->uuid]));
-            $response->assertStatus(200);
-        }
-
-        // Refresh model
-        $user->refresh();
-        $uuid = $user->affirmations->first()->uuid;
-
-        // Verify that calling the read function returns the read page redirect
+        // Verify that calling the read function returns the affirmations redirect
         $response = $this->actingAs($user)->post(route('affirmations.read.check'), [
             '_token' => csrf_token(),
         ]);
-        $response->assertRedirect("/affirmations/show/$uuid");
+        $response->assertRedirect("/affirmations");
     }
 
     /**
