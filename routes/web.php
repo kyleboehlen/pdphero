@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AddictionController;
 use App\Http\Controllers\AffirmationsController;
 use App\Http\Controllers\BucketListController;
 use App\Http\Controllers\FeatureVoteController;
@@ -426,4 +427,19 @@ Route::prefix('bucketlist')->group(function(){
 Route::prefix('addictions')->group(function(){
     // Index
     Route::get('/', [AddictionController::class, 'index'])->name('addictions');
+
+    // View details
+    Route::get('details/{addiction}', [AddictionController::class, 'details'])->name('addiction.details');
+
+    // Create/edit routes
+    Route::get('create', [AddictionController::class, 'create'])->name('addiction.create');
+    Route::post('store', [AddictionController::class, 'store'])->name('addiction.store');
+    Route::get('edit/{addiction}', [AddictionController::class, 'edit'])->name('addiction.edit');
+    Route::post('update/{addiction}', [AddictionController::class, 'update'])->name('addiction.update');
+
+    // Milestones routes
+    Route::get('milestones/{addiction}', [AddictionController::class, 'milestones'])->name('addiction.milestones');
+
+    // Destroy route
+    Route::post('destory/{addiction}', [AddictionController::class, 'destroy'])->name('addiction.destroy');
 });

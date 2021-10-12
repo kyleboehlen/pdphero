@@ -11,7 +11,7 @@
         @endif
 
         @if(in_array('back', $show))
-            <a href="{{ route('addictions.view.details', ['addiction' => $addiction->uuid]) }}"><li>Back To Details</li></a>
+            <a href="{{ route('addiction.details', ['addiction' => $addiction->uuid]) }}"><li>Back To Details</li></a>
         @endif
 
         {{-- TODO: add relapse option - maybe change the wording based on method/num times used --}}
@@ -21,7 +21,7 @@
         @endif
 
         @if(in_array('milestones', $show))
-            <a href="{{ route('addictions.edit.milestones', ['addiction' => $addiction->uuid]) }}"><li>Edit Milestones</li></a>
+            <a href="{{ route('addiction.milestones', ['addiction' => $addiction->uuid]) }}"><li>Edit Milestones</li></a>
         @endif
 
         @if(in_array('create', $show))

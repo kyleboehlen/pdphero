@@ -18,6 +18,16 @@ class Addiction extends Model
 {
     use HasFactory, HasUuidTrait, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'name', 'method_id', 'details', 'start_date',
+    ];
+
+
     // Relationships
     public function milestones()
     {

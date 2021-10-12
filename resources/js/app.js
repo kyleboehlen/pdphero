@@ -444,6 +444,25 @@ $(document).ready(function(){
         }
     });
 
+    // Addiction method selector
+    $.fn.addictionMethodSelectChange = function(){
+        var moderation = $('#method-selector').data('moderation');
+        var value = $('#method-selector').val();
+
+        if(value == moderation)
+        {
+            $('#moderation-span').show();
+        }
+        else
+        {
+            $('#moderation-span').hide();
+        }
+    }
+    $.fn.addictionMethodSelectChange(); // check on doc load
+    $('#method-selector').change(function(){
+        $.fn.addictionMethodSelectChange();
+    });
+
     // Web push shit
     $.fn.checkPushNotificationsPermission = function(){
         // If the browser doesn't support push notifications
@@ -460,7 +479,7 @@ $(document).ready(function(){
             $('.request-webpush').hide();
         }
     }
-    $.fn.checkPushNotificationsPermission();
+    $.fn.checkPushNotificationsPermission(); // check on doc load
     $('#request-webpush').click(function(){
         requestPushPermission();
     });

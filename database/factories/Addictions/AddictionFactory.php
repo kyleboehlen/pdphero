@@ -42,10 +42,12 @@ class AddictionFactory extends Factory
         {
             $moderated_date_format = array_rand(config('addictions.date_formats'));
             $moderated_amount = rand(1, config('addictions.date_formats')[$moderated_date_format]['max']);
+            $moderated_period = rand(1, 10);
         }
         else
         {
             $moderated_amount = null;
+            $moderated_period = null;
             $moderated_date_format = null;
         }
 
@@ -56,8 +58,9 @@ class AddictionFactory extends Factory
             'name' => $this->faker->words(rand(1, 3), true),
             'method_id' => $method_id,
             'details' => $this->faker->paragraph(),
-            'start_date' => array_rand([true, false]) ? $start_date : null,
+            'start_date' => $start_date,
             'moderated_amount' => $moderated_amount,
+            'moderated_period' => $moderated_period,
             'moderated_date_format' => $moderated_date_format,
         ];
     }

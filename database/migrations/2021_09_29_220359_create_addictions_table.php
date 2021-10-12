@@ -26,8 +26,9 @@ class CreateAddictionsTable extends Migration
             $table->string('name');
             $table->tinyInteger('method_id')->unsigned();
             $table->text('details');
-            $table->date('start_date')->nullable();
+            $table->date('start_date');
             $table->smallInteger('moderated_amount')->unsigned()->nullable();
+            $table->smallInteger('moderated_period')->unsigned()->nullable();
             $table->enum('moderated_date_format', array_keys(config('addictions.date_formats')))->nullable();
             
             // Constraints
