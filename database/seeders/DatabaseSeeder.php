@@ -49,6 +49,9 @@ class DatabaseSeeder extends Seeder
         // Addiction Methods
         $this->call(AddictionMethodsSeed::class);
 
+        // Addiction Date Formats
+        $this->call(AddictionDateFormatsSeed::class);
+
         // Relapse Types
         $this->call(AddictionRelapseTypesSeed::class);
     }

@@ -40,15 +40,15 @@ class AddictionFactory extends Factory
         $method_id = array_rand(config('addictions.methods'));
         if($method_id == Method::MODERATION)
         {
-            $moderated_date_format = array_rand(config('addictions.date_formats'));
-            $moderated_amount = rand(1, config('addictions.date_formats')[$moderated_date_format]['max']);
+            $moderated_date_format_id = array_rand(config('addictions.date_formats'));
+            $moderated_amount = rand(1, config('addictions.date_formats')[$moderated_date_format_id]['max']);
             $moderated_period = rand(1, 10);
         }
         else
         {
             $moderated_amount = null;
             $moderated_period = null;
-            $moderated_date_format = null;
+            $moderated_date_format_id = null;
         }
 
         $start_date = Carbon::now()->subDays(rand(1, 450))->toDateString();
@@ -61,7 +61,7 @@ class AddictionFactory extends Factory
             'start_date' => $start_date,
             'moderated_amount' => $moderated_amount,
             'moderated_period' => $moderated_period,
-            'moderated_date_format' => $moderated_date_format,
+            'moderated_date_format_id' => $moderated_date_format_id,
         ];
     }
 }

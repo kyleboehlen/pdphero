@@ -39,7 +39,11 @@ class AddictionController extends Controller
      */
     public function index(Request $request)
     {
-        return view('addictions.list');
+        $addictions = Addiction::where('user_id', $request->user()->id)->get();
+
+        return view('addictions.list')->with([
+            'addictions' => $addictions,
+        ]);
     }
 
     public function details(Addiction $addiction)

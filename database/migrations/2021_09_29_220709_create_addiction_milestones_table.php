@@ -24,12 +24,13 @@ class CreateAddictionMilestonesTable extends Migration
             $table->uuid('uuid')->unique();
             $table->string('name');
             $table->tinyInteger('amount');
-            $table->enum('date_format', array_keys(config('addictions.date_formats')));
+            $table->tinyInteger('date_format_id')->unsigned();
             $table->text('reward')->nullable();
             $table->boolean('reached')->default(0);
 
             // Constraints
             $table->foreign('addiction_id')->references('id')->on('addictions');
+            $table->foreign('date_format_id')->references('id')->on('addiction_date_formats');
         });
     }
 

@@ -22,6 +22,253 @@ header.app
 
 div.app-container
 {
+    &.list
+    {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        overflow-y: scroll;
+    
+        @media only screen and (max-width: 800px)
+        {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-y: scroll;
+        }
+    }
+
+    div.addiction
+    {
+        align-self: stretch;
+        border: $thin-border solid $light-grey;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        margin: .5%;
+        width: 45%;
+
+        @media only screen and (max-width: 1650px)
+        {
+            font-size: .9em;
+        }
+
+        @media only screen and (max-width: 1550px)
+        {
+            font-size: .8em;
+        }
+
+        @media only screen and (max-width: 1300px)
+        {
+            font-size: .95em;
+            margin: 1%; 
+            width: 98%;
+        }
+
+        @media only screen and (max-width: 925px)
+        {
+            font-size: .8em;
+        }
+        
+        @media only screen and (max-width: 800px)
+        {
+            font-size: 1em;
+            width: 96.5%;
+        }
+
+        @media only screen and (max-width: 650px)
+        {
+            font-size: .9em;
+        }
+
+        @media only screen and (max-width: 575px)
+        {
+            font-size: .8em;
+        }
+
+        @media only screen and (max-width: 500px)
+        {
+            font-size: .7em;
+        }
+
+        @media only screen and (max-width: 425px)
+        {
+            font-size: .6em;
+        }
+
+        @media only screen and (max-width: 350px)
+        {
+            font-size: .5em;
+        }
+
+
+        img.method-img
+        {
+            align-self: center;
+            border-radius: 10px;
+            margin: 1%;
+            max-width: 27.5%;
+            padding: 1.25%;
+            
+            @media only screen and (max-width: 500px)
+            {
+                max-width: 22.5%;
+            }
+        }
+
+        div.info
+        {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-width: 72.5%;
+            text-align: center;
+
+            @media only screen and (max-width: 500px)
+            {
+                min-width: 77.5%;
+            }
+
+            a
+            {
+                height: auto;
+                text-decoration: none;
+                width: 100%;
+    
+                h2
+                {
+                    color: $white;
+                    font-family: $header-font;
+                    font-size: 1.85em;
+                    font-weight: normal;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    width: 100%;
+                }
+    
+                &:hover > h2
+                {
+                    text-shadow: 1.5px 1px $white;
+                }
+            }
+    
+            span.usage
+            {
+                align-self: center;
+                flex-direction: column;
+                height: auto;
+                text-decoration: none;
+                width: 100%;
+    
+                p
+                {
+                    color: $white;
+                    font-family: $header-font;
+                    font-size: 2.5em;
+                    font-weight: normal;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    width: 100%;
+
+                    span.color
+                    {
+                        &.green
+                        {
+                            color: $green;
+                        }
+        
+                        &.yellow
+                        {
+                            color: $yellow;
+                        }
+        
+                        &.red
+                        {
+                            color: $red;
+                        }
+                    }
+                }
+            }
+
+            span.milestone
+            {
+                align-self: center;
+                flex-direction: column;
+                height: auto;
+                text-decoration: none;
+                width: 100%;
+    
+                p
+                {
+                    color: $white;
+                    font-family: $header-font;
+                    font-size: 1.75em;
+                    font-weight: normal;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    width: 100%;
+
+                    &.green
+                    {
+                        color: $green;
+                    }
+    
+                    &.yellow
+                    {
+                        color: $yellow;
+                    }
+                
+                }
+            }
+
+            p.elapsed-time
+            {
+                color: $white;
+                font-family: $header-font;
+                font-size: 1.1em;
+                font-weight: normal;
+                margin-bottom: 0;
+                margin-top: 0;
+                padding-left: 1%;
+                padding-right: 5%;
+
+                span.green
+                {
+                    color: $green;
+                    font-size: 1.85em;
+                }
+            }
+        }
+    }
+
+    div.empty
+    {
+        align-self: center;
+        border-style: dashed;
+
+        img.empty
+        {
+            align-self: center;
+            border-radius: 10px;
+            margin: 1%;
+            max-width: 32.5%;
+
+            padding: 25px;
+            padding-left: 50px;
+
+            @media only screen and (max-width: 420px)
+            {
+                padding-left: 25px;
+            }
+
+            @media only screen and (max-width: 420px)
+            {
+                max-width: 30%;
+            }
+        }
+    }
+
     form.addiction
     {
         @extend %base-form;

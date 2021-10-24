@@ -567,12 +567,12 @@ if(!function_exists('buildDefaultMilestones'))
                 'addiction_id' => $addiction->id,
                 'name' => $default['name'],
                 'amount' => $default['amount'],
-                'date_format' => $default['date_format'],
+                'date_format_id' => $default['date_format'],
             ]);
 
             if(!$milestone->save())
             {
-                // Log::error('Failed to save default addiction milestone', $milestone->toArray());
+                Log::error('Failed to save default addiction milestone', $milestone->toArray());
             }
         }
     }

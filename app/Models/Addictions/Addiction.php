@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use JamesMills\Uuid\HasUuidTrait;
+use Carbon\Carbon;
 
 // Constants
+use App\Helpers\Constants\Addiction\DateFormat;
 use App\Helpers\Constants\Addiction\RelapseType;
 
 // Models
@@ -31,11 +33,71 @@ class Addiction extends Model
     // Relationships
     public function milestones()
     {
-        return $this->hasMany(AddictionMilestone::class, 'addiction_id', 'id')->orderBy('days');
+        return $this->hasMany(AddictionMilestone::class, 'addiction_id', 'id')->orderBy('date_format_id')->orderBy('amount');
     }
+
+    public function pendingMilestones()
+    {
+        return $this->hasMany(AddictionMilestone::class, 'addiction_id', 'id')->where('reached', 0)->orderBy('date_format_id')->orderBy('amount');
+    }
+
+    public function reachedMilestones()
+    {
+        return $this->hasMany(AddictionMilestone::class, 'addiction_id', 'id')->where('reached', 1)->orderBy('date_format_id')->orderBy('amount');
+    }
+
 
     public function relapses()
     {
         return $this->hasMany(AddictionRelapse::class, 'addiction_id', 'id')->where('type_id', RelapseType::FULL_RELAPSE);
+    }
+
+    public function usage()
+    {
+        $carbon = Carbon::now();
+
+        switch($this->moderated_date_format)
+        {
+            case DateFormat::MINUTE:
+                $carbon->subMinutes($this->moderated_amount);
+                break;
+            
+            case DateFormat::HOUR:
+                $carbon->subHours($this->moderated_amount);
+                break;
+
+            case DateFormat::DAY:
+                $carbon->subWeeks($this->moderated_amount);
+                break;
+
+            case DateFormat::MONTH:
+                $carbon->subMonths($this->moderated_amount);
+                break;
+
+            case DateFormat::YEAR:
+                $carbon->subYears($this->moderated_amount);
+                break;
+        }
+
+        return
+            $this->hasMany(AddictionRelapse::class, 'addiction_id', 'id')
+                ->where('type_id', RelapseType::MODERATED_USE)->where('created_at', '>=', $carbon->toDatetimeString());
+    }
+
+    public function getElapsedCarbon()
+    {
+        $relapses = $this->relapses()->get();
+
+        if($relapses->count() > 0)
+        {
+            $carbon = Carbon::parse($relapses->last()->created_at);
+        }
+        else
+        {
+            $created_at = Carbon::parse($this->created_at);
+            $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date . $created_at->format(' H:i:s'));
+        }
+
+        return Carbon::now()->diff($carbon);
     }
 }

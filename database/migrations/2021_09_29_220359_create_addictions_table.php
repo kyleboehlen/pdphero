@@ -29,11 +29,12 @@ class CreateAddictionsTable extends Migration
             $table->date('start_date');
             $table->smallInteger('moderated_amount')->unsigned()->nullable();
             $table->smallInteger('moderated_period')->unsigned()->nullable();
-            $table->enum('moderated_date_format', array_keys(config('addictions.date_formats')))->nullable();
+            $table->tinyInteger('moderated_date_format_id')->unsigned()->nullable();
             
             // Constraints
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('method_id')->references('id')->on('addiction_methods');
+            $table->foreign('moderated_date_format_id')->references('id')->on('addiction_date_formats');
         });
     }
 

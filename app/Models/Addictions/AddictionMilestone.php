@@ -15,6 +15,6 @@ class AddictionMilestone extends Model
      * @var array
      */
     protected $fillable = [
-        'addiction_id', 'name', 'amount', 'date_format',
+        'addiction_id', 'name', 'amount', 'date_format_id',
     ];
 }
