@@ -141,4 +141,15 @@ class AddictionController extends Controller
 
         return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
     }
+
+    public function destroy(Addiction $addiction)
+    {
+        if(!$addiction->delete())
+        {
+            Log::error('Failed to delete addiction', $addiction->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('addictions');
+    }
 }
