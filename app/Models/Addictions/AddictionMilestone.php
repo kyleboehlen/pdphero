@@ -5,6 +5,9 @@ namespace App\Models\Addictions;
 use Illuminate\Database\Eloquent\Model;
 use JamesMills\Uuid\HasUuidTrait;
 
+// Models
+use App\Models\Addictions\Addiction;
+
 class AddictionMilestone extends Model
 {
     use HasUuidTrait;
@@ -15,6 +18,12 @@ class AddictionMilestone extends Model
      * @var array
      */
     protected $fillable = [
-        'addiction_id', 'name', 'amount', 'date_format_id',
+        'addiction_id', 'name', 'amount', 'date_format_id', 'reward'
     ];
+
+    // Relationships
+    public function addiction()
+    {
+        return $this->hasOne(Addiction::class, 'id', 'addiction_id');
+    }
 }

@@ -438,7 +438,12 @@ Route::prefix('addictions')->group(function(){
     Route::post('update/{addiction}', [AddictionController::class, 'update'])->name('addiction.update');
 
     // Milestones routes
-    Route::get('milestones/{addiction}', [AddictionController::class, 'milestones'])->name('addiction.milestones');
+    Route::prefix('milestones')->group(function(){
+        Route::get('{addiction}', [AddictionController::class, 'milestones'])->name('addiction.milestones');
+        Route::get('create/{addiction}', [AddictionController::class, 'milestoneForm'])->name('addiction.milestone.create');
+        Route::post('store/{addiction}', [AddictionController::class, 'storeMilestone'])->name('addiction.milestone.store');
+        Route::post('destroy/{milestone}', [AddictionController::class, 'destroyMilestone'])->name('addiction.milestone.destroy');
+    });
 
     // Destroy route
     Route::post('destory/{addiction}', [AddictionController::class, 'destroy'])->name('addiction.destroy');

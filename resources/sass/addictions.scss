@@ -472,4 +472,235 @@ div.app-container
             @include cancel-submit-buttons;
         }
     }
+
+    form.create-milestone
+    {
+        @extend %base-form;
+
+        height: 60%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 0;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.75em;
+            }
+        }
+
+        input.milestone-amount
+        {
+            font-size: 1.75em;
+            margin-right: 2.5%;
+            max-width: 10%;
+            padding: 0;
+            padding-bottom: 5px;
+            padding-right: 5px;
+            text-align: center;
+            width: auto;
+
+            @media only screen and (max-width: 1300px)
+            {
+                max-width: 15%;
+            }
+
+            @media only screen and (max-width: 500px)
+            {
+                max-width: 20%;
+            }
+
+            @media only screen and (max-width: 375px)
+            {
+                max-width: 30%;
+            }
+        }
+
+        textarea
+        {
+            min-height: 12.5vh;
+
+            @media only screen and (max-width: 500px)
+            {
+                min-height: 22.5vh;
+            }
+        }
+
+        select
+        {
+            background-color: $dark-grey;
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.75em;
+            margin-left: 2.5%;
+            min-width: 20%;
+            padding-left: .5%;
+            padding-right: .5%;
+            text-align: center;
+
+            @media only screen and (max-width: 500px)
+            {
+                min-width: 40%;
+            }
+
+            @media only screen and (max-width: 375px)
+            {
+                min-width: 50%;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+        }
+    }
+
+    &.milestones-list
+    {
+        @extend %flex-container;
+
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-y: scroll;
+        padding: 0;
+        text-align: center;
+
+        h2
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 2em;
+            margin-bottom: 2.5%;
+            margin-top: 1%;
+            width: 50%;
+        }
+
+        div.milestone
+        {
+            @include add-delete-list-item;
+
+            margin-bottom: 0%;
+            margin-top: .5%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                margin-top: 1%;
+            }
+
+            &:last-of-type
+            {
+                margin-bottom: 0%;
+                margin-top: .5%;
+        
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-top: .5%;
+                }
+        
+                @media only screen and (max-width: 800px)
+                {
+                    margin-bottom: 0%;
+                    margin-top: .5%;
+                }
+            }
+
+            &.empty
+            {
+                border: $thin-border dashed $light-grey;
+                text-align: center;
+
+                @media only screen and (max-width: 1300px)
+                {
+                    margin-top: 5%;
+                }
+
+                a
+                {
+                    color: $white;
+                    display: inline-block;
+                    font-family: $body-font;
+                    font-size: 2.5em;
+                    margin: 0;
+                    margin-left: 2.5%;
+                    text-decoration: none;
+        
+                    @media only screen and (max-width: 1300px)
+                    {
+                        font-size: 2.25em;
+                    }
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        font-size: 1.85em;
+                    }
+
+                    &:hover
+                    {
+                        text-shadow: 1.5px 1px $white;
+                    }
+                }
+            }
+        }
+
+        div.reward
+        {
+            align-self: flex-start;
+            border: $thin-border solid $light-grey;
+            border-top: 0;
+            border-radius: 0px 0px 10px 10px;
+            flex-shrink: 0;
+            margin-left: 25.5%;
+            margin-top: 0;
+            text-align: left;
+            width: 45%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                margin-left: 8%;
+                width: 80%;
+            }
+        
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 4.5%;
+                width: 85%;
+            }
+
+            p
+            {
+                color: $white;
+                display: inline-block;
+                font-family: $body-font;
+                font-size: 2em;
+                margin-bottom: .5%;
+                margin-left: 2.5%;
+                margin-right: 1.5%;
+                margin-top: .5%;
+    
+                @media only screen and (max-width: 1300px)
+                {
+                    font-size: 1.75em;
+                }
+    
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.35em;
+                }
+            }
+
+            &:last-of-type
+            {
+                margin-bottom: 2.5%;
+            }
+        }
+    }
 }

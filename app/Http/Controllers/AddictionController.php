@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Constants
+use App\Helpers\Constants\Addiction\DateFormat;
 use App\Helpers\Constants\Addiction\Method;
 
 // Models
 use App\Models\Addictions\Addiction;
+use App\Models\Addictions\AddictionMilestone;
 
 // Requests
 use App\Http\Requests\Addictions\StoreRequest;
+use App\Http\Requests\Addictions\StoreMilestoneRequest;
 use App\Http\Requests\Addictions\UpdateRequest;
 
 class AddictionController extends Controller
@@ -142,6 +145,15 @@ class AddictionController extends Controller
         return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
     }
 
+    public function milestones(Addiction $addiction)
+    {
+        $addiction->load('milestones');
+
+        return view('addictions.milestones')->with([
+            'addiction' => $addiction,
+        ]);
+    }
+
     public function destroy(Addiction $addiction)
     {
         if(!$addiction->delete())
@@ -151,5 +163,67 @@ class AddictionController extends Controller
         }
 
         return redirect()->route('addictions');
+    }
+
+    public function milestoneForm(Addiction $addiction)
+    {
+        $date_formats = config('addictions.date_formats');
+
+        return view('addictions.create-milestone')->with([
+            'addiction' => $addiction,
+            'date_formats' => $date_formats,
+        ]);
+    }
+
+    public function storeMilestone(StoreMilestoneRequest $request, Addiction $addiction)
+    {
+        $amount = $request->get('milestone-amount');
+        $milestone_date_format = $request->get('milestone-date-format');
+        $max = config('addictions.date_formats')[$milestone_date_format]['max'];
+        if($amount > $max)
+        {
+            return redirect()->back()->withErrors([
+                'milestone-amount' => 'Max value for ' . config('addictions.date_formats')[$milestone_date_format]['name'] . ' is ' . $max,
+            ]);
+        }
+        
+        // Create new addiciton
+        $milestone = new AddictionMilestone([
+            'addiction_id' => $addiction->id,
+            'name' => $request->get('name'),
+            'amount' => $amount,
+            'date_format_id' => $milestone_date_format,
+            'reward' => $request->get('reward'),
+        ]);
+
+        if(!$milestone->save())
+        {
+            // Log error
+            Log::error('Failed to store new addiction milestone.', [
+                'user->id' => $user->id,
+                'milestone' => $milestone->toArray(),
+                'request_values' => $request->all(),
+            ]);
+
+            // Redirect back with old values and error
+            return redirect()->back()->withInput($request->input())->withErrors([
+                'error' => 'Something went wrong trying to create the milestone, please try again.'
+            ]);
+        }
+
+        return redirect()->route('addiction.milestones', ['addiction' => $addiction->uuid]);
+    }
+
+    public function destroyMilestone(AddictionMilestone $milestone)
+    {
+        $milestone->load('addiction');
+
+        if(!$milestone->delete())
+        {
+            Log::error('Failed to delete addiction milestone', $milestone->toArray());
+            return redirect()->back();
+        }
+
+        return redirect()->route('addiction.milestones', ['addiction' => $milestone->addiction->uuid]);
     }
 }
