@@ -95,6 +95,9 @@ class AddictionController extends Controller
             ]);
         }
 
+        // Create default milestones
+        buildDefaultMilestones($addiction);
+
         return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
     }
 
@@ -118,13 +121,13 @@ class AddictionController extends Controller
         {
             $addiction->moderated_amount = $request->get('moderation-amount');
             $addiction->moderated_period = $request->get('moderation-period');
-            $addiction->moderated_date_format = $request->get('moderation-date-format');
+            $addiction->moderated_date_format_id = $request->get('moderation-date-format');
         }
         else
         {
             $addiction->moderated_amount = null;
             $addiction->moderated_period = null;
-            $addiction->moderated_date_format = null;
+            $addiction->moderated_date_format_id = null;
         }
 
         if(!$addiction->save())

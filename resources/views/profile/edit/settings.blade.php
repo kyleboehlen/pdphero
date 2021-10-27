@@ -9,6 +9,11 @@
 
     <div class="app-container settings">
 
+        <h2 id="addictions-settings-header" class="settings">Addictions</h2>
+
+        {{-- Setting that handles whether or not we send notifications when milestones are reached --}}
+        <x-settings.checkbox-setting :id="$setting::SEND_ADDICTION_MILESTONE_NOTIFICATIONS" text="Send a notification when milestones are reached" />
+
         <h2 id="affirmations-settings-header" class="settings">Affirmations</h2>
 
         {{-- Setting that handles whether or not the affirmations read page is shown --}}

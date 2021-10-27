@@ -19,6 +19,7 @@ class Setting
     const SHOW_HOME_ICON = 12;
     const NOTIFICATION_CHANNEL = 13;
     const SHOW_EMPTY_BUCKETLIST_ITEM = 14;
+    const SEND_ADDICTION_MILESTONE_NOTIFICATIONS = 15;
 
     // Settings options
     const HABITS_ROLLING_SEVEN_DAYS = 'rolling_seven_days';

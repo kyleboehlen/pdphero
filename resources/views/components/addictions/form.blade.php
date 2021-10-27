@@ -1,5 +1,5 @@
 <form class="addiction" method="POST"
-    @isset($item)
+    @isset($addiction)
         action="{{ route('addiction.update', ['addiction' => $addiction->uuid]) }}"
     @else
         action="{{ route('addiction.store') }}"

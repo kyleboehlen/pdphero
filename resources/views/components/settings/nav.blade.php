@@ -6,6 +6,7 @@
     <x-app.nav-logo />
 
     <ul class="list settings">
+        <a class="close-nav" href="#addictions-settings-header"><li>Addictions</li></a>
         <a class="close-nav" href="#affirmations-settings-header"><li>Affirmations</li></a>
         <a class="close-nav" href="#bucketlist-settings-header"><li>Bucketlist</li></a>
         <a class="close-nav" href="#general-settings-header"><li>General</li></a>

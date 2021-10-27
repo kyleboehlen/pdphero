@@ -59,7 +59,7 @@ class Card extends Component
             }
             else
             {
-                $this->milestone_name = $acheieved_milestones->first()->name;
+                $this->milestone_name = $acheieved_milestones->last()->name;
             }
         }
 

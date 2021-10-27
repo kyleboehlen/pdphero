@@ -15,6 +15,7 @@ use App\Helpers\Constants\Addiction\RelapseType;
 // Models
 use App\Models\Addictions\AddictionMilestone;
 use App\Models\Addictions\AddictionRelpase;
+use App\Models\User\User;
 
 class Addiction extends Model
 {
@@ -46,12 +47,16 @@ class Addiction extends Model
         return $this->hasMany(AddictionMilestone::class, 'addiction_id', 'id')->where('reached', 1)->orderBy('date_format_id')->orderBy('amount');
     }
 
-
     public function relapses()
     {
         return $this->hasMany(AddictionRelapse::class, 'addiction_id', 'id')->where('type_id', RelapseType::FULL_RELAPSE);
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+    
     public function usage()
     {
         $carbon = Carbon::now();
@@ -67,7 +72,7 @@ class Addiction extends Model
                 break;
 
             case DateFormat::DAY:
-                $carbon->subWeeks($this->moderated_amount);
+                $carbon->subDays($this->moderated_amount);
                 break;
 
             case DateFormat::MONTH:
@@ -84,7 +89,7 @@ class Addiction extends Model
                 ->where('type_id', RelapseType::MODERATED_USE)->where('created_at', '>=', $carbon->toDatetimeString());
     }
 
-    public function getElapsedCarbon()
+    public function getStartCarbon()
     {
         $relapses = $this->relapses()->get();
 
@@ -97,6 +102,13 @@ class Addiction extends Model
             $created_at = Carbon::parse($this->created_at);
             $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date . $created_at->format(' H:i:s'));
         }
+
+        return $carbon;
+    }
+
+    public function getElapsedCarbon()
+    {
+        $carbon = $this->getStartCarbon();
 
         return Carbon::now()->diff($carbon);
     }

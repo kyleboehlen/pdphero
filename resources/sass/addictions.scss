@@ -240,31 +240,59 @@ div.app-container
                 }
             }
         }
-    }
 
-    div.empty
-    {
-        align-self: center;
-        border-style: dashed;
-
-        img.empty
+        &.empty
         {
+            align-items: center;
             align-self: center;
-            border-radius: 10px;
-            margin: 1%;
-            max-width: 32.5%;
+            border-style: dashed;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
 
-            padding: 25px;
-            padding-left: 50px;
-
-            @media only screen and (max-width: 420px)
+            a
             {
-                padding-left: 25px;
+                height: auto;
+                text-decoration: none;
+                margin-right: 25px;
+    
+                h2
+                {
+                    color: $white;
+                    font-family: $header-font;
+                    font-size: 1.85em;
+                    font-weight: normal;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    width: 100%;
+                }
+    
+                &:hover > h2
+                {
+                    text-shadow: 1.5px 1px $white;
+                }
             }
-
-            @media only screen and (max-width: 420px)
+    
+            img.empty
             {
-                max-width: 30%;
+                align-self: center;
+                border-radius: 10px;
+                margin: 1%;
+                max-width: 32.5%;
+    
+                padding: 25px;
+                padding-left: 25px;
+    
+                @media only screen and (max-width: 420px)
+                {
+                    padding-left: 25px;
+                }
+    
+                @media only screen and (max-width: 420px)
+                {
+                    max-width: 30%;
+                }
             }
         }
     }

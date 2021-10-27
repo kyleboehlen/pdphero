@@ -28,6 +28,10 @@
             <a href="{{ route('addiction.create') }}"><li>Create New Addiction</li></a>
         @endif
 
+        @if(in_array('create-milestone', $show))
+            <a href="{{ route('addiction.milestone.create', ['addiction' => $addiction->uuid]) }}"><li>Create New Milestone</li></a>
+        @endif
+
         @if(in_array('delete', $show))
             <form id="delete-addiction-form" action="{{ route('addiction.destroy', ['addiction' => $addiction->uuid]) }}" method="POST">
                 @csrf

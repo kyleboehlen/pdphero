@@ -21,9 +21,24 @@ nav.app
     {
         a
         {
+            li
+            {
+                margin-bottom: 5%;
+    
+                @media only screen and (max-width: 800px)
+                {
+                    margin-bottom: 2.5%;
+                }
+    
+                @media only screen and (max-height: 900px)
+                {
+                    margin-bottom: 1%;
+                }
+            }
+            
             &.destructive-option
             {
-                top: 15%;
+                top: 7.5%;
             }
         }
     }
