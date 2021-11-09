@@ -38,6 +38,319 @@ div.app-container
         }
     }
 
+    &.details
+    {
+        display: block;
+        overflow-y: scroll;
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.6em;
+            text-align: center;
+
+            &.method
+            {
+                margin-bottom: 0;
+                margin-top: .5%;
+                text-align: center;
+                width: 100%;
+            }
+
+            &.elapsed-time
+            {
+                font-family: $header-font;
+                font-size: 1.15em;
+                margin: 0;
+                margin-top: 1%;
+
+                @media only screen and (max-width: 600px)
+                {
+                    font-size: .95em;
+                }
+
+                @media only screen and (max-width: 400px)
+                {
+                    font-size: .8em;
+                }
+
+                span.green
+                {
+                    color: $green;
+                    font-size: 1.85em;
+                }
+            }
+
+            &.milestone
+            {
+                font-family: $header-font;
+                font-size: 2.5em;
+                font-weight: bolder;
+                margin-top: 2.5%;
+
+                @media only screen and (max-width: 600px)
+                {
+                    font-size: 2em;
+                }
+
+                @media only screen and (max-width: 400px)
+                {
+                    font-size: 1.65em;
+                }
+
+                &.green
+                {
+                    color: $green;
+                }
+
+                &.yellow
+                {
+                    color: $yellow;
+                }
+            }
+
+            &.usage
+            {
+                font-size: 3.75em;
+                margin-bottom: 0;
+                margin-top: 2%;
+
+                @media only screen and (max-width: 600px)
+                {
+                    font-size: 3.25em;
+                }
+
+                span.color
+                {
+                    &.green
+                    {
+                        color: $green;
+                    }
+    
+                    &.yellow
+                    {
+                        color: $yellow;
+                    }
+    
+                    &.red
+                    {
+                        color: $red;
+                    }
+                }
+            }
+
+            &.details
+            {
+                margin-left: 25%;
+                margin-right: 25%;
+                width: 50%;
+
+                @media only screen and (max-width: 1200px)
+                {
+                    margin-left: 15%;
+                    margin-right: 15%;
+                    width: 70%;
+                }
+
+                @media only screen and (max-width: 900px)
+                {
+                    margin-left: 10%;
+                    margin-right: 10%;
+                    width: 80%;
+                }
+
+                @media only screen and (max-width: 650px)
+                {
+                    margin-left: 5%;
+                    margin-right: 5%;
+                    width: 90%;
+                }
+
+                @media only screen and (max-width: 400px)
+                {
+                    font-size: 1.4em;
+                    margin-left: 2.5%;
+                    margin-right: 2.5%;
+                    width: 95%;
+                }
+            }
+        }
+
+        h2
+        {
+            color: $white;
+            font-family: $header-font;
+            font-size: 2.1em;
+            margin-bottom: 0;
+            margin-top: 0;
+            text-align: center;
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1.95em;
+            }
+
+            @media only screen and (max-width: 400px)
+            {
+                font-size: 1.6em;
+            }
+        }
+
+        h3
+        {
+            border-bottom: $thin-border solid $white;
+            color: $white;
+            font-family: $header-font;
+            font-size: 1.85em;
+            margin-bottom: 0;
+            margin-left: 30%;
+            margin-right: 30%;
+            margin-top: 2.5%;
+            text-align: center;
+            width: 40%;
+
+            @media only screen and (max-width: 600px)
+            {
+                font-size: 1.65em;
+                margin-left: 20%;
+                margin-right: 20%;
+                width: 60%;
+            }
+        }
+
+        span.milestones-timeline
+        {            
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            span.time-spacer
+            {
+                border-left: 2px dashed $white;
+                min-height: 50px;
+    
+                @media only screen and (max-height: 900px)
+                {
+                    min-height: 35px;
+                }
+    
+                @media only screen and (max-height: 800px)
+                {
+                    min-height: 30px;
+                }
+    
+                @media only screen and (max-height: 800px)
+                {
+                    min-height: 25px;
+                }
+            }
+
+            span.time-label
+            {
+                color: $white;
+                font-family: $body-font;
+                font-size: 1.75em;
+    
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.5em;
+                }
+    
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.4em;
+                }
+    
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.3em;
+                }
+    
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.2em;
+                }
+            }
+
+            div.milestone-timeline
+            {
+                border: $thin-border solid $light-grey;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin: .25%;
+                padding: 0;
+                width: 60%;
+    
+                @media only screen and (max-width: 1300px)
+                {
+                    width: 98%;
+                }
+                
+                @media only screen and (max-width: 800px)
+                {
+                    width: 96.5%;
+                }
+
+                p
+                {
+                    font-size: 2em;
+                    margin-bottom: .5%;
+                    margin-left: 2.5%;
+                    margin-top: .5%;
+
+                    @media only screen and (max-width: 650px)
+                    {
+                        font-size: 1.8em;
+                    }
+    
+                    @media only screen and (max-width: 400px)
+                    {
+                        font-size: 1.6em;
+                    }
+                }
+
+                div.reached
+                {
+                    align-self: stretch;
+                    border-left: $thin-border solid $light-grey;
+                    border-radius: 0 7.5px 7.5px 0;
+                    flex-basis: 15px;
+                    flex-grow: 0;
+                    justify-self: flex-end;
+        
+                    @media only screen and (max-width: 800px)
+                    {
+                        flex-basis: 15px;
+                    }
+
+                    &.green
+                    {
+                        background-color: $green;
+                    }
+        
+                    &.red
+                    {
+                        background-color: $red;
+                    }
+                }
+
+                &.unreached
+                {
+                    border-style: dashed;
+
+                    div.reached
+                    {
+                        border: none;
+                    }
+                }
+            }
+        }
+    }
+
     div.addiction
     {
         align-self: stretch;
@@ -46,6 +359,7 @@ div.app-container
         display: flex;
         flex-direction: row;
         margin: .5%;
+        max-height: 45%;
         width: 45%;
 
         @media only screen and (max-width: 1650px)
@@ -218,7 +532,6 @@ div.app-container
                     {
                         color: $yellow;
                     }
-                
                 }
             }
 

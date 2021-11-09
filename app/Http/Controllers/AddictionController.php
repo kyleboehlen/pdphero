@@ -51,8 +51,52 @@ class AddictionController extends Controller
 
     public function details(Addiction $addiction)
     {
+        $usage = null;
+        $usage_color = null;
+        $milestone_name = null;
+
+        if($addiction->method_id == Method::MODERATION)
+        {
+            $usage = $addiction->usage()->get()->count();
+
+            if($usage == 0)
+            {
+                $usage_color = 'green';
+            }
+            elseif($usage >= $addiction->moderated_amount)
+            {
+                $usage_color = 'red';
+            }
+            else
+            {
+                $usage_color = 'yellow';
+            }
+        }
+        elseif($addiction->method_id == Method::ABSTINENCE)
+        {
+            $acheieved_milestones = $addiction->reachedMilestones()->get();
+            
+            if($acheieved_milestones->count() == 0)
+            {
+                $milestone_name = null;
+            }
+            else
+            {
+                $milestone_name = $acheieved_milestones->last()->name;
+            }
+        }
+
+        $start_carbon = $addiction->getStartCarbon();
+        $addiction->milestones->each(function ($milestone) use ($start_carbon){
+            $milestone->carbon_reached = $milestone->dateFromCarbon(clone $start_carbon);
+        });
+
         return view('addictions.details')->with([
             'addiction' => $addiction,
+            'method' => Method::class,
+            'usage' => $usage,
+            'usage_color' => $usage_color,
+            'milestone_name' => $milestone_name,
         ]);
     }
 

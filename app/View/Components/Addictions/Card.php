@@ -15,13 +15,6 @@ class Card extends Component
     public $usage;
     public $usage_color;
 
-    public $elapsed_years;
-    public $elapsed_months;
-    public $elapsed_days;
-    public $elapsed_hours;
-    public $elapsed_minutes;
-    public $elapsed_seconds;
-
     /**
      * Create a new component instance.
      *
@@ -62,14 +55,6 @@ class Card extends Component
                 $this->milestone_name = $acheieved_milestones->last()->name;
             }
         }
-
-        $elapsed_carbon = $addiction->getElapsedCarbon();
-        $this->elapsed_years = $elapsed_carbon->y;
-        $this->elapsed_months = $elapsed_carbon->m;
-        $this->elapsed_days = $elapsed_carbon->d;
-        $this->elapsed_hours = $elapsed_carbon->h;
-        $this->elapsed_minutes = $elapsed_carbon->i;
-        $this->elapsed_seconds = $elapsed_carbon->s;
     }
 
     /**

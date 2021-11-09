@@ -12,6 +12,7 @@ use App\Helpers\Constants\User\Setting;
 
 // Models
 use App\Models\Addictions\Addiction;
+use App\Models\User\User;
 
 // Notifications
 use App\Notifications\Addictions\MilestoneReached;
@@ -49,7 +50,15 @@ class CheckAddictionMilestones extends Command
      */
     public function handle()
     {
-        $addictions = Addiction::with('pendingMilestones')->with('user')->get();
+        $addictions = Addiction::with('pendingMilestones')->with('user');
+        
+        if(env('APP_ENV') == 'local')
+        {
+            $user_id = User::where('email', 'test@test.com')->first()->id;
+            $addictions = $addictions->where('user_id', $user_id);
+        }
+
+        $addictions = $addictions->get();
 
         foreach($addictions as $addiction)
         {
