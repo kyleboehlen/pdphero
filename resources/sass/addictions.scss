@@ -1044,4 +1044,50 @@ div.app-container
             }
         }
     }
+
+    form.relapse
+    {
+        @extend %base-form;
+
+        h2
+        {
+            @include form-title;
+
+            margin-top: 0;
+        }
+
+        p
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.5em;
+            font-weight: normal;
+            margin-left: 12.5%;
+            margin-top: 0;
+            width: 75%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                font-size: 1.25em;
+            }
+
+            @media only screen and (max-width: 800px)
+            {
+                margin-left: 2.5%;
+                width: 95%;
+            }
+
+            @media only screen and (max-width: 475px)
+            {
+                font-size: 1em;
+            }
+        }
+
+        button
+        {
+            @extend %button;
+
+            @include cancel-submit-buttons;
+        }
+    }
 }

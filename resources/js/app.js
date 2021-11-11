@@ -542,6 +542,26 @@ window.verifyRemoveForm = function (message, formID){
     });
 }
 
+window.verifyUsageForm = function (message, formID){
+    swal.fire({
+        title: `<span class="swal-title" style="color:#ffffff">${message}</span>`,
+        text: 'Marking moderated usage for an addiction can not be undone, are you sure you want to?',
+        icon: 'warning',
+        iconColor: '#d12828',
+        padding: '.5rem',
+        showCancelButton: true,
+        confirmButtonColor: '#d12828',
+        cancelButtonColor: '#155466',
+        confirmButtonText: 'Yes, mark it!',
+        background: '#3b3b3b',
+    }).then((result) => {
+        if(result.isConfirmed)
+        {
+            $(formID).submit();
+        }
+    });
+}
+
 // For informing an upgrade is needed -- uses sweetalert2
 window.blackLabelUpgrade = function (url){
     swal.fire({

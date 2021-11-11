@@ -61,7 +61,7 @@ class Addiction extends Model
     {
         $carbon = Carbon::now();
 
-        switch($this->moderated_date_format)
+        switch($this->moderated_date_format_id)
         {
             case DateFormat::MINUTE:
                 $carbon->subMinutes($this->moderated_amount);
@@ -86,7 +86,8 @@ class Addiction extends Model
 
         return
             $this->hasMany(AddictionRelapse::class, 'addiction_id', 'id')
-                ->where('type_id', RelapseType::MODERATED_USE)->where('created_at', '>=', $carbon->toDatetimeString());
+                ->where('type_id', RelapseType::MODERATED_USE)
+                ->where('created_at', '>=', $carbon->toDatetimeString());
     }
 
     public function getStartCarbon()

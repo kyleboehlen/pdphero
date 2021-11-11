@@ -5,7 +5,7 @@
     <x-app.header title="Addictions" />
 
     {{-- Side Nav --}}
-    <x-addictions.nav show="list|edit|relapse|milestones|delete" :addiction="$addiction" />
+    <x-addictions.nav show="list|edit|relapse|milestones|relapse-timeline|usage|delete" :addiction="$addiction" />
 
     <div class="app-container details">
         {{-- Method --}}

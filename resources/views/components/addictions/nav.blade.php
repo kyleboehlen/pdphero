@@ -12,9 +12,7 @@
 
         @if(in_array('back', $show))
             <a href="{{ route('addiction.details', ['addiction' => $addiction->uuid]) }}"><li>Back To Details</li></a>
-        @endif
-
-        {{-- TODO: add relapse option - maybe change the wording based on method/num times used --}}
+        @endif        
         
         @if(in_array('edit', $show))
             <a href="{{ route('addiction.edit', ['addiction' => $addiction->uuid]) }}"><li>Edit Addiction</li></a>
@@ -22,6 +20,24 @@
 
         @if(in_array('milestones', $show))
             <a href="{{ route('addiction.milestones', ['addiction' => $addiction->uuid]) }}"><li>Edit Milestones</li></a>
+        @endif
+
+        @if(in_array('relapse-timeline', $show))
+            <a href="{{ route('addiction.relapse.timeline', ['addiction' => $addiction->uuid]) }}"><li>View Relapses</li></a>
+        @endif
+
+        @if(in_array('moderate', $show))
+            <form id="addiction-usage-form" action="{{ route('addiction.usage.store', ['addiction' => $addiction->uuid]) }}" method="POST">
+                @csrf
+            </form>
+            <a href="{{ route('addiction.usage.store', ['addiction' => $addiction->uuid]) }}"
+                onclick="event.preventDefault(); verifyUsageForm('Mark Moderated Usage?', '#addiction-usage-form')">
+                <li>Mark Usage</li>
+            </a>
+        @endif
+
+        @if(in_array('relapse-form', $show))
+            <a href="{{ route('addiction.relapse.create', ['addiction' => $addiction->uuid]) }}"><li>Mark Relapse</li></a>
         @endif
 
         @if(in_array('create', $show))

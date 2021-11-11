@@ -445,6 +445,13 @@ Route::prefix('addictions')->group(function(){
         Route::post('destroy/{milestone}', [AddictionController::class, 'destroyMilestone'])->name('addiction.milestone.destroy');
     });
 
+    // Usage routes
+    Route::prefix('relapse')->group(function(){
+        Route::get('create/{addiction}', [AddictionController::class, 'relapseForm'])->name('addiction.relapse.create');
+        Route::post('store/{addiction}', [AddictionController::class, 'storeRelapse'])->name('addiction.relapse.store');
+        Route::post('usage/{addiction}', [AddictionController::class, 'storeModeratedUsage'])->name('addiction.usage.store');
+    });
+
     // Destroy route
     Route::post('destory/{addiction}', [AddictionController::class, 'destroy'])->name('addiction.destroy');
 });

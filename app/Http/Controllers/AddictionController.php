@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 // Constants
 use App\Helpers\Constants\Addiction\DateFormat;
 use App\Helpers\Constants\Addiction\Method;
+use App\Helpers\Constants\Addiction\RelapseType;
 
 // Models
 use App\Models\Addictions\Addiction;
 use App\Models\Addictions\AddictionMilestone;
+use App\Models\Addictions\AddictionRelapse;
 
 // Requests
+use App\Http\Requests\Addictions\RelapseRequest;
 use App\Http\Requests\Addictions\StoreRequest;
 use App\Http\Requests\Addictions\StoreMilestoneRequest;
 use App\Http\Requests\Addictions\UpdateRequest;
@@ -188,6 +191,61 @@ class AddictionController extends Controller
                 'error' => 'Something went wrong trying to update the addiction, please try again.'
             ]);
         }
+
+        return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
+    }
+
+    public function storeModeratedUsage(Addiction $addiction)
+    {
+        // Check usage
+        if($addiction->usage()->get()->count() >= $addiction->moderated_amount)
+        {
+            return redirect()->route('addiction.relapse.create', ['addiction' => $addiction->uuid]);
+        }
+
+        // Create a moderated usage relapse
+        $usage = new AddictionRelapse([
+            'addiction_id' => $addiction->id,
+            'type_id' => RelapseType::MODERATED_USE,
+        ]);
+
+        if(!$usage->save())
+        {
+            // Log error
+            Log::error('Failed to save moderated usage for addiction', [
+                'addiction' => $addiction->toArray(),
+            ]);
+        }
+
+        return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
+    }
+
+    public function relapseForm(Addiction $addiction)
+    {
+        return view('addictions.relapse-form')->with([
+            'addiction' => $addiction,
+        ]);
+    }
+
+    public function storeRelapse(RelapseRequest $request, Addiction $addiction)
+    {
+        $relapse = new AddictionRelapse([
+            'addiction_id' => $addiction->id,
+            'type_id' => RelapseType::FULL_RELAPSE,
+            'notes' => $request->get('notes'),
+        ]);
+
+        if(!$relapse->save())
+        {
+            // Log error
+            Log::error('Failed to save relapse for addiction', [
+                'addiction' => $addiction->toArray(),
+                'request_values' => $request->all(),
+            ]);
+        }
+
+        // Reset milestones
+        AddictionMilestone::where('addiction_id', $addiction->id)->update(['reached' => 0]);
 
         return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
     }

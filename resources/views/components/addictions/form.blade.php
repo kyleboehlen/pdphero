@@ -59,7 +59,7 @@
         <select name="moderation-date-format">
             @foreach($moderation_periods as $value => $period)
                 <option value="{{ $value }}"
-                    @if(!is_null($addiction) && $addiction->moderated_date_format == $value)
+                    @if(!is_null($addiction) && $addiction->moderated_date_format_id == $value)
                         selected
                     @elseif(old('moderation-period') == $value)
                         selected
