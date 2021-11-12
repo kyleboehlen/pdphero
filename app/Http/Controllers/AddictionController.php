@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Constants
 use App\Helpers\Constants\Addiction\DateFormat;
@@ -13,6 +14,7 @@ use App\Helpers\Constants\Addiction\RelapseType;
 use App\Models\Addictions\Addiction;
 use App\Models\Addictions\AddictionMilestone;
 use App\Models\Addictions\AddictionRelapse;
+use App\Models\User\User;
 
 // Requests
 use App\Http\Requests\Addictions\RelapseRequest;
@@ -248,6 +250,57 @@ class AddictionController extends Controller
         AddictionMilestone::where('addiction_id', $addiction->id)->update(['reached' => 0]);
 
         return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
+    }
+
+    public function viewRelapseTimeline(Addiction $addiction)
+    {
+        // Get relapses
+        $relapses = $addiction->relapses()->orderBy('created_at', 'desc')->get();
+
+        // Return user back to addiction details if there are no relapses to display
+        if($relapses->count() == 0)
+        {
+            return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
+        }
+
+        // Create an array of info to pass to the relapse timeline view
+        $relapse_info = array();
+        $user = User::find($addiction->user_id);
+        $timezone = $user->timezone ?? 'America/Denver';
+
+        foreach($relapses as $relapse)
+        {
+            $values = array();
+
+            // Set the date/time
+            $values['datetime_label'] = Carbon::parse($relapse->created_at)->setTimezone($timezone)->format('M j, Y g:i A');
+
+            // Set the day streak before that relapse
+            $previous_relapse = AddictionRelapse::where('addiction_id', $addiction->id)->where('id', '<', $relapse->id)->first();
+            if(!is_null($previous_relapse))
+            {
+                $carbon_start = Carbon::parse($previous_relapse->created_at);
+            }
+            else
+            {
+                $start_date = $addiction->start_date;
+                $start_time = Carbon::parse($addiction->created_at)->format('H:i:s');
+                $carbon_start = Carbon::createFromFormat('Y-m-d H:i:s', "$start_date $start_time");
+            }
+
+            $carbon_end = Carbon::parse($relapse->created_at);
+            $values['day_streak'] = $carbon_start->diff($carbon_end)->days;
+
+            // Set notes
+            $values['notes'] = $relapse->notes;
+
+            array_push($relapse_info, $values);
+        }
+
+        return view('addictions.relapse-timeline')->with([
+            'addiction' => $addiction,
+            'relapses' => $relapse_info,
+        ]);
     }
 
     public function milestones(Addiction $addiction)

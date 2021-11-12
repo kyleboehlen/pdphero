@@ -1090,4 +1090,102 @@ div.app-container
             @include cancel-submit-buttons;
         }
     }
+
+    &.relapse-timeline
+    {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+
+        span.time-spacer
+        {
+            border-left: 2px dashed $white;
+            min-height: 50px;
+
+            @media only screen and (max-height: 900px)
+            {
+                min-height: 35px;
+            }
+
+            @media only screen and (max-height: 800px)
+            {
+                min-height: 30px;
+            }
+
+            @media only screen and (max-height: 800px)
+            {
+                min-height: 25px;
+            }
+        }
+
+        span.time-label
+        {
+            color: $white;
+            font-family: $body-font;
+            font-size: 1.75em;
+
+            @media only screen and (max-width: 800px)
+            {
+                font-size: 1.5em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.4em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.3em;
+            }
+
+            @media only screen and (max-width: 550px)
+            {
+                font-size: 1.2em;
+            }
+        }
+
+        div.timeline-relapse
+        {
+            border: $thin-border solid $light-grey;
+            border-radius: 10px;
+            padding: 0;
+            width: 60%;
+
+            @media only screen and (max-width: 1300px)
+            {
+                width: 98%;
+            }
+            
+            @media only screen and (max-width: 800px)
+            {
+                width: 96.5%;
+            }
+
+            p
+            {
+                color: $white;
+                font-size: 1.75em;
+                margin-bottom: .5%;
+                margin-left: 2.5%;
+                margin-top: .5%;
+
+                @media only screen and (max-width: 800px)
+                {
+                    font-size: 1.5em;
+                }
+
+                @media only screen and (max-width: 550px)
+                {
+                    font-size: 1.25em;
+                }
+
+                span.green
+                {
+                    color: $green;
+                }
+            }
+        }
+    }
 }

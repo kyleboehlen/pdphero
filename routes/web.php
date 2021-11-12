@@ -447,6 +447,7 @@ Route::prefix('addictions')->group(function(){
 
     // Usage routes
     Route::prefix('relapse')->group(function(){
+        Route::get('timeline/{addiction}', [AddictionController::class, 'viewRelapseTimeline'])->name('addiction.relapse.timeline');
         Route::get('create/{addiction}', [AddictionController::class, 'relapseForm'])->name('addiction.relapse.create');
         Route::post('store/{addiction}', [AddictionController::class, 'storeRelapse'])->name('addiction.relapse.store');
         Route::post('usage/{addiction}', [AddictionController::class, 'storeModeratedUsage'])->name('addiction.usage.store');
