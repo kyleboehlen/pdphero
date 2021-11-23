@@ -23,7 +23,7 @@ class CreateAddictionMilestonesTable extends Migration
             $table->bigInteger('addiction_id')->unsigned();
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->tinyInteger('amount');
+            $table->smallInteger('amount');
             $table->tinyInteger('date_format_id')->unsigned();
             $table->text('reward')->nullable();
             $table->boolean('reached')->default(0);
