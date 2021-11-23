@@ -54,6 +54,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'addiction.uuid' => \App\Http\Middleware\Addiction\UUID::class,
+        'addiction.milestone.uuid' => \App\Http\Middleware\Addiction\MilestoneUUID::class,
+        'addiction.relapse.uuid' => \App\Http\Middleware\Addiction\RelapseUUID::class,
         'affirmations.uuid' => \App\Http\Middleware\Affirmations\UUID::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

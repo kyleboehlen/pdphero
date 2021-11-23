@@ -18,6 +18,7 @@ return [
         Setting::SHOW_HOME_ICON => '1', // True
         Setting::NOTIFICATION_CHANNEL => Setting::NOTIFICATION_EMAIL,
         Setting::SHOW_EMPTY_BUCKETLIST_ITEM => Setting::DO_NOT_SHOW, // Don't show
+        Setting::SEND_ADDICTION_MILESTONE_NOTIFICATIONS => '1', // True
     ],
 
     'options' => [
@@ -103,6 +104,9 @@ return [
         Setting::SHOW_EMPTY_BUCKETLIST_ITEM => [
             'desc' => 'How to show the add bucketlist entry on the imcomplete bucketlist.',
         ],
+        Setting::SEND_ADDICTION_MILESTONE_NOTIFICATIONS => [
+            'desc' => 'Send a notification when a addiction milestone has been reached.',
+        ],
     ],
 
     'types' => [
@@ -120,5 +124,6 @@ return [
         Setting::SHOW_HOME_ICON => 'toggle', // True or false
         Setting::NOTIFICATION_CHANNEL => 'options', // Based on config('settings.options)
         Setting::SHOW_EMPTY_BUCKETLIST_ITEM => 'options', // Based on config('settings.options)
+        Setting::SEND_ADDICTION_MILESTONE_NOTIFICATIONS => 'toggle', // True or false
     ],
 ];

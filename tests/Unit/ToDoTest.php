@@ -655,7 +655,7 @@ class ToDoTest extends TestCase
         // Create a reminder
         $response = $this->actingAs($user)->post(route('todo.store.reminder', ['todo' => $todo_item->uuid]), [
             '_token' => csrf_token(),
-            'date' => '2021-09-24',
+            'date' => '2023-09-24',
             'time' => '14:17',
         ]);
 
@@ -665,7 +665,7 @@ class ToDoTest extends TestCase
         // Verify it shows up on the edit categories page now
         $response = $this->actingAs($user)->get(route('todo.edit.reminders', ['todo' => $todo_item->uuid]));
         $response->assertStatus(200);
-        $response->assertSee('Fri, Sep 24 @ 2:17 PM');
+        $response->assertSee('Sun, Sep 24 @ 2:17 PM');
 
         // Refresh to check the reminder is there now
         $todo_item->refresh();

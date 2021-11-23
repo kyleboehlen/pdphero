@@ -444,6 +444,25 @@ $(document).ready(function(){
         }
     });
 
+    // Addiction method selector
+    $.fn.addictionMethodSelectChange = function(){
+        var moderation = $('#method-selector').data('moderation');
+        var value = $('#method-selector').val();
+
+        if(value == moderation)
+        {
+            $('#moderation-span').show();
+        }
+        else
+        {
+            $('#moderation-span').hide();
+        }
+    }
+    $.fn.addictionMethodSelectChange(); // check on doc load
+    $('#method-selector').change(function(){
+        $.fn.addictionMethodSelectChange();
+    });
+
     // Web push shit
     $.fn.checkPushNotificationsPermission = function(){
         // If the browser doesn't support push notifications
@@ -460,7 +479,7 @@ $(document).ready(function(){
             $('.request-webpush').hide();
         }
     }
-    $.fn.checkPushNotificationsPermission();
+    $.fn.checkPushNotificationsPermission(); // check on doc load
     $('#request-webpush').click(function(){
         requestPushPermission();
     });
@@ -514,6 +533,26 @@ window.verifyRemoveForm = function (message, formID){
         confirmButtonColor: '#d12828',
         cancelButtonColor: '#155466',
         confirmButtonText: 'Yes, remove it!',
+        background: '#3b3b3b',
+    }).then((result) => {
+        if(result.isConfirmed)
+        {
+            $(formID).submit();
+        }
+    });
+}
+
+window.verifyUsageForm = function (message, formID){
+    swal.fire({
+        title: `<span class="swal-title" style="color:#ffffff">${message}</span>`,
+        text: 'Marking moderated usage for an addiction can not be undone, are you sure you want to?',
+        icon: 'warning',
+        iconColor: '#d12828',
+        padding: '.5rem',
+        showCancelButton: true,
+        confirmButtonColor: '#d12828',
+        cancelButtonColor: '#155466',
+        confirmButtonText: 'Yes, mark it!',
         background: '#3b3b3b',
     }).then((result) => {
         if(result.isConfirmed)

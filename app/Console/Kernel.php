@@ -29,6 +29,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('purge:profile-pictures --silent')->daily();
         $schedule->command('mysql:dump')->daily();
 
+        // Notifications
+        $schedule->command('check:addiction-milestones')->everyMinute();
+
         // Reminders
         $schedule->command('reminders:goal-action-items')->everyMinute();
         $schedule->command('reminders:habits')->everyMinute();

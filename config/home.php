@@ -69,4 +69,10 @@ return [
         'img' => 'icons/bucketlist-white.png',
         'route' => 'bucketlist',
     ],
+    HOME::ADDICTIONS => [
+        'name' => 'Addictions',
+        'desc' => 'Take control of your vices while tracking milestones and learning from relapses',
+        'img' => 'icons/addiction-white.png',
+        'route' => 'addictions',
+    ],
 ];

@@ -34,6 +34,9 @@ class ViewServiceProvider extends ServiceProvider
         // FAQs
         View::composer('faqs', 'App\View\Composers\AboutComposer');
 
+        // Addictions
+        View::composer('addictions.*', 'App\View\Composers\AddictionsComposer');
+
         // Affirmations
         View::composer('affirmations.*', 'App\View\Composers\AffirmationsComposer');
 

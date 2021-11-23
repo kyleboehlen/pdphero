@@ -18,6 +18,7 @@ use App\Helpers\Constants\Habits\Type as HabitsType;
 use App\Helpers\Constants\ToDo\Type as ToDoType;
 
 // Models
+use App\Models\Addictions\Addiction;
 use App\Models\Affirmations\Affirmations;
 use App\Models\Affirmations\AffirmationsReadLog;
 use App\Models\Bucketlist\BucketlistCategory;
@@ -137,6 +138,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // Relationships
+    public function addictions()
+    {
+        return $this->hasMany(Addiction::class, 'user_id', 'id');
+    }
+
     public function affirmations()
     {
         return $this->hasMany(Affirmations::class, 'user_id', 'id')->orderBy('created_at');

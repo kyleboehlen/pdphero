@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 // Constants
 use App\Helpers\Constants\Goal\Type as GoalType;
@@ -8,8 +9,8 @@ use App\Helpers\Constants\Habits\HistoryType as HabitsHistoryType;
 use App\Helpers\Constants\Habits\Type as HabitsType;
 use App\Helpers\Constants\ToDo\Type as ToDoType;
 
-
 // Models
+use App\Models\Addictions\AddictionMilestone;
 use App\Models\Goal\Goal;
 use App\Models\Habits\Habits;
 use App\Models\Relationships\GoalActionItemsToDo;
@@ -548,5 +549,31 @@ if(!function_exists('getRGB'))
         $green = $percent > 50 ? 255 : floor(($percent * 2) * 255 / 100);
 
         return "rgb($red, $green, 0)";
+    }
+}
+
+if(!function_exists('buildDefaultMilestones'))
+{
+    /**
+     * Builds default milestones for a new addiction
+     * 
+     * @return string
+     */
+    function buildDefaultMilestones($addiction)
+    {
+        foreach(config('addictions.milestones.default') as $default)
+        {
+            $milestone = new AddictionMilestone([
+                'addiction_id' => $addiction->id,
+                'name' => $default['name'],
+                'amount' => $default['amount'],
+                'date_format_id' => $default['date_format'],
+            ]);
+
+            if(!$milestone->save())
+            {
+                Log::error('Failed to save default addiction milestone', $milestone->toArray());
+            }
+        }
     }
 }

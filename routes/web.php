@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AddictionController;
 use App\Http\Controllers\AffirmationsController;
 use App\Http\Controllers\BucketListController;
 use App\Http\Controllers\FeatureVoteController;
@@ -420,4 +421,38 @@ Route::prefix('bucketlist')->group(function(){
 
     // Destroy
     Route::post('destroy/{bucketlist_item}', [BucketlistController::class, 'destroy'])->name('bucketlist.destroy');
+});
+
+// Addictions
+Route::prefix('addictions')->group(function(){
+    // Index
+    Route::get('/', [AddictionController::class, 'index'])->name('addictions');
+
+    // View details
+    Route::get('details/{addiction}', [AddictionController::class, 'details'])->name('addiction.details');
+
+    // Create/edit routes
+    Route::get('create', [AddictionController::class, 'create'])->name('addiction.create');
+    Route::post('store', [AddictionController::class, 'store'])->name('addiction.store');
+    Route::get('edit/{addiction}', [AddictionController::class, 'edit'])->name('addiction.edit');
+    Route::post('update/{addiction}', [AddictionController::class, 'update'])->name('addiction.update');
+
+    // Milestones routes
+    Route::prefix('milestones')->group(function(){
+        Route::get('{addiction}', [AddictionController::class, 'milestones'])->name('addiction.milestones');
+        Route::get('create/{addiction}', [AddictionController::class, 'milestoneForm'])->name('addiction.milestone.create');
+        Route::post('store/{addiction}', [AddictionController::class, 'storeMilestone'])->name('addiction.milestone.store');
+        Route::post('destroy/{milestone}', [AddictionController::class, 'destroyMilestone'])->name('addiction.milestone.destroy');
+    });
+
+    // Usage routes
+    Route::prefix('relapse')->group(function(){
+        Route::get('timeline/{addiction}', [AddictionController::class, 'viewRelapseTimeline'])->name('addiction.relapse.timeline');
+        Route::get('create/{addiction}', [AddictionController::class, 'relapseForm'])->name('addiction.relapse.create');
+        Route::post('store/{addiction}', [AddictionController::class, 'storeRelapse'])->name('addiction.relapse.store');
+        Route::post('usage/{addiction}', [AddictionController::class, 'storeModeratedUsage'])->name('addiction.usage.store');
+    });
+
+    // Destroy route
+    Route::post('destory/{addiction}', [AddictionController::class, 'destroy'])->name('addiction.destroy');
 });

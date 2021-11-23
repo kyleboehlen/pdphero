@@ -34,7 +34,7 @@ class BucketListController extends Controller
     }
 
     /**
-     * Home To-Do page
+     * Incomplete bucketlist
      *
      * @return Response
      */
