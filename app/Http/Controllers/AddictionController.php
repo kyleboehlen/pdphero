@@ -114,7 +114,7 @@ class AddictionController extends Controller
         if ($addiction->method_id == Method::MODERATION) {
             $addiction->moderated_amount = $request->get('moderation-amount');
             $addiction->moderated_period = $request->get('moderation-period');
-            $addiction->moderated_date_format = $request->get('moderation-date-format');
+            $addiction->moderated_date_format_id = $request->get('moderation-date-format');
         }
 
         if (!$addiction->save()) {
