@@ -8,7 +8,7 @@
     @csrf
 
     {{-- Header --}}
-    <h2>@isset($item) Edit Addiction @else Create New Addiction @endisset</h2>
+    <h2>@isset($addiction) Edit Addiction @else Create New Addiction @endisset</h2>
 
     <input type="text" name="name" placeholder="Addiction Name" maxlength="255" 
         @isset($addiction)

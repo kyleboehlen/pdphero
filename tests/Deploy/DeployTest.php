@@ -136,7 +136,6 @@ class DeployTest extends TestCase
         // Addiction date formats
         $this->assertEquals(configArrayFromSeededCollection(AddictionDateFormat::all()), config('addictions.date_formats'));
 
-
         // Addiction relapse types
         $this->assertEquals(configArrayFromSeededCollection(AddictionRelapseType::all()), config('addictions.relapse.types'));
     }

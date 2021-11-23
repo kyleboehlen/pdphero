@@ -61,8 +61,7 @@ class Addiction extends Model
     {
         $carbon = Carbon::now();
 
-        switch($this->moderated_date_format_id)
-        {
+        switch($this->moderated_date_format_id) {
             case DateFormat::MINUTE:
                 $carbon->subMinutes($this->moderated_amount);
                 break;
@@ -94,12 +93,9 @@ class Addiction extends Model
     {
         $relapses = $this->relapses()->get();
 
-        if($relapses->count() > 0)
-        {
+        if ($relapses->count() > 0) {
             $carbon = Carbon::parse($relapses->last()->created_at);
-        }
-        else
-        {
+        } else {
             $created_at = Carbon::parse($this->created_at);
             $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date . $created_at->format(' H:i:s'));
         }

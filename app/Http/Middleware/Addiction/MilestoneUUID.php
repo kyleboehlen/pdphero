@@ -18,12 +18,10 @@ class MilestoneUUID
     public function handle(Request $request, Closure $next)
     {
         // Check if UUID is being passed in url string
-        if(!is_null($addiction_milestone = $request->route('addiction_milestone')))
-        {
+        if (!is_null($addiction_milestone = $request->route('milestone'))) {
             // Verify milestone belongs to user
             $addiction_ids = $request->user()->addictions->pluck('id')->toArray();
-            if(!in_array($addiction_milestone->addiction_id, $addiction_ids))
-            {
+            if (!in_array($addiction_milestone->addiction_id, $addiction_ids)) {
                 return abort(403); // Return forbidden if different user's milestone
             }
         }

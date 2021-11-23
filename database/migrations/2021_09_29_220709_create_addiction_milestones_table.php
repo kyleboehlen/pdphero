@@ -14,7 +14,7 @@ class CreateAddictionMilestonesTable extends Migration
     public function up()
     {
         Schema::create('addiction_milestones', function (Blueprint $table) {
-            $table->tinyIncrements('id'); // PK
+            $table->increments('id'); // PK
 
             // Laravel columns
             $table->timestamps();

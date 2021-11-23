@@ -18,7 +18,7 @@ class UUID
     public function handle(Request $request, Closure $next)
     {
         // Check if UUID is being passed in url string
-        if(!is_null($addiction = $request->route('addicion')))
+        if(!is_null($addiction = $request->route('addiction')))
         {
             if($addiction->user_id != $request->user()->id) // Verify addiction belongs to user
             {

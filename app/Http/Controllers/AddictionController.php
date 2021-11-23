@@ -60,33 +60,22 @@ class AddictionController extends Controller
         $usage_color = null;
         $milestone_name = null;
 
-        if($addiction->method_id == Method::MODERATION)
-        {
+        if ($addiction->method_id == Method::MODERATION) {
             $usage = $addiction->usage()->get()->count();
 
-            if($usage == 0)
-            {
+            if ($usage == 0) {
                 $usage_color = 'green';
-            }
-            elseif($usage >= $addiction->moderated_amount)
-            {
+            } elseif ($usage >= $addiction->moderated_amount) {
                 $usage_color = 'red';
-            }
-            else
-            {
+            } else {
                 $usage_color = 'yellow';
             }
-        }
-        elseif($addiction->method_id == Method::ABSTINENCE)
-        {
+        } elseif($addiction->method_id == Method::ABSTINENCE) {
             $acheieved_milestones = $addiction->reachedMilestones()->get();
             
-            if($acheieved_milestones->count() == 0)
-            {
+            if($acheieved_milestones->count() == 0) {
                 $milestone_name = null;
-            }
-            else
-            {
+            } else {
                 $milestone_name = $acheieved_milestones->last()->name;
             }
         }
@@ -122,15 +111,13 @@ class AddictionController extends Controller
         ]);
 
         // Set moderation limits
-        if($addiction->method_id == Method::MODERATION)
-        {
+        if ($addiction->method_id == Method::MODERATION) {
             $addiction->moderated_amount = $request->get('moderation-amount');
             $addiction->moderated_period = $request->get('moderation-period');
             $addiction->moderated_date_format = $request->get('moderation-date-format');
         }
 
-        if(!$addiction->save())
-        {
+        if (!$addiction->save()) {
             // Log error
             Log::error('Failed to store new Addiction.', [
                 'user->id' => $user->id,
@@ -166,21 +153,17 @@ class AddictionController extends Controller
         $addiction->start_date = $request->get('start-date');
 
         // Set moderation limits
-        if($addiction->method_id == Method::MODERATION)
-        {
+        if ($addiction->method_id == Method::MODERATION) {
             $addiction->moderated_amount = $request->get('moderation-amount');
             $addiction->moderated_period = $request->get('moderation-period');
             $addiction->moderated_date_format_id = $request->get('moderation-date-format');
-        }
-        else
-        {
+        } else {
             $addiction->moderated_amount = null;
             $addiction->moderated_period = null;
             $addiction->moderated_date_format_id = null;
         }
 
-        if(!$addiction->save())
-        {
+        if (!$addiction->save()) {
             // Log error
             Log::error('Failed to update Addiction.', [
                 'user->id' => $user->id,
@@ -200,8 +183,7 @@ class AddictionController extends Controller
     public function storeModeratedUsage(Addiction $addiction)
     {
         // Check usage
-        if($addiction->usage()->get()->count() >= $addiction->moderated_amount)
-        {
+        if ($addiction->usage()->get()->count() >= $addiction->moderated_amount) {
             return redirect()->route('addiction.relapse.create', ['addiction' => $addiction->uuid]);
         }
 
@@ -211,8 +193,7 @@ class AddictionController extends Controller
             'type_id' => RelapseType::MODERATED_USE,
         ]);
 
-        if(!$usage->save())
-        {
+        if (!$usage->save()) {
             // Log error
             Log::error('Failed to save moderated usage for addiction', [
                 'addiction' => $addiction->toArray(),
@@ -237,8 +218,7 @@ class AddictionController extends Controller
             'notes' => $request->get('notes'),
         ]);
 
-        if(!$relapse->save())
-        {
+        if (!$relapse->save()) {
             // Log error
             Log::error('Failed to save relapse for addiction', [
                 'addiction' => $addiction->toArray(),
@@ -258,8 +238,7 @@ class AddictionController extends Controller
         $relapses = $addiction->relapses()->orderBy('created_at', 'desc')->get();
 
         // Return user back to addiction details if there are no relapses to display
-        if($relapses->count() == 0)
-        {
+        if ($relapses->count() == 0) {
             return redirect()->route('addiction.details', ['addiction' => $addiction->uuid]);
         }
 
@@ -268,8 +247,7 @@ class AddictionController extends Controller
         $user = User::find($addiction->user_id);
         $timezone = $user->timezone ?? 'America/Denver';
 
-        foreach($relapses as $relapse)
-        {
+        foreach ($relapses as $relapse) {
             $values = array();
 
             // Set the date/time
@@ -277,12 +255,9 @@ class AddictionController extends Controller
 
             // Set the day streak before that relapse
             $previous_relapse = AddictionRelapse::where('addiction_id', $addiction->id)->where('id', '<', $relapse->id)->first();
-            if(!is_null($previous_relapse))
-            {
+            if (!is_null($previous_relapse)) {
                 $carbon_start = Carbon::parse($previous_relapse->created_at);
-            }
-            else
-            {
+            } else {
                 $start_date = $addiction->start_date;
                 $start_time = Carbon::parse($addiction->created_at)->format('H:i:s');
                 $carbon_start = Carbon::createFromFormat('Y-m-d H:i:s', "$start_date $start_time");
@@ -314,8 +289,7 @@ class AddictionController extends Controller
 
     public function destroy(Addiction $addiction)
     {
-        if(!$addiction->delete())
-        {
+        if (!$addiction->delete()) {
             Log::error('Failed to delete addiction', $addiction->toArray());
             return redirect()->back();
         }
@@ -338,8 +312,7 @@ class AddictionController extends Controller
         $amount = $request->get('milestone-amount');
         $milestone_date_format = $request->get('milestone-date-format');
         $max = config('addictions.date_formats')[$milestone_date_format]['max'];
-        if($amount > $max)
-        {
+        if ($amount > $max) {
             return redirect()->back()->withErrors([
                 'milestone-amount' => 'Max value for ' . config('addictions.date_formats')[$milestone_date_format]['name'] . ' is ' . $max,
             ]);
@@ -354,8 +327,7 @@ class AddictionController extends Controller
             'reward' => $request->get('reward'),
         ]);
 
-        if(!$milestone->save())
-        {
+        if (!$milestone->save()) {
             // Log error
             Log::error('Failed to store new addiction milestone.', [
                 'user->id' => $user->id,
@@ -376,8 +348,7 @@ class AddictionController extends Controller
     {
         $milestone->load('addiction');
 
-        if(!$milestone->delete())
-        {
+        if (!$milestone->delete()) {
             Log::error('Failed to delete addiction milestone', $milestone->toArray());
             return redirect()->back();
         }

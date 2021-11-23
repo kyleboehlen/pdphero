@@ -13,7 +13,7 @@ use App\Models\User\User;
 
 class BucketlistTest extends TestCase
 {
-        /**
+    /**
      * Tests todo UUID routes with fake UUIDs for 404 errors
      *
      * @return void
