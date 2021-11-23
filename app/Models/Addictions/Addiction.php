@@ -97,7 +97,10 @@ class Addiction extends Model
             $carbon = Carbon::parse($relapses->last()->created_at);
         } else {
             $created_at = Carbon::parse($this->created_at);
-            $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date . $created_at->format(' H:i:s'));
+            $user = $this->user()->first();
+            $timezone = $user->timezone ?? 'America/Denver';
+            $created_at->setTimezone($timezone);
+            $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date . $created_at->format(' H:i:s'), $timezone);
         }
 
         return $carbon;
