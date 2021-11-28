@@ -63,23 +63,23 @@ class Addiction extends Model
 
         switch($this->moderated_date_format_id) {
             case DateFormat::MINUTE:
-                $carbon->subMinutes($this->moderated_amount);
+                $carbon->subMinutes($this->moderated_period);
                 break;
             
             case DateFormat::HOUR:
-                $carbon->subHours($this->moderated_amount);
+                $carbon->subHours($this->moderated_period);
                 break;
 
             case DateFormat::DAY:
-                $carbon->subDays($this->moderated_amount);
+                $carbon->subDays($this->moderated_period);
                 break;
 
             case DateFormat::MONTH:
-                $carbon->subMonths($this->moderated_amount);
+                $carbon->subMonths($this->moderated_period);
                 break;
 
             case DateFormat::YEAR:
-                $carbon->subYears($this->moderated_amount);
+                $carbon->subYears($this->moderated_period);
                 break;
         }
 
