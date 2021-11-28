@@ -12,40 +12,70 @@
         <div class="about-card left top">
             <div class="anchor" id="about"></div>
             <h2>About</h2>
-            <img class="left" src="{{ asset('images/about.jpg') }}" />
+            <img class="left" src="{{ asset('icons/smile-white.png') }}" />
             <p>When was the last time you lost motivation to complete a goal because it didn't feel like you were making any progress?</p>
-            <p>PDPHero, the all-in-one personal development plan app, to the rescue! The best way to track S.M.A.R.T. goals, accomplish to-do items, write journal entries, and create long term habits.</p>
+            <p>PDPHero, the all-in-one personal development plan app, to the rescue! The best way to track S.M.A.R.T. goals, accomplish to-do items, write journal entries, create long term habits, and break addictions.</p>
             <p>Not only are all the tools you need in one app, but all the features of PDPHero are tightly coupled and integrated to make personal development planning a breeze.</p>
         </div>
 
         {{-- Features --}}
         <div class="about-card right">
             <div class="anchor" id="features"></div>
-            <h2>Features</h2>
-            <img class="right" src="{{ asset('images/features.jpg') }}" />
-            <ul>
-                <li>Flexible habit tracking with accurate strength indication</li>
-                <li>Various S.M.A.R.T. goal tracking types to suit any of your goal needs</li>
-                <li>A To-Do list that automatically updates with your habits and action items</li>
-                <li>A journaling system that automatically pulls in all your accomplishments for the day and auto updating habit</li>
-                <li>A personal profile so you don't lose sight of your personal values and rules</li>
-                <li>An affirmations system with auto updating habit</li>
-                <li>Compadibliity with all devices</li>
-            </ul>
+            <h2>Goals</h2>
+            <img class="right" src="{{ asset('icons/goals-white.png') }}" />
+            <p>Whether you know all the steps to reach your goal or you need to plan it ad-hoc as you go we have a goal type that will track your goal.</p>
+            <p>Even if you want to base it off a habit, keep track of a goal you want to accomplish in the future, manually track your progress, or a combonation of everything!</p>
         </div>
 
-        {{-- Why? --}}
         <div class="about-card left">
-            <div class="anchor" id="why"></div>
-            <h2>Why?</h2>
-            <img class="right" src="{{ asset('images/why.jpg') }}" />
-            <p>While working on several personal goals and software projects myself I noticed I really needed a better way of tracking everything I was trying to achieve.</p>
-            <p>Unfortunately most of the personal development software available was designed for coporations, and the only S.M.A.R.T. goal software available lacked features and integrations I desperatly wanted. A lot of people use paper solutions, but it makes it too hard to adjust goal details or automatically calculate progress.</p>
-            <p>For the last couple of years I've had my personal development plan spread out between 3-4 different apps, and I decided it was time to create one piece of software to manage it all.</p>
+            <h2>Habits</h2>
+            <img class="right" src="{{ asset('icons/habits-white.png') }}" />
+            <p>Our habit tracker allows you to track your habit any way you want. Whether it's once a day, or 10 times. Our habit tracker will work for you!</p>
+            <p>Doesn't matter if it's certain days of the week, or every so many days.</p>
+            <p>Whether it's once a day, or 10 times, our habit tracker will work for you!</p>
+        </div>
+
+        <div class="about-card right">
+            <h2>Journaling</h2>
+            <img class="right" src="{{ asset('icons/journal-white.png') }}" />
+            <p>Our journaling tool automatically creates a daily timeline of all the todo items, habits, goals, and bucketlist items you've accomplished that day.</p>
+            <p>You can add your own journal entries and use search functionality across all your entries.</p>
+        </div>
+
+        <div class="about-card left">
+            <h2>Todos</h2>
+            <img class="right" src="{{ asset('icons/todo-white.png') }}" />
+            <p>While you can create your own todo items, color coded by priority, our todo list will automatically add any habits and goal action items you need to accomplish that day as well.</p>
+            <p>It can even remind you to journal and read your affirmations.</p>
+            <p>You can set up todo reminders via SMS, email, and push notifications.</p>
+        </div>
+
+        <div class="about-card right">
+            <h2>Profile</h2>
+            <img class="right" src="{{ asset('icons/profile-white.png') }}" />
+            <p>You can customize your profile with your values and a nutshell to make sure you never lose track of the big picture.</p>
+            <p>You can also see the number of habits, goals, journal entries, and todos you've accomplished.</p>
+            <p>You can even create your own daily affirmations!</p>
+        </div>
+
+        <div class="about-card left">
+            <h2>Bucketlist</h2>
+            <img class="right" src="{{ asset('icons/bucketlist-white.png') }}" />
+            <p>Goals shouldn't just be about work, you should make sure you get in all those fun things that you've always wanted to do as well.</p>
+            <p>Time to stop dreaming and start doing!!</p>
+        </div>
+
+        <div class="about-card right">
+            <h2>Addictions</h2>
+            <img class="right" src="{{ asset('icons/addiction-white.png') }}" />
+            <p>We realize that sometimes personal improvement isn't always about creating new habits, sometimes it is about breaking old ones.</p>
+            <p>Besides just tracking how long you've broken free from an addiction it also allows you to manage moderated usage if that fits your goals better.</p>
+            <p>You can create custom milestones and attach a reward to each milestone, PDPHero will remind you when you reach your milestone and remind you to reward yourself!</p>
+            <p>Relapse is unfortunately a part of breaking addictions, with our addiction tracker you can write relapse reports to learn from them and figure out how to improve next time.</p>
         </div>
 
         {{-- Pricing --}}
-        <div class="about-card right">
+        <div class="about-card left">
             <div class="anchor" id="pricing"></div>
             <h2>Pricing</h2>
             <div class="pricing-container">
@@ -58,7 +88,7 @@
 
                     <p class="pricing-label">${{ config('membership.basic.price') }} monthly</p>
 
-                    <p>Comes with all the features you need for creating smart goals, managing to-do items, building habits, journaling, and personal development planning.</p>
+                    <p>Comes with all the features you need for creating smart goals, managing to-do items, building habits, journaling, and personal development planning. Includes {{ config('sms.basic_limit') }} SMS reminders monthly.</p>
                 </div>
 
                 <div class="pricing-item">
@@ -68,7 +98,7 @@
 
                     <p class="pricing-label">${{ config('membership.black_label.price') }} monthly</p>
 
-                    <p>Allows you to vote for which features are built next. A great way to support the app if you feel so inclined :)</p>
+                    <p>Includes an SMS limit of {{ config('sms.black_label_limit') }} reminders per month. Allows you to vote for which features are built next. A great way to support the app if you feel so inclined :)</p>
                 </div>
             </div>
         </div>
