@@ -254,7 +254,7 @@ class AddictionController extends Controller
             $values['datetime_label'] = Carbon::parse($relapse->created_at)->setTimezone($timezone)->format('M j, Y g:i A');
 
             // Set the day streak before that relapse
-            $previous_relapse = AddictionRelapse::where('addiction_id', $addiction->id)->where('id', '<', $relapse->id)->first();
+            $previous_relapse = AddictionRelapse::where('addiction_id', $addiction->id)->where('id', '<', $relapse->id)->orderBy('id', 'desc')->first();
             if (!is_null($previous_relapse)) {
                 $carbon_start = Carbon::parse($previous_relapse->created_at);
             } else {
