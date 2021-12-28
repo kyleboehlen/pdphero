@@ -440,7 +440,10 @@ class Goal extends Model
             $this->load('actionItems');
             foreach($this->actionItems as $action_item)
             {
-                $action_item->shiftDeadline($days, $action);
+                if(!$action_item->achieved)
+                {
+                    $action_item->shiftDeadline($days, $action);
+                }
             }
         }
 
