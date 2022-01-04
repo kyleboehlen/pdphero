@@ -593,7 +593,7 @@ class JournalController extends Controller
 
         // Set category
         $category_uuid = $request->get('category');
-        if($category_uuid != 0)
+        if($category_uuid != 'no-category')
         {
             $category_id = JournalCategory::where('uuid', $category_uuid)->first()->id;
             $journal_entry->category_id = $category_id;
