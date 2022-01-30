@@ -1,7 +1,9 @@
-# PDPHero (Alpha Dev)
+# PDPHero
+© 2021 Kyle Boehlen, All Rights Reserved
 
 ## Installation
 Before installing the site the following tools need to be installed:
+
 - php7.4 or higher with the extensions (including php-memcached and php-gmp)
 - apache2
 - MySQL (MariaDB)
@@ -38,38 +40,46 @@ Generate the application encryption key
 
 <br/>
 Change the apache2 webroot to the laravel public folder
+
 - Change to the apache2 root directory and open the configuration file
 
    `cd /etc/apache2/sites-available && sudo nano 000-default.conf`
+   
 - Edit the document root option to:
 
    `DocumentRoot /var/www/html/pdphero/public`
+   
 - Restart apache2
 
    `sudo service apache2 restart`
 
 <br/>
 In order to allow laravel to handle URLs, make sure the apache mod_rewrite extension is enabled and allow overrides
+
 - Edit apache2.conf to allow overrides
 
    `cd /etc/apache2/ && sudo nano apache2.conf`
+   
 - Add the following to the directory settings
+<br/>
+<br/>
 
 ```
-   <Directory /var/www/html/pdphero/public>
+<Directory /var/www/html/pdphero/public>
 
-      Options Indexes FollowSymLinks
+   Options Indexes FollowSymLinks
 
-      AllowOverride All
+   AllowOverride All
 
-      Require all granted
+   Require all granted
 
-   </Directory>
+</Directory>
 ```
 
 - Enable mod_rewrite extension
 
    `sudo a2enmod rewrite`
+   
 - Restart apache2
 
    `sudo service apache2 restart`
@@ -131,10 +141,10 @@ Add nexmo api credentials for SMS notifications
 <br/>
 Fill out the stripe API creds and pricing IDs
 
-STRIPE_KEY=
-STRIPE_SECRET=
-BASIC_STRIPE_PRICE_ID=
-BLACK_LABEL_STRIPE_PRICE_ID=
+- STRIPE_KEY=
+- STRIPE_SECRET=
+- BASIC_STRIPE_PRICE_ID=
+- BLACK_LABEL_STRIPE_PRICE_ID=
 
 <br/>
 Run the database migration, use the local phpunit
@@ -187,9 +197,10 @@ Optimize route loading
 
 <br/><br/>
 ### APP_ENV values:
--local
--testing
--production
+
+- local
+- testing
+- production
 
 <br/><br/>
 ### Current External Service List:
