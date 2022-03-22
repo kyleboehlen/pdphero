@@ -65,7 +65,7 @@ class RegisterController extends Controller
         ];
 
         // Add alpha email guard
-        if(App::enviroment('staging'))
+        if(App::environment('staging'))
         {
             // Get alpha emails
             $emails = config('test.alpha.emails');
