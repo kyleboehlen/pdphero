@@ -8,10 +8,10 @@
     ],
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
+            "type": "path",
+            "url": "./nova"
         }
-    ],
+    ],    
     "license": "MIT",
     "require": {
         "php": "^7.3||^8.0.2",
@@ -30,7 +30,7 @@
         "laravel/cashier": "^12.14",
         "laravel/framework": "^8.0",
         "laravel/nexmo-notification-channel": "^2.5",
-        "laravel/nova": "~3.0",
+        "laravel/nova": "*",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "marvinlabs/laravel-discord-logger": "^1.1",

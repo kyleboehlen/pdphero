@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60b6bfbced35487fe8c2d9ba8b40cdf2",
+    "content-hash": "6df048cd0e1c2cbc5dff88efff797721",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2814,16 +2814,10 @@
         {
             "name": "laravel/nova",
             "version": "3.31.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laravel/nova.git",
-                "reference": "7f4781370193d23e9ffa218ae2c03fee3883821e"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-7f4781370193d23e9ffa218ae2c03fee3883821e-zip-54dd0e.zip",
-                "reference": "7f4781370193d23e9ffa218ae2c03fee3883821e",
-                "shasum": "ec28a6bf339d138367029f5e24d9b0968ca87726"
+                "type": "path",
+                "url": "./nova",
+                "reference": "fb879f1706a29ce15f8a76a4e74a7482aadb11f2"
             },
             "require": {
                 "brick/money": "^0.5.0",
@@ -2905,10 +2899,9 @@
                 "admin",
                 "laravel"
             ],
-            "support": {
-                "source": "https://github.com/laravel/nova/tree/v3.31.0"
-            },
-            "time": "2022-02-08T17:30:45+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "laravel/serializable-closure",
@@ -9576,16 +9569,16 @@
         },
         {
             "name": "laravelcollective/auth",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/auth.git",
-                "reference": "c1024627cf3a0a085c6673a06dca7328a9c76956"
+                "reference": "132e54784762976a4406921ef35fd862c3490557"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/auth/zipball/c1024627cf3a0a085c6673a06dca7328a9c76956",
-                "reference": "c1024627cf3a0a085c6673a06dca7328a9c76956",
+                "url": "https://api.github.com/repos/LaravelCollective/auth/zipball/132e54784762976a4406921ef35fd862c3490557",
+                "reference": "132e54784762976a4406921ef35fd862c3490557",
                 "shasum": ""
             },
             "require": {
@@ -9634,7 +9627,7 @@
                 "issues": "https://github.com/LaravelCollective/auth/issues",
                 "source": "https://github.com/LaravelCollective/auth"
             },
-            "time": "2022-02-15T11:02:26+00:00"
+            "time": "2022-03-22T02:51:33+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -11912,7 +11905,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3||^8.0.2"
+        "php": "^7.3||^8.0.2",
+        "ext-gmp": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
