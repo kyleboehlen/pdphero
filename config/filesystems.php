@@ -45,7 +45,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/public'),
         ],
 
         'public' => [
@@ -55,14 +55,28 @@ return [
             'visibility' => 'public',
         ],
 
-        's3' => [
+        'do' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
+            'visibility' => 'public',
+            'key' => env('DO_ACCESS_KEY_ID'),
+            'secret' => env('DO_SECRET_ACCESS_KEY'),
+            'region' => env('DO_DEFAULT_REGION'),
+            'bucket' => env('DO_BUCKET'),
+            'cdn_endpoint' => env('DO_CDN_ENDPOINT'),
+            'url' => env('DO_URL'),
+            'endpoint' => env('DO_ENDPOINT'),
+            'use_path_style_endpoint' => env('DO_USE_PATH_STYLE_ENDPOINT', false),
+        ],
+
+        'minio' => [
+            'driver' => 's3',
+            'key' => 'sail',
+            'secret' => 'password',
+            'region' => 'us-east-1',
+            'bucket' => 'local',
+            'url' => 'http://localhost:9000/local',
+            'endpoint' => 'http://minio:9000',
+            'use_path_style_endpoint' => true,
         ],
 
     ],
@@ -79,11 +93,6 @@ return [
     */
 
     'links' => [
-        // public_path('assets/goal-images') => storage_path('app/public/goal-images'),
-        // public_path('assets/icons') => storage_path('app/public/icons'),
-        // public_path('assets/images') => storage_path('app/public/images'),
-        // public_path('assets/logos') => storage_path('app/public/logos'),
-        // public_path('assets/profile-pictures') => storage_path('app/public/profile-pictures'),
         public_path('pwa') => storage_path('app/public/pwa'),
     ],
 
