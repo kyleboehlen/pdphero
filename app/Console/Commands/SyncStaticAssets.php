@@ -44,12 +44,15 @@ class SyncStaticAssets extends Command
             // Get all the local files in that dir
             $local_files = Storage::disk('local')->files($dir);
 
+            // dd($local_files);
+
             // And all the s3 files in that dir
             $s3_files = Storage::files($dir);
 
             // Delete any files on s3 that aren't in the local files
             foreach ($s3_files as $s3_file) {
                 if (!in_array($s3_file, $local_files)) {
+                    echo "Deleting $s3_file\n";
                     Storage::delete($s3_file);
                 }
             }
@@ -61,10 +64,12 @@ class SyncStaticAssets extends Command
             foreach ($local_files as $local_file) {
                 // Delete the file if it already exists to make sure we have the new one, it'll be fine behind the CDN
                 if (in_array($local_file, $s3_files)) {
+                    echo "Deleting to sync $local_file\n";
                     Storage::delete($local_file);
                 }
 
                 // Stream the copy to s3
+                echo "Writing stream for $local_file\n";
                 Storage::writeStream($local_file, Storage::disk('local')->readStream($local_file));
             }
         }
