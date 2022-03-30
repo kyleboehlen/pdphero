@@ -40,6 +40,8 @@ class SyncStaticAssets extends Command
 
         echo "Syncing static assets...\n";
 
+        echo storage_path() . "\n";
+
         foreach ($directories as $dir) {
             // Get all the local files in that dir
             $local_files = Storage::disk('local')->files($dir);
