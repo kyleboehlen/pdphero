@@ -262,10 +262,10 @@ class ProfileController extends Controller
         try
         {
             // Create uuid
-            $user->profile_picture = uniqid('pp-', true) . '.jpg';
+            $user->profile_picture = uniqid('pp-', true) . '.png';
 
             // Store image
-            Storage::put("profile-pictures/$user->profile_picture", Image::make($request->file('profile-picture'))->fit(600, 600)->encode('jpg')->stream()->__toString());
+            Storage::put("profile-pictures/$user->profile_picture", Image::make($request->file('profile-picture'))->fit(600, 600)->encode('png')->stream()->__toString());
             if(!$user->save())
             {
                 // Log error
