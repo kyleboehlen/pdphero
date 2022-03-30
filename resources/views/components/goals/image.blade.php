@@ -1,5 +1,5 @@
 @if($goal->use_custom_img)
-        <img class="goal-img" src="{{ asset("goal-images/$goal->uuid.png") }}" />
+        <img class="goal-img" src="{{ asset("goal-images/$goal->uuid.png?updated=$goal->updated_at") }}" />
     @else
         @if($scope == 'future')
             <img class="goal-img" src="{{ asset('icons/goals-white.png') }}" />
