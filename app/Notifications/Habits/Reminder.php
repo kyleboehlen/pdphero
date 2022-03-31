@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 use Illuminate\Queue\SerializesModels;
@@ -67,10 +67,10 @@ class Reminder extends Notification
             ->line('Thank you for using PDPHero, have a wonderful day :)');
     }
 
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
         $habit = $this->habit;
-        return (new NexmoMessage)
+        return (new VonageMessage)
             ->content("Reminder to perform your $habit->name habit in PDPHero!");
     }
 

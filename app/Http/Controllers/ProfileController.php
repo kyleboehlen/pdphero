@@ -432,7 +432,7 @@ class ProfileController extends Controller
                 ]);
             }
 
-            // Send nexmo sms confirmation alert
+            // Send Vonage sms confirmation alert
             $user->notify(new SMSConfirmation());
         }
 
