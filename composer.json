@@ -10,6 +10,10 @@
         {
             "type": "path",
             "url": "./nova"
+        },
+        {
+            "type": "path",
+            "url": "./nces"
         }
     ],    
     "license": "MIT",
@@ -18,7 +22,7 @@
         "ext-gd": "*",
         "ext-gmp": "*",
         "aws/aws-sdk-php": "~3.0",
-        "dniccum/custom-email-sender": "^3.0",
+        "dniccum/custom-email-sender": "dev-master",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "genealabs/laravel-caffeine": "*",

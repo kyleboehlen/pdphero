@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6a0b74ab8859a9cf2a8e6f925ff7299",
+    "content-hash": "dc6e19817de5db6821bcaec0d8a78d7a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -533,21 +533,15 @@
         },
         {
             "name": "dniccum/custom-email-sender",
-            "version": "v3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dniccum/nova-custom-email-sender.git",
-                "reference": "d9078fdeb3f1ad92877d2140903eb730da998255"
-            },
+            "version": "dev-master",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dniccum/nova-custom-email-sender/zipball/d9078fdeb3f1ad92877d2140903eb730da998255",
-                "reference": "d9078fdeb3f1ad92877d2140903eb730da998255",
-                "shasum": ""
+                "type": "path",
+                "url": "./nces",
+                "reference": "95df185f44e298842519f80557bb8206086ec55a"
             },
             "require": {
                 "illuminate/http": "^6.0|^7.0|^8.0",
-                "illuminate/support": "^6.0|^7.0|^8.0",
+                "laravel/framework": "^8.0|^9.0",
                 "php": ">=7.1.0"
             },
             "type": "library",
@@ -563,7 +557,6 @@
                     "Dniccum\\CustomEmailSender\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -584,17 +577,9 @@
                 "nova",
                 "tool"
             ],
-            "support": {
-                "issues": "https://github.com/dniccum/nova-custom-email-sender/issues",
-                "source": "https://github.com/dniccum/nova-custom-email-sender/tree/v3.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/dniccum",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-12-16T14:30:24+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "doctrine/cache",
@@ -10408,16 +10393,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.19",
+            "version": "9.5.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "35ea4b7f3acabb26f4bb640f8c30866c401da807"
+                "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/35ea4b7f3acabb26f4bb640f8c30866c401da807",
-                "reference": "35ea4b7f3acabb26f4bb640f8c30866c401da807",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/12bc8879fb65aef2138b26fc633cb1e3620cffba",
+                "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba",
                 "shasum": ""
             },
             "require": {
@@ -10495,7 +10480,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.19"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.20"
             },
             "funding": [
                 {
@@ -10507,7 +10492,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-15T09:57:31+00:00"
+            "time": "2022-04-01T12:37:26+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -11960,7 +11945,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "dniccum/custom-email-sender": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
