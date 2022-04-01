@@ -3,7 +3,7 @@
 namespace App\Models\ToDo;
 
 use Illuminate\Database\Eloquent\Model;
-use JamesMills\Uuid\HasUuidTrait;
+use KyleBoehlen\Uuid\HasUuidTrait;
 use Carbon\Carbon;
 
 // Models

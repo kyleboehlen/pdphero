@@ -4,7 +4,7 @@ namespace App\Models\Addictions;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use JamesMills\Uuid\HasUuidTrait;
+use KyleBoehlen\Uuid\HasUuidTrait;
 
 class AddictionRelapse extends Model
 {
