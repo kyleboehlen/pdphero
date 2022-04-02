@@ -5,7 +5,7 @@ namespace App\Models\ToDo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use JamesMills\Uuid\HasUuidTrait;
+use KyleBoehlen\Uuid\HasUuidTrait;
 
 class ToDoCategory extends Model
 {

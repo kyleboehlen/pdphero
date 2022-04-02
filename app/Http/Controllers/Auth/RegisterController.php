@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\App;
 
 class RegisterController extends Controller
 {
@@ -64,7 +65,7 @@ class RegisterController extends Controller
         ];
 
         // Add alpha email guard
-        if(config('app.env') == 'testing')
+        if(App::environment('staging'))
         {
             // Get alpha emails
             $emails = config('test.alpha.emails');

@@ -43,25 +43,23 @@ class PurgeProfilePictures extends Command
      */
     public function handle()
     {
-        // Set command start time stamp
-        $carbon = Carbon::now();
-
         // Get silent option
         $silent = $this->option('silent');
+
+        if (!$silent) {
+            echo "Purging stale profile pictures...\n";
+        }
 
         // Get all the file names of the current profile pictures
         $filenames = User::whereNotNull('profile_picture')->get()->pluck('profile_picture')->toArray();
 
-        // Add .gitignore
-        array_push($filenames, '.gitignore');
-
         // Get all the files in the profile pictures dir
-        $files = Storage::files('public/profile-pictures');
+        $files = Storage::files('profile-pictures');
 
         $deletes = 0; // Delete counter
         foreach($files as $file)
         {
-            $name = str_replace('public/profile-pictures/', '', $file); // Remove directory from file name
+            $name = str_replace('profile-pictures/', '', $file); // Remove directory from file name
             if(!in_array($name, $filenames)) // Check if file name is in array of current profile pictures
             {
                 if(Storage::delete($file)) // Delete stale file
@@ -70,26 +68,18 @@ class PurgeProfilePictures extends Command
                 }
                 else
                 {
-                    // Log/print errror
-                    $message = "Failed to delete stale profile picture $name";
-                    Log::warning($message);
+                    // Print errror
                     if(!$silent)
                     {
-                        echo $message . "\n";
+                        echo "Failed to delete stale profile picture $name\n";
                     }
                 }
             }
         }
 
-        // Calculate script runtime from carbon created at script start
-        $runtime_seconds = Carbon::now()->diffInSeconds($carbon);
-
         // Log/print completion
-        $message = "purge:profile-pictures deleted $deletes stale files";
-        Log::notice($message, ['runtime_in_seconds' => $runtime_seconds]);
-        if(!$silent)
-        {
-            echo $message . " in $runtime_seconds seconds\n";
+        if (!$silent) {
+            echo "Completed! Purged $deletes stale profile pictures.\n";
         }
 
         return 0;

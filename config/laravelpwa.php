@@ -63,7 +63,7 @@ return [
             //     'description' => 'Open the To-Do list.',
             //     'url' => '/todo',
             //     'icons' => [
-            //         "src" => "/assets/icons/todo-white.png",
+            //         "src" => "/icons/todo-white.png",
             //         "purpose" => "any"
             //     ]
             // ],
@@ -72,7 +72,7 @@ return [
             //     'description' => 'Open the Habits tracker.',
             //     'url' => '/habits',
             //     'icons' => [
-            //         "src" => "/assets/icons/habits-white.png",
+            //         "src" => "/icons/habits-white.png",
             //         "purpose" => "any"
             //     ]
             // ],
@@ -81,7 +81,7 @@ return [
             //     'description' => 'Open the Goals tool.',
             //     'url' => '/goals',
             //     'icons' => [
-            //         "src" => "/assets/icons/goals-white.png",
+            //         "src" => "/icons/goals-white.png",
             //         "purpose" => "any"
             //     ]
             // ],
@@ -90,7 +90,7 @@ return [
             //     'description' => 'View Journal entries and timeline.',
             //     'url' => '/journal/view/list',
             //     'icons' => [
-            //         "src" => "/assets/icons/journal-white.png",
+            //         "src" => "/icons/journal-white.png",
             //         "purpose" => "any"
             //     ]
             // ]

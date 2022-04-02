@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 use Illuminate\Queue\SerializesModels;
@@ -77,7 +77,7 @@ class MilestoneReached extends Notification
         return $mail_message;
     }
 
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
         $milestone = $this->milestone;
         $milestone->load('addiction');
@@ -90,7 +90,7 @@ class MilestoneReached extends Notification
             $content .= " It's time to reward yourself with $milestone->reward :)";
         }
 
-        return (new NexmoMessage)
+        return (new VonageMessage)
             ->content($content);
     }
 

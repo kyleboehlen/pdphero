@@ -3,7 +3,7 @@
 namespace App\Models\Addictions;
 
 use Illuminate\Database\Eloquent\Model;
-use JamesMills\Uuid\HasUuidTrait;
+use KyleBoehlen\Uuid\HasUuidTrait;
 
 // Constants
 use App\Helpers\Constants\Addiction\DateFormat;

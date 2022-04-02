@@ -32,7 +32,7 @@ class Header extends Component
         $user = \Auth::user();
         if($this->icon == 'profile' && !is_null($user->profile_picture))
         {
-            $this->icon = "profile-pictures/$user->profile_picture";
+            $this->icon = "profile-pictures/$user->profile_picture?updated=$user->updated_at";
         }
         else
         {

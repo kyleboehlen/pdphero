@@ -742,7 +742,7 @@ class GoalController extends Controller
             // Crop/save/encode image
             try
             {
-                Image::make($request->file('goal-image'))->fit(600, 600)->encode('png')->save(storage_path() . '/app/public/goal-images/' . $goal->uuid . '.png');
+                Storage::put('goal-images/' . $goal->uuid . '.png', Image::make($request->file('goal-image'))->fit(600, 600)->stream()->__toString());
                 $goal->use_custom_img = true;
                 if(!$goal->save())
                 {
@@ -1064,34 +1064,13 @@ class GoalController extends Controller
             // Crop/save/encode image
             try
             {
-                Image::make($request->file('goal-image'))->fit(600, 600)->encode('png')->save(storage_path() . '/app/public/goal-images/' . $goal->uuid . '.png');
+                Storage::put('goal-images/' . $goal->uuid . '.png', Image::make($request->file('goal-image'))->fit(600, 600)->stream()->__toString());
                 $goal->use_custom_img = true;
                 if(!$goal->save())
                 {
                     Log::error("Failed to set user_custom_image to true after updating goal image.", [
                         'goal->id' => $goal->id,
                     ]);
-                }
-                else
-                {
-                    // Purge from cloudflare task
-                    $response = Http::withHeaders([
-                        'X-Auth-Email' => config('cloudflare.auth_email'),
-                        'X-Auth-Key' => config('cloudflare.api_key'),
-                    ])->post(config('cloudflare.api_url') . str_replace('{zone_id}', config('cloudflare.zone_id'), config('cloudflare.cache_endpoint')), [
-                        'files' => [
-                            url(asset("goal-images/$goal->uuid.png")),
-                        ],
-                    ]);
-
-                    $response_body = json_decode($response->body());
-
-                    if(!$response_body->success)
-                    {
-                        Log::error('Failed to purge goal image asset from cloudflare on goal update', [
-                            'errors' => $response_body->errors,
-                        ]);
-                    }
                 }
             }
             catch(\Exception $e)

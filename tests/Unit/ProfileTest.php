@@ -76,7 +76,7 @@ class ProfileTest extends TestCase
         // Call profile and check it's default
         $response = $this->actingAs($user)->get(route('profile'));
         $response->assertStatus(200);
-        $response->assertSee('src="/assets/icons/profile-white.png"', false);
+        $response->assertSee('src="' . asset('icons/profile-white.png') . '"', false);
 
         // Check the edit form actually works to update it
         $response = $this->actingAs($user)->post(route('profile.update.picture'), [

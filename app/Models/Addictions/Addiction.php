@@ -5,7 +5,7 @@ namespace App\Models\Addictions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use JamesMills\Uuid\HasUuidTrait;
+use KyleBoehlen\Uuid\HasUuidTrait;
 use Carbon\Carbon;
 
 // Constants

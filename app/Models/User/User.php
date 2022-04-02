@@ -83,12 +83,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * Route notifications for the Nexmo channel.
+     * Route notifications for the Vonage channel.
      *
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return string
      */
-    public function routeNotificationForNexmo($notification)
+    public function routeNotificationForVonage($notification)
     {
         return '1' . substr($this->sms_number, -10);
     }
@@ -252,7 +252,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 {
                     return null;   
                 }
-                return ['nexmo'];
+                return ['vonage'];
                 break;
 
             case Setting::NOTIFICATION_WEBPUSH:

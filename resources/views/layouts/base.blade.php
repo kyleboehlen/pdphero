@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
         <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
 
         <!-- CSRF Token -->
@@ -20,9 +20,9 @@
 
         <!-- Scripts -->
         @if(config('app.env') == 'local')
-            <script src="{{ asset('js/app.js') }}"></script>
+            <script src="{{ url('js/app.js') }}"></script>
         @else
-            <script src="{{ mix('assets/js/app.js') }}"></script>
+            <script src="{{ mix('js/app.js') }}"></script>
         @endif
 
         {{-- Reload when browser back button is pressed --}}
@@ -37,9 +37,9 @@
 
         <!-- Styles -->
         @if(config('app.env') == 'local')
-            <link href="@isset($stylesheet) {{ asset("css/$stylesheet.css") }} @else {{ asset('css/app.css') }} @endisset" rel="stylesheet">
+            <link href="@isset($stylesheet) {{ url("/css/$stylesheet.css") }} @else {{ url('/css/app.css') }} @endisset" rel="stylesheet">
         @else
-            <link href="@isset($stylesheet) {{ mix("assets/css/$stylesheet.css") }} @else {{ mix('assets/css/app.css') }} @endisset" rel="stylesheet">
+            <link href="@isset($stylesheet) {{ mix("css/$stylesheet.css") }} @else {{ mix('css/app.css') }} @endisset" rel="stylesheet">
         @endif
 
         <!-- Icons -->

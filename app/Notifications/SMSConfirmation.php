@@ -5,7 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class SMSConfirmation extends Notification
 {
@@ -23,14 +23,14 @@ class SMSConfirmation extends Notification
 
     public function via($notifiable)
     {
-        return ['nexmo'];
+        return ['vonage'];
     }
 
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
         $part_one = substr($notifiable->sms_verify_code, 0, 3);
         $part_two = substr($notifiable->sms_verify_code, 3);
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content("Your SMS verification code is PDP-$part_one-$part_two");
     }
 }

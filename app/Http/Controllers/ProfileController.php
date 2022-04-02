@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
@@ -256,46 +257,30 @@ class ProfileController extends Controller
     {
         // Get user
         $user = $request->user();
-        
-        // Save image
-        $user->profile_picture = 
-            str_replace(
-                'public/profile-pictures/', '',
-                $request->file('profile-picture')->store('public/profile-pictures')
-            );
 
         // Crop picture
         try
         {
-            Image::make(storage_path() . '/app/public/profile-pictures/' . $user->profile_picture)->fit(600, 600)->save();
+            // Create uuid
+            $user->profile_picture = uniqid('pp-', true) . '.png';
+
+            // Store image
+            Storage::put("profile-pictures/$user->profile_picture", Image::make($request->file('profile-picture'))->fit(600, 600)->encode('png')->stream()->__toString());
+            if(!$user->save())
+            {
+                // Log error
+                Log::error("Failed to save profile_picture for $user->name", [
+                    'user->id' => $user->id,
+                ]);
+            }
         }
         catch(\Exception $e)
         {
             // Log error
             $exception_message = $e->getMessage();
-            Log::critical("Failed to crop uploaded image for $user->name, attempting to set user->profile_picture back to null", [
+            Log::critical("Failed to crop uploaded image for $user->name, not updating user.", [
                 'user->id' => $user->id,
                 'exception_message' => $exception_message,
-            ]);
-
-            // Reset profile picture attribute
-            $user->profile_picture = null;
-
-            // Save user
-            if(!$user->save())
-            {
-                // Log error
-                Log::alert("Failed to null out profile_picture for $user->name after crop failed", [
-                    'user->id' => $user->id,
-                ]);
-            }
-        }
-
-        if(!$user->save())
-        {
-            // Log error
-            Log::error("Failed to save profile_picture for $user->name", [
-                'user->id' => $user->id,
             ]);
         }
 
@@ -447,7 +432,7 @@ class ProfileController extends Controller
                 ]);
             }
 
-            // Send nexmo sms confirmation alert
+            // Send Vonage sms confirmation alert
             $user->notify(new SMSConfirmation());
         }
 

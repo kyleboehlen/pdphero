@@ -649,7 +649,7 @@ class SettingsTest extends TestCase
         // Verify home icon shows up
         $response = $this->actingAs($user)->get(route('profile'));
         $response->assertStatus(200);
-        $response->assertSee('/assets/icons/home-black.png', false);
+        $response->assertSee('/icons/home-black.png', false);
 
         // Check the edit form actually works to update it
         $response = $this->actingAs($user)->post(route('profile.update.settings', ['id' => $setting_id]), [
@@ -668,7 +668,7 @@ class SettingsTest extends TestCase
         // Call profile and verify it's gone
         $response = $this->actingAs($user)->get(route('profile'));
         $response->assertStatus(200);
-        $this->assertTrue(!strpos('/assets/icons/home-black.png', $response->getContent()));
+        $this->assertTrue(!strpos('/icons/home-black.png', $response->getContent()));
     }
 
     /**
