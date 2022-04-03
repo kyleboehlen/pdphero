@@ -2,6 +2,7 @@
 return [
     'alpha' => [
         'trial_bonus' => env('ALPHA_USER_TRIAL_BONUS', 30),
+        'guard' => env('ALPHA_GUARD', true),
         'emails' => [
             'basicpixels@gmail.com', // Chad Stevenson
 	        'chojolann@hotmail.com', // Nefi Chojolan

@@ -4,7 +4,7 @@ use App\Helpers\Constants\Journal\Mood;
 
 return [
     'default_categories' => [
-        'Dreams', 'Graditude', 'Monkey Mind',
+        'Dreams', 'Gratitude', 'Monkey Mind',
     ],
     'moods' => [
         Mood::DEFAULT => [
