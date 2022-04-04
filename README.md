@@ -1,215 +1,151 @@
 # PDPHero
-© 2021 Kyle Boehlen, All Rights Reserved
 
-## Installation
-Before installing the site the following tools need to be installed:
+© 2022 Kyle Boehlen, All Rights Reserved
 
-- php7.4 or higher with the extensions (including php-memcached and php-gmp)
-- apache2
-- MySQL (MariaDB)
-- git
-- composer (added to the PATH)
-- npm
+This Laravel PWA is my personal development tool for tracking todos, habits, goals, addictions, journal entries, and more. Currently it's what I'd consider to be the MVP. Native applications, refreshed UI (using a proper front-end framework), and more features are on the roadmap for in the upcoming years.
 
-<br/>
-Create an ssh key (remember to copy it to root) and add it to bitbucket to clone the repo
+## Local Development (Docker)
 
-`cd /var/www/html && git clone git@bitbucket.org:pdphero/pdphero.git`
+If on Windows verify you are doing the setup with WSL2. This is the bash shell you should be using, and also the Docker driver you should be using.
 
-<br/>
-Install the required depdendencies
+If it is not installed you can do so by simply running the following command in powershell:
 
-`cd /var/www/html/pdphero && composer install`
+`wsl --install -d "Ubuntu-20.04"`
 
-`npm install`
+Then make sure that you have [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
 
-<br/>
-Generate the .css and .js files
+Clone the codebase, preferably somewhere in your home directory
 
-`npm run prod`
+`git clone https://github.com/kyleboehlen/pdphero-core.git`
 
-<br/>
-Create a copy of the enviroment file from the template
+You'll then need to create your .env file by copying the example env file
 
-`cp .env.example .env`
+`cp .env.example.local .env`
 
-<br/>
-Generate the application encryption key
+The rest of the instructions use the `sail` command. You should alias this command to the following:
 
-`php artisan key:generate`
+`./vendor/bin/sail`
 
-<br/>
-Change the apache2 webroot to the laravel public folder
+Generate an application key
 
-- Change to the apache2 root directory and open the configuration file
+`sail artisan key:generate`
 
-   `cd /etc/apache2/sites-available && sudo nano 000-default.conf`
-   
-- Edit the document root option to:
+And fill out the missing variables in the .env file
 
-   `DocumentRoot /var/www/html/pdphero/public`
-   
-- Restart apache2
+For logging:
 
-   `sudo service apache2 restart`
+- PAPERTRAIL_PORT=
+- LOG_DISCORD_WEBHOOK_URL=""
 
-<br/>
-In order to allow laravel to handle URLs, make sure the apache mod_rewrite extension is enabled and allow overrides
+For SMS testing:
 
-- Edit apache2.conf to allow overrides
+- VONAGE_KEY=""
+- VONAGE_SECRET=""
+- VONAGE_SMS_FROM=""
 
-   `cd /etc/apache2/ && sudo nano apache2.conf`
-   
-- Add the following to the directory settings
-<br/>
-<br/>
-
-```
-<Directory /var/www/html/pdphero/public>
-
-   Options Indexes FollowSymLinks
-
-   AllowOverride All
-
-   Require all granted
-
-</Directory>
-```
-
-- Enable mod_rewrite extension
-
-   `sudo a2enmod rewrite`
-   
-- Restart apache2
-
-   `sudo service apache2 restart`
-
-<br/>
-Allow apache to serve the files
-
-`cd /var/www/html && sudo chown -R www-data:{your_user_group} pdphero`
-
-<br/>
-Create a symbolic link for the storage folder
-
-`cd /var/www/html/pdphero && php artisan storage:link`
-
-<br/>
-Create a nysql database and create a new user to grant all privliages to the database on. Be sure to fill out the DB .env vars
-
-- DB_DATABASE=
-- DB_USERNAME=
-- DB_PASSWORD=
-
-<br/>
-Add the mailgun api details
-
-- MAILGUN_DOMAIN=
-- MAILGUN_SECRET=
-
-<br/>
-Add the AWS Simple Email Service api details
-
-- SES_ACCESS_KEY_ID=
-- SES_ACCESS_KEY_SECRET=
-- SES_REGION=
-
-<br/>
-Add the details for the cloudflare api
-
-- CLOUDFLARE_ZONE_ID=
-- CLOUDFLARE_API_KEY=
-
-<br/>
-Add the discord web hook url for logging
-
-- LOG_DISCORD_WEBHOOK_URL=
-
-<br/>
-Add credentials for mailtrap if email testing is required
+For local email testing:
 
 - MAILTRAP_USERNAME=
 - MAILTRAP_PASSWORD=
 
-<br/>
-Add vonage api credentials for SMS notifications
-
-- VONAGE_KEY=
-- VONAGE_SECRET=
-- VONAGE_SMS_FROM=
-
-<br/>
-Fill out the stripe API creds and pricing IDs
+For stripe testing, make sure you use the api keys and prices from the test console:
 
 - STRIPE_KEY=
 - STRIPE_SECRET=
 - BASIC_STRIPE_PRICE_ID=
 - BLACK_LABEL_STRIPE_PRICE_ID=
 
-<br/>
-Run the database migration, use the local phpunit
+And generate a vapid key
+
+`sail artisan webpush:vapid`
+
+Before starting the Docker container install the composer packages, once you have the container running you may want to run a composer update if any of the local path packages didn't install correctly
+
+```
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+Finally go ahead and start the container
+
+`sail up -d`
+
+Once it's up you can migrate and seed the database
+
+`sail artisan migrate && sail artisan db:seed`
+
+Or alias the deploy unit test and run it
 
 `alias vendor_phpunit=vendor/phpunit/phpunit/phpunit`
 
 `vendor_phpunit --filter Deploy`
 
-<br/>
-Generate the vapid webpush keys
+You'll also need to generate the assets
 
-`php artisan webpush:vapid`
+`sail npm run dev`
 
-<br/>
-Change the php.ini file to let Laravel handle file upload sizes
+And create a user for the Nova dashboard
 
-`upload_max_filesize = 0`
-`post_max_size = 0`
+`sail artisan nova:user`
 
-As well as enable the gmp extension
+Lastly, you'll need to go to `localhost:9000` to access the MinIO console
 
-`extension=gmp`
+Login using sail as the username and password as the password and create a bucket named `local` with a Public access policy
 
-<br/>
-Run crontab -e and add the following line
+## Production (Digital Ocean App Platform)
 
-`* * * * * cd /var/www/html/pdphero && php artisan schedule:run >> /dev/null 2>&1`
+The digital ocean app platform is set up to track the master branch, use the .env.example.production file to create the enviroment variables for the application.
 
-<br/>
-Configure a supervisor file and use this command
+For staging app platform is set up to track the staging branch, and the only difference for set up is to set the `APP_ENV` to 'staging' and you can enable `APP_DEBUG` if you'd like. For registration you may have to set `ALPHA_GUARD` to false.
 
-`cd /var/www/html/pdphero && php artisan queue:work --sleep=3 --tries=3 --max-time=3600`
+You'll need to generate an `APP_KEY` elsewhere otherwise the build process would change it every time. You'll also want to generate the vapid keys `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` in the same way.
 
-<br/><br/>
-### _Make sure these steps are completed last_ 
+A managed database instance is also needed, in the DB .env variables be sure to replace `YOUR_DATABASE_COMPONENT` with the name of your managed DB
 
-Optimize the autoloader class
+You'll also need to get the `PAPERTRAIL_PORT` from your papertrail account, and the `LOG_DISCORD_WEBHOOK_URL` from the integrations setting page in your discord server
 
-   `composer install --optimize-autoloader --no-dev`
+You'll also need to create a S3 compatible space for assets, generate a space API key in the Digital Ocean web console to fill out `DO_ACCESS_KEY_ID` and `DO_SECRET_ACCESS_KEY`, as well as replace `YOUR_REGION` with whatever region the space is in
 
-<br/>
-Cache the configuration
+`DO_BUCKET` is simply the name of the space component
 
-   `php artisan config:cache`
+For SMS fill get the following enviroment variables from the Nexmo portal
 
+- VONAGE_KEY=""
+- VONAGE_SECRET=""
+- VONAGE_SMS_FROM=""
 
-Optimize route loading
+For email you'll want to set up mailgun as primary, and SES as a fallback. You'll need to get the following enviroment variables
 
-   `php artisan route:cache`
+- MAILGUN_SECRET=""
+- SES_ACCESS_KEY_ID=""
+- SES_ACCESS_KEY_SECRET=""
 
-<br/><br/>
-### APP_ENV values:
+And for stripe make sure you're using the production keys and prices
 
-- local
-- testing
-- production
+- STRIPE_KEY=
+- STRIPE_SECRET=
+- BASIC_STRIPE_PRICE_ID=
+- BLACK_LABEL_STRIPE_PRICE_ID=
 
-<br/><br/>
-### Current External Service List:
-- Cloudflare (CDN)
-- Mailgun (primary email)
-- SES (backup email)
-- Mailtrap (email testing)
-- Papertrail (logging)
-- Jira Cloud (issue tracking)
-- Bitbucket (code repo host)
-- Stripe (payment processing)
-- Kamatera Express (VPS hosting)
+Once you set the build command to 
+
+`npm install && npm run prod`
+
+And the run command to 
+
+```
+php artisan migrate --force &&
+php artisan db:seed --force &&
+php artisan config:cache &&
+php artisan route:cache &&
+php artisan assets:sync-static &&
+php artisan purge:profile-pictures &&
+php artisan storage:link &&
+heroku-php-apache2 public/
+```
+
+You're good to go👍
