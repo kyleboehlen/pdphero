@@ -24,7 +24,7 @@
         "aws/aws-sdk-php": "~3.0",
         "dniccum/custom-email-sender": "dev-master",
         "fruitcake/laravel-cors": "^2.0",
-        "genealabs/laravel-caffeine": "*",
+        "genealabs/laravel-caffeine": ">=9.0.2",
         "guzzlehttp/guzzle": "^7.3",
         "intervention/image": "^2.5",
         "jamesmills/laravel-timezone": "^1.9",
