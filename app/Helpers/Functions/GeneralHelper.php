@@ -356,7 +356,9 @@ if(!function_exists('buildActionItemTodos'))
         $user_date = new Carbon('now', $timezone);
 
         // Get action item goals that belong to user w/ action items
-        $goals = Goal::where('user_id', $user->id)->whereIn('type_id', [GoalType::ACTION_AD_HOC, GoalType::ACTION_DETAILED])->with('actionItems')->get();
+        $goals =
+            Goal::where('user_id', $user->id)->whereIn('type_id', [GoalType::ACTION_AD_HOC, GoalType::ACTION_DETAILED])
+                ->where('achieved', 0)->with('actionItems')->get();
 
         // Iterate through the goals
         foreach($goals as $goal)

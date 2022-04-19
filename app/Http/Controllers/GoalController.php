@@ -1317,7 +1317,12 @@ class GoalController extends Controller
 
     public function convertSubForm(Request $request, Goal $goal)
     {
-        $parent_goals = Goal::where('user_id', $request->user()->id)->where('type_id', Type::PARENT_GOAL)->where('id', '!=', $goal->id)->orderBy('name')->get();
+        $parent_goals =
+            Goal::where('user_id', $request->user()->id)
+                ->where('type_id', Type::PARENT_GOAL)
+                ->where('id', '!=', $goal->id)
+                ->where('achieved', 0)
+                ->orderBy('name')->get();
         
         return view('goals.parent-selector')->with([
             'parent_goals' => $parent_goals,
