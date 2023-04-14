@@ -27,9 +27,11 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/stripe.scss', 'public/css')
     .sass('resources/sass/support.scss', 'public/css')
     .sass('resources/sass/todo.scss', 'public/css')
-    .sass('resources/sass/email/default.scss', '../resources/views/vendor/mail/html/themes/default.css');
+    .sass('resources/sass/email/default.scss', '../resources/views/vendor/mail/html/themes/default.css')
+    .sourceMaps();
 
 if (mix.inProduction())
 {
     mix.version();
+    mix.disableNotifications();
 }

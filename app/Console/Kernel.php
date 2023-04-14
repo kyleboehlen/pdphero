@@ -33,6 +33,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('reminders:goal-action-items')->everyMinute();
         $schedule->command('reminders:habits')->everyMinute();
         $schedule->command('reminders:to-do')->everyMinute();
+
+        // Start the default queue worker every minute without overlapping
+        $schedule
+            ->command('queue:work --tries=3 --stop-when-empty --queue=default')
+            ->everyMinute()
+            ->withoutOverlapping();
     }
 
     /**

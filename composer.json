@@ -22,7 +22,6 @@
         "ext-gd": "*",
         "ext-gmp": "*",
         "aws/aws-sdk-php": "~3.0",
-        "dniccum/custom-email-sender": "dev-master",
         "fruitcake/laravel-cors": "^2.0",
         "genealabs/laravel-caffeine": ">=9.0.2",
         "guzzlehttp/guzzle": "^7.3",
@@ -44,6 +43,9 @@
         "symfony/mailgun-mailer": "^6.0",
         "symfony/postmark-mailer": "^6.0",
         "vonage/client-core": "^3.0"
+    },
+    "not-in-user": {
+        "dniccum/custom-email-sender": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
