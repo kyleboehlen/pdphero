@@ -112,8 +112,8 @@ class Habits extends Model
             $required = $this->isRequired($user_date, $search_day, $timezone, $now);
 
             // If it was, lets calculate how it effects strength
-            if($required)
-            {
+            // if($required)
+            // {
                 $history_entry = null;
                 $key = $history->search(function($h) use ($search_day){
                     return $h->day == $search_day->format('Y-m-d');
@@ -127,8 +127,16 @@ class Habits extends Model
                 // If there is no history for that day
                 if(is_null($history_entry))
                 {
-                    // Then they missed the day
-                    $status = HistoryType::MISSED;
+                    if($required)
+                    {
+                        // Then they missed the day
+                        $status = HistoryType::MISSED;
+                    }
+                    else
+                    {
+                        // Then they missed the day
+                        $status = HistoryType::SKIPPED;
+                    }
                 }
                 else // If we do have history for that day
                 {
@@ -208,7 +216,7 @@ class Habits extends Model
                 {
                     $strength = 0;
                 }
-            }
+            // }
         }
 
         // If the strength was in the buffer we're only going to save it as 100%
