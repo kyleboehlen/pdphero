@@ -43,7 +43,7 @@ class UpdateRequest extends FormRequest
             'name' => 'required_without:habit|string|max:255',
             'habit' => ['required_without:name', Rule::in($habits_uuids), ],
             'category' => ['required', new Category(), ],
-            'custom-times' => 'required_with:time-period|numeric|min:1|max:100',
+            'custom-times' => 'required_with:time-period|numeric|min:1|max:999',
             'time-period' => [Rule::in(array_keys(config('goals.time_periods'))), ],
             'habit-strength' => 'required_with:habit|numeric|min:1|max:100',
             'start-date' => 'date_format:Y-m-d|before:end-date',
